@@ -11,13 +11,14 @@
 #include <QSqlRecord>
 #include <QSqlError>
 
+#include "tax.h"
 #include "customer.h"
 #include "product.h"
 
 class customer;
 class product;
 
-#define MCERCLE_VERSION "1.9"
+#define MCERCLE_VERSION "2.0"
 
 class database : public QObject
 {
@@ -55,11 +56,10 @@ private:
     bool createTable_invoices();
     bool createTable_invoices_details();
 
-    QString FireBirdVersion();
-    int databaseVersion();
-
     /* Cache info entreprise */
-    int m_tax;
+    bool m_isTax;
+    int databaseVersion();
+    bool isTax();
 
 public:
 
@@ -122,13 +122,14 @@ public:
     bool getInfo(Informations &info);
     bool updateBank(Bank &b);
     bool getBank(Bank &b);
-    int getIsTax(){return m_tax;}
+    bool getIsTax(){return m_isTax;}
 
     enum{DB_CON_OK, DB_CONNECT, DB_CREATE, DB_CON_ERR, DB_NOTEXIST_ERR};
 
     /* SOUS CLASS */
     customer *m_customer;
     product *m_product;
+    tax *m_tax;
 };
 
 #endif // DATABASE_H

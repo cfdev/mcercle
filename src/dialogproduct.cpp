@@ -21,24 +21,23 @@
 #include "ui_dialogproduct.h"
 #include "dialogproviders.h"
 #include "dialogcategory.h"
+#include "dialogtax.h"
+
 #include <QPushButton>
 #include <QValidator>
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QFileDialog>
 
-DialogProduct::DialogProduct(QLocale &lang, product *p, bool tax, unsigned char type, QWidget *parent) :
+DialogProduct::DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsigned char type, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogProduct)
 {
     ui->setupUi(this);
     m_type = type;
     m_product = p;
+    m_tax = t;
     m_lang = lang;
-    // TAX
-  /*  ui->comboBox_tax->addItem(tr("5,5%"));
-    ui->comboBox_tax->addItem(tr("19,6%"));
-    ui->comboBox_tax->setCurrentIndex(1);*/
 
     ui->pushButton_add_edit->setEnabled(false);
     //
@@ -57,15 +56,18 @@ DialogProduct::DialogProduct(QLocale &lang, product *p, bool tax, unsigned char 
     ui->lineEdit_stockAlert->setValidator(m_valid_int);
 
     //Affiche ou pas les taxes
-    ui->comboBox_tax->setVisible(tax);
     if(tax) ui->label_tax->setText( tr("HT") );
     else     ui->label_tax->setText( tr("TTC") );
+    ui->comboBox_tax->setVisible(tax);
     ui->label_titletax->setVisible(tax);
+    ui->toolButton_editTax->setVisible(tax);
 
     //Chargement de la liste des fournisseurs
     loadProviderList();
     //Chargement de la liste des categories
     loadCategoryList();
+    //chargement de la liste des tax
+    loadTaxList();
 
     //Event
     connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
@@ -208,7 +210,7 @@ void DialogProduct::loadCategoryList(){
     name = m_product->getCategory();
     ui->comboBox_categories->addItem(""); // Vide pour pas de categorie
     for(int i=0; i<clist.name.count(); i++){
-        //Si le fournisseur est celui courant on charge lindex
+        //Si la categorie est celle courante on charge lindex
         if(name == clist.name.at(i)){
                 select = i+1; //+1 pour le vide
         }
@@ -218,25 +220,24 @@ void DialogProduct::loadCategoryList(){
     ui->comboBox_categories->setCurrentIndex(select);
 }
 
-/**
-    Sur le changement du combobox des fournisseurs
-    on rechage l'objet
-  */
-void DialogProduct::on_comboBox_providers_currentIndexChanged(QString name)
-{
-    m_product->m_provider->loadFromName(name);
-    m_product->setProviderId(m_product->m_provider->getId());
-}
-
 
 /**
-    Sur le changement du combobox des categories
-    on rechage l'objet
+    Charge la liste des tax
   */
-void DialogProduct::on_comboBox_categories_currentIndexChanged(QString name)
-{
-    m_product->m_category->loadFromName(name);
-    m_product->setCategoryId(m_product->m_category->getId());
+void DialogProduct::loadTaxList(){
+    QString f;
+    //categories
+    tax::taxList list;
+    //Recuperation des donnees presentent dans la bdd
+    m_tax->getTaxList(list, "TAX", "", "");
+    ui->comboBox_tax->clear();
+
+    if(m_type != PRODUCT_ADD)
+    ui->comboBox_tax->addItem( f.setNum(m_product->getTax(),'f',2) );
+
+    for(unsigned int i=0; i<list.value.size(); i++)
+        ui->comboBox_tax->addItem( f.setNum(list.value.at(i),'f',2) );    
+
 }
 
 
@@ -278,10 +279,13 @@ void DialogProduct::on_pushButton_add_edit_clicked()
     }
     else m_product->setPicture( ui->label_image->pixmap()->toImage() );*/
 
-    /*if(ui->comboBox_tax->currentIndex() == 0) m_product->setTax( 5.5 );
-    else m_product->setTax( 19.6 );
-*/
-    m_product->setTax( 0 );
+    m_product->m_provider->loadFromName( ui->comboBox_providers->currentText() );
+    m_product->setProviderId(m_product->m_provider->getId());
+
+    m_product->m_category->loadFromName( ui->comboBox_categories->currentText() );
+    m_product->setCategoryId(m_product->m_category->getId());
+
+    m_product->setTax( ui->comboBox_tax->currentText().toDouble() );
 
     m_product->setStock( ui->lineEdit_stock->text().toInt() );
     m_product->setStockWarning( ui->lineEdit_stockAlert->text().toInt() );
@@ -330,14 +334,29 @@ void DialogProduct::on_toolButton_editCategorie_clicked()
 }
 
 /**
+    Edition des tax
+  */
+void DialogProduct::on_toolButton_editTax_clicked()
+{
+    DialogTax *m_DialogTax = new DialogTax(m_tax);
+    m_DialogTax->setModal(true);
+    m_DialogTax->exec();
+    delete m_DialogTax;
+    //Rechargement de la liste des categories
+    loadTaxList();
+}
+
+/**
     Generer un code automatiquement
   */
 void DialogProduct::on_toolButton_autoCode_clicked(){
     //Recupere le dernier ID
-    int lastID = m_product->getLastId();
+    int ID=0;
+    if(m_type == PRODUCT_ADD) ID = m_product->getLastId() +1;
+    else ID = m_product->getId();
     //Generation du code
     // DATE + ID
-    ui->lineEdit_code->setText(QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
+    ui->lineEdit_code->setText(QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(ID) );
 }
 
 /**
@@ -370,3 +389,5 @@ void DialogProduct::on_pushButton_image_clicked()
     ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }
 */
+
+

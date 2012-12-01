@@ -123,8 +123,8 @@ bool category::loadFromName(const QString& name) {
   */
 bool category::loadFromID(const int& id) {
     m_id = id;
-    QString req = "SELECT * FROM TAB_PRODUCTS_CATEGORIES WHERE UPPER(ID)= UPPER('";
-    req += QString::number(id) +"');";
+    QString req = "SELECT * FROM TAB_PRODUCTS_CATEGORIES WHERE ID='";
+    req += QString::number(id) +"';";
 
     QSqlQuery query;
     query.prepare(req);
@@ -143,9 +143,7 @@ bool category::loadFromID(const int& id) {
 
 /**
      Liste les donnees du champ en fonction du filtre
-     Jointure avec LEFT OUTER JOIN car avec les select les conditions ne
-     sont pas remplis il ne retour pas le produit
-     @param valeur de retour sous forme de liste de chaine de type ProductList
+     @param valeur de retour sous forme de liste de chaine de type categoryList
      @return true si ok
   */
 bool category::getcategoryList(categoryList& list, QString order, QString filter, QString field) {

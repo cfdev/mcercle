@@ -26,8 +26,6 @@ public:
        std::vector<QColor> color;
    }categoryList;
 
-
-
     category(QSqlDatabase db, QWidget *parent = 0);
     ~category();
 

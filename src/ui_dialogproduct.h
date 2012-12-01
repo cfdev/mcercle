@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogproduct.ui'
 **
-** Created: Mon 21. May 18:06:32 2012
+** Created: Sun 27. May 09:31:35 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -62,6 +62,7 @@ public:
     QLabel *label_5;
     QLabel *label;
     QToolButton *toolButton_autoCode;
+    QToolButton *toolButton_editTax;
     QGroupBox *groupBox;
     QHBoxLayout *horizontalLayout_3;
     QHBoxLayout *horizontalLayout;
@@ -146,7 +147,7 @@ public:
 
         comboBox_providers = new QComboBox(DialogProduct);
         comboBox_providers->setObjectName(QString::fromUtf8("comboBox_providers"));
-        comboBox_providers->setMinimumSize(QSize(100, 25));
+        comboBox_providers->setMinimumSize(QSize(100, 0));
         comboBox_providers->setMaximumSize(QSize(16777215, 16777215));
 
         gridLayout->addWidget(comboBox_providers, 0, 5, 1, 1);
@@ -158,8 +159,9 @@ public:
 
         comboBox_tax = new QComboBox(DialogProduct);
         comboBox_tax->setObjectName(QString::fromUtf8("comboBox_tax"));
-        comboBox_tax->setMinimumSize(QSize(100, 25));
-        comboBox_tax->setMaximumSize(QSize(100, 16777215));
+        comboBox_tax->setMinimumSize(QSize(100, 0));
+        comboBox_tax->setMaximumSize(QSize(16777215, 16777215));
+        comboBox_tax->setEditable(true);
 
         gridLayout->addWidget(comboBox_tax, 3, 2, 1, 1);
 
@@ -214,7 +216,7 @@ public:
 
         comboBox_categories = new QComboBox(DialogProduct);
         comboBox_categories->setObjectName(QString::fromUtf8("comboBox_categories"));
-        comboBox_categories->setMinimumSize(QSize(100, 25));
+        comboBox_categories->setMinimumSize(QSize(100, 0));
         comboBox_categories->setMaximumSize(QSize(16777215, 16777215));
 
         gridLayout->addWidget(comboBox_categories, 1, 5, 1, 1);
@@ -245,11 +247,19 @@ public:
 
         toolButton_autoCode = new QToolButton(DialogProduct);
         toolButton_autoCode->setObjectName(QString::fromUtf8("toolButton_autoCode"));
+        toolButton_autoCode->setMinimumSize(QSize(25, 25));
         QIcon icon2;
         icon2.addFile(QString::fromUtf8(":/app/config"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_autoCode->setIcon(icon2);
 
         gridLayout->addWidget(toolButton_autoCode, 1, 3, 1, 1);
+
+        toolButton_editTax = new QToolButton(DialogProduct);
+        toolButton_editTax->setObjectName(QString::fromUtf8("toolButton_editTax"));
+        toolButton_editTax->setMinimumSize(QSize(25, 25));
+        toolButton_editTax->setIcon(icon1);
+
+        gridLayout->addWidget(toolButton_editTax, 3, 3, 1, 1);
 
 
         verticalLayout->addLayout(gridLayout);
@@ -314,6 +324,19 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout_2);
 
+        QWidget::setTabOrder(lineEdit_description, comboBox_providers);
+        QWidget::setTabOrder(comboBox_providers, toolButton_editProvider);
+        QWidget::setTabOrder(toolButton_editProvider, lineEdit_code);
+        QWidget::setTabOrder(lineEdit_code, toolButton_autoCode);
+        QWidget::setTabOrder(toolButton_autoCode, comboBox_categories);
+        QWidget::setTabOrder(comboBox_categories, toolButton_editCategorie);
+        QWidget::setTabOrder(toolButton_editCategorie, doubleSpinBox_buyingPrice);
+        QWidget::setTabOrder(doubleSpinBox_buyingPrice, doubleSpinBox_price);
+        QWidget::setTabOrder(doubleSpinBox_price, comboBox_tax);
+        QWidget::setTabOrder(comboBox_tax, toolButton_editTax);
+        QWidget::setTabOrder(toolButton_editTax, lineEdit_stock);
+        QWidget::setTabOrder(lineEdit_stock, lineEdit_stockAlert);
+        QWidget::setTabOrder(lineEdit_stockAlert, radioButton_OK);
         QWidget::setTabOrder(radioButton_OK, radioButton_Discontinued);
         QWidget::setTabOrder(radioButton_Discontinued, pushButton_add_edit);
         QWidget::setTabOrder(pushButton_add_edit, pushButton_close);
@@ -338,7 +361,7 @@ public:
         toolButton_editProvider->setText(QApplication::translate("DialogProduct", "...", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("DialogProduct", "Stock Alerte :", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("DialogProduct", "Founisseur: ", 0, QApplication::UnicodeUTF8));
-        label_titletax->setText(QApplication::translate("DialogProduct", "Tax :", 0, QApplication::UnicodeUTF8));
+        label_titletax->setText(QApplication::translate("DialogProduct", "Tax (%) :", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("DialogProduct", "Prix d'achat:  ", 0, QApplication::UnicodeUTF8));
         label_tax->setText(QApplication::translate("DialogProduct", "HT", 0, QApplication::UnicodeUTF8));
         lineEdit_stock->setInputMask(QString());
@@ -355,6 +378,10 @@ public:
         toolButton_autoCode->setToolTip(QApplication::translate("DialogProduct", "G\303\251n\303\251rer un code", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_autoCode->setText(QApplication::translate("DialogProduct", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_editTax->setToolTip(QApplication::translate("DialogProduct", "Editer les TAX", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_editTax->setText(QApplication::translate("DialogProduct", "...", 0, QApplication::UnicodeUTF8));
         groupBox->setTitle(QApplication::translate("DialogProduct", "Etat / Status", 0, QApplication::UnicodeUTF8));
         radioButton_OK->setText(QApplication::translate("DialogProduct", "En vente", 0, QApplication::UnicodeUTF8));
         radioButton_Discontinued->setText(QApplication::translate("DialogProduct", "Abandonn\303\251", 0, QApplication::UnicodeUTF8));

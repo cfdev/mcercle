@@ -95,17 +95,7 @@ void MainWindow::init(){
     m_database->setDatabaseName( m_Settings->getDatabase_databaseName() );
     m_database->setUserName( m_Settings->getDatabase_userName() );
     m_database->setPassword( m_Settings->getDatabase_userPassword() );
-    //version 1.0
-    if((m_database->connect()==database::DB_CON_OK) && (m_Settings->getDatabase_databaseName().contains(".fdb"))){
-        //Si la migration s'est deroulee correctement, Mise a jour des settings!
-        m_Settings->setDatabase_bdd(m_database->getBdd());
-        m_Settings->setDatabase_hostName(m_database->getHostName());
-        m_Settings->setDatabase_port(m_database->getPort());
-        m_Settings->setDatabase_databaseName(m_database->getDatabaseName());
-        m_Settings->setDatabase_userName(m_database->getUserName());
-        m_Settings->setDatabase_userPassword(m_database->getPassword());
-    }
-
+    m_database->connect();
 
     /// Construction des widgets!!
     //customers

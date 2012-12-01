@@ -244,7 +244,7 @@ void productView::on_toolButton_addProduct_clicked()
 {
     if(!m_data->isConnected())return;
 
-    DialogProduct *m_DialogProduct = new DialogProduct(m_lang, m_data->m_product, m_data->getIsTax(),PRODUCT_ADD);
+    DialogProduct *m_DialogProduct = new DialogProduct(m_lang, m_data->m_product, m_data->m_tax, m_data->getIsTax(),PRODUCT_ADD);
     m_DialogProduct->setModal(true);
     m_DialogProduct->setTitle(tr("Ajouter un produit"));
     QObject::connect(m_DialogProduct, SIGNAL(askRefreshList()), this, SLOT(refreshProductsList()));
@@ -260,7 +260,7 @@ void productView::on_toolButton_editProduct_clicked()
 {
     if(!m_data->isConnected())return;
 
-    DialogProduct *m_DialogProduct = new DialogProduct(m_lang, m_data->m_product, m_data->getIsTax(), PRODUCT_EDIT);
+    DialogProduct *m_DialogProduct = new DialogProduct(m_lang, m_data->m_product, m_data->m_tax, m_data->getIsTax(), PRODUCT_EDIT);
     m_DialogProduct->setModal(true);
     m_DialogProduct->setTitle(tr("Modifier le produit"));
     m_DialogProduct->loadValuesFormProduct();

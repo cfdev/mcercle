@@ -19,7 +19,6 @@
 
 #include "dbase.h"
 #include "dialogwaiting.h"
-#include "import/import_mcercle1.h"
 
 #include <QMessageBox>
 #include <QWidget>
@@ -43,12 +42,12 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent)
     m_connected = false;
     m_lang = lang;
     /* Valeur entreprise */
-    m_tax = 0;
+    m_isTax = 0;
 
     /* Si Mode release on n ajout  pas d exemples a la creation d une base*/
-//#ifdef QT_NO_DEBUG
+#ifdef QT_NO_DEBUG
     addSample = false;
-//#endif
+#endif
 
 }
 
@@ -62,21 +61,18 @@ database::~database(){
     connexion a la base de donnees
   */
 char database::connect(){
-    //test de la version 1.0
-    bool import=false;
+    //test de la version 1.0    
     if( m_name.contains(".fdb")){
-        import = true;
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName( QDesktopServices::storageLocation ( QDesktopServices::DataLocation )+"/mcercle.db" );
+        QMessageBox mBox(QMessageBox::Warning, tr("Attention"), tr("<b>mcercle ne supporte plus firebird!</b><br>Veuillez installer mcercle v1.9 pour la migration."),QMessageBox::Ok);
+        mBox.exec();
     }
-    else{
-        db = QSqlDatabase::addDatabase("Q"+m_bdd);
-        db.setHostName( m_hostName );
-        db.setPort( m_port );
-        db.setDatabaseName( m_name);
-        db.setUserName( m_login );
-        db.setPassword( m_password );
-    }
+
+    db = QSqlDatabase::addDatabase("Q"+m_bdd);
+    db.setHostName( m_hostName );
+    db.setPort( m_port );
+    db.setDatabaseName( m_name);
+    db.setUserName( m_login );
+    db.setPassword( m_password );
 
     if (!db.open()) {
         QMessageBox mBox(QMessageBox::Critical, tr("Erreur"), tr("<b>La connexion avec la base de donn&#233;es n&#146;a pas pu &#234;tre &#233;tablie!</b>"),QMessageBox::Ok);
@@ -96,14 +92,7 @@ char database::connect(){
         else mess = tr("Voulez-vous cr\351er de nouvelles tables dans la base de donn\351es ?\n\n") + db.databaseName();
         QMessageBox mBox(QMessageBox::Question, tr("Question"), mess ,QMessageBox::Yes | QMessageBox::No);
         mBox.setDefaultButton(QMessageBox::No);
-        int ret=false;
-        //Import version 1.0
-        if(import){
-            QMessageBox mBox(QMessageBox::Warning, tr("Attention"), tr("<b>mcercle ne supporte plus firebird!</b><br>Transfert des donnees dans la nouvelle base."),QMessageBox::Ok);
-            mBox.exec();
-            ret = QMessageBox::Yes;
-        }
-        else ret = mBox.exec();
+        int ret = mBox.exec();
 
         if(ret == QMessageBox::Yes){
             if( !create() ){
@@ -129,27 +118,15 @@ char database::connect(){
         }
     }
 
-    //Import version 1.0
-    if(import){
-        import_mcercle1 imp_v1(m_hostName, m_port, m_name, m_login, m_password, m_parent);
-        if( !imp_v1.run() )
-            return DB_CON_ERR;
-        else{
-            m_bdd = "SQLITE";
-            m_hostName = db.hostName();
-            m_port = 0;
-            m_name = db.databaseName();
-            m_login = "";
-            m_password = "";
-        }
-    }
-
     // AVOIR: SI DEFAUT LES RETURN PRECEDENT QUI ZAPP LA CREATION DES CLASS NE POSE PAS SOUCIS!?
     m_databaseVersion = databaseVersion();
+    m_isTax = isTax();
     //Creation des sous class
     m_customer = new customer(db, m_parent);
     //instanciation de la class product
     m_product = new product(db, m_lang, m_parent);
+    //class de la gestion des tax
+    m_tax = new tax(m_parent);
 
     //Test de la version de la base de donnees... !!
     if(m_databaseVersion > DBASE_SUPPORTED){
@@ -316,14 +293,16 @@ bool database::createTable_informations(){
     }
 
     //INSERT
-    if(addSample){
-        query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, NUM, CAPITAL, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, PHONENUMBER, FAXNUMBER, EMAIL, WEBSITE)"
-                      "VALUES('1', '0', 'SARL NOM', '123456', '7500', '12 rue du chateau', 'Chemin de livre', '', '13000', 'MARSEILLE', '(+33) 04 92 89 07 76', '(+33) 04 92 89 07 78', 'info@provvence.com', 'http://www.provvence.com');");
-        if(!query.exec()) {
-            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-            return false;
-        }
+    query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME)"
+                  "VALUES('1', '0', '');");
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
+    /* TODO UPDATE POUR LE SAMPLE
+     if(addSample){
+     */
+
     return true;    
 }
 
@@ -363,6 +342,13 @@ bool database::createTable_bank(){
     }
 
     //INSERT
+    query.prepare("INSERT INTO TAB_BANK(CODE_BANQUE)"
+                  "VALUES('');");
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+   /* TODO UPDATE POUR LE SAMPLE
     if(addSample){
         query.prepare("INSERT INTO TAB_BANK(CODE_BANQUE, CODE_GUICHET, NUM_COMPTE, KEY_RIB, ADDRESS, IBAN_1, IBAN_2, IBAN_3, IBAN_4, IBAN_5, IBAN_6, IBAN_7, IBAN_8, IBAN_9, CODE_BIC)"
                       "VALUES('19106', '00000', '12345678911', '12', 'CA PCA', 'FR00', '1234', '1234', '1234', '1234', '1234', '1234', '', '', 'A1234567891');");
@@ -370,7 +356,7 @@ bool database::createTable_bank(){
             QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
             return false;
         }
-    }
+    }*/
     return true;
 
 }
@@ -1104,15 +1090,60 @@ int database::databaseVersion() {
 }
 
 /**
+    Savoir si la societe est assujetti a la TVA
+    @return true if TAX
+  */
+bool database::isTax() {
+    if(!this->m_connected)return false;
+    bool ret=false;
+
+    QSqlQuery query;
+    query.prepare("SELECT TAX FROM TAB_INFORMATIONS;");
+
+    if(query.exec()){
+        query.next();
+        ret = query.value(0).toBool();
+    }
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+    }
+    return ret;
+}
+
+/**
       Applique les informations dans la base de donnee
       @return true si ok
   */
 bool database::updateInfo(Informations &info) {
     if(!this->m_connected)return false;
+    //Test si l enregistrement existe
+    QString req = "SELECT COUNT(*) FROM TAB_INFORMATIONS WHERE ID=1;";
+    int count=0;
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+    }
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+    //Si pas d enregistrement on en creer un
+    if(count<=0){
+        query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME)"
+                      "VALUES('1', '0', '');");
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+    }
+
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
     QString f;
-    QString req = "UPDATE TAB_INFORMATIONS SET ";
+    req = "UPDATE TAB_INFORMATIONS SET ";
     req += "NAME='" + info.name.replace("\'","''") + "',";
     req += "NUM='" + info.num.replace("\'","''") + "',";
     req += "CAPITAL='" + info.capital.replace("\'","''") + "',";
@@ -1128,14 +1159,13 @@ bool database::updateInfo(Informations &info) {
     req += "TAX='" + QString::number(info.tax) + "' ";
     req += "WHERE ID='1';";
 
-    QSqlQuery query;
     query.prepare(req);
     if(!query.exec()) {
         QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return false;
     }
     /* update cache */
-    m_tax = info.tax;
+    m_isTax = info.tax;
     return true;
 }
 
@@ -1170,7 +1200,7 @@ bool database::getInfo(Informations &info) {
         return false;
     }
     /* update cache */
-    m_tax = info.tax;
+    m_isTax = info.tax;
     return true;
 }
 
@@ -1180,9 +1210,33 @@ bool database::getInfo(Informations &info) {
   */
 bool database::updateBank(Bank &b) {
     if(!this->m_connected)return false;
+    //Test si l enregistrement existe
+    QString req = "SELECT COUNT(*) FROM TAB_BANK WHERE ID=1;";
+    int count=0;
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+    }
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+    //Si pas d enregistrement on en creer un
+    if(count<=0){
+        query.prepare("INSERT INTO TAB_BANK(CODE_BANQUE)"
+                      "VALUES('');");
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+    }
+
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
-    QString req = "UPDATE TAB_BANK SET ";
+    req = "UPDATE TAB_BANK SET ";
     req += "CODE_BANQUE='" + b.codeBanque.replace("\'","''") + "',";
     req += "CODE_GUICHET='" + b.codeGuichet.replace("\'","''") + "',";
     req += "NUM_COMPTE='" + b.numCompte.replace("\'","''") + "',";
@@ -1200,7 +1254,6 @@ bool database::updateBank(Bank &b) {
     req += "CODE_BIC='" + b.codeBIC.replace("\'","''") + "'";
     req += "WHERE ID='1';";
 
-    QSqlQuery query;
     query.prepare(req);
     if(!query.exec()) {
         QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogcategory.ui'
 **
-** Created: Mon 21. May 18:06:32 2012
+** Created: Sun 27. May 09:31:35 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -55,6 +55,9 @@ public:
         if (DialogCategory->objectName().isEmpty())
             DialogCategory->setObjectName(QString::fromUtf8("DialogCategory"));
         DialogCategory->resize(401, 295);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/logo"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogCategory->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(DialogCategory);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         horizontalLayout = new QHBoxLayout();
@@ -86,9 +89,9 @@ public:
         pushButton_color = new QPushButton(DialogCategory);
         pushButton_color->setObjectName(QString::fromUtf8("pushButton_color"));
         pushButton_color->setMinimumSize(QSize(0, 25));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/color"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_color->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app/color"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_color->setIcon(icon1);
 
         horizontalLayout_2->addWidget(pushButton_color);
 
@@ -102,9 +105,9 @@ public:
         toolButton_colorDefault = new QToolButton(DialogCategory);
         toolButton_colorDefault->setObjectName(QString::fromUtf8("toolButton_colorDefault"));
         toolButton_colorDefault->setMinimumSize(QSize(25, 25));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_colorDefault->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_colorDefault->setIcon(icon2);
 
         horizontalLayout_2->addWidget(toolButton_colorDefault);
 
@@ -120,25 +123,25 @@ public:
 
         pushButton_add = new QPushButton(DialogCategory);
         pushButton_add->setObjectName(QString::fromUtf8("pushButton_add"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_add->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_add->setIcon(icon3);
 
         verticalLayout_2->addWidget(pushButton_add);
 
         pushButton_edit = new QPushButton(DialogCategory);
         pushButton_edit->setObjectName(QString::fromUtf8("pushButton_edit"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_edit->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_edit->setIcon(icon4);
 
         verticalLayout_2->addWidget(pushButton_edit);
 
         pushButton_del = new QPushButton(DialogCategory);
         pushButton_del->setObjectName(QString::fromUtf8("pushButton_del"));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_del->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_del->setIcon(icon5);
 
         verticalLayout_2->addWidget(pushButton_del);
 

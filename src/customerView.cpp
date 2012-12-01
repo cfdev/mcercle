@@ -1241,8 +1241,8 @@ void customerView::on_paintPrinterProposal(QPrinter *printer)
         painter.setFont(font);
         fm= painter.fontMetrics();
         rect = QRect(mLeft, mTop, pageRect.width() - (mLeft+mRight),
-                           fm.boundingRect( tr("Proposition commerciale") ).height());
-        painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Proposition commerciale") );
+                           fm.boundingRect( tr("Devis") ).height());
+        painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Devis") );
 
         font.setPointSize(14);
         painter.setFont(font);

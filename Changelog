@@ -1,6 +1,15 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
+version 2.0 (MACOS ready): 27/05/2012
+-------------------------------------------------------
+* Produits: générer un code automatiquement avec l'ID du produit lors de sa modification
+* Changement de l'appellation "Proposition commerciale" par "Devis"
+* Configuration : bug dans l'édition des info société et info bancaire
+
+- la class IPBB et autre dépendance de la version 1.0
+
+
 version 1.9 : 21/05/2012
 -------------------------------------------------------
 + Class de migration des données depuis firebird vers SQLITE.

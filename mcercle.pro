@@ -12,19 +12,6 @@ TARGET = mcercle
 TEMPLATE = app
 CONFIG += ordered
 
-# FIREBIRD MERCLE 1.0
-unix {
-    DEFINES += IBPP_LINUX
-}
-win32 {
-    DEFINES += IBPP_WINDOWS
-}
-macx {
-    DEFINES += IBPP_LINUX
-}
-DEFINES -= UNICODE
-LIBS += -lfbclient
-
 # Fichiers sources
 SOURCES += src/mainwindow.cpp \
     src/main.cpp \
@@ -53,8 +40,8 @@ SOURCES += src/mainwindow.cpp \
     src/dialoginvoice.cpp \
     src/services_commons.cpp \
     src/dialogprintchoice.cpp \
-    src/import/ibpp/all_in_one.cpp \
-    src/import/import_mcercle1.cpp
+    src/dialogtax.cpp \
+    src/tax.cpp
 
 
 
@@ -84,11 +71,8 @@ HEADERS += src/mainwindow.h \
     src/dialoginvoice.h \
     src/services_commons.h \
     src/dialogprintchoice.h \
-    src/import/ibpp/ibpp.h \
-    src/import/ibpp/iberror.h \
-    src/import/ibpp/ibase.h \
-    src/import/ibpp/_ibpp.h \
-    src/import/import_mcercle1.h
+    src/dialogtax.h \
+    src/tax.h
 
 
 
@@ -107,7 +91,8 @@ FORMS += src/mainwindow.ui \
     src/dialogprovidersedit.ui \
     src/dialogservicesedit.ui \
     src/dialoginvoice.ui \
-    src/dialogprintchoice.ui
+    src/dialogprintchoice.ui \
+    src/dialogtax.ui
 
 UI_SOURCES_DIR = src/
 UI_HEADERS_DIR = src/
