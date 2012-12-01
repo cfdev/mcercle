@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/app">
+        <file alias="AboutQt">art/qt-logo.png</file>
+        <file alias="connect">art/connect.png</file>
+        <file alias="disconnect">art/disconnect.png</file>
+        <file alias="customers">art/system_users.png</file>
+        <file alias="products">art/kfm.png</file>
+        <file alias="board">art/preferences_system_login.png</file>
+        <file alias="customer_info">art/preferences-desktop-user.png</file>
+        <file alias="quit">art/application-exit.png</file>
+        <file alias="remove">art/list-remove.png</file>
+        <file alias="ok">art/dialog-ok-apply.png</file>
+        <file alias="help">art/system-help.png</file>
+        <file alias="adduser">art/list-add-user.png</file>
+        <file alias="search">art/edit-find.png</file>
+        <file alias="Edit">art/document-edit.png</file>
+        <file alias="insert">art/insert-horizontal-rule.png</file>
+        <file alias="process">art/user-away-extended.png</file>
+        <file alias="On">art/user-online.png</file>
+        <file alias="wait">art/user-away.png</file>
+        <file alias="print">art/printer.png</file>
+        <file alias="pdf">art/pdf.png</file>
+        <file alias="venteComptoire">art/view-pim-tasks.png</file>
+        <file alias="preference">art/preferences-system.png</file>
+        <file alias="providers">art/resource-group.png</file>
+        <file alias="database">art/network_server_database.png</file>
+        <file alias="warning">art/dialog-warning.png</file>
+        <file alias="don">art/btn_donate_LG.png</file>
+        <file alias="color">art/color_fill.png</file>
+        <file alias="Off">art/user-busy.png</file>
+        <file alias="prev">art/go-previous-view.png</file>
+        <file alias="next">art/go-next-view.png</file>
+        <file alias="logo_small">art/logo/mcercle-logo-32.png</file>
+        <file alias="logo">art/logo/mcercle-logo-64.png</file>
+        <file alias="revenue">art/view-investment.png</file>
+        <file alias="compagny">art/meeting-participant.png</file>
+    </qresource>
+</RCC>

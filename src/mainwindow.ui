@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>450</width>
+    <height>331</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>mcercle</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../ressources.qrc">
+    <normaloff>:/app/logo</normaloff>:/app/logo</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>450</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFichier">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="actionQuitter"/>
+   </widget>
+   <widget class="QMenu" name="menuAide">
+    <property name="title">
+     <string>Aide</string>
+    </property>
+    <addaction name="actionA_propos"/>
+    <addaction name="actionA_propos_de_Qt"/>
+   </widget>
+   <widget class="QMenu" name="menuAffichage">
+    <property name="title">
+     <string>Affichage</string>
+    </property>
+    <addaction name="actionTableau_de_bord"/>
+    <addaction name="actionClients"/>
+    <addaction name="actionProduits"/>
+   </widget>
+   <widget class="QMenu" name="menuOutils">
+    <property name="title">
+     <string>Outils</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionConfiguration"/>
+   </widget>
+   <addaction name="menuFichier"/>
+   <addaction name="menuAffichage"/>
+   <addaction name="menuOutils"/>
+   <addaction name="menuAide"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="movable">
+    <bool>true</bool>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionTableau_de_bord"/>
+   <addaction name="separator"/>
+   <addaction name="actionClients"/>
+   <addaction name="actionProduits"/>
+   <addaction name="actionActionProvider"/>
+   <addaction name="separator"/>
+   <addaction name="actionConfiguration"/>
+   <addaction name="actionA_propos"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionQuitter">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionA_propos">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/help</normaloff>:/app/help</iconset>
+   </property>
+   <property name="text">
+    <string>A propos</string>
+   </property>
+  </action>
+  <action name="actionA_propos_de_Qt">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/AboutQt</normaloff>:/app/AboutQt</iconset>
+   </property>
+   <property name="text">
+    <string>A propos de Qt</string>
+   </property>
+  </action>
+  <action name="actionTableau_de_bord">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/board</normaloff>:/app/board</iconset>
+   </property>
+   <property name="text">
+    <string>Tableau de bord</string>
+   </property>
+   <property name="visible">
+    <bool>true</bool>
+   </property>
+  </action>
+  <action name="actionClients">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/customers</normaloff>:/app/customers</iconset>
+   </property>
+   <property name="text">
+    <string>Clients</string>
+   </property>
+  </action>
+  <action name="actionProduits">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/products</normaloff>:/app/products</iconset>
+   </property>
+   <property name="text">
+    <string>Produits</string>
+   </property>
+  </action>
+  <action name="actionSauvegarder">
+   <property name="text">
+    <string>Sauvegarder</string>
+   </property>
+  </action>
+  <action name="actionDevis">
+   <property name="text">
+    <string>Devis</string>
+   </property>
+  </action>
+  <action name="actionFactures">
+   <property name="text">
+    <string>Factures</string>
+   </property>
+  </action>
+  <action name="actionCaisse">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
+   </property>
+   <property name="text">
+    <string>Caisse</string>
+   </property>
+   <property name="toolTip">
+    <string>Caisse</string>
+   </property>
+  </action>
+  <action name="actionFaire_un_mailing">
+   <property name="text">
+    <string>Faire un mailing</string>
+   </property>
+  </action>
+  <action name="actionCr_er_un_bon_cadeau">
+   <property name="text">
+    <string>Créer un bon cadeau</string>
+   </property>
+  </action>
+  <action name="actionConfiguration">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/preference</normaloff>:/app/preference</iconset>
+   </property>
+   <property name="text">
+    <string>Configuration</string>
+   </property>
+  </action>
+  <action name="actionActionProvider">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/providers</normaloff>:/app/providers</iconset>
+   </property>
+   <property name="text">
+    <string>Fournisseurs</string>
+   </property>
+   <property name="toolTip">
+    <string>Fournisseurs</string>
+   </property>
+  </action>
+  <action name="actionDebug_Add">
+   <property name="text">
+    <string>DEBUG: Ajoute des clients</string>
+   </property>
+  </action>
+  <action name="actionDebug_prod">
+   <property name="text">
+    <string>DEBUG: Ajoute des produits</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="../ressources.qrc"/>
+ </resources>
+ <connections/>
+</ui>

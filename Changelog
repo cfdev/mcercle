@@ -1,0 +1,166 @@
+# Historique de mcercle
+# Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
+
+
+version 1.0 : 03/04/2012
+-------------------------------------------------------
+* Sur la modification d'une facture le message text dit "proposition commerciale" - [bug:0000005]
+* Agrandissement de la plage d'impression pour la description des articles (jusqu'à la colonne remise)
+* Borne la longueur de la description des articles pour la bdd. (sinon erreur IBPP et fermeture du dialogInv)
+
+- String toUtf8 dans les class de visu (App en ASCII et BDD UTF8)
+- QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+  Dangereux car les chemins avec Char spéciaux ne fonctionnent pas -[bug:0000004]
+
+
+version 0.9 test  : 28/03/2012
+-------------------------------------------------------
++ Tableau de bord: lister les propositions commerciales en cours de rédaction
++ Fenetre pour le choix du type d'impression
++ Suppression client
++ Ajout d'une table service_common
++ Calcul du CA sur toute une année mois par mois
++ Ajout dun champ CGV dans la table info en prevision
++ Impression: Proposition commerciale/Facture
++ Client: Type Société ou Particulier et Pays
++ Lien sur google map pour l'adresse client
++ Test de la version de FireBird et de la base de données.
++ Choix des produits dans les propositions commerciales/factures
++ Calcul du stock automatique sur la création d'une facture
+
+* Rafraichissement de la fiche client
+* Passe du drv à IBPP::lrWait pour une meilleures gestion multiclient
+* Modification des etats des propositions
+* Changement des champs tax dans les tables, service, product
+* Utilisation de foreign key !! trop puissant :)
+* Amélioration de la gestion des interventions
+* Faille d'injection sql dans la class provider
+* Déplacement de l'init pour avoir la traduction lors de la création de la bdd
+* Désactive les boutons d'impressions si rien de sélectionné (seg fault)
+* Bug avec les caractères ' sur les champs de recherche et catégories.
+
+- Civilité Mademoiselle
+
+
+version 0.8 : 17/02/2012
+-------------------------------------------------------
++ Gestion des devis
++ Table de correspondance entre proposition commercial/devis et facture
++ Créer une facture à partir d'une proposition commerciale
++ Date limite de paiement pour la facture
++ Calcul du chiffre d'affaire annuel et affichage sur le tableau de bord
+
+* Modification de la BDD pour Séparer les factures et les devis
+* Génération automatique des codes Facture et Devis
+
+- Supression des commandes, le devis est suffisant dans la pluspart des cas
+
+
+version 0.7 : 08/02/2012
+-------------------------------------------------------
++ fenetre d'attente lors de l'impression de l'état du stock
++ Test le code facture pour informer l'utilisateur d'un doublon
+
+* Cache les fonctions de debug dans le menu outils en mode release
+* Recupère le produit sur ID
+* Imprime le bon nombre de produit, pb avec les produits obsoletes
+* Impression du dateTime fixe pour l'état du stock
+* Rafraichit la liste des produits après un edition ou un ajout.
+
+
+version 0.6 : 31/01/2012
+-------------------------------------------------------
++ Selection des services pour les factures
++ Ajout/Edition des factures
++ customerview et productview: Ajout d'un bouton pour copier les informations directement dans le presse papier
+
+* Deplacer le filtre des produit obsoletes dans le sql directement
+* Changement définitif du nom de l'application "mcercle"
+
+
+version 0.5 : 08/10/2011
+-------------------------------------------------------
++ Faire apparaitre les ID des tables en mode DEBUG
++ Ajout de commentaire de champ dans certaines tables, pense-bete pour le développeur
++ customers: modification de laffichage, en page pour une bonne tenue à la charge.
++ Creation des tables invoice et invoice_details pour les factures et devis
++ Dialog pour L'édition des factures et devis
++ Champ description dans la table service, ideal pour sauvegarder des données liées à l'intervention.
+
+* Chamgement d'appelation Intervention par Service uniquement dans le code.
+* Changement de l'affichage du dialog de l'ajout, modification des services.
+* Changement de l'affichage de la gestion fournisseur, plus ergonomique.
+* Customerview: activer l'affichage des factures
+* ProductCategory: correction de l'ajout de la couleur d'une catégorie
+
+
+version 0.4 : 24/08/2011
+-------------------------------------------------------
++ Ajout d'un champ dans la table informations pour etre ou pas assujetti à la TVA. (pas utilisable pour le moment)
++ Création d'une table Tax
+* Correction de l'affichage de la progressbar lors de la création de la BDD.
+* Petites corrections de code ici et la
+
+
+version 0.3 : 22/07/2011
+-------------------------------------------------------
+* Changement de nom de l'application: mcercle
+* Nouveau menu plus ergonomique
+* poduct.cpp :  vider les variables temporaire std::string (sVal="";)
+                aprés avoir renseigné les variables de la class
+
+
+version 0.2.7 : 13/05/2011
+-------------------------------------------------------
+* Correction sur l'édition des interventions
+* Correction du bouton raz du dialog fournisseur
+
+
+version 0.2.6 : 12/05/2011
+-------------------------------------------------------
++ Ajout de la date et de l'heure sur l'état du stock
++ Ajout de la gestion des interventions clients
++ Implementation de la class pour gérer les factures
+
+* Grosse correction dans les déclarations de header pas besoin de dbase.h dans les sous class, seulement ibpp.h
+* QdoubleSpinBox pour la selection du prix dans la partie produit
+* Nom dans le type ProviderList plus explicite
+
+- Sécurité: Champs CODE pour les clients, on travail uniquement sur son ID.
+
+
+version 0.2.5 : 25/01/2011
+-------------------------------------------------------
+* Initialisation de la variable connected (oups)
+ 
+
+version 0.2.4 : 04/01/2011
+-------------------------------------------------------
++ Gestion de catégories produits
++ Information de la société + logo propre à la base de données
++ Impression fiche produit et listing stock
++ Logo de l'application
++ Information de version bdd et drv dans la form about.
++ Gestion fournisseurs opérationnelle
++ Trie par ordre dans les tablesWidgets
++ Alerte stock produit dans le tableau de bord
+
+	
+version 0.2.2 : 05/12/2010
+-------------------------------------------------------
+* Utilisation de la BDD firebird avec le drv IBPP
+* Application FULL UTF-8
+
+- Gestion fournisseur temporaire (migration IBPP en cours...)
+- Bdd mysql
+	  
+	  
+version 0.1.1 : 18/11/2010
+-------------------------------------------------------
++ Gestion produits et fournisseurs à tester...
++ Bdd mysql en test
+
+
+version 0.0.1 : 10/07/2010
+-------------------------------------------------------
++ Création de l'application...

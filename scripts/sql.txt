@@ -1,0 +1,53 @@
+
+
+# Obtenir la liste des produits
+SELECT fm_products.CODE, fm_products.DESCRIPTION, fm_products.SELLING_PRICE, fm_products_categories.NAME AS CATEGORIE, fm_providers.NAME AS PROVIDER, fm_products.STOCK, fm_products.STATE
+FROM fm_products, fm_products_categories, fm_providers
+WHERE fm_products.ID_PROVIDER = fm_providers.ID
+AND fm_products.ID_CATEGORIE = fm_products_categories.ID
+
+OU
+     ->Jointure avec LEFT OUTER JOIN car avec les select les conditions ne
+     ->sont pas remplis il ne retour pas le produit
+	 
+SELECT fm_products.CODE, fm_products.DESCRIPTION, fm_products.SELLING_PRICE, fm_products_categories.NAME AS CATEGORIE, fm_providers.NAME AS PROVIDER, fm_products.STOCK, fm_products.STATE
+FROM fm_products
+LEFT OUTER JOIN fm_products_categories    
+    ON fm_products.ID_CATEGORIE = fm_products_categories.ID
+LEFT OUTER JOIN fm_providers
+    ON fm_products.ID_PROVIDER = fm_providers.ID
+	
+
+#connaitre le fournisseur d'un produit
+SELECT fm_providers.NAME FROM fm_providers INNER JOIN fm_products ON fm_products.ID_PROVIDER=fm_providers.ID AND fm_products.ID='1';
+  
+
+SELECT *
+FROM TAB_INVOICES
+WHERE EXTRACT(MONTH FROM IDATE) = 8 and
+EXTRACT(YEAR FROM IDATE) = 2011
+
+/* connaitre les diff valeur dun champ */
+SELECT DISTINCT(EXTRACT(MONTH FROM IDATE))
+FROM TAB_INVOICES
+
+/* somme d un champ */
+SELECT SUM( price ) FROM TAB_INVOICES
+WHERE TAB_INVOICES.STATE = '1';
+
+/* sum dune annee*/
+SELECT SUM( price ) FROM TAB_INVOICES
+WHERE TAB_INVOICES.STATE = '1' and
+extract(YEAR FROM TAB_INVOICES.IDATE)='2011';
+
+
+/*resultats avec une table de correspondance*/
+select TAB_INVOICES.ID, TAB_INVOICES.IDATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE
+from TAB_INVOICES
+
+LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES    
+    ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE 
+LEFT OUTER JOIN TAB_PROPOSALS
+    ON TAB_PROPOSALS.ID = TAB_LINK_PROPOSALS_INVOICES.ID_PROPOSAL
+    
+WHERE TAB_INVOICES.ID_CUSTOMER = '1'

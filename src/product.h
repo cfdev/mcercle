@@ -1,0 +1,109 @@
+#ifndef PRODUCT_H
+#define PRODUCT_H
+
+#include <QObject>
+#include <QLocale>
+#include <QStringList>
+#include <vector>
+#include "bdd/ibpp.h"
+
+#include "provider.h"
+#include "productcategory.h"
+
+class provider;
+class category;
+
+class product : public QObject {
+
+private:
+    IBPP::Database m_db;
+    IBPP::Transaction m_tr;
+    IBPP::Statement m_st;
+
+    QWidget *m_parent;
+    int m_id, m_stock, m_stock_warning, m_state, m_idProvider, m_idCategory;
+    float m_selling_price, m_buying_price, m_tax;
+    QDateTime m_creationDate;
+    QString m_code, m_name;
+    QLocale m_lang;
+
+public:
+    //Acces a la class fournisseur
+    provider *m_provider;
+    //Acces class categorie
+    category *m_category;
+
+    typedef struct{
+        //Valeur pour le placement dans un tableau
+        std::vector<int> id;
+        QStringList code;
+        QStringList name;
+        std::vector<float> selling_price;
+        QStringList category;
+        std::vector<QColor> categoryColor;
+        QStringList provider;
+        std::vector<int> stock;
+        std::vector<int> stockWarning;
+        std::vector<int> state;
+    }ProductList;
+
+
+    //State
+    enum{DISCONTINUED ,OK};
+
+    product(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QLocale &lang, QWidget *parent = 0);
+    ~product();
+
+    bool create();
+    bool update();
+    bool remove();
+    bool loadFromCode(const QString& code);
+    bool loadFromID(const int& id);
+    bool isHere(const QString& code);
+
+    //Liste des fournisseurs
+    bool providerIsHere(provider* prv);
+    bool addProvider(provider* prv, const QString& ref, const float& price, const float& tax);
+    bool updateProvider(provider* prv, const QString& ref, const float& price, const float& tax);
+    bool removeProvider(provider* prv);
+    bool removeProviderForAllProducts(provider* prv);
+
+    //Appliquer les valeurs
+    void setId(const int& ident){m_id = ident;}
+    void setStock(const int& stock){m_stock = stock;}
+    void setStockWarning(const int& stock_warning){m_stock_warning = stock_warning;}
+    void setSellingPrice(const float& price){m_selling_price = price;}
+    void setBuyingPrice(const float& price){m_buying_price = price;}
+    void setTax(const float& tax){m_tax = tax;}
+    void setState(const int& state){m_state = state;}
+    void setCode(const  QString& code){m_code = code;}
+    void setName(const  QString& name){m_name = name;}
+    void setProviderId(const int& ident){m_idProvider = ident;}
+    void setCategoryId(const int& ident){m_idCategory = ident;}
+
+    //recup les valeurs
+    QIcon getIconState(int state);
+    QString getTextState(int state);
+    int getId(){return m_id;}
+    int getStock(){return m_stock;}
+    int getStockWarning(){return m_stock_warning;}
+    float getSellingPrice(){return m_selling_price;}
+    float getBuyingPrice(){return m_buying_price;}
+    float getTax(){return m_tax;}
+    int getState(){return m_state;}
+    QDateTime getCreationDate(){return m_creationDate;}
+    QString getCode(){return m_code;}
+    QString getName(){return m_name;}
+    int getProviderID(){return m_idProvider;}
+
+
+    QString getProvider();
+    QString getCategory();
+    int count(QString filter, QString field, bool showObsoleteProduct);
+    bool getProductList(ProductList& list, int first, int skip, QString filter, QString field);
+    bool getProductListStockAlert(ProductList& list);
+};
+
+
+
+#endif // PRODUCT_H

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="128"
+   height="128"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="made_in_france.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4166">
+      <stop
+         style="stop-color:#d40000;stop-opacity:1;"
+         offset="0"
+         id="stop4168" />
+      <stop
+         style="stop-color:#d40000;stop-opacity:0;"
+         offset="1"
+         id="stop4170" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4158">
+      <stop
+         style="stop-color:#0000ff;stop-opacity:1;"
+         offset="0"
+         id="stop4160" />
+      <stop
+         style="stop-color:#0000ff;stop-opacity:0;"
+         offset="1"
+         id="stop4162" />
+    </linearGradient>
+    <filter
+       id="filter3376"
+       inkscape:label="Drop shadow"
+       width="1.5"
+       height="1.5"
+       x="-.25"
+       y="-.25">
+      <feGaussianBlur
+         id="feGaussianBlur3378"
+         in="SourceAlpha"
+         stdDeviation="2"
+         result="blur" />
+      <feColorMatrix
+         id="feColorMatrix3380"
+         result="bluralpha"
+         type="matrix"
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.75 0 " />
+      <feOffset
+         id="feOffset3382"
+         in="bluralpha"
+         dx="1"
+         dy="3"
+         result="offsetBlur" />
+      <feMerge
+         id="feMerge3384">
+        <feMergeNode
+           id="feMergeNode3386"
+           in="offsetBlur" />
+        <feMergeNode
+           id="feMergeNode3388"
+           in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4158"
+       id="linearGradient4164"
+       x1="25.616261"
+       y1="990.80969"
+       x2="44.75"
+       y2="990.80971"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.54831661,0,0,0.53836025,0.97721551,483.80575)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4166"
+       id="linearGradient4172"
+       x1="101.02943"
+       y1="986.328"
+       x2="78.465027"
+       y2="986.58221"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.54831661,0,0,0.53836025,0.97721551,483.80575)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.5625"
+     inkscape:cx="64"
+     inkscape:cy="55.960905"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-page="true"
+     inkscape:window-width="1280"
+     inkscape:window-height="905"
+     inkscape:window-x="-2"
+     inkscape:window-y="-3"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-924.36218)">
+    <path
+       sodipodi:type="star"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.8575635;stroke-linecap:round;stroke-opacity:1"
+       id="path2985"
+       sodipodi:sides="14"
+       sodipodi:cx="8.2696629"
+       sodipodi:cy="16"
+       sodipodi:r1="54.219761"
+       sodipodi:r2="45.424576"
+       sodipodi:arg1="0.497759"
+       sodipodi:arg2="0.72215848"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="M 55.910113,41.887641 42.355388,46.025912 39.959999,59.994375 25.952085,57.841654 17.733225,69.387484 6.0465616,61.370143 -6.3679233,68.206547 -13.41865,55.912519 l -14.151268,0.772944 -1.018307,-14.135732 -13.08522,-5.443607 5.215802,-13.177681 -9.427483,-10.581985 10.416856,-9.6096282 -3.902518,-13.6244707 13.554725,-4.1382711 2.39539,-13.968463 14.0079135,2.152721 8.21886,-11.54583 11.6866635,8.017341 12.414485,-6.836404 7.050726,12.294028 14.151269,-0.772944 1.018306,14.135732 13.085221,5.4436071 -5.215802,13.1776807 9.427483,10.5819852 -10.416857,9.609628 z"
+       transform="matrix(0.58083349,0,0,0.58914932,30.485994,1006.6017)"
+       inkscape:export-filename="/home/whitebird/Bidouilles/software/mcercle/art/madefrance.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient4164);fill-opacity:1;stroke:none"
+       d="m 17.049747,990.16573 -1.387927,8.22683 -7.8649166,2.43944 2.2618066,8.0249 -6.0486181,5.6695 5.4831661,6.2248 -3.0328763,7.7727 7.5907583,3.1966 0.599722,8.3277 8.224748,-0.4542 2.638774,4.6769 0,-53.31445 -0.325563,0.47105 -8.139074,-1.26177 z"
+       id="rect3025"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/whitebird/Bidouilles/software/mcercle/art/madefrance.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:url(#linearGradient4172);fill-opacity:1;stroke:none"
+       d="m 43.966339,985.95437 0,56.88113 1.439331,-2.0525 8.139075,1.2786 1.387926,-8.2268 7.864918,-2.4395 -2.261807,-8.0249 6.048619,-5.6696 -5.466033,-6.2417 3.015742,-7.7556 -7.590758,-3.2134 -0.599721,-8.32776 -8.207614,0.45425 -3.769678,-6.66222 z"
+       id="rect3025-1"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/whitebird/Bidouilles/software/mcercle/art/madefrance.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.73212433px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.4601377;stroke-opacity:1;filter:url(#filter3376);font-family:Purisa;-inkscape-font-specification:Purisa Bold"
+       x="21.408716"
+       y="975.1969"
+       id="text3090"
+       sodipodi:linespacing="125%"
+       transform="matrix(0.61758808,0,0,0.60436972,-4.7290445,423.7776)"
+       inkscape:export-filename="/home/whitebird/Bidouilles/software/mcercle/art/madefrance.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan3092"
+         x="21.408716"
+         y="975.1969"
+         style="stroke-width:0.4601377">Logiciel</tspan><tspan
+         sodipodi:role="line"
+         x="21.408716"
+         y="998.61206"
+         id="tspan3094"
+         style="stroke-width:0.4601377">Français</tspan></text>
+  </g>
+</svg>

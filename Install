@@ -1,0 +1,10 @@
+# Packages to build mcercle:
+# build-essential
+# qt4-dev-tools  (>= 4.6)
+# firebird2.5-dev
+# checkinstall 
+
+# how to
+qmake mcercle.pro
+make
+checkinstall 
