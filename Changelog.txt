@@ -1,6 +1,26 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
+version 2.1 : xx/12/2012
+-------------------------------------------------------
++ Détailler le CA Service et produit sur le Tableau de bord
++ Livre des recettes
++ Gestion de la TVA, maintenant prêt pour les PME
++ Produits: autocompletion dans le champ recherche
++ Ajout de la mention obligatoire sur les factures/devis “Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)”
++ Lien email sur la fiche client
+
+* Facure/devis: Position des articles modifiable
+* Amélioration du code (QList et qreal)
+* Passage à Qt 4.8.2
+* Bug sur l'impression avec les entiers passage à QRectF et QReal wUtil
+* Produit: Possibilité de ne pas lier de fournisseur
+* Produit: fix le bug de SQLITE qui ne retourne pas d'erreur lorsque l'ID n'existe pas. l'absence de fournisseur est maintenant signalée.
+* Bloquage de la création d'une nouvelle bdd si l'utilisateur saute directement de la version 1.0 à la > v2.
+* Masquer les informations société non renseignées (ex: Capital)
+* Changement de style avec Qtcreator Tabulation par défaut plutot que les espaces.
+
+
 version 2.0 (MACOS ready): 27/05/2012
 -------------------------------------------------------
 * Produits: générer un code automatiquement avec l'ID du produit lors de sa modification
@@ -130,7 +150,7 @@ version 0.3 : 22/07/2011
 * Changement de nom de l'application: mcercle
 * Nouveau menu plus ergonomique
 * poduct.cpp :  vider les variables temporaire std::string (sVal="";)
-                aprés avoir renseigné les variables de la class
+		aprés avoir renseigné les variables de la class
 
 
 version 0.2.7 : 13/05/2011
@@ -155,7 +175,7 @@ version 0.2.6 : 12/05/2011
 version 0.2.5 : 25/01/2011
 -------------------------------------------------------
 * Initialisation de la variable connected (oups)
- 
+
 
 version 0.2.4 : 04/01/2011
 -------------------------------------------------------
@@ -168,7 +188,7 @@ version 0.2.4 : 04/01/2011
 + Trie par ordre dans les tablesWidgets
 + Alerte stock produit dans le tableau de bord
 
-	
+
 version 0.2.2 : 05/12/2010
 -------------------------------------------------------
 * Utilisation de la BDD firebird avec le drv IBPP
@@ -176,8 +196,8 @@ version 0.2.2 : 05/12/2010
 
 - Gestion fournisseur temporaire (migration IBPP en cours...)
 - Bdd mysql
-	  
-	  
+
+
 version 0.1.1 : 18/11/2010
 -------------------------------------------------------
 + Gestion produits et fournisseurs à tester...

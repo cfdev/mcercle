@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2012 Cyril FRAUSTI
+  Copyright (C) 2010-2013 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <QPrinter>
 #include <QPainter>
 #include <QPrintDialog>
+#include <QFileDialog>
 //#include <QDebug>
 
 #include "dialogsettings.h"
@@ -28,188 +29,189 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialogwaiting.h"
+#include "dialoginvoicelist.h"
 
 /**
-    Constructeur de la class MainWindow
+	Constructeur de la class MainWindow
 */
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+	QMainWindow(parent),
+	ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    //langage
-    m_lang = QLocale::system().name().section('_', 0, 0);
+	ui->setupUi(this);
+	//langage
+	m_lang = QLocale::system().name().section('_', 0, 0);
 
-    // la fenetre est maximisee par defaut
-    setMinimumSize(QSize(640, 480));
-    setWindowState(Qt::WindowMaximized);
+	// la fenetre est maximisee par defaut
+	setMinimumSize(QSize(640, 480));
+	setWindowState(Qt::WindowMaximized);
 
-    m_database = new database( m_lang, this);
-    m_Settings = new Settings(this);
+	m_database = new database( m_lang, this);
+	m_Settings = new Settings(this);
 }
 
 
 /**
-    Destructeur de la class MainWindow
+	Destructeur de la class MainWindow
 */
 MainWindow::~MainWindow()
 {
-    //sauvegarde les index des champs de recherche
-    m_Settings->setPositionListSearchProduct( m_productView->getIndexSearchProduct() );
+	//sauvegarde les index des champs de recherche
+	m_Settings->setPositionListSearchProduct( m_productView->getIndexSearchProduct() );
 
-    delete ui;
-    delete m_Settings;
-    delete m_database;
+	delete ui;
+	delete m_Settings;
+	delete m_database;
 }
 
 /**
-    Change de language
+	Change de language
 */
 void MainWindow::changeEvent(QEvent *e)
 {
-    QMainWindow::changeEvent(e);
-    switch (e->type()) {
-    case QEvent::LanguageChange:
-        ui->retranslateUi(this);
-        break;
-    default:
-        break;
-    }
+	QMainWindow::changeEvent(e);
+	switch (e->type()) {
+	case QEvent::LanguageChange:
+		ui->retranslateUi(this);
+		break;
+	default:
+		break;
+	}
 }
 
 /**
   Initialise lapplication, base de donnees etc..
   */
 void MainWindow::init(){
-    // Charge le fichier de configurations
-    if(!m_Settings->settingIsOk()) {
-        ///TODO: QWizard pour la config du soft
-        m_Settings->setDatabase_default();
-        m_Settings->setSettingState(true);
-    }
+	// Charge le fichier de configurations
+	if(!m_Settings->settingIsOk()) {
+		///TODO: QWizard pour la config du soft
+		m_Settings->setDatabase_default();
+		m_Settings->setSettingState(true);
+	}
 
-    //Base de donnees
-    m_database->setBdd( m_Settings->getDatabase_bdd() );
-    m_database->setHostName( m_Settings->getDatabase_hostName() );
-    m_database->setPort( m_Settings->getDatabase_port() );
-    m_database->setDatabaseName( m_Settings->getDatabase_databaseName() );
-    m_database->setUserName( m_Settings->getDatabase_userName() );
-    m_database->setPassword( m_Settings->getDatabase_userPassword() );
-    m_database->connect();
+	//Base de donnees
+	m_database->setBdd( m_Settings->getDatabase_bdd() );
+	m_database->setHostName( m_Settings->getDatabase_hostName() );
+	m_database->setPort( m_Settings->getDatabase_port() );
+	m_database->setDatabaseName( m_Settings->getDatabase_databaseName() );
+	m_database->setUserName( m_Settings->getDatabase_userName() );
+	m_database->setPassword( m_Settings->getDatabase_userPassword() );
+	m_database->connect();
 
-    /// Construction des widgets!!
-    //customers
-    m_customerView = new customerView( m_database, m_lang  );
-    m_customerView->hide();
-    //products
-    m_productView = new productView( m_database, m_lang, productView::PRODUCT_VIEW );
-    m_productView->hide();
-    m_productView->setIndexSearchProduct( m_Settings->getPositionListSearchProduct() );
-    //board
-    m_board = new board( m_database, m_lang );
+	/// Construction des widgets!!
+	//customers
+	m_customerView = new customerView( m_database, m_lang  );
+	m_customerView->hide();
+	//products
+	m_productView = new productView( m_database, m_lang, productView::PRODUCT_VIEW );
+	m_productView->hide();
+	m_productView->setIndexSearchProduct( m_Settings->getPositionListSearchProduct() );
+	//board
+	m_board = new board( m_database, m_lang );
 
-    //Mis en layout
-    ui->verticalLayout->addWidget( m_board );
-    ui->verticalLayout->addWidget( m_customerView );
-    ui->verticalLayout->addWidget( m_productView );
-    ui->verticalLayout->update();
+	//Mis en layout
+	ui->verticalLayout->addWidget( m_board );
+	ui->verticalLayout->addWidget( m_customerView );
+	ui->verticalLayout->addWidget( m_productView );
+	ui->verticalLayout->update();
 
-    //Menu visible uniquement en mode debug!
+	//Menu visible uniquement en mode debug!
 #ifdef QT_NO_DEBUG
-    ui->actionDebug_Add->setVisible(false);
-    ui->actionDebug_prod->setVisible(false);
+	ui->actionDebug_Add->setVisible(false);
+	ui->actionDebug_prod->setVisible(false);
 #endif
 
    /* qDebug() << "MCERCLE_DEBUG :" <<QString(m_database->m_customer->m_invoice->getYearsList().at(0)+' '+
-                QString::number(m_database->m_customer->m_invoice->getYearRevenue("2011"))+' '+
-                QString::number(m_database->m_customer->m_invoice->getMonthRevenue("2011","8")) );*/
+				QString::number(m_database->m_customer->m_invoice->getYearRevenue("2011"))+' '+
+				QString::number(m_database->m_customer->m_invoice->getMonthRevenue("2011","8")) );*/
 }
 
 
 /**
-    Affiche les informations au sujet de Qt
+	Affiche les informations au sujet de Qt
 */
 void MainWindow::on_actionA_propos_de_Qt_triggered()
 {
-    QApplication::aboutQt();
+	QApplication::aboutQt();
 }
 
 /**
-    Quitte l application
+	Quitte l application
 */
 void MainWindow::on_actionQuitter_triggered()
 {
-    close();
+	close();
 }
 
 /**
-    Affiche le tableau de bord
+	Affiche le tableau de bord
 */
 void MainWindow::on_actionTableau_de_bord_triggered()
 {
-    m_board->show();
-    m_board->listStockAlertToTable();
-    m_board->listInvoiceAlertToTable();
-    m_board->listProposalAlertToTable();
-    m_board->listYear();
-    m_board->listRevenuesToTable();
-    m_board->calculYear();
-    m_customerView->hide();
-    m_productView->hide();
-    ui->verticalLayout->update();
+	m_board->show();
+	m_board->listStockAlertToTable();
+	m_board->listInvoiceAlertToTable();
+	m_board->listProposalAlertToTable();
+	m_board->listYear();
+	m_board->listRevenuesToTable();
+	m_board->calculYear();
+	m_customerView->hide();
+	m_productView->hide();
+	ui->verticalLayout->update();
 }
 
 /**
-    Affiche la gestion clients
+	Affiche la gestion clients
 */
 void MainWindow::on_actionClients_triggered()
 {
-    m_board->hide();
-    m_customerView->refreshCustomersList();
-    m_customerView->show();
-    m_productView->hide();
-    ui->verticalLayout->update();
+	m_board->hide();
+	m_customerView->refreshCustomersList();
+	m_customerView->show();
+	m_productView->hide();
+	ui->verticalLayout->update();
 }
 
 /**
-    Affiche la gestion produits
+	Affiche la gestion produits
 */
 void MainWindow::on_actionProduits_triggered()
 {
-    m_board->hide();
-    m_customerView->hide();
-    m_productView->refreshProductsList();
-    m_productView->show();
-    ui->verticalLayout->update();
+	m_board->hide();
+	m_customerView->hide();
+	m_productView->refreshProductsList();
+	m_productView->show();
+	ui->verticalLayout->update();
 }
 
 /**
-    Affiche la liste des fournisseurs
+	Affiche la liste des fournisseurs
 */
 void MainWindow::on_actionActionProvider_triggered()
 {
-    //Si on est pas connecte on sort
-    if(!m_database->isConnected())return;
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
 
-    DialogProviders *m_DialogProviders = new DialogProviders(m_database->m_product);
-    m_DialogProviders->setModal(true);
-    m_DialogProviders->exec();
-    delete m_DialogProviders;
+	DialogProviders *m_DialogProviders = new DialogProviders(m_database->m_product);
+	m_DialogProviders->setModal(true);
+	m_DialogProviders->exec();
+	delete m_DialogProviders;
 }
 
 /**
-    Affiche les informations de l application
+	Affiche les informations de l application
 */
 void MainWindow::on_actionA_propos_triggered()
 {
-    //fenetre a propos
-    m_about = new about(m_database, this);
-    m_about->setModal(true);
-    m_about->show();
+	//fenetre a propos
+	m_about = new about(m_database, this);
+	m_about->setModal(true);
+	m_about->show();
 }
 
 /**
-    Ouvrir la fenetre de configuration
+	Ouvrir la fenetre de configuration
   */
 void MainWindow::on_actionConfiguration_triggered()
 {
@@ -220,78 +222,125 @@ void MainWindow::on_actionConfiguration_triggered()
 }
 
 /**
-    Rafraichir les listes clients et produits
+	Rafraichir les listes clients et produits
   */
 void MainWindow::RefreshLists()
 {
-    m_customerView->listCustomers(1);
-    m_customerView->listServices();
-    m_customerView->listProposals();
-    m_customerView->listInvoices();
-    m_productView->listProducts(1);
-    m_board->listStockAlertToTable();
-    m_board->listInvoiceAlertToTable();
-    m_board->listProposalAlertToTable();
-    m_board->listYear();
-    m_board->calculYear();
-    m_board->listRevenuesToTable();
+	m_customerView->listCustomers(1);
+	m_customerView->listServices();
+	m_customerView->listProposals();
+	m_customerView->listInvoices();
+	m_productView->listProducts(1);
+	m_board->listStockAlertToTable();
+	m_board->listInvoiceAlertToTable();
+	m_board->listProposalAlertToTable();
+	m_board->listYear();
+	m_board->calculYear();
+	m_board->listRevenuesToTable();
 }
 
 
 
 /**
-    DEBUG AJOUT DE CLIENTS *****************************************************************************
+	DEBUG AJOUT DE CLIENTS *****************************************************************************
   */
 void MainWindow::on_actionDebug_Add_triggered()
 {
-    /* TEST NUMBER OF CUSTOMERS */
-    //Affichage de la fenetre d attente
-    DialogWaiting* m_DialogWaiting = new DialogWaiting();
-    m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE CLIENTS</b>"));
-    m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
-    int val = 50;
-    int loop = 100;
-    m_DialogWaiting->setProgressBarRange(0,val);
-    m_DialogWaiting->setModal(true);
-    m_DialogWaiting->show();
+	/* TEST NUMBER OF CUSTOMERS */
+	//Affichage de la fenetre d attente
+	DialogWaiting* m_DialogWaiting = new DialogWaiting();
+	m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE CLIENTS</b>"));
+	m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
+	int val = 50;
+	int loop = 100;
+	m_DialogWaiting->setProgressBarRange(0,val);
+	m_DialogWaiting->setModal(true);
+	m_DialogWaiting->show();
 
-    for(int i=0; i < loop; i++) {
-        m_DialogWaiting->setProgressBar(0);
-        m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
-        for(int j=0; j < val; j++){
-            m_DialogWaiting->setProgressBar(j);
-            m_database->m_customer->setName("TOTO"+ QString::number(i*val+j), "NAME"+ QString::number(i*val+j));
-            m_database->m_customer->create();
-        }
-    }
-    delete m_DialogWaiting;
+	for(int i=0; i < loop; i++) {
+		m_DialogWaiting->setProgressBar(0);
+		m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
+		for(int j=0; j < val; j++){
+			m_DialogWaiting->setProgressBar(j);
+			m_database->m_customer->setName("TOTO"+ QString::number(i*val+j), "NAME"+ QString::number(i*val+j));
+			m_database->m_customer->create();
+		}
+	}
+	delete m_DialogWaiting;
 }
 
 void MainWindow::on_actionDebug_prod_triggered()
 {
-    /* TEST NUMBER OF PRODUCTS */
-    //Affichage de la fenetre d attente
-    DialogWaiting* m_DialogWaiting = new DialogWaiting();
-    m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE PRODUITS</b>"));
-    m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
-    int val = 50;
-    int loop = 100;
-    m_DialogWaiting->setProgressBarRange(0,val);
-    m_DialogWaiting->setModal(true);
-    m_DialogWaiting->show();
+	/* TEST NUMBER OF PRODUCTS */
+	//Affichage de la fenetre d attente
+	DialogWaiting* m_DialogWaiting = new DialogWaiting();
+	m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE PRODUITS</b>"));
+	m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
+	int val = 50;
+	int loop = 100;
+	m_DialogWaiting->setProgressBarRange(0,val);
+	m_DialogWaiting->setModal(true);
+	m_DialogWaiting->show();
 
-    for(int i=0; i < loop; i++) {
-        m_DialogWaiting->setProgressBar(0);
-        m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
-        for(int j=0; j < val; j++){
-            m_DialogWaiting->setProgressBar(j);
-            m_database->m_product->setCode("X"+ QString::number(i*val+j));
-            m_database->m_product->setState(1);
-            m_database->m_product->setName("PROD"+ QString::number(i*val+j));
-            m_database->m_product->create();
-        }
-    }
-    delete m_DialogWaiting;
+	for(int i=0; i < loop; i++) {
+		m_DialogWaiting->setProgressBar(0);
+		m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
+		for(int j=0; j < val; j++){
+			m_DialogWaiting->setProgressBar(j);
+			m_database->m_product->setCode("X"+ QString::number(i*val+j));
+			m_database->m_product->setState(1);
+			m_database->m_product->setName("PROD"+ QString::number(i*val+j));
+			m_database->m_product->create();
+		}
+	}
+	delete m_DialogWaiting;
 }
 
 /// ******************************************************************************************************
+
+/**
+	Ouvre le dialog pour lister les factures
+  */
+void MainWindow::on_actionLivres_des_Recettes_triggered()
+{
+	if(m_database->isConnected()){
+		DialogInvoiceList *m_DialogInvList = new DialogInvoiceList(m_lang, m_database, this);
+		m_DialogInvList->setModal(true);
+		m_DialogInvList->show();
+	}
+}
+
+/**
+  Sauvegarder la base de données sous..
+*/
+void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
+{
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+	//test de SQLITE
+	if(m_database->getBdd() != "SQLITE"){
+		QMessageBox::information(this, tr("Information"),
+								 tr("Cette fonction est disponible uniquement pour SQLITE !"));
+		return;
+	}
+
+	//Fermeture de la base de donnees
+	m_database->close();
+	
+	QFileDialog dialog(this);
+	QString source = m_database->getDatabaseName();
+	QString name= "mcercle_"+QDateTime::currentDateTime().toString(tr("dd-MM-yyyy_HHmmss"))+".db";
+	QString filename = dialog.getSaveFileName(this, "Enregister sous... ", name, "");
+	if( !filename.isEmpty() ) {
+		if( QFile::copy(source, filename) )
+			QMessageBox::information(this, tr("Information"),
+									 tr("Sauvegarde Termin\351e!"));
+		else
+			QMessageBox::critical(this, tr("Erreur"),
+									 tr("Sauvegarde impossible! :("));
+	}
+	//Reouverture de la base de donnees
+	m_database->connect();
+}
+
+

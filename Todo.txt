@@ -1,0 +1,12 @@
+#TODO mcercle 2
+
+- Creation dune class impression !!
+
+- Gestion TVA
+
+- Import des produits avec un fichier cvs
+
+- Export des produits avec un fichier cvs
+
+- Sous ensemble de produit
+

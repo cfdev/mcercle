@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2012 Cyril FRAUSTI
+  Copyright (C) 2010-2013 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by

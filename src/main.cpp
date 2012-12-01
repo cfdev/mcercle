@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2012 Cyril FRAUSTI
+  Copyright (C) 2010-2013 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -26,20 +26,20 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
-    MainWindow m_win;
+	QApplication app(argc, argv);
+	MainWindow m_win;
 
-    //Plastique style
-    //QApplication::setStyle(new QPlastiqueStyle);
+	//Plastique style
+	//QApplication::setStyle(new QPlastiqueStyle);
 
-    //Traduction des chaines de la lib Qt
-    QString locale = QLocale::system().name();
-    QTranslator translator;
-    translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&translator);
+	//Traduction des chaines de la lib Qt
+	QString locale = QLocale::system().name();
+	QTranslator translator;
+	translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	app.installTranslator(&translator);
 
-    m_win.init();
-    m_win.show();
+	m_win.init();
+	m_win.show();
 
-    return app.exec();
+	return app.exec();
 }

@@ -199,7 +199,20 @@ p, li { white-space: pre-wrap; }
             <widget class="QComboBox" name="comboBoxFiltre"/>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_searchProduct"/>
+            <widget class="QLineEdit" name="lineEdit_searchProduct">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QToolButton" name="toolButton_searchProduct">
@@ -352,8 +365,8 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>250</width>
-                  <height>319</height>
+                  <width>244</width>
+                  <height>311</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_5">

@@ -15,61 +15,61 @@ class provider : public QObject
 {
 
 private:
-    QSqlDatabase m_db;
+	QSqlDatabase m_db;
 
-   QWidget *m_parent;
-   int m_id;
-   QString  m_name, m_address1, m_address2, m_address3, m_zipCode,
-            m_city, m_country, m_phoneNumber, m_fax, m_email, m_contact;
-   QDateTime m_creationDate;
-   QString m_field, m_filter;
+	QWidget *m_parent;
+	int m_id;
+	QString  m_name, m_address1, m_address2, m_address3, m_zipCode,
+			m_city, m_country, m_phoneNumber, m_fax, m_email, m_contact;
+	QDateTime m_creationDate;
+	QString m_field, m_filter;
 
 public:
-   typedef struct{
-       //Valeur pour le placement dans un tableau
-        QStringList name;
-        QStringList phoneNumber;
-        QStringList faxNumber;
-        QStringList email;
-   }ProviderList;
+	typedef struct{
+		//Valeur pour le placement dans un tableau
+		QStringList name;
+		QStringList phoneNumber;
+		QStringList faxNumber;
+		QStringList email;
+	}ProviderList;
 
 
-    provider(QSqlDatabase db, QWidget *parent = 0);
-    ~provider();
+	provider(QSqlDatabase db, QWidget *parent = 0);
+	~provider();
 
-    bool create();
-    bool update();
-    bool remove();
-    int isHere(const QString& name);
-    bool loadFromID(const int& id);
-    bool loadFromName(const QString& name);
+	bool create();
+	bool update();
+	bool remove();
+	int isHere(const QString& name);
+	bool loadFromID(const int& id);
+	bool loadFromName(const QString& name);
 
-    //Appliquer les valeurs
-    void setName(const  QString& Name){m_name = Name;}
-    void setAddress(const  QString& address1, const  QString& address2, const  QString& address3){m_address1 = address1;m_address2 = address2;m_address3 = address3;}
-    void setZipCode(const  QString& zipCode){m_zipCode = zipCode;}
-    void setCity(const  QString& city){m_city = city;}
-    void setCountry(const  QString& country){m_country = country;}
-    void setPhone(const  QString& phoneNumber, const  QString& faxNumber){m_phoneNumber = phoneNumber;m_fax = faxNumber;}
-    void setEmail(const  QString& email){m_email = email;}
-    void setContact(const  QString& contact){m_contact = contact;}
+	//Appliquer les valeurs
+	void setName(const  QString& Name){m_name = Name;}
+	void setAddress(const  QString& address1, const  QString& address2, const  QString& address3){m_address1 = address1;m_address2 = address2;m_address3 = address3;}
+	void setZipCode(const  QString& zipCode){m_zipCode = zipCode;}
+	void setCity(const  QString& city){m_city = city;}
+	void setCountry(const  QString& country){m_country = country;}
+	void setPhone(const  QString& phoneNumber, const  QString& faxNumber){m_phoneNumber = phoneNumber;m_fax = faxNumber;}
+	void setEmail(const  QString& email){m_email = email;}
+	void setContact(const  QString& contact){m_contact = contact;}
 
-    //recup les valeurs
-    int getId(){return m_id;}
-    QDateTime getCreationDate(){return m_creationDate;}
-    QString getName(){return m_name;}
-    QString getAddress1(){return m_address1;}
-    QString getAddress2(){return m_address2;}
-    QString getAddress3(){return m_address3;}
-    QString getZipCode(){return m_zipCode;}
-    QString getCity(){return m_city;}
-    QString getCountry(){return m_country;}
-    QString getPhoneNumber(){return m_phoneNumber;}
-    QString getFaxNumber(){return m_fax;}
-    QString getEmail(){return m_email;}
-    QString getContact(){return m_contact;}
+	//recup les valeurs
+	int getId(){return m_id;}
+	QDateTime getCreationDate(){return m_creationDate;}
+	QString getName(){return m_name;}
+	QString getAddress1(){return m_address1;}
+	QString getAddress2(){return m_address2;}
+	QString getAddress3(){return m_address3;}
+	QString getZipCode(){return m_zipCode;}
+	QString getCity(){return m_city;}
+	QString getCountry(){return m_country;}
+	QString getPhoneNumber(){return m_phoneNumber;}
+	QString getFaxNumber(){return m_fax;}
+	QString getEmail(){return m_email;}
+	QString getContact(){return m_contact;}
 
-    bool getProviderList(ProviderList& list, QString order, QString filter, QString field);
+	bool getProviderList(ProviderList& list, QString order, QString filter, QString field);
 
 };
 

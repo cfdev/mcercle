@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialoginvoice.ui'
 **
-** Created: Sun 27. May 09:31:35 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Wed 28. Nov 17:52:05 2012
+**      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -87,6 +87,8 @@ public:
     QHBoxLayout *horizontalLayout_but;
     QToolButton *toolButton_addFreeline;
     QToolButton *toolButton_rm;
+    QToolButton *toolButton_up;
+    QToolButton *toolButton_dn;
     QSpacerItem *horizontalSpacer_3;
     QTableWidget *tableWidget;
     QHBoxLayout *horizontalLayout_2;
@@ -334,13 +336,31 @@ public:
 
         toolButton_rm = new QToolButton(groupBox_invoice);
         toolButton_rm->setObjectName(QString::fromUtf8("toolButton_rm"));
-        toolButton_rm->setMinimumSize(QSize(24, 24));
+        toolButton_rm->setMinimumSize(QSize(32, 24));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_rm->setIcon(icon4);
         toolButton_rm->setIconSize(QSize(16, 24));
 
         horizontalLayout_but->addWidget(toolButton_rm);
+
+        toolButton_up = new QToolButton(groupBox_invoice);
+        toolButton_up->setObjectName(QString::fromUtf8("toolButton_up"));
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app/up"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_up->setIcon(icon5);
+        toolButton_up->setIconSize(QSize(24, 24));
+
+        horizontalLayout_but->addWidget(toolButton_up);
+
+        toolButton_dn = new QToolButton(groupBox_invoice);
+        toolButton_dn->setObjectName(QString::fromUtf8("toolButton_dn"));
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/app/dn"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_dn->setIcon(icon6);
+        toolButton_dn->setIconSize(QSize(24, 24));
+
+        horizontalLayout_but->addWidget(toolButton_dn);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -381,9 +401,9 @@ public:
         horizontalLayout_button->setObjectName(QString::fromUtf8("horizontalLayout_button"));
         pushButton_createInv = new QPushButton(DialogInvoice);
         pushButton_createInv->setObjectName(QString::fromUtf8("pushButton_createInv"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/app/ok"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_createInv->setIcon(icon5);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/app/ok"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_createInv->setIcon(icon7);
 
         horizontalLayout_button->addWidget(pushButton_createInv);
 
@@ -399,9 +419,9 @@ public:
 
         pushButton_cancel = new QPushButton(DialogInvoice);
         pushButton_cancel->setObjectName(QString::fromUtf8("pushButton_cancel"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_cancel->setIcon(icon6);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_cancel->setIcon(icon8);
         pushButton_cancel->setAutoDefault(false);
 
         horizontalLayout_button->addWidget(pushButton_cancel);
@@ -465,6 +485,14 @@ public:
         toolButton_rm->setToolTip(QApplication::translate("DialogInvoice", "Supprimer un article", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_rm->setText(QApplication::translate("DialogInvoice", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_up->setToolTip(QApplication::translate("DialogInvoice", "Monter l'article", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_up->setText(QApplication::translate("DialogInvoice", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_dn->setToolTip(QApplication::translate("DialogInvoice", "Descendre l'article", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_dn->setText(QApplication::translate("DialogInvoice", "...", 0, QApplication::UnicodeUTF8));
         label_Total->setText(QApplication::translate("DialogInvoice", "Total: 0", 0, QApplication::UnicodeUTF8));
         pushButton_createInv->setText(QApplication::translate("DialogInvoice", "Cr\303\251er une facture", 0, QApplication::UnicodeUTF8));
         pushButton_ok->setText(QApplication::translate("DialogInvoice", "...", 0, QApplication::UnicodeUTF8));

@@ -3,9 +3,9 @@
 # -------------------------------------------------
 
 # Test la version de Qt
-lessThan(QT_VERSION, 4.6) {
-    error("mcercle requires Qt 4.6 or greater")
-}
+#lessThan(QT_VERSION, 4.6) {
+#    error("mcercle requires Qt 4.6 or greater")
+#}
 
 QT += sql
 TARGET = mcercle
@@ -41,7 +41,8 @@ SOURCES += src/mainwindow.cpp \
     src/services_commons.cpp \
     src/dialogprintchoice.cpp \
     src/dialogtax.cpp \
-    src/tax.cpp
+    src/tax.cpp \
+    src/dialoginvoicelist.cpp
 
 
 
@@ -72,7 +73,8 @@ HEADERS += src/mainwindow.h \
     src/services_commons.h \
     src/dialogprintchoice.h \
     src/dialogtax.h \
-    src/tax.h
+    src/tax.h \
+    src/dialoginvoicelist.h
 
 
 
@@ -92,7 +94,8 @@ FORMS += src/mainwindow.ui \
     src/dialogservicesedit.ui \
     src/dialoginvoice.ui \
     src/dialogprintchoice.ui \
-    src/dialogtax.ui
+    src/dialogtax.ui \
+    src/dialoginvoicelist.ui
 
 UI_SOURCES_DIR = src/
 UI_HEADERS_DIR = src/
@@ -122,5 +125,9 @@ macx {
     ICON = art/logo/mcercle.icns
 }
 
-# L'installation comprend la copie du binaire, des fichiers de langue et du fichier LICENSE
+# L installation comprend la copie du binaire, du fichier LICENSE
 INSTALLS += target desktop copyright 
+
+OTHER_FILES += \
+    Todo.txt \
+    Changelog.txt

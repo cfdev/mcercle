@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2012 Cyril FRAUSTI
+  Copyright (C) 2010-2013 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,138 +22,138 @@
 
 
 Settings::Settings(QObject *parent) :
-    QObject(parent)
+	QObject(parent)
 {
-    m_fileName = "/.mcercle";
-    path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
-    QString path = path_DataLocation+m_fileName;
-    m_settings = new QSettings(path,QSettings::IniFormat,this);
+	m_fileName = "/.mcercle";
+	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
+	QString path = path_DataLocation+m_fileName;
+	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
 
 /**
-    Recuperation des parametres de connexion pour la bdd
+	Recuperation des parametres de connexion pour la bdd
   */
 QString Settings::getDatabase_bdd(){
-    m_settings->beginGroup("connection");
-    QString val = m_settings->value("bdd").toString();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	QString val = m_settings->value("bdd").toString();
+	m_settings->endGroup();
+	return val;
 }
 
 QString Settings::getDatabase_hostName(){
-    m_settings->beginGroup("connection");
-    QString val = m_settings->value("hostName").toString();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	QString val = m_settings->value("hostName").toString();
+	m_settings->endGroup();
+	return val;
 }
 
 int Settings::getDatabase_port(){
-    m_settings->beginGroup("connection");
-    int val = m_settings->value("port").toInt();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	int val = m_settings->value("port").toInt();
+	m_settings->endGroup();
+	return val;
 }
 
 QString Settings::getDatabase_databaseName(){
-    m_settings->beginGroup("connection");
-    QString val = m_settings->value("databaseName").toString();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	QString val = m_settings->value("databaseName").toString();
+	m_settings->endGroup();
+	return val;
 }
 
 QString Settings::getDatabase_userName(){
-    m_settings->beginGroup("connection");
-    QString val = m_settings->value("userName").toString();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	QString val = m_settings->value("userName").toString();
+	m_settings->endGroup();
+	return val;
 }
 
 QString Settings::getDatabase_userPassword(){
-    m_settings->beginGroup("connection");
-    QString val = m_settings->value("userPassword").toString();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("connection");
+	QString val = m_settings->value("userPassword").toString();
+	m_settings->endGroup();
+	return val;
 }
 
 
 /**
-    Sauvegarde dans le fichier les donnees relatif a la base de donnees
+	Sauvegarde dans le fichier les donnees relatif a la base de donnees
   */
 void Settings::setDatabase_bdd(const QString& bdd) {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("bdd", bdd);
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("bdd", bdd);
+	m_settings->endGroup();
 }
 
 void Settings::setDatabase_hostName(const QString& hostName) {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("hostName", hostName);
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("hostName", hostName);
+	m_settings->endGroup();
 }
 
 void Settings::setDatabase_port(const int& port) {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("port",QString::number(port));
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("port",QString::number(port));
+	m_settings->endGroup();
 }
 
 void Settings::setDatabase_databaseName(const QString& databaseName) {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("databaseName", databaseName);
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("databaseName", databaseName);
+	m_settings->endGroup();
 }
 
 void Settings::setDatabase_userName(const QString& userName){
-    m_settings->beginGroup("connection");
-    m_settings->setValue("userName", userName);
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("userName", userName);
+	m_settings->endGroup();
 }
 
 void Settings::setDatabase_userPassword(const QString& userPassword) {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("userPassword", userPassword);
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("userPassword", userPassword);
+	m_settings->endGroup();
 }
 
 /**
-    Applique les valeurs par defaut de la bdd
+	Applique les valeurs par defaut de la bdd
   */
 void Settings::setDatabase_default() {
-    m_settings->beginGroup("connection");
-    m_settings->setValue("bdd", "SQLITE");
-    m_settings->setValue("hostName", "localhost");
-    m_settings->setValue("databaseName", path_DataLocation + "/mcercle.db");
-    m_settings->endGroup();
+	m_settings->beginGroup("connection");
+	m_settings->setValue("bdd", "SQLITE");
+	m_settings->setValue("hostName", "localhost");
+	m_settings->setValue("databaseName", path_DataLocation + "/mcercle.db");
+	m_settings->endGroup();
 }
 
 
 /**
   */
 bool Settings::settingIsOk() {
-    m_settings->beginGroup("main");
-    bool val = m_settings->value("settingState").toBool();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("main");
+	bool val = m_settings->value("settingState").toBool();
+	m_settings->endGroup();
+	return val;
 }
 
 void Settings::setSettingState(bool state) {
-    m_settings->beginGroup("main");
-    m_settings->setValue("settingState", state);
-    m_settings->endGroup();
+	m_settings->beginGroup("main");
+	m_settings->setValue("settingState", state);
+	m_settings->endGroup();
 }
 
 /**
-    Position des listebox pour les recherches
+	Position des listebox pour les recherches
   */
 void Settings::setPositionListSearchProduct(int pos) {
-    m_settings->beginGroup("list");
-    m_settings->setValue("searchProduct", pos);
-    m_settings->endGroup();
+	m_settings->beginGroup("list");
+	m_settings->setValue("searchProduct", pos);
+	m_settings->endGroup();
 }
 
 int Settings::getPositionListSearchProduct(){
-    m_settings->beginGroup("list");
-    int val = m_settings->value("searchProduct").toInt();
-    m_settings->endGroup();
-    return val;
+	m_settings->beginGroup("list");
+	int val = m_settings->value("searchProduct").toInt();
+	m_settings->endGroup();
+	return val;
 }

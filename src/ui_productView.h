@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'productView.ui'
 **
-** Created: Sun 27. May 09:31:35 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Wed 28. Nov 17:52:05 2012
+**      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -174,6 +174,8 @@ public:
 
         lineEdit_searchProduct = new QLineEdit(productView);
         lineEdit_searchProduct->setObjectName(QString::fromUtf8("lineEdit_searchProduct"));
+        lineEdit_searchProduct->setMinimumSize(QSize(0, 0));
+        lineEdit_searchProduct->setMaximumSize(QSize(16777215, 16777215));
 
         horizontalLayout_4->addWidget(lineEdit_searchProduct);
 
@@ -263,7 +265,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 250, 319));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 244, 311));
         verticalLayout_5 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_7 = new QHBoxLayout();

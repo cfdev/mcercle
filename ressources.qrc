@@ -35,5 +35,8 @@
         <file alias="revenue">art/view-investment.png</file>
         <file alias="compagny">art/meeting-participant.png</file>
         <file alias="config">art/configure.png</file>
+        <file alias="up">art/up.png</file>
+        <file alias="dn">art/dn.png</file>
+        <file alias="save_as">art/document_save_as.png</file>
     </qresource>
 </RCC>

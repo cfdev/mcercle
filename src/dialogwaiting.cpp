@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2012 Cyril FRAUSTI
+  Copyright (C) 2010-2013 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -22,32 +22,32 @@
 #include <QPushButton>
 
 DialogWaiting::DialogWaiting(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::DialogWaiting)
+	QDialog(parent),
+	ui(new Ui::DialogWaiting)
 {
-    ui->setupUi(this);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+	ui->setupUi(this);
+	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 
 DialogWaiting::~DialogWaiting()
 {
-    delete ui;
+	delete ui;
 }
 
 void DialogWaiting::setProgressBar(int val){
-    ui->progressBar->setValue(val);
-    if(val >= ui->progressBar->maximum())ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	ui->progressBar->setValue(val);
+	if(val >= ui->progressBar->maximum())ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 void DialogWaiting::setProgressBarRange(int min, int max){
-    ui->progressBar->setRange(min,max);
+	ui->progressBar->setRange(min,max);
 }
 
 void DialogWaiting::setTitle(const QString& val){
-    QString title="<b> "+val+" </b>";
-    ui->labelTitle->setText(title);
+	QString title="<b> "+val+" </b>";
+	ui->labelTitle->setText(title);
 }
 
 void DialogWaiting::setDetail(const QString& val){
-    ui->label_detail->setText(val);
+	ui->label_detail->setText(val);
 }

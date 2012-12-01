@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogproduct.ui'
 **
-** Created: Sun 27. May 09:31:35 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Wed 28. Nov 17:52:05 2012
+**      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -161,7 +161,7 @@ public:
         comboBox_tax->setObjectName(QString::fromUtf8("comboBox_tax"));
         comboBox_tax->setMinimumSize(QSize(100, 0));
         comboBox_tax->setMaximumSize(QSize(16777215, 16777215));
-        comboBox_tax->setEditable(true);
+        comboBox_tax->setEditable(false);
 
         gridLayout->addWidget(comboBox_tax, 3, 2, 1, 1);
 

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'customerView.ui'
 **
-** Created: Sun 27. May 09:31:35 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Wed 28. Nov 17:52:05 2012
+**      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -77,8 +77,8 @@ public:
     QToolButton *toolButton_addService;
     QToolButton *toolButton_editService;
     QToolButton *toolButton_delService;
-    QSpacerItem *horizontalSpacer_6;
     QToolButton *toolButton_printServ;
+    QSpacerItem *horizontalSpacer_6;
     QTableWidget *tableWidget_Services;
     QWidget *tab_estimates;
     QHBoxLayout *horizontalLayout_10;
@@ -87,8 +87,8 @@ public:
     QToolButton *toolButton_addProposal;
     QToolButton *toolButton_editProposal;
     QToolButton *toolButton_delProposal;
-    QSpacerItem *horizontalSpacer_5;
     QToolButton *toolButton_printPro;
+    QSpacerItem *horizontalSpacer_5;
     QTableWidget *tableWidget_Proposals;
     QWidget *tab_invoices;
     QVBoxLayout *verticalLayout_3;
@@ -97,8 +97,8 @@ public:
     QToolButton *toolButton_addInvoice;
     QToolButton *toolButton_editInvoice;
     QToolButton *toolButton_delInvoice;
-    QSpacerItem *horizontalSpacer_4;
     QToolButton *toolButton_printInv;
+    QSpacerItem *horizontalSpacer_4;
     QTableWidget *tableWidget_Invoices;
     QLabel *labelCustomersNumber;
     QSpacerItem *verticalSpacer;
@@ -290,7 +290,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 252, 293));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 256, 303));
         verticalLayout_9 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_9->setObjectName(QString::fromUtf8("verticalLayout_9"));
         verticalLayout_8 = new QVBoxLayout();
@@ -371,10 +371,6 @@ public:
 
         horizontalLayout_3->addWidget(toolButton_delService);
 
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_3->addItem(horizontalSpacer_6);
-
         toolButton_printServ = new QToolButton(tab_services);
         toolButton_printServ->setObjectName(QString::fromUtf8("toolButton_printServ"));
         toolButton_printServ->setMinimumSize(QSize(32, 32));
@@ -384,6 +380,10 @@ public:
         toolButton_printServ->setIconSize(QSize(22, 22));
 
         horizontalLayout_3->addWidget(toolButton_printServ);
+
+        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_6);
 
 
         verticalLayout_10->addLayout(horizontalLayout_3);
@@ -430,10 +430,6 @@ public:
 
         horizontalLayout_11->addWidget(toolButton_delProposal);
 
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_11->addItem(horizontalSpacer_5);
-
         toolButton_printPro = new QToolButton(tab_estimates);
         toolButton_printPro->setObjectName(QString::fromUtf8("toolButton_printPro"));
         toolButton_printPro->setMinimumSize(QSize(32, 32));
@@ -441,6 +437,10 @@ public:
         toolButton_printPro->setIconSize(QSize(22, 22));
 
         horizontalLayout_11->addWidget(toolButton_printPro);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_11->addItem(horizontalSpacer_5);
 
 
         verticalLayout_7->addLayout(horizontalLayout_11);
@@ -487,10 +487,6 @@ public:
 
         horizontalLayout_9->addWidget(toolButton_delInvoice);
 
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout_9->addItem(horizontalSpacer_4);
-
         toolButton_printInv = new QToolButton(tab_invoices);
         toolButton_printInv->setObjectName(QString::fromUtf8("toolButton_printInv"));
         toolButton_printInv->setMinimumSize(QSize(32, 32));
@@ -498,6 +494,10 @@ public:
         toolButton_printInv->setIconSize(QSize(22, 22));
 
         horizontalLayout_9->addWidget(toolButton_printInv);
+
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_9->addItem(horizontalSpacer_4);
 
 
         verticalLayout_2->addLayout(horizontalLayout_9);

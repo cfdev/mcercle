@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 27. May 09:31:35 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Wed 28. Nov 17:52:05 2012
+**      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -45,6 +45,10 @@ public:
     QAction *actionActionProvider;
     QAction *actionDebug_Add;
     QAction *actionDebug_prod;
+    QAction *actionImporter_depuis_un_fichier_cvs;
+    QAction *actionExporter_vers_un_fichier_cvs;
+    QAction *actionLivres_des_Recettes;
+    QAction *actionSauvegarder_la_base_de_donn_es_sous;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QVBoxLayout *verticalLayout;
@@ -69,6 +73,8 @@ public:
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app/logo"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
+        MainWindow->setAnimated(false);
+        MainWindow->setTabShape(QTabWidget::Rounded);
         actionQuitter = new QAction(MainWindow);
         actionQuitter->setObjectName(QString::fromUtf8("actionQuitter"));
         QIcon icon1;
@@ -130,6 +136,18 @@ public:
         actionDebug_Add->setObjectName(QString::fromUtf8("actionDebug_Add"));
         actionDebug_prod = new QAction(MainWindow);
         actionDebug_prod->setObjectName(QString::fromUtf8("actionDebug_prod"));
+        actionImporter_depuis_un_fichier_cvs = new QAction(MainWindow);
+        actionImporter_depuis_un_fichier_cvs->setObjectName(QString::fromUtf8("actionImporter_depuis_un_fichier_cvs"));
+        actionExporter_vers_un_fichier_cvs = new QAction(MainWindow);
+        actionExporter_vers_un_fichier_cvs->setObjectName(QString::fromUtf8("actionExporter_vers_un_fichier_cvs"));
+        actionLivres_des_Recettes = new QAction(MainWindow);
+        actionLivres_des_Recettes->setObjectName(QString::fromUtf8("actionLivres_des_Recettes"));
+        actionLivres_des_Recettes->setIcon(icon7);
+        actionSauvegarder_la_base_de_donn_es_sous = new QAction(MainWindow);
+        actionSauvegarder_la_base_de_donn_es_sous->setObjectName(QString::fromUtf8("actionSauvegarder_la_base_de_donn_es_sous"));
+        QIcon icon10;
+        icon10.addFile(QString::fromUtf8(":/app/save_as"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSauvegarder_la_base_de_donn_es_sous->setIcon(icon10);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -170,12 +188,15 @@ public:
         menuBar->addAction(menuAffichage->menuAction());
         menuBar->addAction(menuOutils->menuAction());
         menuBar->addAction(menuAide->menuAction());
+        menuFichier->addAction(actionSauvegarder_la_base_de_donn_es_sous);
+        menuFichier->addSeparator();
         menuFichier->addAction(actionQuitter);
         menuAide->addAction(actionA_propos);
         menuAide->addAction(actionA_propos_de_Qt);
         menuAffichage->addAction(actionTableau_de_bord);
         menuAffichage->addAction(actionClients);
         menuAffichage->addAction(actionProduits);
+        menuOutils->addAction(actionLivres_des_Recettes);
         menuOutils->addSeparator();
         menuOutils->addAction(actionConfiguration);
         mainToolBar->addAction(actionTableau_de_bord);
@@ -217,6 +238,10 @@ public:
 #endif // QT_NO_TOOLTIP
         actionDebug_Add->setText(QApplication::translate("MainWindow", "DEBUG: Ajoute des clients", 0, QApplication::UnicodeUTF8));
         actionDebug_prod->setText(QApplication::translate("MainWindow", "DEBUG: Ajoute des produits", 0, QApplication::UnicodeUTF8));
+        actionImporter_depuis_un_fichier_cvs->setText(QApplication::translate("MainWindow", "Importer depuis un fichier cvs", 0, QApplication::UnicodeUTF8));
+        actionExporter_vers_un_fichier_cvs->setText(QApplication::translate("MainWindow", "Exporter vers un fichier cvs", 0, QApplication::UnicodeUTF8));
+        actionLivres_des_Recettes->setText(QApplication::translate("MainWindow", "Livres des Recettes", 0, QApplication::UnicodeUTF8));
+        actionSauvegarder_la_base_de_donn_es_sous->setText(QApplication::translate("MainWindow", "Sauvegarder la base de donn\303\251es sous...", 0, QApplication::UnicodeUTF8));
         menuFichier->setTitle(QApplication::translate("MainWindow", "Fichier", 0, QApplication::UnicodeUTF8));
         menuAide->setTitle(QApplication::translate("MainWindow", "Aide", 0, QApplication::UnicodeUTF8));
         menuAffichage->setTitle(QApplication::translate("MainWindow", "Affichage", 0, QApplication::UnicodeUTF8));

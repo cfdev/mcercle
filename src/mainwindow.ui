@@ -23,6 +23,12 @@
    <iconset resource="../ressources.qrc">
     <normaloff>:/app/logo</normaloff>:/app/logo</iconset>
   </property>
+  <property name="animated">
+   <bool>false</bool>
+  </property>
+  <property name="tabShape">
+   <enum>QTabWidget::Rounded</enum>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
@@ -43,6 +49,8 @@
     <property name="title">
      <string>Fichier</string>
     </property>
+    <addaction name="actionSauvegarder_la_base_de_donn_es_sous"/>
+    <addaction name="separator"/>
     <addaction name="actionQuitter"/>
    </widget>
    <widget class="QMenu" name="menuAide">
@@ -64,6 +72,7 @@
     <property name="title">
      <string>Outils</string>
     </property>
+    <addaction name="actionLivres_des_Recettes"/>
     <addaction name="separator"/>
     <addaction name="actionConfiguration"/>
    </widget>
@@ -230,6 +239,34 @@
   <action name="actionDebug_prod">
    <property name="text">
     <string>DEBUG: Ajoute des produits</string>
+   </property>
+  </action>
+  <action name="actionImporter_depuis_un_fichier_cvs">
+   <property name="text">
+    <string>Importer depuis un fichier cvs</string>
+   </property>
+  </action>
+  <action name="actionExporter_vers_un_fichier_cvs">
+   <property name="text">
+    <string>Exporter vers un fichier cvs</string>
+   </property>
+  </action>
+  <action name="actionLivres_des_Recettes">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
+   </property>
+   <property name="text">
+    <string>Livres des Recettes</string>
+   </property>
+  </action>
+  <action name="actionSauvegarder_la_base_de_donn_es_sous">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/save_as</normaloff>:/app/save_as</iconset>
+   </property>
+   <property name="text">
+    <string>Sauvegarder la base de données sous...</string>
    </property>
   </action>
  </widget>
