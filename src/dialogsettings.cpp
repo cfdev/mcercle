@@ -177,8 +177,8 @@ void DialogSettings::on_pushButton_ClearImage_clicked()
   */
 void DialogSettings::on_toolButton_BaseSelect_clicked()
 {
-	QFileDialog dialog(this);
-	QString filename = dialog.getOpenFileName(this, "Selectionnez un fichier *.db", "*.db", "*.db");
+	QString path = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+	QString filename = QFileDialog::getOpenFileName(this, "Selectionnez un fichier *.db",  path.toStdString().c_str(), "*.db");
 	if( !filename.isEmpty() ) {
 		ui->lineEdit_databaseName->setText(filename);
 	}

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogsettings.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
+** Created: Sat 1. Dec 18:09:11 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -674,7 +674,7 @@ public:
         QObject::connect(buttonBox, SIGNAL(accepted()), DialogSettings, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), DialogSettings, SLOT(reject()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(DialogSettings);

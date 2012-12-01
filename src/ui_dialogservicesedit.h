@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogservicesedit.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
+** Created: Sat 1. Dec 18:03:31 2012
 **      by: Qt User Interface Compiler version 4.8.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -212,7 +212,7 @@ public:
 
     void retranslateUi(QDialog *DialogServicesEdit)
     {
-        DialogServicesEdit->setWindowTitle(QApplication::translate("DialogServicesEdit", "Dialog", 0, QApplication::UnicodeUTF8));
+        DialogServicesEdit->setWindowTitle(QApplication::translate("DialogServicesEdit", "Edition des services", 0, QApplication::UnicodeUTF8));
         groupBox_IntCom->setTitle(QApplication::translate("DialogServicesEdit", "Interventions G\303\251n\303\251rales", 0, QApplication::UnicodeUTF8));
         pushButton_add->setText(QApplication::translate("DialogServicesEdit", "Ajouter", 0, QApplication::UnicodeUTF8));
         pushButton_edit->setText(QApplication::translate("DialogServicesEdit", "Modifier", 0, QApplication::UnicodeUTF8));

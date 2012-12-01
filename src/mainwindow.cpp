@@ -22,6 +22,7 @@
 #include <QPainter>
 #include <QPrintDialog>
 #include <QFileDialog>
+#include <QDesktopServices>
 //#include <QDebug>
 
 #include "dialogsettings.h"
@@ -327,17 +328,22 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
 	//Fermeture de la base de donnees
 	m_database->close();
 	
-	QFileDialog dialog(this);
 	QString source = m_database->getDatabaseName();
-	QString name= "mcercle_"+QDateTime::currentDateTime().toString(tr("dd-MM-yyyy_HHmmss"))+".db";
-	QString filename = dialog.getSaveFileName(this, "Enregister sous... ", name, "");
+	QString name = source; 
+	name.replace(".db", "_"+QDateTime::currentDateTime().toString(tr("dd-MM-yyyy_HHmmss"))+".db");
+	QString filename = QFileDialog::getSaveFileName(this, "Enregister sous... ",  name, "*.db");
+	//TODO: touver une autre fonction que QFile::copy si le fichier existe deja...
 	if( !filename.isEmpty() ) {
 		if( QFile::copy(source, filename) )
 			QMessageBox::information(this, tr("Information"),
-									 tr("Sauvegarde Termin\351e!"));
+									 tr("Sauvegarde Termin\351e!\n\n")+
+									 "Source: "+source+"\n"+
+									 "Destination: "+name+"\n");
 		else
 			QMessageBox::critical(this, tr("Erreur"),
-									 tr("Sauvegarde impossible! :("));
+									tr("Sauvegarde impossible!\n\n")+
+										"Source: "+source+"\n"+
+										"Destination: "+name+"\n");
 	}
 	//Reouverture de la base de donnees
 	m_database->connect();

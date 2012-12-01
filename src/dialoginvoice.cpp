@@ -99,7 +99,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui->productLayout->addWidget( m_productView );
 
 	//DRAG AND DROP
-	//TODO
+	//TODO : DRAG AND DROP
 	//http://www.siteduzero.com/forum-83-540738-p1-qt-qtablewidget-drag-drop.html
    /* ui->tableWidget_selectService->setAcceptDrops(true);
 	ui->tableWidget_selectService->setDragDropMode(QAbstractItemView::InternalMove);
