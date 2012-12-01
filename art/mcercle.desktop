@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=mcercle
+Exec=mcercle
+Icon=/usr/share/applications/mcercle-logo-64.png
+Terminal=false
+Type=Application
+Categories=Office;
+Comment=Logiciel de gestion Libre
+Comment[fr]=Logiciel de gestion Libre

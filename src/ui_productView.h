@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'productView.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -72,7 +72,10 @@ public:
     QToolButton *toolButton_printInfo;
     QSpacerItem *horizontalSpacer_4;
     QVBoxLayout *verticalLayout_4;
+    QHBoxLayout *horizontalLayout_2;
     QLabel *labelInfoProduct;
+    QSpacerItem *horizontalSpacer_5;
+    QLabel *label_image;
     QFrame *line_2;
     QLabel *label_provider;
     QSpacerItem *verticalSpacer_2;
@@ -166,19 +169,16 @@ public:
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         comboBoxFiltre = new QComboBox(productView);
         comboBoxFiltre->setObjectName(QString::fromUtf8("comboBoxFiltre"));
-        comboBoxFiltre->setMinimumSize(QSize(0, 25));
 
         horizontalLayout_4->addWidget(comboBoxFiltre);
 
         lineEdit_searchProduct = new QLineEdit(productView);
         lineEdit_searchProduct->setObjectName(QString::fromUtf8("lineEdit_searchProduct"));
-        lineEdit_searchProduct->setMinimumSize(QSize(0, 25));
 
         horizontalLayout_4->addWidget(lineEdit_searchProduct);
 
         toolButton_searchProduct = new QToolButton(productView);
         toolButton_searchProduct->setObjectName(QString::fromUtf8("toolButton_searchProduct"));
-        toolButton_searchProduct->setMinimumSize(QSize(24, 24));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/app/search"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_searchProduct->setIcon(icon4);
@@ -268,6 +268,7 @@ public:
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QString::fromUtf8("horizontalLayout_7"));
+        horizontalLayout_7->setContentsMargins(-1, 0, -1, -1);
         toolButton_clipboard = new QToolButton(scrollAreaWidgetContents);
         toolButton_clipboard->setObjectName(QString::fromUtf8("toolButton_clipboard"));
         QIcon icon7;
@@ -293,10 +294,25 @@ public:
 
         verticalLayout_4 = new QVBoxLayout();
         verticalLayout_4->setObjectName(QString::fromUtf8("verticalLayout_4"));
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         labelInfoProduct = new QLabel(scrollAreaWidgetContents);
         labelInfoProduct->setObjectName(QString::fromUtf8("labelInfoProduct"));
 
-        verticalLayout_4->addWidget(labelInfoProduct);
+        horizontalLayout_2->addWidget(labelInfoProduct);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_5);
+
+        label_image = new QLabel(scrollAreaWidgetContents);
+        label_image->setObjectName(QString::fromUtf8("label_image"));
+        label_image->setScaledContents(false);
+
+        horizontalLayout_2->addWidget(label_image);
+
+
+        verticalLayout_4->addLayout(horizontalLayout_2);
 
         line_2 = new QFrame(scrollAreaWidgetContents);
         line_2->setObjectName(QString::fromUtf8("line_2"));
@@ -361,7 +377,7 @@ public:
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Ajouter un produit</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Ajouter un produit</p></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_addProduct->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -369,7 +385,7 @@ public:
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Modifier le produit s\303\251lectionn\303\251</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Modifier le produit s\303\251lectionn\303\251</p></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_editProduct->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -377,7 +393,7 @@ public:
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Supprimer le produit s\303\251lectionn\303\251</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Supprimer le produit s\303\251lectionn\303\251</p></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_remove->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -385,7 +401,7 @@ public:
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Imprimer l'\303\251tat du stock produit</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Imprimer l'\303\251tat du stock produit</p></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_print->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
         toolButton_searchProduct->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
@@ -405,10 +421,11 @@ public:
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Imprimer la fiche du produit</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Imprimer la fiche produit</p></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_printInfo->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
         labelInfoProduct->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
+        label_image->setText(QString());
         label_provider->setText(QApplication::translate("productView", "...", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("productView", "Fiche", 0, QApplication::UnicodeUTF8));
         labelProductsNumber->setText(QApplication::translate("productView", "Nombre de produits :", 0, QApplication::UnicodeUTF8));

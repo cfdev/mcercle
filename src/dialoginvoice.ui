@@ -196,7 +196,7 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="label_link">
          <property name="text">
           <string>Facture associée : </string>
          </property>
@@ -366,6 +366,12 @@
             </item>
             <item>
              <widget class="QToolButton" name="toolButton_rm">
+              <property name="minimumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
               <property name="toolTip">
                <string>Supprimer un article</string>
               </property>

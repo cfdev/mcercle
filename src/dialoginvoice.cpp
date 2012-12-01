@@ -37,6 +37,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
                                 m_proposal->getTextState( proposal::VALIDATED ));
 
         ui->label_delivery->setText(tr("Date de livraison :"));
+        ui->label_link->setText(tr("Facture associ\351e : "));
         ui->label_partpayment->setVisible(false);
         ui->doubleSpinBox_partPAYMENT->setVisible(false);
 
@@ -52,6 +53,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
                                 m_invoice->getTextState( invoice::PAID ));
 
         ui->label_delivery->setText(tr("Date Ech\351ance :"));
+        ui->label_link->setText(tr("Proposition associ\351e : "));
         ui->label_datevalid->setVisible(false);
         ui->dateEdit_valid->setVisible(false);
         ui->label_delay->setVisible(false);
@@ -725,7 +727,7 @@ void DialogInvoice::on_pushButton_cancel_clicked()
 /**
   Sur ledition de laccompte on recalcule le total
   */
-void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged(double arg1)
+void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged()
 {
     emit(calcul_Total());
 }

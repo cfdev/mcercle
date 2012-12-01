@@ -37,7 +37,7 @@ private:
 
 private slots:
 
-    void on_comboBox_yearsList_currentIndexChanged(const QString &arg1);
+    void on_comboBox_yearsList_currentIndexChanged();
 };
 
 #endif // BOARD_H

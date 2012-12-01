@@ -59,6 +59,7 @@ void DialogProvidersEdit::loadValuesFormProvider(){
     ui->lineEdit_fax->setText(m_product->m_provider->getFaxNumber());
     ui->lineEdit_city->setText(m_product->m_provider->getCity());
     ui->lineEdit_zipCode->setText(m_product->m_provider->getZipCode());
+    ui->lineEdit_country->setText(m_product->m_provider->getCountry());
     ui->lineEdit_add1->setText(m_product->m_provider->getAddress1());
     ui->lineEdit_add2->setText(m_product->m_provider->getAddress2());
     ui->lineEdit_add3->setText(m_product->m_provider->getAddress3());
@@ -81,18 +82,20 @@ void DialogProvidersEdit::on_buttonBox_accepted()
     }
     else{
         int id = m_product->m_provider->isHere( ui->lineEdit_name->text());
-        if( id != m_product->m_provider->getId() ){
+        //Si l ID existe et qu'il est different de celui charge
+        //Alors le nom du fournisseur est deja prensent
+        if( (id > 0) &&( id != m_product->m_provider->getId()) ){
             QMessageBox::warning(this, tr("Attention"), tr("Fournisseur d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
             this->reject();
             return;
         }
-
     }
     m_product->m_provider->setName( ui->lineEdit_name->text() );
     m_product->m_provider->setEmail(ui->lineEdit_email->text());
     m_product->m_provider->setPhone(ui->lineEdit_phone->text(),ui->lineEdit_fax->text());
     m_product->m_provider->setCity(ui->lineEdit_city->text());
     m_product->m_provider->setZipCode(ui->lineEdit_zipCode->text());
+    m_product->m_provider->setCountry(ui->lineEdit_country->text());
     m_product->m_provider->setAddress(ui->lineEdit_add1->text(),
                            ui->lineEdit_add2->text(),
                            ui->lineEdit_add3->text()

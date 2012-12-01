@@ -33,7 +33,7 @@ about::about(database *pdata, QWidget *parent) :
     QImage ico = QImage(":/app/logo_small");
     ui->label_ico->setPixmap(QPixmap::fromImage( ico ));
 
-    QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION;
+    QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION ;
     msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Auto-entrepreneur/PME.");
     msg +="<br><a href=\"http://frausti.fr\">http://frausti.fr</a>";
 
@@ -46,12 +46,32 @@ about::about(database *pdata, QWidget *parent) :
 
     msg += "<br><br>" + tr("mcercle utilise :<br>");
     msg += tr("- l&#146;interface graphique Qt4. <a href=\"http://qt.nokia.com\">http://qt.nokia.com</a><br>");
-    msg += "- FireBird v"+ pdata->getFireBirdVersion() +". <a href=\"http://www.firebirdsql.org\">http://www.firebirdsql.org</a><br>";
-    msg += "- IBPP v"+ database::IBPPversion() +". <a href=\"http://www.ibpp.org\">http://www.ibpp.org</a><br>";
+
+    if(pdata->isConnected()){
+        if(pdata->getDriverName() == "QSQLITE"){
+            QSqlQuery query;
+            query.prepare("SELECT sqlite_version();");
+            if(query.exec()){
+                query.next();
+                msg += "- SQLITE v" + query.value(query.record().indexOf("sqlite_version()")).toString()+" <a href=\"http://www.sqlite.org\">http://www.sqlite.org</a><br>";
+            }
+        }
+        else{
+            QSqlQuery query;
+            query.prepare("SELECT VERSION();");
+            if(query.exec()){
+                query.next();
+                msg += "- MYSQL v" + query.value(query.record().indexOf("VERSION()")).toString()+" <a href=\"http://www.mysql.com/\">http://www.mysql.com/</a><br>";
+            }
+        }
+    }
+
+    // msg += "- FireBird v"+ pdata->getFireBirdVersion() +". <a href=\"http://www.firebirdsql.org\">http://www.firebirdsql.org</a><br>";
+   // msg += "- IBPP v"+ database::IBPPversion() +". <a href=\"http://www.ibpp.org\">http://www.ibpp.org</a><br>";
     msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
 
-    msg += "<br><br>" + tr("Outils :<br>");
-    msg += "- FlameRobin - <a href=\"http://www.flamerobin.org\">http://www.flamerobin.org</a>";
+    //msg += "<br><br>" + tr("Outils :<br>");
+   // msg += "- FlameRobin - <a href=\"http://www.flamerobin.org\">http://www.flamerobin.org</a>";
     msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2012";
     msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
 

@@ -27,6 +27,7 @@ private:
     QLocale m_lang;
 
     void loadInfoDatabase();
+    void setDbaseEditState( bool state);
 
 private slots:
     void on_pushButton_connect_clicked();

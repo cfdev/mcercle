@@ -21,11 +21,10 @@
 
 #include <QMessageBox>
 #include <QStringList>
+#include <QVariant>
 
-category::category(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent): m_parent(parent) {
+category::category(QSqlDatabase db, QWidget *parent): m_parent(parent) {
     m_db = db;
-    m_tr = tr;
-    m_st = st;
 }
 
 
@@ -39,20 +38,17 @@ category::~category() {
   */
 bool category::create() {
     // Construction de la requette
-    QString req = "INSERT INTO tab_products_categories(NAME, COLOR) ";
+    QString req = "INSERT INTO TAB_PRODUCTS_CATEGORIES(NAME, COLOR) ";
     req += "VALUES(";
-    req += "'" + m_name.replace("\'","''").toUtf8() + "', '" + m_color.name() +"');";
+    req += "'" + m_name.replace("\'","''") + "', '" + m_color.name() +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -63,21 +59,18 @@ bool category::create() {
   */
 bool category::update() {
     // Construction de la requette
-    QString req = "UPDATE tab_products_categories SET ";
-    req += "NAME='" + m_name.replace("\'","''").toUtf8() + "', ";
+    QString req = "UPDATE TAB_PRODUCTS_CATEGORIES SET ";
+    req += "NAME='" + m_name.replace("\'","''") + "', ";
     req += "COLOR='" + m_color.name() + "' ";
     req += "WHERE ID='"+ QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -86,19 +79,16 @@ bool category::update() {
   */
 bool category::remove() {
     // Construction de la requette
-    QString req = "DELETE FROM tab_products_categories  WHERE ID='";
+    QString req = "DELETE FROM TAB_PRODUCTS_CATEGORIES  WHERE ID='";
     req += QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -108,32 +98,22 @@ bool category::remove() {
      @return vrai si ok
   */
 bool category::loadFromName(const QString& name) {
-    std::string val;
-    QString req = "SELECT * FROM tab_products_categories WHERE UPPER(NAME COLLATE UTF8)= UPPER('";
-    req += QString(name).replace("\'","''").toUtf8() +"' COLLATE UTF8);";
+    QString req = "SELECT * FROM TAB_PRODUCTS_CATEGORIES WHERE UPPER(NAME)= UPPER('";
+    req += QString(name).replace("\'","''") +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_id = 0;
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            val="";
-            m_st->Get("COLOR", val);
-            m_color.setNamedColor( QString::fromUtf8(val.c_str()) );
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_id = query.value(query.record().indexOf("ID")).toInt();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_color.setNamedColor( query.value(query.record().indexOf("COLOR")).toString() );
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 /**
@@ -142,32 +122,22 @@ bool category::loadFromName(const QString& name) {
      @return vrai si ok
   */
 bool category::loadFromID(const int& id) {
-    std::string val;
-    QString req = "SELECT * FROM tab_products_categories WHERE UPPER(ID)= UPPER('";
+    m_id = id;
+    QString req = "SELECT * FROM TAB_PRODUCTS_CATEGORIES WHERE UPPER(ID)= UPPER('";
     req += QString::number(id) +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_id = 0;
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            val="";
-            m_st->Get("COLOR", val);
-            m_color.setNamedColor( QString::fromUtf8(val.c_str()) );
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_color.setNamedColor( query.value(query.record().indexOf("COLOR")).toString() );
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -175,37 +145,33 @@ bool category::loadFromID(const int& id) {
      Liste les donnees du champ en fonction du filtre
      Jointure avec LEFT OUTER JOIN car avec les select les conditions ne
      sont pas remplis il ne retour pas le produit
-     @return valeur de retour sous forme de liste de chaine de type ProductList
+     @param valeur de retour sous forme de liste de chaine de type ProductList
+     @return true si ok
   */
-void category::getcategoryList(categoryList& list, QString order, QString filter, QString field) {
-    std::string sVal;
-    QString req = "SELECT * FROM tab_products_categories";
+bool category::getcategoryList(categoryList& list, QString order, QString filter, QString field) {
+    QString req = "SELECT * FROM TAB_PRODUCTS_CATEGORIES";
 
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
     }
-    req += " ORDER BY UPPER("+order.replace("\'","''").toUtf8()+" COLLATE UTF8) ASC;";
+    req += " ORDER BY UPPER("+order.replace("\'","''")+") ASC;";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-
-        while (m_st->Fetch()) {
-            m_st->Get("NAME", sVal);
-            list.name.push_back( QString::fromUtf8(sVal.c_str()) );
-            sVal="";
-            m_st->Get("COLOR", sVal);
-            list.color.push_back( QColor( QString::fromUtf8(sVal.c_str()) ) );
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        while (query.next()){
+            list.name << query.value(query.record().indexOf("NAME")).toString();
+            list.color.push_back( QColor(  query.value(query.record().indexOf("COLOR")).toString() ) );
         }
-        m_tr->Commit();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
 }
 
@@ -216,22 +182,21 @@ void category::getcategoryList(categoryList& list, QString order, QString filter
      @return vrai si la categorie exist
   */
 bool category::isHere(const QString& name) {
-    int iVal;
-    QString req = "SELECT COUNT(*) AS PCOUNT FROM tab_products_categories WHERE UPPER(NAME COLLATE UTF8)= UPPER('";
-    req +=  QString(name).replace("\'","''").toUtf8() + "' COLLATE UTF8);";
+    int count;
+    QString req = "SELECT COUNT(*) FROM TAB_PRODUCTS_CATEGORIES AS PCOUNT WHERE UPPER(NAME)= UPPER('";
+    req +=  QString(name).replace("\'","''") + "');";
     if(name.isEmpty())return false;
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("PCOUNT", iVal);
-        m_tr->Commit();
-        if(iVal>0)return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+        if(count>0)return true;
         else return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return false;
     }
 }

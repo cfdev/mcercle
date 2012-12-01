@@ -1,18 +1,18 @@
 # -------------------------------------------------
 # mcercle - Logiciel de gestion libre
 # -------------------------------------------------
-#QT += sql
 
 # Test la version de Qt
 lessThan(QT_VERSION, 4.6) {
     error("mcercle requires Qt 4.6 or greater")
 }
 
+QT += sql
 TARGET = mcercle
 TEMPLATE = app
 CONFIG += ordered
 
-# Compilation en fonction du OS
+# FIREBIRD MERCLE 1.0
 unix {
     DEFINES += IBPP_LINUX
 }
@@ -22,7 +22,6 @@ win32 {
 macx {
     DEFINES += IBPP_LINUX
 }
-
 DEFINES -= UNICODE
 LIBS += -lfbclient
 
@@ -44,7 +43,6 @@ SOURCES += src/mainwindow.cpp \
     src/settings.cpp \
     src/dialogsettings.cpp \
     src/dbase.cpp \
-    src/bdd/all_in_one.cpp \
     src/dialogcategory.cpp \
     src/productcategory.cpp \
     src/services.cpp \
@@ -54,7 +52,10 @@ SOURCES += src/mainwindow.cpp \
     src/proposal.cpp \
     src/dialoginvoice.cpp \
     src/services_commons.cpp \
-    src/dialogprintchoice.cpp
+    src/dialogprintchoice.cpp \
+    src/import/ibpp/all_in_one.cpp \
+    src/import/import_mcercle1.cpp
+
 
 
 HEADERS += src/mainwindow.h \
@@ -73,10 +74,6 @@ HEADERS += src/mainwindow.h \
     src/settings.h \
     src/dialogsettings.h \
     src/dbase.h \
-    src/bdd/ibpp.h \
-    src/bdd/iberror.h \
-    src/bdd/ibase.h \
-    src/bdd/_ibpp.h \
     src/dialogcategory.h \
     src/productcategory.h \
     src/services.h \
@@ -86,7 +83,13 @@ HEADERS += src/mainwindow.h \
     src/proposal.h \
     src/dialoginvoice.h \
     src/services_commons.h \
-    src/dialogprintchoice.h
+    src/dialogprintchoice.h \
+    src/import/ibpp/ibpp.h \
+    src/import/ibpp/iberror.h \
+    src/import/ibpp/ibase.h \
+    src/import/ibpp/_ibpp.h \
+    src/import/import_mcercle1.h
+
 
 
 FORMS += src/mainwindow.ui \
@@ -125,6 +128,14 @@ copyright.files    = License Changelog
 
 desktop.path       = /usr/share/applications/
 desktop.files      = art/mcercle.desktop art/logo/mcercle-logo-64.png
+
+# Icon
+win32 {
+    ICON = art/logo/mcercle.ico
+}
+macx {
+    ICON = art/logo/mcercle.icns
+}
 
 # L'installation comprend la copie du binaire, des fichiers de langue et du fichier LICENSE
 INSTALLS += target desktop copyright 

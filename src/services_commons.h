@@ -5,19 +5,19 @@
 #include <vector>
 #include <QLocale>
 #include <QDateTime>
-#include "bdd/ibpp.h"
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 class service_common : public QObject {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
     QWidget *m_parent;
     int m_id, m_idCustomer;
-    float m_price;
+    float m_price, m_tax;
     QDateTime m_creationDate, m_theDate;
     QString m_name, m_description;
     QLocale m_lang;
@@ -38,7 +38,7 @@ public:
     //State
     enum{DISCONTINUED ,OK};
 
-    service_common(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    service_common(QSqlDatabase db, QWidget *parent = 0);
     ~service_common();
 
     bool create();
@@ -64,7 +64,7 @@ public:
     QString getName(){return m_name;}
     QString getDescription(){return m_description;}
 
-    void getServiceCommList(serviceCommList& list, QString order, QString filter, QString field);
+    bool getServiceCommList(serviceCommList& list, QString order, QString filter, QString field);
 };
 
 

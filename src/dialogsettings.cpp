@@ -42,8 +42,39 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
     ui->lineEdit_login->setText( m_Settings->getDatabase_userName() );
     ui->lineEdit_password->setText( m_Settings->getDatabase_userPassword() );
 
+    //Dbase
+    QString bdd = QString("Q")+m_Settings->getDatabase_bdd();
+    QStringList dlist = pdata->getDrivers();
+    int select=0;
+    for(int i=0; i<dlist.count(); i++){
+        if(dlist[i] == "QSQLITE"){
+            ui->comboBox_dbase->addItem( "SQLITE" );
+            if(bdd == dlist[i]) select = 0;
+        }
+        else if(dlist[i] == "QMYSQL"){
+            ui->comboBox_dbase->addItem( "MYSQL" );
+            if(bdd == dlist[i]) select = 1;
+        }
+    }
+    ui->comboBox_dbase->setCurrentIndex(select);
+
+    //Active ou desactive selon letat de la connexion
+    setDbaseEditState(!m_data->isConnected());
+
     //charge les info de la base de donnees
     loadInfoDatabase();
+    //Selectionne la tab 0
+    ui->tabWidget->setCurrentIndex(0);
+}
+
+void DialogSettings::setDbaseEditState( bool state) {
+    ui->comboBox_dbase->setEnabled(state);
+    ui->lineEdit_hostName->setEnabled(state);
+    ui->lineEdit_port->setEnabled(state);
+    ui->lineEdit_databaseName->setEnabled(state);
+    ui->lineEdit_login->setEnabled(state);
+    ui->lineEdit_password->setEnabled(state);
+    ui->toolButton_BaseSelect->setEnabled(state);
 }
 
 DialogSettings::~DialogSettings()
@@ -73,7 +104,27 @@ void DialogSettings::on_buttonBox_accepted()
     inf.tax = ui->checkBox_TAX->checkState();
     m_data->updateInfo(inf);    
 
+    //sauvegarde les donnees de la banque dans la bdd
+    database::Bank b;
+    b.codeBanque = ui->lineEdit_codeBanque->text();
+    b.codeGuichet = ui->lineEdit_codeGuichet->text();
+    b.numCompte = ui->lineEdit_numCompte->text();
+    b.keyRIB = ui->lineEdit_keyRIB->text();
+    b.address = ui->lineEdit_Address->text();
+    b.IBAN1 = ui->lineEdit_IBAN1->text();
+    b.IBAN2 = ui->lineEdit_IBAN2->text();
+    b.IBAN3 = ui->lineEdit_IBAN3->text();
+    b.IBAN4 = ui->lineEdit_IBAN4->text();
+    b.IBAN5 = ui->lineEdit_IBAN5->text();
+    b.IBAN6 = ui->lineEdit_IBAN6->text();
+    b.IBAN7 = ui->lineEdit_IBAN7->text();
+    b.IBAN8 = ui->lineEdit_IBAN8->text();
+    b.IBAN9 = ui->lineEdit_IBAN9->text();
+    b.codeBIC = ui->lineEdit_BIC->text();
+    m_data->updateBank(b);
+
     //settings
+    m_Settings->setDatabase_bdd( ui->comboBox_dbase->currentText() );
     m_Settings->setDatabase_hostName( ui->lineEdit_hostName->text() );
     m_Settings->setDatabase_port( ui->lineEdit_port->text().toInt() );
     m_Settings->setDatabase_databaseName( ui->lineEdit_databaseName->text() );
@@ -88,6 +139,7 @@ void DialogSettings::on_pushButton_Logo_clicked()
 {
     QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
     QString fileName = QFileDialog::getOpenFileName(this, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
+    if(fileName.isEmpty())return;
 
     //verifie la taille
     QImage logo;
@@ -126,7 +178,7 @@ void DialogSettings::on_pushButton_ClearImage_clicked()
 void DialogSettings::on_toolButton_BaseSelect_clicked()
 {
     QFileDialog dialog(this);
-    QString filename = dialog.getOpenFileName(this, "Selectionnez un fichier *.fdb", "*.fdb", "*.fdb");
+    QString filename = dialog.getOpenFileName(this, "Selectionnez un fichier *.db", "*.db", "*.db");
     if( !filename.isEmpty() ) {
         ui->lineEdit_databaseName->setText(filename);
     }
@@ -138,13 +190,14 @@ void DialogSettings::on_toolButton_BaseSelect_clicked()
 void DialogSettings::on_pushButton_connect_clicked()
 {
     if(!m_data->isConnected()){
+        m_data->setBdd( ui->comboBox_dbase->currentText() );
         m_data->setHostName( ui->lineEdit_hostName->text() );
         m_data->setPort( ui->lineEdit_port->text().toInt() );
         m_data->setDatabaseName( ui->lineEdit_databaseName->text() );
         m_data->setUserName( ui->lineEdit_login->text() );
         m_data->setPassword( ui->lineEdit_password->text() );
 
-        if(m_data->connect(database::DB_CONNECT) == database::DB_NOTEXIST_ERR){
+        if(m_data->connect() == database::DB_NOTEXIST_ERR){
             // Demande si on creer une nouvelle base de donnees
             QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous cr\351er une nouvelle base de donn\351es ?\n"),QMessageBox::Yes | QMessageBox::No);
             mBox.setDefaultButton(QMessageBox::No);
@@ -153,6 +206,9 @@ void DialogSettings::on_pushButton_connect_clicked()
         }
     }
     else m_data->close();
+
+    //Active ou desactive selon letat de la connexion
+    setDbaseEditState(!m_data->isConnected());
 
     //charge les info de la base de donnees
     loadInfoDatabase();
@@ -194,4 +250,22 @@ void DialogSettings::loadInfoDatabase() {
      ui->lineEdit_sAdd2->setText(inf.address2);
      ui->lineEdit_sAdd3->setText(inf.address3);
      ui->checkBox_TAX->setCheckState( Qt::CheckState(inf.tax) );
+
+     database::Bank b;
+     m_data->getBank( b );
+     ui->lineEdit_codeBanque->setText( b.codeBanque );
+     ui->lineEdit_codeGuichet->setText( b.codeGuichet );
+     ui->lineEdit_numCompte->setText( b.numCompte );
+     ui->lineEdit_keyRIB->setText( b.keyRIB );
+     ui->lineEdit_Address->setText( b.address );
+     ui->lineEdit_IBAN1->setText( b.IBAN1 );
+     ui->lineEdit_IBAN2->setText( b.IBAN2 );
+     ui->lineEdit_IBAN3->setText( b.IBAN3 );
+     ui->lineEdit_IBAN4->setText( b.IBAN4 );
+     ui->lineEdit_IBAN5->setText( b.IBAN5 );
+     ui->lineEdit_IBAN6->setText( b.IBAN6 );
+     ui->lineEdit_IBAN7->setText( b.IBAN7 );
+     ui->lineEdit_IBAN8->setText( b.IBAN8 );
+     ui->lineEdit_IBAN9->setText( b.IBAN9 );
+     ui->lineEdit_BIC->setText( b.codeBIC );
 }

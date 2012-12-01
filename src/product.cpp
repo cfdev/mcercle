@@ -23,19 +23,19 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QWidget>
+#include <QVariant>
+#include <QBuffer>
 
-product::product(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QLocale &lang, QWidget *parent): m_parent(parent) {
+product::product(QSqlDatabase db, QLocale &lang, QWidget *parent): m_parent(parent) {
     m_db = db;
-    m_tr = tr;
-    m_st = st;
 
     //langage
     m_lang = lang;
 
     //Class des fournisseurs
-    m_provider = new provider(m_db, m_tr, m_st, m_parent);
+    m_provider = new provider(m_db, m_parent);
     //Class des categories
-    m_category = new category(m_db, m_tr, m_st, m_parent);
+    m_category = new category(m_db, m_parent);
 
 }
 
@@ -77,29 +77,35 @@ QString product::getTextState(int state)
 bool product::create() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
+   /* QByteArray data;
+    QBuffer buf(&data);
+    writes image into ba in PNG format
+    m_image.save(&buf,"PNG");*/
+
     QString f;
-    QString req = "INSERT INTO tab_products(CODE, SELLING_PRICE, BUYING_PRICE, TAX, NAME, STOCK, STOCK_WARNING, STATE, ID_PROVIDER, ID_CATEGORY) ";
+    QString req = "INSERT INTO TAB_PRODUCTS(CREATIONDATE, CODE, SELLING_PRICE, BUYING_PRICE, TAX, NAME, STOCK, STOCK_WARNING, STATE,ID_PROVIDER, ID_CATEGORY) "; //  IMAGE,
     req += "VALUES(";
-    req += "'" + m_code.replace("\'","''").toUtf8() + "',";
+    req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
+    req += "'" + m_code.replace("\'","''") + "',";
     req += "'" + f.setNum(m_selling_price,'f',2) + "',";
     req += "'" + f.setNum(m_buying_price,'f',2) + "',";
     req += "'" + f.setNum(m_tax,'f',2) + "',";
-    req += "'" + m_name.replace("\'","''").toUtf8() + "',";
+    req += "'" + m_name.replace("\'","''") + "',";
     req += "'" + QString::number(m_stock) + "',";
     req += "'" + QString::number(m_stock_warning) + "',";
     req += "'" + QString::number(m_state)  + "',";
-    req += "'" + QString::number(m_idProvider/*m_provider->getId()*/)  + "',";
-    req += "'" + QString::number(m_idCategory/*m_category->getId()*/)   + "');";
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+  //  req += " :data,";
+    req += "'" + QString::number(m_idProvider)  + "',";
+    req += "'" + QString::number(m_idCategory)   + "');";
+
+    QSqlQuery query;
+    query.prepare(req);
+    //query.bindValue( ":data", buf.data() );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -111,30 +117,34 @@ bool product::create() {
 bool product::update() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
+   /* QByteArray data;
+    QBuffer buf(&data);
+     writes image into ba in PNG format
+    m_image.save(&buf,"PNG");*/
+
     QString f;
-    QString req = "UPDATE tab_products SET ";
-    req += "CODE='" + m_code.replace("\'","''").toUtf8() + "',";
+    QString req = "UPDATE TAB_PRODUCTS SET ";
+    req += "CODE='" + m_code.replace("\'","''") + "',";
     req += "SELLING_PRICE='" + f.setNum(m_selling_price,'f',2) + "',";
     req += "BUYING_PRICE='" + f.setNum(m_buying_price,'f',2) + "',";
     req += "TAX='" + f.setNum(m_tax,'f',2) + "',";
-    req += "NAME='" + m_name.replace("\'","''").toUtf8() + "',";
+    req += "NAME='" + m_name.replace("\'","''") + "',";
     req += "STOCK='" + QString::number(m_stock) + "',";
     req += "STOCK_WARNING='" + QString::number(m_stock_warning) + "',";
     req += "STATE='" + QString::number(m_state) + "',";
-    req += "ID_PROVIDER='" + QString::number(m_idProvider/*m_provider->getId()*/) + "',";
-    req += "ID_CATEGORY='" + QString::number(m_idCategory/*m_category->getId()*/) + "' ";
-    req += "WHERE ID='"+ QString::number(m_id) +"';";
+  //  req += "IMAGE = :data,";
+    req += "ID_PROVIDER='" + QString::number(m_idProvider) + "',";
+    req += "ID_CATEGORY='" + QString::number(m_idCategory) + "' ";
+    req += "WHERE ID="+ QString::number(m_id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    //query.bindValue( ":data", buf.data() );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e ) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -147,19 +157,16 @@ bool product::remove(){
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
     // Construction de la requette
-    QString req = "DELETE FROM tab_products";
-    req += " WHERE ID='"+ QString::number(m_id) +"';";
+    QString req = "DELETE FROM TAB_PRODUCTS";
+    req += " WHERE ID="+ QString::number(m_id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e ) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -169,42 +176,31 @@ bool product::remove(){
      @return true si ok
   */
 bool product::loadFromCode(const QString& code) {
-    std::string val;
-    IBPP::Timestamp dateCrea;
-    QString req = "SELECT * FROM tab_products WHERE UPPER(CODE COLLATE UTF8)=UPPER('";
-    req += code +"' COLLATE UTF8);";
+    QString req = "SELECT * FROM TAB_PRODUCTS WHERE UPPER(CODE)=UPPER('";
+    req += code +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_creationDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("CODE", val);
-            m_code = QString::fromUtf8(val.c_str());
-            val=""; //raz
-            m_st->Get("SELLING_PRICE", m_selling_price);
-            m_st->Get("BUYING_PRICE", m_buying_price);
-            m_st->Get("TAX", m_tax);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            m_st->Get("STOCK", m_stock);
-            m_st->Get("STOCK_WARNING", m_stock_warning);
-            m_st->Get("STATE", m_state);
-            m_st->Get("ID_PROVIDER", m_idProvider);
-            m_st->Get("ID_CATEGORY",m_idCategory);
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_id = query.value(query.record().indexOf("ID")).toInt();
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_code = query.value(query.record().indexOf("CODE")).toString();
+        m_selling_price = query.value(query.record().indexOf("SELLING_PRICE")).toFloat();
+        m_buying_price = query.value(query.record().indexOf("BUYING_PRICE")).toFloat();
+        m_tax = query.value(query.record().indexOf("TAX")).toFloat();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_stock = query.value(query.record().indexOf("STOCK")).toInt();
+        m_stock_warning = query.value(query.record().indexOf("STOCK_WARNING")).toInt();
+        m_state = query.value(query.record().indexOf("STATE")).toInt();
+        m_idProvider = query.value(query.record().indexOf("ID_PROVIDER")).toInt();
+        m_idCategory = query.value(query.record().indexOf("ID_CATEGORY")).toInt();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 /**
@@ -213,45 +209,36 @@ bool product::loadFromCode(const QString& code) {
      @return true si ok
   */
 bool product::loadFromID(const int& id) {
-    std::string val;
-    IBPP::Timestamp dateCrea;
-    QString req = "SELECT * FROM tab_products WHERE ID='";
-    req += QString::number(id) +"';";
+    QByteArray data;
+    m_id = id;
+    QString req = "SELECT * FROM TAB_PRODUCTS WHERE ID=";
+    req += QString::number(id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        if(m_st->Fetch()){
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_creationDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("CODE", val);
-            m_code = QString::fromUtf8(val.c_str());
-            val=""; //raz
-            m_st->Get("SELLING_PRICE", m_selling_price);
-            m_st->Get("BUYING_PRICE", m_buying_price);
-            m_st->Get("TAX", m_tax);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            m_st->Get("STOCK", m_stock);
-            m_st->Get("STOCK_WARNING", m_stock_warning);
-            m_st->Get("STATE", m_state);
-            m_st->Get("ID_PROVIDER", m_idProvider);
-            m_st->Get("ID_CATEGORY",m_idCategory); 
-        }
-        else{
-            m_tr->Commit();
-            return false;
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_code = query.value(query.record().indexOf("CODE")).toString();
+        m_selling_price = query.value(query.record().indexOf("SELLING_PRICE")).toFloat();
+        m_buying_price = query.value(query.record().indexOf("BUYING_PRICE")).toFloat();
+        m_tax = query.value(query.record().indexOf("TAX")).toFloat();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_stock = query.value(query.record().indexOf("STOCK")).toInt();
+        m_stock_warning = query.value(query.record().indexOf("STOCK_WARNING")).toInt();
+        m_state = query.value(query.record().indexOf("STATE")).toInt();
+        m_idProvider = query.value(query.record().indexOf("ID_PROVIDER")).toInt();
+        m_idCategory = query.value(query.record().indexOf("ID_CATEGORY")).toInt();
+     /*   QImage img;
+        m_image = img;
+        data = query.value(query.record().indexOf("IMAGE")).toByteArray();
+        m_image.loadFromData(data,"PNG");*/
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -261,22 +248,22 @@ bool product::loadFromID(const int& id) {
      @return vrai si le produit exist
   */
 bool product::isHere(const QString& code) {
-    int iVal=0;
-    QString req = "SELECT COUNT(*) AS PCOUNT FROM tab_products WHERE UPPER(CODE COLLATE UTF8)=UPPER('";
-    req += code + "' COLLATE UTF8);";
+    int count=0;
+    QString req = "SELECT COUNT(*) FROM TAB_PRODUCTS AS PCOUNT WHERE UPPER(CODE)=UPPER('";
+    req += code + "');";
     if(code.isEmpty())return false;
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("PCOUNT", iVal);
-        m_tr->Commit();
-        if(iVal>0)return true;
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+        if(count>0)return true;
         else return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return false;
     }
 }
@@ -288,41 +275,65 @@ bool product::isHere(const QString& code) {
 int product::count(QString filter, QString field, bool showObsoleteProduct) {
     int count=0;
     //Requete 1 nombre de valeur
-    QString req = "SELECT COUNT(*) FROM (SELECT tab_products.CODE FROM tab_products"
-            " LEFT OUTER JOIN tab_products_categories"
-            " ON tab_products.ID_CATEGORY = tab_products_categories.ID";
+    QString req = "SELECT COUNT(*) FROM (SELECT TAB_PRODUCTS.CODE FROM TAB_PRODUCTS"
+            " LEFT OUTER JOIN TAB_PRODUCTS_CATEGORIES"
+            " ON TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID";
 
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
         if(!showObsoleteProduct)
-            req += " AND STATE='1'";
-        req += " );";
+            req += " AND STATE=1";
     }
     else{
         if(!showObsoleteProduct)
-            req += " WHERE STATE='1'";
-        req += ");";
+            req += " WHERE STATE=1";
     }
+    req += ")  AS PCOUNT;";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-        m_st->Fetch();
-        m_st->Get(1, count);
-        m_tr->Commit();
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+        return count;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return 0;
     }
-    return count;
 }
 
+/**
+     Permet de d obtenir le dernier id genere
+     @return l id
+  */
+int product::getLastId(){
+    int iVal=-1;
+    QString req;
+    if(m_db.driverName() == "QSQLITE")
+        req = "SELECT seq FROM sqlite_sequence WHERE name=\"TAB_PRODUCTS\";";
+    else    req = "SHOW TABLE STATUS LIKE 'TAB_PRODUCTS\';";
+
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        if(m_db.driverName() == "QSQLITE")
+            iVal = query.value(query.record().indexOf("seq")).toInt();
+        else
+            iVal = query.value(query.record().indexOf("Auto_increment")).toInt()-1;
+        return iVal;
+    }
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return -1;
+    }
+}
 
 /**
      Avoir une liste des produits existants en fonction des parametres d entrees
@@ -334,63 +345,45 @@ int product::count(QString filter, QString field, bool showObsoleteProduct) {
      @return true si ok
   */
 bool product::getProductList(ProductList& list, int first, int skip, QString filter, QString field) {
-    std::string sVal;
-    int iVal;
-    float fVal;
-    QString req = "SELECT FIRST "+QString::number(first)+" SKIP "+QString::number(skip)+" tab_products.ID, tab_products.CODE, tab_products.NAME, tab_products.SELLING_PRICE, tab_products_categories.NAME AS CATEGORY, tab_products_categories.COLOR AS CATEGORYCOLOR, tab_providers.NAME AS PROVIDER, tab_products.STOCK, tab_products.STOCK_WARNING, tab_products.STATE"
-                  " FROM tab_products"
-                  " LEFT OUTER JOIN tab_products_categories"
-                  "  ON tab_products.ID_CATEGORY = tab_products_categories.ID"
-                  " LEFT OUTER JOIN tab_providers"
-                  "  ON tab_products.ID_PROVIDER = tab_providers.ID";
+
+    QString req = "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE"
+                  " FROM TAB_PRODUCTS"
+                  " LEFT OUTER JOIN TAB_PRODUCTS_CATEGORIES"
+                  "  ON TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID"
+                  " LEFT OUTER JOIN TAB_PROVIDERS"
+                  "  ON TAB_PRODUCTS.ID_PROVIDER = TAB_PROVIDERS.ID";
 
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
     }
     // ATTENTION PEUT FAIRE RALENTIR LE TRAITEMENT
-    req += " ORDER BY UPPER(TAB_PRODUCTS.NAME COLLATE UTF8) ASC;";
+    req += " ORDER BY UPPER(TAB_PRODUCTS.NAME) ASC LIMIT "+QString::number(skip)+","+QString::number(first)+"; ";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-
-        while (m_st->Fetch()) {
-            m_st->Get("ID", iVal);
-            list.id.push_back(iVal);iVal=0;
-            m_st->Get("CODE", sVal);            
-            list.code << QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("NAME", sVal);
-            list.name <<  QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("SELLING_PRICE", fVal);
-            list.selling_price.push_back(fVal);fVal=0;
-            sVal=""; //raz
-            m_st->Get("CATEGORY", sVal);
-            list.category <<  QString::fromUtf8(sVal.c_str());sVal="";
-            sVal=""; //raz
-            m_st->Get("CATEGORYCOLOR", sVal);
-            list.categoryColor.push_back( QColor( QString::fromUtf8(sVal.c_str()) ) );sVal="";
-            sVal=""; //raz
-            m_st->Get("PROVIDER", sVal);
-            list.provider <<  QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("STOCK", iVal);
-            list.stock.push_back(iVal);iVal=0;
-            m_st->Get("STOCK_WARNING", iVal);
-            list.stockWarning.push_back(iVal);iVal=0;
-            m_st->Get("STATE", iVal);
-            list.state.push_back(iVal);iVal=0;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        while (query.next()){
+            list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
+            list.code << query.value(query.record().indexOf("CODE")).toString();
+            list.name << query.value(query.record().indexOf("NAME")).toString();
+            list.selling_price.push_back( query.value(query.record().indexOf("SELLING_PRICE")).toFloat() );
+            list.category << query.value(query.record().indexOf("CATEGORY")).toString();
+            list.categoryColor.push_back( query.value(query.record().indexOf("CATEGORYCOLOR")).toString() );
+            list.provider << query.value(query.record().indexOf("PROVIDER")).toString();
+            list.stock.push_back( query.value(query.record().indexOf("STOCK")).toInt() );
+            list.stockWarning.push_back( query.value(query.record().indexOf("STOCK_WARNING")).toInt() );
+            list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
         }
-        m_tr->Commit();
         return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -401,25 +394,23 @@ bool product::getProductList(ProductList& list, int first, int skip, QString fil
   */
 QString product::getProvider() {
     QString data;
-    std::string val;
-    QString req =   "SELECT tab_providers.NAME"
-                    " FROM tab_providers, tab_products"
-                    " WHERE tab_products.ID_PROVIDER = tab_providers.ID"
-                    " AND tab_products.ID='"+QString::number(m_id)+"'"
-                    " ORDER BY NAME ASC;";
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("NAME", val);
-        data = QString::fromUtf8(val.c_str());
-        m_tr->Commit();
+    QString req =   "SELECT TAB_PROVIDERS.NAME"
+                    " FROM TAB_PROVIDERS, TAB_PRODUCTS"
+                    " WHERE TAB_PRODUCTS.ID_PROVIDER = TAB_PROVIDERS.ID"
+                    " AND TAB_PRODUCTS.ID="+QString::number(m_id)+
+                    " ORDER BY TAB_PROVIDERS.NAME ASC;";
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        data = query.value(query.record().indexOf("NAME")).toString();
+        return data;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return "";
     }
-    return data;
 }
 
 
@@ -430,25 +421,23 @@ QString product::getProvider() {
   */
 QString product::getCategory() {
     QString data;
-    std::string val;
-    QString req =   "SELECT tab_products_categories.NAME"
-                    " FROM tab_products_categories, tab_products"
-                    " WHERE tab_products.ID_CATEGORY = tab_products_categories.ID"
-                    " AND tab_products.ID='"+QString::number(m_id)+"'"
-                    " ORDER BY NAME ASC;";
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("NAME", val);
-        data = QString::fromUtf8(val.c_str());
-        m_tr->Commit();
+     QString req =   "SELECT TAB_PRODUCTS_CATEGORIES.NAME"
+                    " FROM TAB_PRODUCTS_CATEGORIES, TAB_PRODUCTS"
+                    " WHERE TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID"
+                    " AND TAB_PRODUCTS.ID="+QString::number(m_id)+
+                    " ORDER BY TAB_PRODUCTS_CATEGORIES.NAME ASC;";
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        data = query.value(query.record().indexOf("NAME")).toString();
+        return data;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return "";
     }
-    return data;
 }
 
 
@@ -459,53 +448,34 @@ QString product::getCategory() {
      @return true si ok
   */
 bool product::getProductListStockAlert(ProductList& list) {
-    std::string sVal;
-    int iVal;
-    float fVal;
-    QString req =   "SELECT tab_products.ID, tab_products.CODE, tab_products.NAME, tab_products.SELLING_PRICE, tab_products_categories.NAME AS CATEGORY, tab_products_categories.COLOR AS CATEGORYCOLOR, tab_providers.NAME AS PROVIDER, tab_products.STOCK, tab_products.STOCK_WARNING, tab_products.STATE "
+    QString req =   "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE "
                     "FROM TAB_PRODUCTS "
-                    "LEFT OUTER JOIN tab_products_categories ON tab_products.ID_CATEGORY = tab_products_categories.ID "
-                    "LEFT OUTER JOIN tab_providers ON tab_products.ID_PROVIDER = tab_providers.ID "
-                    "WHERE TAB_PRODUCTS.STATE='1' AND TAB_PRODUCTS.STOCK <= (TAB_PRODUCTS.STOCK_WARNING*2) ";
+                    "LEFT OUTER JOIN TAB_PRODUCTS_CATEGORIES ON TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID "
+                    "LEFT OUTER JOIN TAB_PROVIDERS ON TAB_PRODUCTS.ID_PROVIDER = TAB_PROVIDERS.ID "
+                    "WHERE TAB_PRODUCTS.STATE=1 AND TAB_PRODUCTS.STOCK <= (TAB_PRODUCTS.STOCK_WARNING*2) ";
 
     // ATTENTION PEUT FAIRE RALENTIR LE TRAITEMENT
-    req += "ORDER BY UPPER(TAB_PRODUCTS.NAME COLLATE UTF8) ASC; ";
+    req += "ORDER BY UPPER(TAB_PRODUCTS.NAME) ASC; ";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-
-        while (m_st->Fetch()) {
-            m_st->Get("ID", iVal);
-            list.id.push_back(iVal);iVal=0;
-            m_st->Get("CODE", sVal);
-            list.code << QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("NAME", sVal);
-            list.name <<  QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("SELLING_PRICE", fVal);
-            list.selling_price.push_back(fVal);fVal=0;
-            sVal=""; //raz
-            m_st->Get("CATEGORY", sVal);
-            list.category <<  QString::fromUtf8(sVal.c_str());sVal="";
-            sVal=""; //raz
-            m_st->Get("CATEGORYCOLOR", sVal);
-            list.categoryColor.push_back( QColor( QString::fromUtf8(sVal.c_str()) ) );sVal="";
-            sVal=""; //raz
-            m_st->Get("PROVIDER", sVal);
-            list.provider <<  QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("STOCK", iVal);
-            list.stock.push_back(iVal);iVal=0;
-            m_st->Get("STOCK_WARNING", iVal);
-            list.stockWarning.push_back(iVal);iVal=0;
-            m_st->Get("STATE", iVal);
-            list.state.push_back(iVal);iVal=0;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        while (query.next()){
+            list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
+            list.code << query.value(query.record().indexOf("CODE")).toString();
+            list.name << query.value(query.record().indexOf("NAME")).toString();
+            list.selling_price.push_back( query.value(query.record().indexOf("SELLING_PRICE")).toFloat() );
+            list.category << query.value(query.record().indexOf("CATEGORY")).toString();
+            list.categoryColor.push_back( query.value(query.record().indexOf("CATEGORYCOLOR")).toString() );
+            list.provider << query.value(query.record().indexOf("PROVIDER")).toString();
+            list.stock.push_back( query.value(query.record().indexOf("STOCK")).toInt() );
+            list.stockWarning.push_back( query.value(query.record().indexOf("STOCK_WARNING")).toInt() );
+            list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
         }
-        m_tr->Commit();
         return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogservices.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -215,10 +215,10 @@ public:
     {
         DialogServices->setWindowTitle(QApplication::translate("DialogServices", "Services", 0, QApplication::UnicodeUTF8));
         labelTitle->setText(QApplication::translate("DialogServices", "...", 0, QApplication::UnicodeUTF8));
-        label_serviceComm->setText(QApplication::translate("DialogServices", "Charger une Intervention\n"
-"g\303\251n\303\251rales :", 0, QApplication::UnicodeUTF8));
+        label_serviceComm->setText(QApplication::translate("DialogServices", "Charger un service\n"
+"g\303\251n\303\251ral :", 0, QApplication::UnicodeUTF8));
         toolButton_EditServiceComm->setText(QApplication::translate("DialogServices", "...", 0, QApplication::UnicodeUTF8));
-        groupBox_Int->setTitle(QApplication::translate("DialogServices", "Intervention personnalis\303\251e", 0, QApplication::UnicodeUTF8));
+        groupBox_Int->setTitle(QApplication::translate("DialogServices", "Service personnalis\303\251", 0, QApplication::UnicodeUTF8));
         LabelName->setText(QApplication::translate("DialogServices", "Nom: ", 0, QApplication::UnicodeUTF8));
         lineEdit_Name->setText(QString());
         label_3->setText(QApplication::translate("DialogServices", "Date et heure: ", 0, QApplication::UnicodeUTF8));

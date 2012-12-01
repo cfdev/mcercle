@@ -23,13 +23,13 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QWidget>
+#include <QVariant>
 
-service_common::service_common(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent): m_parent(parent) {
+service_common::service_common(QSqlDatabase db, QWidget *parent): m_parent(parent) {
     m_db = db;
-    m_tr = tr;
-    m_st = st;
     //default
     m_theDate = QDateTime::fromString("1.30.1", "M.d.s");
+    m_tax = 0;
 }
 
 service_common::~service_common() {
@@ -44,22 +44,21 @@ bool service_common::create() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
     QString f;
-    QString req = "INSERT INTO tab_services_commons(THEDATE, PRICE, NAME, DESCRIPTION) ";
+    QString req = "INSERT INTO TAB_SERVICES_COMMONS(CREATIONDATE, THEDATE, PRICE, NAME, DESCRIPTION) ";
     req += "VALUES(";
+    req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
     req += "'" + m_theDate.toString(tr("yyyy/MM/dd hh:mm:ss")) + "',";
     req += "'" + f.setNum(m_price,'f',2) + "',";
-    req += "'" + m_name.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_description.replace("\'","''").toUtf8() + "');";
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    req += "'" + m_name.replace("\'","''") + "',";
+    req += "'" + m_description.replace("\'","''") + "');";
+
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -72,23 +71,20 @@ bool service_common::update() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
     QString f;
-    QString req = "UPDATE tab_services_commons SET ";
+    QString req = "UPDATE TAB_SERVICES_COMMONS SET ";
     req += "THEDATE='" + m_theDate.toString(tr("yyyy/MM/dd hh:mm:ss")) + "',";
     req += "PRICE='" + f.setNum(m_price,'f',2) + "',";
-    req += "NAME='" + m_name.replace("\'","''").toUtf8() + "',";
-    req += "DESCRIPTION='" + m_description.replace("\'","''").toUtf8() + "' ";
+    req += "NAME='" + m_name.replace("\'","''") + "',";
+    req += "DESCRIPTION='" + m_description.replace("\'","''") + "' ";
     req += "WHERE ID='"+ QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e ) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -101,19 +97,16 @@ bool service_common::remove(){
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
     // Construction de la requette
-    QString req = "DELETE FROM tab_services_commons";
+    QString req = "DELETE FROM TAB_SERVICES_COMMONS";
     req += " WHERE ID='"+ QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e ) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -124,38 +117,26 @@ bool service_common::remove(){
      @return vrai si ok
   */
 bool service_common::loadFromID(const int& id) {
-    std::string val;
-    float fVal;
-    IBPP::Timestamp dateCrea, theDate;
-    QString req = "SELECT * FROM tab_services_commons WHERE ID='";
+
+    QString req = "SELECT * FROM TAB_SERVICES_COMMONS WHERE ID='";
     req += QString::number(id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_id = 0;
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_theDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("THEDATE", theDate);
-            m_theDate = database::fromIBPPTimeStamp(theDate);
-            m_st->Get("PRICE", fVal);
-            m_price = fVal;
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            val="";
-            m_st->Get("DESCRIPTION", val);
-            m_description = QString::fromUtf8(val.c_str());
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_id = id;
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_theDate = query.value(query.record().indexOf("THEDATE")).toDateTime();
+        m_price = query.value(query.record().indexOf("PRICE")).toFloat();
+        m_tax = query.value(query.record().indexOf("TAX")).toFloat();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
     return false;
 }
@@ -167,22 +148,23 @@ bool service_common::loadFromID(const int& id) {
      @return l id du service
   */
 int service_common::isHere(const QString& name) {
-    int iVal;
-    QString req = "SELECT ID FROM tab_services_commons WHERE UPPER(NAME COLLATE UTF8)=UPPER('";
-    req +=  QString(name).replace("\'","''").toUtf8() + "' COLLATE UTF8);";
+    int count;
+    QString req = "SELECT COUNT(*) FROM TAB_SERVICES_COMMONS WHERE UPPER(NAME)=UPPER('";
+    req +=  QString(name).replace("\'","''") + "');";
     if(name.isEmpty()) return -1;
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("ID", iVal);
-        m_tr->Commit();
-        return iVal;
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+        if(count>0)return true;
+        else return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-        return -1;
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
 }
 
@@ -191,48 +173,34 @@ int service_common::isHere(const QString& name) {
      Liste les donnees du champ en fonction du filtre
      @return valeur de retour sous forme de liste de chaine de type service_commonList
   */
-void service_common::getServiceCommList(serviceCommList& list, QString order, QString filter, QString field) {
-    std::string sVal;
-    float fVal;
-    int iVal;
-    IBPP::Timestamp dateCrea, theDate;
+bool service_common::getServiceCommList(serviceCommList& list, QString order, QString filter, QString field) {
     QString req = "SELECT *"
-                  " FROM tab_services_commons ";
+                  " FROM TAB_SERVICES_COMMONS ";
 
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
     }
+    req += " ORDER BY UPPER("+order.replace("\'","''")+") ASC;";
 
-    req += " ORDER BY UPPER("+order.replace("\'","''").toUtf8()+") ASC;";
-
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-
-        while (m_st->Fetch()) {
-            m_st->Get("ID", iVal);
-            list.id.push_back( iVal );
-            m_st->Get("CREATIONDATE", dateCrea);
-            list.creationDate.push_back( database::fromIBPPTimeStamp(dateCrea) );
-            m_st->Get("THEDATE", theDate);
-            list.date.push_back( database::fromIBPPTimeStamp(theDate) );
-            m_st->Get("NAME", sVal);
-            list.name <<  QString::fromUtf8(sVal.c_str());
-            sVal="";
-            m_st->Get("DESCRIPTION", sVal);
-            list.description <<  QString::fromUtf8(sVal.c_str());
-            m_st->Get("PRICE", fVal);
-            list.price.push_back(fVal);
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        while (query.next()){
+            list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
+            list.name << query.value(query.record().indexOf("NAME")).toString();
+            list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+            list.date.push_back(  query.value(query.record().indexOf("THEDATE")).toDateTime());
+            list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
         }
-        m_tr->Commit();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
 }
 

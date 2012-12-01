@@ -23,22 +23,21 @@
 #include <QMessageBox>
 #include <QStringList>
 #include <QWidget>
+#include <QVariant>
 
-customer::customer(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent)
+customer::customer(QSqlDatabase db, QWidget *parent)
 : m_parent(parent) {
     m_db = db;
-    m_tr = tr;
-    m_st = st;
 
     m_type = PEOPLE_TYPE;
 
     //Class des propositions commerciales / devis
-    m_proposal = new proposal(db, m_tr, m_st, m_parent);
+    m_proposal = new proposal(db, m_parent);
     //Class des factures
-    m_invoice = new invoice(db, m_tr, m_st, m_parent);
+    m_invoice = new invoice(db, m_parent);
     //Class des prestations
-    m_service = new service(db, m_tr, m_st, m_parent);
-    m_serviceComm = new service_common(db, m_tr, m_st, m_parent);
+    m_service = new service(db, m_parent);
+    m_serviceComm = new service_common(db, m_parent);
 }
 
 
@@ -56,36 +55,34 @@ customer::~customer() {
 bool customer::create() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
-    QString req = "INSERT INTO tab_customers(TYPE, DESC_COMPAGNY, LASTNAME, FIRSTNAME, GENDER, BIRTHDAY, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY, PHONENUMBER, MOBILENUMBER, EMAIL, PROFESSION, COMMENTS, SENDING_PUB_EMAIL) ";
+    QString req = "INSERT INTO TAB_CUSTOMERS(TYPE, CREATIONDATE, DESC_COMPAGNY, LASTNAME, FIRSTNAME, GENDER, BIRTHDAY, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY, PHONENUMBER, MOBILENUMBER, EMAIL, PROFESSION, COMMENTS, SENDING_PUB_EMAIL) ";
     req += "VALUES('" + QString::number(m_type)  + "',";
-    req += "'" + m_desCompagny.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_lastName.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_firstName.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_gender.replace("\'","''").toUtf8() + "',";
+    req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
+    req += "'" + m_desCompagny.replace("\'","''") + "',";
+    req += "'" + m_lastName.replace("\'","''") + "',";
+    req += "'" + m_firstName.replace("\'","''") + "',";
+    req += "'" + m_gender.replace("\'","''") + "',";
     req += "'" + m_birthday.toString(tr("yyyy/MM/dd")) + "',";
-    req += "'" + m_address1.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_address2.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_address3.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_zipCode.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_city.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_country.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_phoneNumber.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_mobileNumber.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_email.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_profession.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_comments.replace("\'","''").toUtf8() + "',";
+    req += "'" + m_address1.replace("\'","''") + "',";
+    req += "'" + m_address2.replace("\'","''") + "',";
+    req += "'" + m_address3.replace("\'","''") + "',";
+    req += "'" + m_zipCode.replace("\'","''") + "',";
+    req += "'" + m_city.replace("\'","''") + "',";
+    req += "'" + m_country.replace("\'","''") + "',";
+    req += "'" + m_phoneNumber.replace("\'","''") + "',";
+    req += "'" + m_mobileNumber.replace("\'","''") + "',";
+    req += "'" + m_email.replace("\'","''") + "',";
+    req += "'" + m_profession.replace("\'","''") + "',";
+    req += "'" + m_comments.replace("\'","''") + "',";
     req += "'" + QString::number(m_sending_pubEmail) + "');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -96,37 +93,34 @@ bool customer::create() {
 bool customer::update() {
     // Construction de la requette
     // Si le charactere speciaux "\'" existe on l'adapte pour la requette
-    QString req = "UPDATE tab_customers SET ";
+    QString req = "UPDATE TAB_CUSTOMERS SET ";
     req += "TYPE='" + QString::number(m_type) + "', ";
-    req += "DESC_COMPAGNY='" + m_desCompagny.replace("\'","''").toUtf8() + "',";
-    req += "LASTNAME='" + m_lastName.replace("\'","''").toUtf8() + "',";
-    req += "FIRSTNAME='" + m_firstName.replace("\'","''").toUtf8() + "',";
-    req += "GENDER='" + m_gender.replace("\'","''").toUtf8() + "',";
+    req += "DESC_COMPAGNY='" + m_desCompagny.replace("\'","''") + "',";
+    req += "LASTNAME='" + m_lastName.replace("\'","''") + "',";
+    req += "FIRSTNAME='" + m_firstName.replace("\'","''") + "',";
+    req += "GENDER='" + m_gender.replace("\'","''") + "',";
     req += "BIRTHDAY='" + m_birthday.toString(tr("yyyy/MM/dd")) + "',";
-    req += "ADDRESS1='" + m_address1.replace("\'","''").toUtf8() + "',";
-    req += "ADDRESS2='" + m_address2.replace("\'","''").toUtf8() + "',";
-    req += "ADDRESS3='" + m_address3.replace("\'","''").toUtf8() + "',";
-    req += "ZIPCODE='" + m_zipCode.replace("\'","''").toUtf8() + "',";
-    req += "CITY='" + m_city.replace("\'","''").toUtf8() + "',";
-    req += "COUNTRY='" + m_country.replace("\'","''").toUtf8() + "',";
-    req += "PHONENUMBER='" + m_phoneNumber.replace("\'","''").toUtf8() + "',";
-    req += "MOBILENUMBER='" + m_mobileNumber.replace("\'","''").toUtf8() + "',";
+    req += "ADDRESS1='" + m_address1.replace("\'","''") + "',";
+    req += "ADDRESS2='" + m_address2.replace("\'","''") + "',";
+    req += "ADDRESS3='" + m_address3.replace("\'","''") + "',";
+    req += "ZIPCODE='" + m_zipCode.replace("\'","''") + "',";
+    req += "CITY='" + m_city.replace("\'","''") + "',";
+    req += "COUNTRY='" + m_country.replace("\'","''") + "',";
+    req += "PHONENUMBER='" + m_phoneNumber.replace("\'","''") + "',";
+    req += "MOBILENUMBER='" + m_mobileNumber.replace("\'","''") + "',";
     req += "EMAIL='" + m_email.replace("\'","''").toUtf8() + "',";
-    req += "PROFESSION='" + m_profession.replace("\'","''").toUtf8() + "',";
-    req += "COMMENTS='" + m_comments.replace("\'","''").toUtf8() + "',";
+    req += "PROFESSION='" + m_profession.replace("\'","''") + "',";
+    req += "COMMENTS='" + m_comments.replace("\'","''") + "',";
     req += "SENDING_PUB_EMAIL='" + QString::number(m_sending_pubEmail) + "' ";
-    req += "WHERE ID='"+ QString::number(m_id) +"';";
+    req += "WHERE ID="+ QString::number(m_id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -137,19 +131,16 @@ bool customer::update() {
   */
 bool customer::remove(){
     // Construction de la requette pour supprimer la facture
-    QString req = "DELETE FROM tab_customers";
-    req += " WHERE ID='"+ QString::number(m_id) +"';";
+    QString req = "DELETE FROM TAB_CUSTOMERS";
+    req += " WHERE ID="+ QString::number(m_id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
-    }
-    catch ( IBPP::Exception& e ) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return false;
     }
+    else return true;
 }
 
 /**
@@ -159,67 +150,40 @@ bool customer::remove(){
   */
 bool customer::loadFromID(const int& id)
 {
-    std::string val;
-    IBPP::Timestamp dateCrea;
-    IBPP::Date date;
-    bool valBool;
-    QString req = "SELECT * FROM tab_customers WHERE ID='";
-    req += QString::number(id) +"';";
+    m_id = id;
+    QString req = "SELECT * FROM TAB_CUSTOMERS WHERE ID=";
+    req += QString::number(m_id) +";";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_creationDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("TYPE", m_type);
-            m_st->Get("DESC_COMPAGNY", val);
-            m_desCompagny= QString::fromUtf8(val.c_str());val="";
-            m_st->Get("LASTNAME", val);
-            m_lastName = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("FIRSTNAME", val);
-            m_firstName = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("GENDER", val);
-            m_gender = QString::fromUtf8(val.c_str());val="";
-            if(!m_st->IsNull("BIRTHDAY")) {
-                m_st->Get("BIRTHDAY", date);
-                m_birthday = database::fromIBPPDate(date);
-            }
-            m_st->Get("ADDRESS1", val);
-            m_address1 = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("ADDRESS2", val);
-            m_address2 = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("ADDRESS3", val);
-            m_address3 = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("ZIPCODE", val);
-            m_zipCode = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("CITY", val);
-            m_city = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("COUNTRY", val);
-            m_country = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("PHONENUMBER", val);
-            m_phoneNumber = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("MOBILENUMBER", val);
-            m_mobileNumber = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("EMAIL", val);
-            m_email = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("PROFESSION", val);
-            m_profession = QString::fromUtf8(val.c_str());val="";
-            m_st->Get("COMMENTS", val);
-            m_comments = QString::fromUtf8(val.c_str());val="";
+    QSqlQuery query;
+    query.prepare(req);
 
-            m_st->Get("SENDING_PUB_EMAIL", valBool);
-            m_sending_pubEmail = valBool;
-        }
-        m_tr->Commit();
+    if(query.exec()){
+        query.next();
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_type = query.value(query.record().indexOf("TYPE")).toInt();
+        m_firstName = query.value(query.record().indexOf("FIRSTNAME")).toString();
+        m_lastName = query.value(query.record().indexOf("LASTNAME")).toString();
+        m_desCompagny = query.value(query.record().indexOf("DESC_COMPAGNY")).toString();
+        m_gender = query.value(query.record().indexOf("GENDER")).toString();
+        m_birthday = query.value(query.record().indexOf("BIRTHDAY")).toDate();
+        m_address1 = query.value(query.record().indexOf("ADDRESS1")).toString();
+        m_address2 = query.value(query.record().indexOf("ADDRESS2")).toString();
+        m_address3 = query.value(query.record().indexOf("ADDRESS3")).toString();
+        m_zipCode = query.value(query.record().indexOf("ZIPCODE")).toString();
+        m_city = query.value(query.record().indexOf("CITY")).toString();
+        m_country = query.value(query.record().indexOf("COUNTRY")).toString();
+        m_phoneNumber = query.value(query.record().indexOf("PHONENUMBER")).toString();
+        m_mobileNumber = query.value(query.record().indexOf("MOBILENUMBER")).toString();
+        m_email = query.value(query.record().indexOf("EMAIL")).toString();
+        m_profession = query.value(query.record().indexOf("PROFESSION")).toString();
+        m_comments = query.value(query.record().indexOf("COMMENTS")).toString();
+        m_sending_pubEmail = query.value(query.record().indexOf("SENDING_PUB_EMAIL")).toBool();
         return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -231,40 +195,33 @@ bool customer::loadFromID(const int& id)
      @return true si ok
   */
 bool customer::getCustomerList(CustomerList& list, int first, int skip, QString filter, QString field) {
-    std::string sVal;
-    int iVal;
-
      //Requete obtenir les valeurs
-    QString req = "SELECT FIRST "+QString::number(first)+" SKIP "+QString::number(skip)+" * FROM tab_customers";
+    QString req = "SELECT * FROM TAB_CUSTOMERS";
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
     }
     // ATTENTION PEUT FAIRE RALENTIR LE TRAITEMENT
-    req += " ORDER BY UPPER(tab_customers.LASTNAME COLLATE UTF8) ASC;";
+    req += " ORDER BY UPPER(TAB_CUSTOMERS.LASTNAME) ASC LIMIT "+QString::number(skip)+","+QString::number(first)+"; ";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", iVal);
-            list.id.push_back( iVal);
-            m_st->Get("LASTNAME", sVal);
-            list.lastName << QString::fromUtf8(sVal.c_str());sVal="";
-            m_st->Get("FIRSTNAME", sVal);
-            list.firstName << QString::fromUtf8(sVal.c_str());sVal="";
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        while (query.next()){
+            list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
+            list.firstName << query.value(query.record().indexOf("FIRSTNAME")).toString();
+            list.lastName << query.value(query.record().indexOf("LASTNAME")).toString();
         }
-        m_tr->Commit();
         return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -275,31 +232,28 @@ bool customer::getCustomerList(CustomerList& list, int first, int skip, QString 
   */
 int customer::count(QString filter, QString field) {
     int count;
-
     //Requete 1 nombre de valeur
-    QString req = "SELECT COUNT(*) FROM (SELECT * FROM tab_customers";
+    QString req = "SELECT COUNT(*) FROM (SELECT * FROM TAB_CUSTOMERS";
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
-        req += field.replace("\'","''").toUtf8();
-        req += " COLLATE UTF8) LIKE UPPER('";
-        req += filter.replace("\'","''").toUtf8();
-        req += "%' COLLATE UTF8)";
+        req += field.replace("\'","''");
+        req += ") LIKE UPPER('";
+        req += filter.replace("\'","''");
+        req += "%')";
     }
-    req += ");";
+    req += ")  AS CCOUNT;";
 
+    QSqlQuery query;
+    query.prepare(req);
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-        m_st->Fetch();
-        m_st->Get(1, count);
-        m_tr->Commit();
+    if(query.exec()){
+        query.next();
+        count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+        return count;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return 0;
     }
-    return count;
 }
 

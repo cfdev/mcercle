@@ -6,8 +6,10 @@
 #include <QLocale>
 #include <QDateTime>
 #include <QIcon>
-#include "bdd/ibpp.h"
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 // Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre
 #define CASH "CA"
@@ -21,9 +23,8 @@
 class invoice : public QObject {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
+    QSqlQuery m_query;
 
     QWidget *m_parent;
     int m_id, m_idCustomer, m_state ;
@@ -87,7 +88,7 @@ public:
     //State
     enum{UNPAID , PAID};
 
-    invoice(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    invoice(QSqlDatabase db, QWidget *parent = 0);
     ~invoice();
 
     bool create();
@@ -126,18 +127,18 @@ public:
     QString getProposalCode(){return m_proposalCode;}
     QString getDescription(){return m_description;}
 
-    void getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field);
-    void getInvoiceListAlert(InvoiceListAlert& list);
+    bool getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field);
+    bool getInvoiceListAlert(InvoiceListAlert& list);
     QStringList getYearsList();
     float getMonthRevenue(QString year, QString month);
     float getYearRevenue(QString year);
 
 
     //recup des articles de la facture
-    void getInvoiceItemsList(InvoiceListItems& list, QString order, QString filter, QString field);
+    bool getInvoiceItemsList(InvoiceListItems& list, QString order, QString filter, QString field);
 
     // Fonction sur un article
-    void getInvoiceItem(InvoiceItem& item);
+    bool getInvoiceItem(InvoiceItem& item);
     bool addInvoiceItem(InvoiceItem& item);
     bool removeInvoiceItem(int Itemid);
     bool updateInvoiceItem(InvoiceItem& item);

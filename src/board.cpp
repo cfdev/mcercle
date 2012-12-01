@@ -27,8 +27,8 @@
 */
 board::board(database *pdata, QLocale &lang, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::board)
-{
+    ui(new Ui::board){
+
     ui->setupUi(this);
     m_data = pdata;
     m_lang = lang;
@@ -326,8 +326,7 @@ void board::calculYear(){
 /**
     rafraichit le calcul du CA Mois/Annee
   */
-void board::on_comboBox_yearsList_currentIndexChanged(const QString &arg1)
-{
+void board::on_comboBox_yearsList_currentIndexChanged() {
     calculYear();
     listRevenuesToTable();
 }

@@ -24,15 +24,22 @@
 Settings::Settings(QObject *parent) :
     QObject(parent)
 {
-    m_fileName = ".mcercle";
+    m_fileName = "/.mcercle";
     path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
-    QString path = path_DataLocation+"\\"+m_fileName;
+    QString path = path_DataLocation+m_fileName;
     m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
 
 /**
     Recuperation des parametres de connexion pour la bdd
   */
+QString Settings::getDatabase_bdd(){
+    m_settings->beginGroup("connection");
+    QString val = m_settings->value("bdd").toString();
+    m_settings->endGroup();
+    return val;
+}
+
 QString Settings::getDatabase_hostName(){
     m_settings->beginGroup("connection");
     QString val = m_settings->value("hostName").toString();
@@ -72,6 +79,12 @@ QString Settings::getDatabase_userPassword(){
 /**
     Sauvegarde dans le fichier les donnees relatif a la base de donnees
   */
+void Settings::setDatabase_bdd(const QString& bdd) {
+    m_settings->beginGroup("connection");
+    m_settings->setValue("bdd", bdd);
+    m_settings->endGroup();
+}
+
 void Settings::setDatabase_hostName(const QString& hostName) {
     m_settings->beginGroup("connection");
     m_settings->setValue("hostName", hostName);
@@ -107,11 +120,9 @@ void Settings::setDatabase_userPassword(const QString& userPassword) {
   */
 void Settings::setDatabase_default() {
     m_settings->beginGroup("connection");
+    m_settings->setValue("bdd", "SQLITE");
     m_settings->setValue("hostName", "localhost");
-    m_settings->setValue("port",QString::number(3050));
-    m_settings->setValue("databaseName", path_DataLocation + "\\db_mcercle.fdb");
-    m_settings->setValue("userName", "sysdba");
-    m_settings->setValue("userPassword", "masterkey");
+    m_settings->setValue("databaseName", path_DataLocation + "/mcercle.db");
     m_settings->endGroup();
 }
 
@@ -129,4 +140,20 @@ void Settings::setSettingState(bool state) {
     m_settings->beginGroup("main");
     m_settings->setValue("settingState", state);
     m_settings->endGroup();
+}
+
+/**
+    Position des listebox pour les recherches
+  */
+void Settings::setPositionListSearchProduct(int pos) {
+    m_settings->beginGroup("list");
+    m_settings->setValue("searchProduct", pos);
+    m_settings->endGroup();
+}
+
+int Settings::getPositionListSearchProduct(){
+    m_settings->beginGroup("list");
+    int val = m_settings->value("searchProduct").toInt();
+    m_settings->endGroup();
+    return val;
 }

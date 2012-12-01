@@ -30,7 +30,7 @@ private slots:
     void on_tableWidget_itemSelectionChanged();
     void on_toolButton_rm_clicked();
     void on_tableWidget_cellChanged(int row, int column);
-    void on_doubleSpinBox_partPAYMENT_valueChanged(double arg1);    
+    void on_doubleSpinBox_partPAYMENT_valueChanged();
     void on_pushButton_ok_clicked();
     void on_pushButton_cancel_clicked();
     void on_toolButton_add_clicked();

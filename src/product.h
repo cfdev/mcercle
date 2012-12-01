@@ -5,7 +5,10 @@
 #include <QLocale>
 #include <QStringList>
 #include <vector>
-#include "bdd/ibpp.h"
+
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 #include "provider.h"
 #include "productcategory.h"
@@ -16,9 +19,7 @@ class category;
 class product : public QObject {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
     QWidget *m_parent;
     int m_id, m_stock, m_stock_warning, m_state, m_idProvider, m_idCategory;
@@ -26,6 +27,7 @@ private:
     QDateTime m_creationDate;
     QString m_code, m_name;
     QLocale m_lang;
+  //  QImage m_image;
 
 public:
     //Acces a la class fournisseur
@@ -51,7 +53,7 @@ public:
     //State
     enum{DISCONTINUED ,OK};
 
-    product(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QLocale &lang, QWidget *parent = 0);
+    product(QSqlDatabase db, QLocale &lang, QWidget *parent = 0);
     ~product();
 
     bool create();
@@ -80,6 +82,7 @@ public:
     void setName(const  QString& name){m_name = name;}
     void setProviderId(const int& ident){m_idProvider = ident;}
     void setCategoryId(const int& ident){m_idCategory = ident;}
+  //  void setPicture(const QImage& image){m_image = image;}
 
     //recup les valeurs
     QIcon getIconState(int state);
@@ -94,7 +97,9 @@ public:
     QDateTime getCreationDate(){return m_creationDate;}
     QString getCode(){return m_code;}
     QString getName(){return m_name;}
+    int getLastId();
     int getProviderID(){return m_idProvider;}
+   // QImage getPicture(){return m_image;}
 
 
     QString getProvider();

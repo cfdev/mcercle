@@ -1,18 +1,19 @@
 #ifndef PRODUCTCATEGORY_H
 #define PRODUCTCATEGORY_H
 
-#include <QWidget>
 #include <vector>
-#include "bdd/ibpp.h"
+#include <QWidget>
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
 
 class category : public QObject
 {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
    QWidget *m_parent;
    int m_id;
@@ -27,7 +28,7 @@ public:
 
 
 
-    category(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    category(QSqlDatabase db, QWidget *parent = 0);
     ~category();
 
     bool create();
@@ -44,7 +45,7 @@ public:
     int getId(){return m_id;}
     QString getName(){return m_name;}
     QColor getColor(){return m_color;}
-    void getcategoryList(categoryList& list, QString order, QString filter, QString field);
+    bool getcategoryList(categoryList& list, QString order, QString filter, QString field);
 
 };
 

@@ -22,11 +22,10 @@
 
 #include <QMessageBox>
 #include <QStringList>
+#include <QVariant>
 
-provider::provider(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent): m_parent(parent) {
+provider::provider(QSqlDatabase db, QWidget *parent): m_parent(parent) {
     m_db = db;
-    m_tr = tr;
-    m_st = st;
 }
 
 
@@ -40,29 +39,28 @@ provider::~provider() {
   */
 bool provider::create() {
     // Construction de la requette
-    QString req = "INSERT INTO tab_providers(NAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, PHONENUMBER, FAXNUMBER, EMAIL, CONTACT_NAME) ";
+    QString req = "INSERT INTO TAB_PROVIDERS(CREATIONDATE, NAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY, PHONENUMBER, FAXNUMBER, EMAIL, CONTACT_NAME) ";
     req += "VALUES(";
-    req += "'" + m_name.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_address1.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_address2.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_address3.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_zipCode.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_city.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_phoneNumber.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_fax.replace("\'","''").toUtf8() + "',";
-    req += "'" + m_email.replace("\'","''").toUtf8()  + "',";
-    req += "'" + m_contact.replace("\'","''").toUtf8() + "');";
+    req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
+    req += "'" + m_name.replace("\'","''") + "',";
+    req += "'" + m_address1.replace("\'","''") + "',";
+    req += "'" + m_address2.replace("\'","''") + "',";
+    req += "'" + m_address3.replace("\'","''") + "',";
+    req += "'" + m_zipCode.replace("\'","''") + "',";
+    req += "'" + m_city.replace("\'","''") + "',";
+    req += "'" + m_country.replace("\'","''") + "',";
+    req += "'" + m_phoneNumber.replace("\'","''") + "',";
+    req += "'" + m_fax.replace("\'","''") + "',";
+    req += "'" + m_email.replace("\'","''")  + "',";
+    req += "'" + m_contact.replace("\'","''") + "');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -73,29 +71,27 @@ bool provider::create() {
   */
 bool provider::update() {
     // Construction de la requette
-    QString req = "UPDATE tab_providers SET ";
-    req += "NAME='" + m_name.replace("\'","''").toUtf8() + "',";
-    req += "ADDRESS1='" + m_address1.replace("\'","''").toUtf8() + "',";
-    req += "ADDRESS2='" + m_address2.replace("\'","''").toUtf8() + "',";
-    req += "ADDRESS3='" + m_address3.replace("\'","''").toUtf8() + "',";
-    req += "ZIPCODE='" + m_zipCode.replace("\'","''").toUtf8() + "',";
-    req += "CITY='" + m_city.replace("\'","''").toUtf8() + "',";
-    req += "PHONENUMBER='" + m_phoneNumber.replace("\'","''").toUtf8() + "',";
-    req += "FAXNUMBER='" + m_fax.replace("\'","''").toUtf8() + "',";
-    req += "EMAIL='" + m_email.replace("\'","''").toUtf8() + "',";
-    req += "CONTACT_NAME='" + m_contact.replace("\'","''").toUtf8() + "' ";
+    QString req = "UPDATE TAB_PROVIDERS SET ";
+    req += "NAME='" +  m_name.replace("\'","''") + "',";
+    req += "ADDRESS1='" + m_address1.replace("\'","''") + "',";
+    req += "ADDRESS2='" + m_address2.replace("\'","''") + "',";
+    req += "ADDRESS3='" + m_address3.replace("\'","''") + "',";
+    req += "ZIPCODE='" + m_zipCode.replace("\'","''") + "',";
+    req += "CITY='" + m_city.replace("\'","''") + "',";
+    req += "COUNTRY='" + m_country.replace("\'","''") + "',";
+    req += "PHONENUMBER='" + m_phoneNumber.replace("\'","''") + "',";
+    req += "FAXNUMBER='" + m_fax.replace("\'","''") + "',";
+    req += "EMAIL='" + m_email.replace("\'","''") + "',";
+    req += "CONTACT_NAME='" + m_contact.replace("\'","''") + "' ";
     req += "WHERE ID='"+ QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -104,19 +100,16 @@ bool provider::update() {
   */
 bool provider::remove() {
     // Construction de la requette
-    QString req = "DELETE FROM tab_providers WHERE ID='";
+    QString req = "DELETE FROM TAB_PROVIDERS WHERE ID='";
     req += QString::number(m_id) +"';";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_tr->Commit();
-        return true;
+    QSqlQuery query;
+    query.prepare(req);
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-    }
-    return false;
+    else return true;
 }
 
 
@@ -126,50 +119,32 @@ bool provider::remove() {
      @return vrai si ok
   */
 bool provider::loadFromName(const QString& name) {
-    std::string val;
-    IBPP::Timestamp dateCrea;
-    QString req = "SELECT * FROM tab_providers WHERE UPPER(NAME COLLATE UTF8)= UPPER('";
-    req += name +"' COLLATE UTF8);";
+    QString req = "SELECT * FROM TAB_PROVIDERS WHERE UPPER(NAME)= UPPER('";
+    req += QString(name).replace("\'","''") +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_id = 0;
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_creationDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS1", val);
-            m_address1 = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS2", val);
-            m_address2 = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS3", val);
-            m_address3 = QString::fromUtf8(val.c_str());
-            m_st->Get("ZIPCODE", val);
-            m_zipCode = QString::fromUtf8(val.c_str());
-            m_st->Get("CITY", val);
-            m_city = QString::fromUtf8(val.c_str());
-            m_st->Get("PHONENUMBER", val);
-            m_phoneNumber = QString::fromUtf8(val.c_str());
-            m_st->Get("FAXNUMBER", val);
-            m_fax = QString::fromUtf8(val.c_str());
-            m_st->Get("EMAIL", val);
-            m_email = QString::fromUtf8(val.c_str());
-            m_st->Get("CONTACT_NAME", val);
-            m_contact = QString::fromUtf8(val.c_str());
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_id = query.value(query.record().indexOf("ID")).toInt();
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_address1 = query.value(query.record().indexOf("ADDRESS1")).toString();
+        m_address2 = query.value(query.record().indexOf("ADDRESS2")).toString();
+        m_address3 = query.value(query.record().indexOf("ADDRESS3")).toString();
+        m_zipCode = query.value(query.record().indexOf("ZIPCODE")).toString();
+        m_city = query.value(query.record().indexOf("CITY")).toString();
+        m_country = query.value(query.record().indexOf("COUNTRY")).toString();
+        m_phoneNumber = query.value(query.record().indexOf("PHONENUMBER")).toString();
+        m_fax = query.value(query.record().indexOf("FAXNUMBER")).toString();
+        m_email = query.value(query.record().indexOf("EMAIL")).toString();
+        m_contact = query.value(query.record().indexOf("CONTACT_NAME")).toString();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 /**
@@ -178,50 +153,32 @@ bool provider::loadFromName(const QString& name) {
      @return vrai si ok
   */
 bool provider::loadFromID(const int& id) {
-    std::string val;
-    IBPP::Timestamp dateCrea;
-    QString req = "SELECT * FROM tab_providers WHERE UPPER(ID)= UPPER('";
+    m_id = id;
+    QString req = "SELECT * FROM TAB_PROVIDERS WHERE UPPER(ID)= UPPER('";
     req += QString::number(id) +"');";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_id = 0;
-        // list all info
-        while (m_st->Fetch()) {
-            m_st->Get("ID", m_id);
-            m_st->Get("CREATIONDATE", dateCrea);
-            m_creationDate = database::fromIBPPTimeStamp(dateCrea);
-            m_st->Get("NAME", val);
-            m_name = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS1", val);
-            m_address1 = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS2", val);
-            m_address2 = QString::fromUtf8(val.c_str());
-            m_st->Get("ADDRESS3", val);
-            m_address3 = QString::fromUtf8(val.c_str());
-            m_st->Get("ZIPCODE", val);
-            m_zipCode = QString::fromUtf8(val.c_str());
-            m_st->Get("CITY", val);
-            m_city = QString::fromUtf8(val.c_str());
-            m_st->Get("PHONENUMBER", val);
-            m_phoneNumber = QString::fromUtf8(val.c_str());
-            m_st->Get("FAXNUMBER", val);
-            m_fax = QString::fromUtf8(val.c_str());
-            m_st->Get("EMAIL", val);
-            m_email = QString::fromUtf8(val.c_str());
-            m_st->Get("CONTACT_NAME", val);
-            m_contact = QString::fromUtf8(val.c_str());
-        }
-        m_tr->Commit();
-        if(m_id>0)
-            return true;
-        else return false;
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        query.next();
+        m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
+        m_name = query.value(query.record().indexOf("NAME")).toString();
+        m_address1 = query.value(query.record().indexOf("ADDRESS1")).toString();
+        m_address2 = query.value(query.record().indexOf("ADDRESS2")).toString();
+        m_address3 = query.value(query.record().indexOf("ADDRESS3")).toString();
+        m_zipCode = query.value(query.record().indexOf("ZIPCODE")).toString();
+        m_city = query.value(query.record().indexOf("CITY")).toString();
+        m_country = query.value(query.record().indexOf("COUNTRY")).toString();
+        m_phoneNumber = query.value(query.record().indexOf("PHONENUMBER")).toString();
+        m_fax = query.value(query.record().indexOf("FAXNUMBER")).toString();
+        m_email = query.value(query.record().indexOf("EMAIL")).toString();
+        m_contact = query.value(query.record().indexOf("CONTACT_NAME")).toString();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
-    return false;
 }
 
 
@@ -229,40 +186,35 @@ bool provider::loadFromID(const int& id) {
      Liste les donnees du champ en fonction du filtre
      Jointure avec LEFT OUTER JOIN car avec les select les conditions ne
      sont pas remplis il ne retour pas le produit
-     @return valeur de retour sous forme de liste de chaine de type ProductList
+     @param valeur de retour sous forme de liste de chaine de type ProductList
+     @return true si ok
   */
-void provider::getProviderList(ProviderList& list, QString order, QString filter, QString field) {
-    std::string sVal;
-    QString req = "SELECT * FROM tab_providers";
+bool provider::getProviderList(ProviderList& list, QString order, QString filter, QString field) {
+    QString req = "SELECT * FROM TAB_PROVIDERS";
 
     if(!field.isEmpty()){
         req += " WHERE UPPER(";
         req += field;
-        req += " COLLATE UTF8) LIKE UPPER('";
+        req += ") LIKE UPPER('";
         req += filter;
-        req += "%' COLLATE UTF8)";
+        req += "%')";
     }
-    req += " ORDER BY UPPER("+order+" COLLATE UTF8) ASC;";
+    req += " ORDER BY UPPER("+order+") ASC;";
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        // list all info
-
-        while (m_st->Fetch()) {
-            m_st->Get("NAME", sVal);
-            list.name << QString::fromUtf8(sVal.c_str());
-            m_st->Get("PHONENUMBER", sVal);
-            list.phoneNumber <<  QString::fromUtf8(sVal.c_str());
-            m_st->Get("FAXNUMBER", sVal);
-            list.faxNumber <<  QString::fromUtf8(sVal.c_str());
-            m_st->Get("EMAIL", sVal);
-            list.email <<  QString::fromUtf8(sVal.c_str());
+    QSqlQuery query;
+    query.prepare(req);
+    if(query.exec()){
+        while (query.next()){
+            list.name << query.value(query.record().indexOf("NAME")).toString();
+            list.phoneNumber << query.value(query.record().indexOf("PHONENUMBER")).toString();
+            list.faxNumber << query.value(query.record().indexOf("FAXNUMBER")).toString();
+            list.email.push_back( query.value(query.record().indexOf("EMAIL")).toString() );
         }
-        m_tr->Commit();
+        return true;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
     }
 }
 
@@ -274,20 +226,20 @@ void provider::getProviderList(ProviderList& list, QString order, QString filter
   */
 int provider::isHere(const QString& name) {
     int iVal;
-    QString req = "SELECT ID FROM tab_providers WHERE UPPER(NAME COLLATE UTF8)= UPPER('";
-    req +=  name + "' COLLATE UTF8);";
+    QString req = "SELECT ID FROM TAB_PROVIDERS WHERE UPPER(NAME)= UPPER('";
+    req +=  QString(name).replace("\'","''") + "');";
     if(name.isEmpty())return -1;
 
-    try {
-        m_tr->Start();
-        m_st->Execute(req.toStdString().c_str());
-        m_st->Fetch();
-        m_st->Get("ID", iVal);
-        m_tr->Commit();
+    QSqlQuery query;
+    query.prepare(req);
+
+    if(query.exec()){
+        query.next();
+        iVal = query.value(query.record().indexOf("ID")).toInt();
         return iVal;
     }
-    catch ( IBPP::Exception& e )    {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
         return -1;
     }
 }

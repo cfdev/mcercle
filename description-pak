@@ -1,6 +1,6 @@
 mcercle est un logiciel de gestion libre pour PME et autoEntrepreneurs
 
-Caractéristiques principales:
+Caracteristiques principales:
 - Clients: Carnet d'adresse, suivi des commandes, interventions, devis, factures.
-- Produits: Références fournisseurs, gestion du stock avec seuil d'alerte ainsi qu'un classement par catégorie.
-- Base de données: Sauvegarde des données dans une base de données Firebird, avec la possibilité d'avoir plusieurs logiciels connectés sur la même base.
+- Produits: References fournisseurs, gestion du stock avec seuil d'alerte ainsi qu'un classement par categorie.
+- Base de donnees: Sauvegarde des donnees dans une base de donnees Firebird, avec la possibilite d'avoir plusieurs logiciels connectes sur la meme base.

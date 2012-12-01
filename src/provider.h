@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QDateTime>
 #include <QStringList>
-#include "bdd/ibpp.h"
+
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 
 /// TODO: refaire la class provider avec des noms plus explicites dans la stucture - cf class "productcategory"
@@ -12,14 +15,12 @@ class provider : public QObject
 {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
    QWidget *m_parent;
    int m_id;
    QString  m_name, m_address1, m_address2, m_address3, m_zipCode,
-            m_city, m_phoneNumber, m_fax, m_email, m_contact;
+            m_city, m_country, m_phoneNumber, m_fax, m_email, m_contact;
    QDateTime m_creationDate;
    QString m_field, m_filter;
 
@@ -33,7 +34,7 @@ public:
    }ProviderList;
 
 
-    provider(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    provider(QSqlDatabase db, QWidget *parent = 0);
     ~provider();
 
     bool create();
@@ -48,6 +49,7 @@ public:
     void setAddress(const  QString& address1, const  QString& address2, const  QString& address3){m_address1 = address1;m_address2 = address2;m_address3 = address3;}
     void setZipCode(const  QString& zipCode){m_zipCode = zipCode;}
     void setCity(const  QString& city){m_city = city;}
+    void setCountry(const  QString& country){m_country = country;}
     void setPhone(const  QString& phoneNumber, const  QString& faxNumber){m_phoneNumber = phoneNumber;m_fax = faxNumber;}
     void setEmail(const  QString& email){m_email = email;}
     void setContact(const  QString& contact){m_contact = contact;}
@@ -61,12 +63,13 @@ public:
     QString getAddress3(){return m_address3;}
     QString getZipCode(){return m_zipCode;}
     QString getCity(){return m_city;}
+    QString getCountry(){return m_country;}
     QString getPhoneNumber(){return m_phoneNumber;}
     QString getFaxNumber(){return m_fax;}
     QString getEmail(){return m_email;}
     QString getContact(){return m_contact;}
 
-    void getProviderList(ProviderList& list, QString order, QString filter, QString field);
+    bool getProviderList(ProviderList& list, QString order, QString filter, QString field);
 
 };
 

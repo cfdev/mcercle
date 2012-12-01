@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>506</width>
-    <height>447</height>
+    <width>500</width>
+    <height>412</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>500</width>
-    <height>425</height>
+    <height>0</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -29,7 +29,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <property name="iconSize">
         <size>
@@ -102,143 +102,15 @@ p, li { white-space: pre-wrap; }
             </layout>
            </item>
            <item>
-            <spacer name="verticalSpacer_2">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <layout class="QGridLayout" name="gridLayout_2">
-             <item row="1" column="0">
+            <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0">
+             <item row="0" column="0">
               <widget class="QLabel" name="label_7">
                <property name="text">
                 <string>Nom: </string>
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QLineEdit" name="lineEdit_sName">
-               <property name="maxLength">
-                <number>64</number>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="2">
-              <widget class="QLineEdit" name="lineEdit_sEmail">
-               <property name="maxLength">
-                <number>128</number>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="2">
-              <widget class="QLineEdit" name="lineEdit_sCity">
-               <property name="maxLength">
-                <number>64</number>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="3">
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Siret: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="4">
-              <widget class="QLineEdit" name="lineEdit_sNum">
-               <property name="maxLength">
-                <number>64</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="4">
-              <widget class="QLineEdit" name="lineEdit_sFax">
-               <property name="maxLength">
-                <number>24</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>Tel: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="3">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>Fax: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>Email: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="3">
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>Site internet: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>Ville: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="3">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Code Postal: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="4">
-              <widget class="QLineEdit" name="lineEdit_sWebSite">
-               <property name="maxLength">
-                <number>256</number>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLineEdit" name="lineEdit_sPhone">
-               <property name="maxLength">
-                <number>24</number>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="4">
-              <widget class="QLineEdit" name="lineEdit_sZipCode">
-               <property name="maxLength">
-                <number>10</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Capital: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="2">
-              <widget class="QLineEdit" name="lineEdit_sCapital"/>
-             </item>
-             <item row="2" column="4">
               <widget class="QCheckBox" name="checkBox_TAX">
                <property name="enabled">
                 <bool>false</bool>
@@ -248,10 +120,125 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_sPhone">
+               <property name="maxLength">
+                <number>24</number>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>Siret: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit_sName">
+               <property name="maxLength">
+                <number>64</number>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLabel" name="label_14">
+               <property name="text">
+                <string>Site internet: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>Capital: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="3">
+              <widget class="QLineEdit" name="lineEdit_sNum">
+               <property name="maxLength">
+                <number>64</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_sCapital"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>Tel: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_12">
+               <property name="text">
+                <string>Fax: </string>
+               </property>
+              </widget>
+             </item>
              <item row="2" column="3">
+              <widget class="QLineEdit" name="lineEdit_sFax">
+               <property name="maxLength">
+                <number>24</number>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
               <widget class="QLabel" name="label_17">
                <property name="text">
                 <string>Assujetti à la TVA: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_13">
+               <property name="text">
+                <string>Email: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEdit_sEmail">
+               <property name="maxLength">
+                <number>128</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Ville: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="3">
+              <widget class="QLineEdit" name="lineEdit_sWebSite">
+               <property name="maxLength">
+                <number>256</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEdit_sCity">
+               <property name="maxLength">
+                <number>64</number>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Code Postal: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="3">
+              <widget class="QLineEdit" name="lineEdit_sZipCode">
+               <property name="maxLength">
+                <number>10</number>
                </property>
               </widget>
              </item>
@@ -289,6 +276,255 @@ p, li { white-space: pre-wrap; }
          </item>
         </layout>
        </widget>
+       <widget class="QWidget" name="tab_bank">
+        <attribute name="icon">
+         <iconset resource="../ressources.qrc">
+          <normaloff>:/app/revenue</normaloff>:/app/revenue</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Relevé d'identité bancaire</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_3">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_19">
+               <property name="text">
+                <string>Code Banque :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_20">
+               <property name="text">
+                <string>Code Guichet :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_codeGuichet">
+               <property name="maxLength">
+                <number>5</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_21">
+               <property name="text">
+                <string>Numéro de compte :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit_codeBanque">
+               <property name="maxLength">
+                <number>5</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_numCompte">
+               <property name="maxLength">
+                <number>11</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_22">
+               <property name="text">
+                <string>Clé RIB :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="lineEdit_keyRIB">
+               <property name="maxLength">
+                <number>2</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_23">
+               <property name="text">
+                <string>Domiciliation :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEdit_Address">
+               <property name="maxLength">
+                <number>128</number>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_24">
+               <property name="text">
+                <string>IBAN :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLineEdit" name="lineEdit_IBAN1">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_IBAN2">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLineEdit" name="lineEdit_IBAN3">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLineEdit" name="lineEdit_IBAN4">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="5">
+              <widget class="QLineEdit" name="lineEdit_IBAN6">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="6">
+              <widget class="QLineEdit" name="lineEdit_IBAN7">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="4">
+              <widget class="QLineEdit" name="lineEdit_IBAN5">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_IBAN9">
+               <property name="maxLength">
+                <number>2</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLineEdit" name="lineEdit_IBAN8">
+               <property name="maxLength">
+                <number>4</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_25">
+               <property name="text">
+                <string>BIC :</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_BIC">
+               <property name="maxLength">
+                <number>11</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="tab_Database">
         <attribute name="icon">
          <iconset resource="../ressources.qrc">
@@ -302,66 +538,76 @@ p, li { white-space: pre-wrap; }
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
             <layout class="QGridLayout" name="gridLayout">
-             <item row="0" column="0">
+             <item row="1" column="0">
               <widget class="QLabel" name="label">
                <property name="text">
-                <string>Adresse: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QLineEdit" name="lineEdit_hostName"/>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Port: </string>
+                <string>Adresse : </string>
                </property>
               </widget>
              </item>
              <item row="1" column="1">
-              <widget class="QLineEdit" name="lineEdit_port"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="lineEdit_databaseName"/>
+              <widget class="QLineEdit" name="lineEdit_hostName"/>
              </item>
              <item row="2" column="0">
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="label_2">
                <property name="text">
-                <string>Nom de la base: </string>
+                <string>Port : </string>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="text">
-                <string>Identifiant: </string>
-               </property>
-              </widget>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="lineEdit_port"/>
              </item>
              <item row="3" column="1">
-              <widget class="QLineEdit" name="lineEdit_login"/>
+              <widget class="QLineEdit" name="lineEdit_databaseName"/>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>Nom de la base : </string>
+               </property>
+              </widget>
              </item>
              <item row="4" column="0">
-              <widget class="QLabel" name="label_5">
+              <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Mot de pass: </string>
+                <string>Identifiant : </string>
                </property>
               </widget>
              </item>
              <item row="4" column="1">
+              <widget class="QLineEdit" name="lineEdit_login"/>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_5">
+               <property name="text">
+                <string>Mot de pass : </string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
               <widget class="QLineEdit" name="lineEdit_password">
                <property name="echoMode">
                 <enum>QLineEdit::Password</enum>
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
+             <item row="3" column="2">
               <widget class="QToolButton" name="toolButton_BaseSelect">
                <property name="text">
                 <string>...</string>
                </property>
               </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_26">
+               <property name="text">
+                <string>Base de données :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBox_dbase"/>
              </item>
             </layout>
            </item>
@@ -453,8 +699,13 @@ p, li { white-space: pre-wrap; }
   </layout>
  </widget>
  <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>pushButton_Logo</tabstop>
+  <tabstop>pushButton_ClearImage</tabstop>
   <tabstop>lineEdit_sName</tabstop>
   <tabstop>lineEdit_sNum</tabstop>
+  <tabstop>lineEdit_sCapital</tabstop>
+  <tabstop>checkBox_TAX</tabstop>
   <tabstop>lineEdit_sPhone</tabstop>
   <tabstop>lineEdit_sFax</tabstop>
   <tabstop>lineEdit_sEmail</tabstop>
@@ -464,12 +715,30 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_sAdd1</tabstop>
   <tabstop>lineEdit_sAdd2</tabstop>
   <tabstop>lineEdit_sAdd3</tabstop>
-  <tabstop>buttonBox</tabstop>
-  <tabstop>lineEdit_password</tabstop>
-  <tabstop>lineEdit_port</tabstop>
-  <tabstop>lineEdit_login</tabstop>
+  <tabstop>lineEdit_codeBanque</tabstop>
+  <tabstop>lineEdit_numCompte</tabstop>
+  <tabstop>lineEdit_codeGuichet</tabstop>
+  <tabstop>lineEdit_keyRIB</tabstop>
+  <tabstop>lineEdit_Address</tabstop>
+  <tabstop>lineEdit_IBAN1</tabstop>
+  <tabstop>lineEdit_IBAN2</tabstop>
+  <tabstop>lineEdit_IBAN3</tabstop>
+  <tabstop>lineEdit_IBAN4</tabstop>
+  <tabstop>lineEdit_IBAN5</tabstop>
+  <tabstop>lineEdit_IBAN6</tabstop>
+  <tabstop>lineEdit_IBAN7</tabstop>
+  <tabstop>lineEdit_IBAN8</tabstop>
+  <tabstop>lineEdit_IBAN9</tabstop>
+  <tabstop>lineEdit_BIC</tabstop>
+  <tabstop>comboBox_dbase</tabstop>
   <tabstop>lineEdit_hostName</tabstop>
+  <tabstop>lineEdit_port</tabstop>
   <tabstop>lineEdit_databaseName</tabstop>
+  <tabstop>toolButton_BaseSelect</tabstop>
+  <tabstop>lineEdit_login</tabstop>
+  <tabstop>lineEdit_password</tabstop>
+  <tabstop>pushButton_connect</tabstop>
+  <tabstop>buttonBox</tabstop>
  </tabstops>
  <resources>
   <include location="../ressources.qrc"/>
@@ -482,8 +751,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -498,8 +767,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>476</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

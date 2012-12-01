@@ -1,6 +1,20 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
+version 1.9 : 21/05/2012
+-------------------------------------------------------
++ Class de migration des données depuis firebird vers SQLITE.
++ RIB dans la base de données et impression sur les factures
++ Produits: bouton pour générer un code automatiquement
++ Ouverture de la fenetre d'édition sur le double clique des tableswidgets
++ DialogSetting: Désactive les edits lorsque la connexion est établie.
+
+* 0000009: Jeu de caractère tables des fournisseurs
+* 0000008: Dans la configuration de la société, les champs autres que l'adresse ne sont pas très lisibles.MACOSX
+* 0000007: L'application n'a pas d'icone sous MACOSX
+
+- Base FIREBIRD trop de soucis d'installation/configuration (win7 64 et MACOSX)
+
 
 version 1.0 : 03/04/2012
 -------------------------------------------------------

@@ -108,9 +108,9 @@ void productView::listProductsFilter(int page, QString val)
     //show with filter
     m_prodfilter = val;
     // TODO: VOIR POUR FAIRE PLUS PROPRE
-    if(ui->comboBoxFiltre->currentIndex() == 0 )m_prodfield = "tab_products.CODE ";
-    if(ui->comboBoxFiltre->currentIndex() == 1 )m_prodfield = "tab_products.NAME ";
-    if(ui->comboBoxFiltre->currentIndex() == 2 )m_prodfield = "tab_products_categories.NAME ";
+    if(ui->comboBoxFiltre->currentIndex() == 0 )m_prodfield = "TAB_PRODUCTS.CODE ";
+    if(ui->comboBoxFiltre->currentIndex() == 1 )m_prodfield = "TAB_PRODUCTS.NAME ";
+    if(ui->comboBoxFiltre->currentIndex() == 2 )m_prodfield = "TAB_PRODUCTS_CATEGORIES.NAME ";
     listProductsToTable(page, m_prodfilter, m_prodfield);
 }
 
@@ -306,7 +306,7 @@ void productView::on_toolButton_remove_clicked()
 QString productView::InfoProduct()
 {
     QString Informations;
-    Informations = "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
+    Informations = "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">"
                    "<span style=\" font-size:14pt; font-weight:600;\">"
                    +m_data->m_product->getName()+"</span></p>";
 
@@ -352,7 +352,8 @@ QString productView::InfoProvider()
     Info += m_data->m_product->m_provider->getAddress1()+"<br>";
     Info += m_data->m_product->m_provider->getAddress2()+"<br>";
     Info += m_data->m_product->m_provider->getAddress3()+"<br>";
-    Info += m_data->m_product->m_provider->getZipCode()+" "+m_data->m_product->m_provider->getCity()+"</p>";
+    Info += m_data->m_product->m_provider->getZipCode()+" "+m_data->m_product->m_provider->getCity()+"<br>";
+    Info += m_data->m_product->m_provider->getCountry()+"</p>";
 
     Info += tr("Date de cr&#233;ation: ")+"<font color = blue>";
     Info += m_data->m_product->m_provider->getCreationDate().toString(tr("dd-MM-yyyy HH:mm:ss")) + " </font>";
@@ -377,6 +378,7 @@ void productView::on_tableWidget_products_itemSelectionChanged()
     bool ret = m_data->m_product->loadFromID( ui->tableWidget_products->item(m_index, ID_ROW)->text().toInt());
 
     if(ret) {
+        //ui->label_image->setPixmap(QPixmap::fromImage(m_data->m_product->getPicture()));
         ui->labelInfoProduct->setText( InfoProduct() );
         int id = m_data->m_product->getProviderID();
         ret = m_data->m_product->m_provider->loadFromID(id);
@@ -778,8 +780,6 @@ int productView::getRowCount(){
 }
 
 /**
-Propulsé par la puissance des jet-packs de PluXml (en 0.054s)
-Retour
   avoir le nom du produit selectionne
 */
 QString productView::getSelectedProductName(){
@@ -807,4 +807,25 @@ int productView::getSelectedProductID(){
      //Si index < 0 on sort
     if(m_index_tab<0)return 0;
     else return ui->tableWidget_products->item(m_index_tab, ID_ROW)->text().toInt();
+}
+
+/**
+    Ouvre la fentre d edition sur un double clique
+  */
+void productView::on_tableWidget_products_itemDoubleClicked(){
+    on_toolButton_editProduct_clicked();
+}
+
+/**
+    charge l index du combobox de recherche
+  */
+void productView::setIndexSearchProduct(int index){
+     ui->comboBoxFiltre->setCurrentIndex( index );
+}
+
+/**
+    retourne l index du combobox de recherche
+  */
+int productView::getIndexSearchProduct(){
+    return ui->comboBoxFiltre->currentIndex();
 }

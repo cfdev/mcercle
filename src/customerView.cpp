@@ -182,6 +182,14 @@ void customerView::on_lineEdit_page_returnPressed()
 }
 
 /**
+    Rafraichit la liste des clients
+*/
+void customerView::refreshCustomersList()
+{
+     listCustomersToTable(m_custPage, m_custfilter, m_custfield);
+}
+
+/**
     Acquerir tous les clients
 */
 void customerView::listCustomers(int page)
@@ -449,7 +457,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
     ui->tableWidget_Proposals->setHorizontalHeaderLabels( titles );
 
     //Recuperation des donnees presentent dans la bdd
-    m_data->m_customer->m_proposal->getProposalList(ilist, m_data->m_customer->getId(), "PDATE", filter, field);
+    m_data->m_customer->m_proposal->getProposalList(ilist, m_data->m_customer->getId(), "TAB_PROPOSALS.DATE", filter, field);
 
     // list tous les devis
     for(int i=0; i<ilist.code.count(); i++){
@@ -618,7 +626,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
     ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 
     //Recuperation des donnees presentent dans la bdd
-    m_data->m_customer->m_invoice->getInvoiceList(ilist,m_data->m_customer->getId(), "IDATE", filter, field);
+    m_data->m_customer->m_invoice->getInvoiceList(ilist,m_data->m_customer->getId(), "TAB_INVOICES.DATE", filter, field);
 
     // list all customers
     for(int i=0; i<ilist.code.count(); i++){
@@ -793,7 +801,7 @@ void customerView::on_toolButton_addService_clicked()
 
     DialogServices *m_DialogInt = new DialogServices(m_data);
     m_DialogInt->setModal(true);
-    m_DialogInt->setTitle(tr("Ajouter une intervention"));
+    m_DialogInt->setTitle(tr("Ajouter un service"));
     m_DialogInt->exec();
 
     if(m_DialogInt->result() == QDialog::Accepted)
@@ -827,7 +835,7 @@ void customerView::on_toolButton_delService_clicked()
     if(!m_data->isConnected())return;
 
     int ret = QMessageBox::warning(this, tr("Attention"),
-                                   tr("Voulez-vous vraiment supprimer l intervention<br><b>")+
+                                   tr("Voulez-vous vraiment supprimer le service<br><b>")+
                                    m_data->m_customer->m_service->getDate().toString("dd/MM/yyyy hh:mm:ss") +" - "+
                                    m_data->m_customer->m_service->getName()+"</b><br> de la liste ?",
                                    QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
@@ -848,7 +856,7 @@ void customerView::on_toolButton_editService_clicked()
 
     DialogServices *m_DialogInt = new DialogServices(m_data);
     m_DialogInt->setModal(true);
-    m_DialogInt->setTitle(tr("Modifier une intervention"));
+    m_DialogInt->setTitle(tr("Modifier un service"));
     m_DialogInt->loadValuesFromService();
     m_DialogInt->exec();
 
@@ -1181,7 +1189,7 @@ void customerView::on_paintPrinterProposal(QPrinter *printer)
     //Defini le nombre a imprimer
     int itemsToPrint = plist.name.count();
     if(itemsToPrint < itemPerPage )itemPerPage = itemsToPrint;
-
+    if(itemPerPage== 0)itemPerPage++;
     int numberOfPage = itemsToPrint/itemPerPage;
     m_DialogWaiting->setProgressBarRange(0, numberOfPage);
     m_DialogWaiting->setModal(true);
@@ -1418,6 +1426,16 @@ void customerView::on_paintPrinterProposal(QPrinter *printer)
     painter.setFont(font);
     painter.setBrush( Qt::NoBrush );
 
+    //TOTAL TAX
+    QString text;
+    if(m_data->getIsTax()){
+    }
+    else{
+        text = tr("TVA non applicable - Article 293 B du CGI");
+        rect = fm.boundingRect(mLeft, rectContent.bottom()+5 , wUtil*0.50,0, Qt::AlignLeft, text );
+        painter.drawText( rect, text );
+    }
+
     //Mode de reglement
     QString typePayment;
     QString typeP = m_data->m_customer->m_proposal->getTypePayment();
@@ -1429,32 +1447,52 @@ void customerView::on_paintPrinterProposal(QPrinter *printer)
     if(typeP == TRANSFER)       typePayment = tr("Virement");
     if(typeP == DEBIT)          typePayment = tr("Prelevement");
     if(typeP == OTHER)          typePayment = tr("Autre");
-    rect = fm.boundingRect(mLeft,rectContent.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, tr("Mode de règlement : ")+typePayment );
-    painter.drawText( rect, tr("Mode de r\350glement: ")+typePayment);
+    text = tr("Mode de r\350glement : ")+typePayment;
+    rect = fm.boundingRect(mLeft,rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, text );
+    painter.drawText( rect, text );
+
+    if((typeP == INTERBANK)||(typeP == DEBIT)){
+        text = tr("Merci de nous fournir un RIB pour ce mode de r\350glement.");
+        rect = fm.boundingRect(mLeft, rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, text );
+        painter.drawText( rect, text );
+    }
 
     //Condition de reglement
-    QString mess = tr("Conditions de r\350glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
-    mess += m_lang.toString(totalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
-    rect = fm.boundingRect(mLeft,rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, mess);
-    painter.drawText( rect, mess);
-
-    //TOTAL TAX
-    if(m_data->getIsTax()){
-    }
-    else{
-        rect = fm.boundingRect(mLeft, rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, tr("TVA non applicable - Article 293 B du CGI") );
-        painter.drawText( rect, tr("TVA non applicable - Article 293 B du CGI"));
-    }
+    text = tr("Conditions de r\350glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
+    text += m_lang.toString(totalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
+    rect = fm.boundingRect(mLeft,rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, text);
+    painter.drawText( rect, text);
 
     /// Signature Client
-    QString sign = "Signature client:\n\n\n\n";
-    //rect.translate( wUtil/2, rect.bottom()+5);
-    rect = fm.boundingRect(wUtil/2, rect.bottom()+10, 0, 0, Qt::AlignLeft, sign );
-    painter.drawText(rect, sign);
-    rect.translate(-5,-5);
-    rect.setHeight(rect.height()+10);
-    rect.setWidth(6 + mLeft + wUtil/2);
-    painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
+    text = "Signature client:\n\n\n\n\n\n";
+    rect = fm.boundingRect(mLeft+(wUtil*0.62)+5, rect.bottom()+15, 0, 0, Qt::AlignLeft, text );
+    painter.drawText(rect, text);
+    painter.drawRoundedRect( QRect(mLeft+(wUtil*0.62),rect.top()-5, wUtil*0.36 +15, rect.height() +10), 5, 5 );
+
+    /// RIB
+    if(typeP == TRANSFER){
+        database::Bank mb;
+        m_data->getBank(mb);
+        text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
+        rect = fm.boundingRect(mLeft+5, rect.top(), wUtil*0.36 +15, rect.height() +10, Qt::AlignCenter, text );
+        painter.drawText(rect, text);
+        painter.setPen( Qt::DashLine );
+        painter.drawRoundedRect( QRect(mLeft,rect.top()-5, wUtil*0.36 +15, rect.height()), 5, 5 );
+        painter.setPen( Qt::SolidLine );
+
+        font.setPointSize(8);
+        painter.setFont(font);
+        text = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
+        text += tr("Compte: ")+mb.numCompte+"  "+tr("Cl\351 RIB: ")+mb.keyRIB+'\n';
+        text += tr("Domiciliation: ");
+        text += mb.address+"\n\n";
+        text += tr("IBAN: ");
+        text += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
+        text += tr("BIC: ") + mb.codeBIC+'\n';
+        rect = fm.boundingRect(mLeft+5, rect.top()+15, wUtil*0.36 +15, rect.height(), Qt::AlignLeft, text );
+        rect.setWidth(wUtil*0.36); //fixe la largeur
+        painter.drawText(rect, text);
+    }
 
     delete m_DialogWaiting;
     painter.end();
@@ -1527,7 +1565,7 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
     //Defini le nombre a imprimer
     int itemsToPrint = ilist.name.count();
     if(itemsToPrint < itemPerPage )itemPerPage = itemsToPrint;
-
+    if(itemPerPage== 0)itemPerPage++;
     int numberOfPage = itemsToPrint/itemPerPage;
     m_DialogWaiting->setProgressBarRange(0, numberOfPage);
     m_DialogWaiting->setModal(true);
@@ -1604,10 +1642,6 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
         painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
                           tr("Date: ")+
                           m_data->m_customer->m_invoice->getUserDate().toString(tr("dd-MM-yyyy")) );
-      /*  rect.translate( 0, rect.height());
-        painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
-                          tr("Date fin validit\351: ")+
-                          m_data->m_customer->m_invoice->getValidDate().toString(tr("dd-MM-yyyy")) );*/
 
         /// Identite du client
         font.setPointSize(10);
@@ -1789,6 +1823,15 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
     painter.setFont(font);
     painter.setBrush( Qt::NoBrush );
 
+    //TOTAL TAX
+    QString text;
+    if(m_data->getIsTax()){
+    }
+    else{
+        text = tr("TVA non applicable - Article 293 B du CGI");
+        rect = fm.boundingRect(mLeft, rectContent.bottom()+5 , wUtil*0.50,0, Qt::AlignLeft, text );
+        painter.drawText( rect, text );
+    }
 
     //Mode de reglement
     QString typePayment;
@@ -1801,22 +1844,60 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
     if(typeP == TRANSFER)       typePayment = tr("Virement");
     if(typeP == DEBIT)          typePayment = tr("Prelevement");
     if(typeP == OTHER)          typePayment = tr("Autre");
-    rect = fm.boundingRect(mLeft,rectContent.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, tr("Mode de règlement : ")+typePayment );
-    painter.drawText( rect, tr("Mode de r\350glement: ")+typePayment);
+    text = tr("Mode de r\350glement : ")+typePayment;
+    rect = fm.boundingRect(mLeft,rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, text );
+    painter.drawText( rect, text );
 
-    //Condition de reglement
-    QString mess = tr("Conditions de r\350glement: A r\351ception de facture ");
-    rect = fm.boundingRect(mLeft,rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, mess);
-    painter.drawText( rect, mess);
-
-    //TOTAL TAX
-    if(m_data->getIsTax()){
+    if((typeP == INTERBANK)||(typeP == DEBIT)){
+        text = tr("Merci de nous fournir un RIB pour ce mode de r\350glement.");
+        rect = fm.boundingRect(mLeft, rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, text );
+        painter.drawText( rect, text );
     }
-    else{
-        rect = fm.boundingRect(mLeft, rect.bottom()+5, wUtil*0.50,0, Qt::AlignLeft, tr("TVA non applicable - Article 293 B du CGI") );
-        painter.drawText( rect, tr("TVA non applicable - Article 293 B du CGI"));
+
+    /// RIB
+    if(typeP == TRANSFER){
+        database::Bank mb;
+        m_data->getBank(mb);
+        text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
+        rect = fm.boundingRect(mLeft+5, rect.bottom()+65, wUtil*0.36 +15, rect.height() +10, Qt::AlignCenter, text );
+        painter.drawText(rect, text);
+        painter.setPen( Qt::DashLine );
+        painter.drawRoundedRect( QRect(mLeft,rect.top()-5, wUtil*0.36 +15, rect.height()), 5, 5 );
+        painter.setPen( Qt::SolidLine );
+
+        font.setPointSize(8);
+        painter.setFont(font);
+        text = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
+        text += tr("Compte: ")+mb.numCompte+"  "+tr("Cl\351 RIB: ")+mb.keyRIB+'\n';
+        text += tr("Domiciliation: ");
+        text += mb.address+"\n\n";
+        text += tr("IBAN: ");
+        text += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
+        text += tr("BIC: ") + mb.codeBIC+'\n';
+        rect = fm.boundingRect(mLeft+5, rect.top()+15, wUtil*0.36 +15, rect.height(), Qt::AlignLeft, text );
+        rect.setWidth(wUtil*0.36); //fixe la largeur
+        painter.drawText(rect, text);
     }
 
     delete m_DialogWaiting;
     painter.end();
+}
+
+/**
+    Ouvre la fentre d edition sur un double clique
+  */
+void customerView::on_tableWidget_itemDoubleClicked(){
+    on_toolBut_Edit_clicked();
+}
+
+void customerView::on_tableWidget_Services_itemDoubleClicked(){
+    on_toolButton_editService_clicked();
+}
+
+void customerView::on_tableWidget_Proposals_itemDoubleClicked(){
+    on_toolButton_editProposal_clicked();
+}
+
+void customerView::on_tableWidget_Invoices_itemDoubleClicked(){
+    on_toolButton_editInvoice_clicked();
 }

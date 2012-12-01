@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogcustomer.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -88,8 +88,8 @@ public:
         if (DialogCustomer->objectName().isEmpty())
             DialogCustomer->setObjectName(QString::fromUtf8("DialogCustomer"));
         DialogCustomer->setWindowModality(Qt::NonModal);
-        DialogCustomer->resize(543, 534);
-        DialogCustomer->setMinimumSize(QSize(500, 400));
+        DialogCustomer->resize(563, 559);
+        DialogCustomer->setMinimumSize(QSize(500, 0));
         DialogCustomer->setMaximumSize(QSize(16777215, 16777215));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app/customers"), QSize(), QIcon::Normal, QIcon::Off);

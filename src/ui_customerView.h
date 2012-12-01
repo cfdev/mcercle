@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'customerView.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -70,7 +70,7 @@ public:
     QSpacerItem *horizontalSpacer_8;
     QLabel *labelInfoCustomer;
     QSpacerItem *verticalSpacer_3;
-    QWidget *tab_interventions;
+    QWidget *tab_services;
     QVBoxLayout *verticalLayout_11;
     QVBoxLayout *verticalLayout_10;
     QHBoxLayout *horizontalLayout_3;
@@ -186,23 +186,21 @@ public:
         horizontalLayout_5->setObjectName(QString::fromUtf8("horizontalLayout_5"));
         comboBoxFiltre = new QComboBox(customerView);
         comboBoxFiltre->setObjectName(QString::fromUtf8("comboBoxFiltre"));
-        comboBoxFiltre->setMinimumSize(QSize(0, 25));
 
         horizontalLayout_5->addWidget(comboBoxFiltre);
 
         lineEdit_Search = new QLineEdit(customerView);
         lineEdit_Search->setObjectName(QString::fromUtf8("lineEdit_Search"));
-        lineEdit_Search->setMinimumSize(QSize(0, 25));
         lineEdit_Search->setMaxLength(128);
 
         horizontalLayout_5->addWidget(lineEdit_Search);
 
         toolBut_search = new QToolButton(customerView);
         toolBut_search->setObjectName(QString::fromUtf8("toolBut_search"));
-        toolBut_search->setMinimumSize(QSize(32, 25));
         QIcon icon3;
         icon3.addFile(QString::fromUtf8(":/app/search"), QSize(), QIcon::Normal, QIcon::Off);
         toolBut_search->setIcon(icon3);
+        toolBut_search->setIconSize(QSize(24, 24));
 
         horizontalLayout_5->addWidget(toolBut_search);
 
@@ -338,16 +336,16 @@ public:
         QIcon icon7;
         icon7.addFile(QString::fromUtf8(":/app/customer_info"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget_Customer->addTab(tab_file, icon7, QString());
-        tab_interventions = new QWidget();
-        tab_interventions->setObjectName(QString::fromUtf8("tab_interventions"));
-        verticalLayout_11 = new QVBoxLayout(tab_interventions);
+        tab_services = new QWidget();
+        tab_services->setObjectName(QString::fromUtf8("tab_services"));
+        verticalLayout_11 = new QVBoxLayout(tab_services);
         verticalLayout_11->setContentsMargins(3, 3, 3, 3);
         verticalLayout_11->setObjectName(QString::fromUtf8("verticalLayout_11"));
         verticalLayout_10 = new QVBoxLayout();
         verticalLayout_10->setObjectName(QString::fromUtf8("verticalLayout_10"));
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        toolButton_addService = new QToolButton(tab_interventions);
+        toolButton_addService = new QToolButton(tab_services);
         toolButton_addService->setObjectName(QString::fromUtf8("toolButton_addService"));
         toolButton_addService->setMinimumSize(QSize(32, 32));
         QIcon icon8;
@@ -357,7 +355,7 @@ public:
 
         horizontalLayout_3->addWidget(toolButton_addService);
 
-        toolButton_editService = new QToolButton(tab_interventions);
+        toolButton_editService = new QToolButton(tab_services);
         toolButton_editService->setObjectName(QString::fromUtf8("toolButton_editService"));
         toolButton_editService->setMinimumSize(QSize(32, 32));
         toolButton_editService->setIcon(icon1);
@@ -365,7 +363,7 @@ public:
 
         horizontalLayout_3->addWidget(toolButton_editService);
 
-        toolButton_delService = new QToolButton(tab_interventions);
+        toolButton_delService = new QToolButton(tab_services);
         toolButton_delService->setObjectName(QString::fromUtf8("toolButton_delService"));
         toolButton_delService->setMinimumSize(QSize(32, 32));
         toolButton_delService->setIcon(icon2);
@@ -377,7 +375,7 @@ public:
 
         horizontalLayout_3->addItem(horizontalSpacer_6);
 
-        toolButton_printServ = new QToolButton(tab_interventions);
+        toolButton_printServ = new QToolButton(tab_services);
         toolButton_printServ->setObjectName(QString::fromUtf8("toolButton_printServ"));
         toolButton_printServ->setMinimumSize(QSize(32, 32));
         QIcon icon9;
@@ -390,7 +388,7 @@ public:
 
         verticalLayout_10->addLayout(horizontalLayout_3);
 
-        tableWidget_Services = new QTableWidget(tab_interventions);
+        tableWidget_Services = new QTableWidget(tab_services);
         tableWidget_Services->setObjectName(QString::fromUtf8("tableWidget_Services"));
 
         verticalLayout_10->addWidget(tableWidget_Services);
@@ -398,7 +396,7 @@ public:
 
         verticalLayout_11->addLayout(verticalLayout_10);
 
-        tabWidget_Customer->addTab(tab_interventions, QString());
+        tabWidget_Customer->addTab(tab_services, QString());
         tab_estimates = new QWidget();
         tab_estimates->setObjectName(QString::fromUtf8("tab_estimates"));
         horizontalLayout_10 = new QHBoxLayout(tab_estimates);
@@ -534,7 +532,7 @@ public:
 
         retranslateUi(customerView);
 
-        tabWidget_Customer->setCurrentIndex(1);
+        tabWidget_Customer->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(customerView);
@@ -545,33 +543,15 @@ public:
         customerView->setWindowTitle(QApplication::translate("customerView", "Form", 0, QApplication::UnicodeUTF8));
         labelTitle->setText(QApplication::translate("customerView", "Clients", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        toolBut_Add->setToolTip(QApplication::translate("customerView", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<table style=\"-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;\">\n"
-"<tr>\n"
-"<td style=\"border: none;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Ajouter un client</span></p></td></tr></table></body></html>", 0, QApplication::UnicodeUTF8));
+        toolBut_Add->setToolTip(QApplication::translate("customerView", "Ajouter un client", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolBut_Add->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        toolBut_Edit->setToolTip(QApplication::translate("customerView", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<table style=\"-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;\">\n"
-"<tr>\n"
-"<td style=\"border: none;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Editer le client s\303\251lectionn\303\251</span></p></td></tr></table></body></html>", 0, QApplication::UnicodeUTF8));
+        toolBut_Edit->setToolTip(QApplication::translate("customerView", "Modifier le client", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolBut_Edit->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        toolButton_Del->setToolTip(QApplication::translate("customerView", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-family:'Sans Serif'; font-weight:600;\">Supprimer le client s\303\251lectionn\303\251</span></p></body></html>", 0, QApplication::UnicodeUTF8));
+        toolButton_Del->setToolTip(QApplication::translate("customerView", "Supprimer le client", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_Del->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
@@ -584,6 +564,9 @@ public:
 "<td style=\"border: none;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-weight:600;\">Chercher un client...</span></p></td></tr></table></body></html>", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
+#ifndef QT_NO_TOOLTIP
+        toolBut_search->setToolTip(QApplication::translate("customerView", "Chercher un client", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolBut_search->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
         LabelPa->setText(QApplication::translate("customerView", "Page", 0, QApplication::UnicodeUTF8));
         label_pageMax->setText(QApplication::translate("customerView", "/", 0, QApplication::UnicodeUTF8));
@@ -595,21 +578,51 @@ public:
         toolButton_clipboard->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
         labelInfoCustomer->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
         tabWidget_Customer->setTabText(tabWidget_Customer->indexOf(tab_file), QApplication::translate("customerView", "Fiche", 0, QApplication::UnicodeUTF8));
-        toolButton_addService->setText(QApplication::translate("customerView", "Ajouter une intervention", 0, QApplication::UnicodeUTF8));
-        toolButton_editService->setText(QApplication::translate("customerView", "Editer une intervention", 0, QApplication::UnicodeUTF8));
-        toolButton_delService->setText(QApplication::translate("customerView", "Supprimer une intervention", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_addService->setToolTip(QApplication::translate("customerView", "Ajouter un service", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_addService->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        toolButton_editService->setToolTip(QApplication::translate("customerView", "Editer un service", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_editService->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        toolButton_delService->setToolTip(QApplication::translate("customerView", "Supprimer un service", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
+        toolButton_delService->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        toolButton_printServ->setToolTip(QApplication::translate("customerView", "imprimer un service", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_printServ->setText(QString());
-        tabWidget_Customer->setTabText(tabWidget_Customer->indexOf(tab_interventions), QApplication::translate("customerView", "Interventions", 0, QApplication::UnicodeUTF8));
+        tabWidget_Customer->setTabText(tabWidget_Customer->indexOf(tab_services), QApplication::translate("customerView", "Services", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_addProposal->setToolTip(QApplication::translate("customerView", "Cr\303\251er un devis", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_addProposal->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_editProposal->setToolTip(QApplication::translate("customerView", "Modifier le devis s\303\251lectionn\303\251", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_editProposal->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_delProposal->setToolTip(QApplication::translate("customerView", "Supprimer le devis s\303\251lectionn\303\251", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_delProposal->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
-        toolButton_printPro->setToolTip(QApplication::translate("customerView", "Imprimer la proposition commerciale", 0, QApplication::UnicodeUTF8));
+        toolButton_printPro->setToolTip(QApplication::translate("customerView", "Imprimer le devis", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         toolButton_printPro->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
         tabWidget_Customer->setTabText(tabWidget_Customer->indexOf(tab_estimates), QApplication::translate("customerView", "Devis / Propositions", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_addInvoice->setToolTip(QApplication::translate("customerView", "Cr\303\251er une facture", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_addInvoice->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_editInvoice->setToolTip(QApplication::translate("customerView", "Modifier la facture s\303\251lectionn\303\251e", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_editInvoice->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        toolButton_delInvoice->setToolTip(QApplication::translate("customerView", "Supprimer la facture s\303\251lectionn\303\251e", 0, QApplication::UnicodeUTF8));
+#endif // QT_NO_TOOLTIP
         toolButton_delInvoice->setText(QApplication::translate("customerView", "...", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_TOOLTIP
         toolButton_printInv->setToolTip(QApplication::translate("customerView", "Imprimer la facture", 0, QApplication::UnicodeUTF8));

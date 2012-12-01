@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>448</width>
-    <height>306</height>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,7 +74,7 @@
         <item row="3" column="3">
          <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>CodePostale :</string>
+           <string>Code Postal :</string>
           </property>
          </widget>
         </item>
@@ -124,6 +124,20 @@ p, li { white-space: pre-wrap; }
          <widget class="QLineEdit" name="lineEdit_email">
           <property name="maxLength">
            <number>128</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Pays :</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="lineEdit_country">
+          <property name="maxLength">
+           <number>64</number>
           </property>
          </widget>
         </item>
@@ -208,6 +222,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_fax</tabstop>
   <tabstop>lineEdit_city</tabstop>
   <tabstop>lineEdit_zipCode</tabstop>
+  <tabstop>lineEdit_country</tabstop>
   <tabstop>lineEdit_add1</tabstop>
   <tabstop>lineEdit_add2</tabstop>
   <tabstop>lineEdit_add3</tabstop>
@@ -222,8 +237,8 @@ p, li { white-space: pre-wrap; }
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>338</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -238,8 +253,8 @@ p, li { white-space: pre-wrap; }
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>338</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

@@ -93,7 +93,13 @@ private slots:
     void on_paintPrinterProposal(QPrinter *printer);
     void on_paintPrinterInvoice(QPrinter *printer);
 
+    void on_tableWidget_itemDoubleClicked();
+    void on_tableWidget_Services_itemDoubleClicked();
+    void on_tableWidget_Proposals_itemDoubleClicked();
+    void on_tableWidget_Invoices_itemDoubleClicked();
+
 public slots:
+    void refreshCustomersList();
     void listCustomers(int page);
     void listServices();
     void listProposals();

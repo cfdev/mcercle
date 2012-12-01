@@ -24,6 +24,8 @@
 #include <QPushButton>
 #include <QValidator>
 #include <QMessageBox>
+#include <QDesktopServices>
+#include <QFileDialog>
 
 DialogProduct::DialogProduct(QLocale &lang, product *p, bool tax, unsigned char type, QWidget *parent) :
     QDialog(parent),
@@ -103,10 +105,12 @@ void DialogProduct::setTitle(QString val){
 void DialogProduct::clearEdits(){
     ui->lineEdit_code->setText("");
     ui->lineEdit_description->setText("");
-    ui->lineEdit_stock->setText("0");
+    ui->lineEdit_stock->setText("1");
     ui->lineEdit_stockAlert->setText("0");
     ui->doubleSpinBox_buyingPrice->setValue(0);
     ui->doubleSpinBox_price->setValue(0);
+   /* QImage img;
+    ui->label_image->setPixmap(QPixmap::fromImage(img));*/
 }
 
 /**
@@ -144,6 +148,10 @@ void DialogProduct::loadValuesFormProduct(){
     //Stock
     ui->lineEdit_stock->setText( QString::number(m_product->getStock()) );
     ui->lineEdit_stockAlert->setText( QString::number(m_product->getStockWarning()) );
+
+    //relecture de limage et affichage du logo
+    /*QImage lo = m_product->getPicture();
+    ui->label_image->setPixmap(QPixmap::fromImage(lo));*/
 
     //State
     if( m_product->getState() == product::OK )ui->radioButton_OK->setChecked( true );
@@ -263,6 +271,13 @@ void DialogProduct::on_pushButton_add_edit_clicked()
     m_product->setBuyingPrice( buyingPrice );
     m_product->setSellingPrice( SellingPrice );
 
+    //ajout a la base de donnees
+    /*if(ui->label_image->pixmap() == NULL){
+        QImage img;
+        m_product->setPicture(img);
+    }
+    else m_product->setPicture( ui->label_image->pixmap()->toImage() );*/
+
     /*if(ui->comboBox_tax->currentIndex() == 0) m_product->setTax( 5.5 );
     else m_product->setTax( 19.6 );
 */
@@ -314,3 +329,44 @@ void DialogProduct::on_toolButton_editCategorie_clicked()
     loadCategoryList();
 }
 
+/**
+    Generer un code automatiquement
+  */
+void DialogProduct::on_toolButton_autoCode_clicked(){
+    //Recupere le dernier ID
+    int lastID = m_product->getLastId();
+    //Generation du code
+    // DATE + ID
+    ui->lineEdit_code->setText(QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
+}
+
+/**
+    Image du produit
+  */
+/*
+void DialogProduct::on_pushButton_ClearImage_clicked()
+{
+    QImage logo;
+    ui->label_image->setPixmap(QPixmap::fromImage(logo));
+}
+
+void DialogProduct::on_pushButton_image_clicked()
+{
+    QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+    QString fileName = QFileDialog::getOpenFileName(0, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
+
+    if(fileName.isEmpty())return;
+
+    //verifie la taille
+    QImage logo;
+    int ret = logo.load(fileName);
+    if(!ret){
+        QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image..."));
+        return;
+    }
+    if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
+    if(logo.size().width() > 128)  logo = logo.scaled(QSize(128,logo.height()));
+
+    ui->label_image->setPixmap(QPixmap::fromImage(logo));
+}
+*/

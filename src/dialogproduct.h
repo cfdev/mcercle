@@ -31,13 +31,14 @@ private:
     void clearEdits();
 
 private slots:
+    void checkConditions();
     void on_comboBox_categories_currentIndexChanged(QString name);
     void on_toolButton_editCategorie_clicked();
     void on_pushButton_close_clicked();
     void on_pushButton_add_edit_clicked();
     void on_comboBox_providers_currentIndexChanged(QString name);
     void on_toolButton_editProvider_clicked();
-    void checkConditions();
+    void on_toolButton_autoCode_clicked();
 
 signals:
     void askRefreshList();

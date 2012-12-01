@@ -6,7 +6,10 @@
 #include <QDateTime>
 #include <QString>
 #include <vector>
-#include "bdd/ibpp.h"
+
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 #include "proposal.h"
 #include "invoice.h"
@@ -26,9 +29,7 @@ class customer : public QObject
 Q_OBJECT
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
     QWidget *m_parent;
     int m_id;
@@ -51,7 +52,7 @@ public:
 
     enum{PEOPLE_TYPE, COMPAGNY_TYPE};
 
-    customer(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    customer(QSqlDatabase db, QWidget *parent = 0);
     ~customer();
 
     bool create();

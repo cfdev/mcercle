@@ -2,6 +2,7 @@
 #define PRODUCTVIEW_H
 
 #include <QWidget>
+#include <QTableWidgetItem>
 #include <QLocale>
 
 #include "dbase.h"
@@ -21,6 +22,9 @@ public:
     QString getSelectedProductName();
     float getSelectedProductPrice();
     int getSelectedProductID();
+
+    void setIndexSearchProduct(int index);
+    int getIndexSearchProduct();
 
     enum{PRODUCT_VIEW, INVOICE_VIEW};
 
@@ -67,6 +71,7 @@ private slots:
     void on_toolButton_pageNext_clicked();
 
     void on_toolButton_clipboard_clicked();
+    void on_tableWidget_products_itemDoubleClicked();
 
 public slots:
     void refreshProductsList();

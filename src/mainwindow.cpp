@@ -54,6 +54,9 @@ MainWindow::MainWindow(QWidget *parent) :
 */
 MainWindow::~MainWindow()
 {
+    //sauvegarde les index des champs de recherche
+    m_Settings->setPositionListSearchProduct( m_productView->getIndexSearchProduct() );
+
     delete ui;
     delete m_Settings;
     delete m_database;
@@ -86,29 +89,35 @@ void MainWindow::init(){
     }
 
     //Base de donnees
+    m_database->setBdd( m_Settings->getDatabase_bdd() );
     m_database->setHostName( m_Settings->getDatabase_hostName() );
     m_database->setPort( m_Settings->getDatabase_port() );
     m_database->setDatabaseName( m_Settings->getDatabase_databaseName() );
     m_database->setUserName( m_Settings->getDatabase_userName() );
     m_database->setPassword( m_Settings->getDatabase_userPassword() );
-
-    if(m_database->connect(database::DB_CONNECT) == database::DB_NOTEXIST_ERR){
-        // Demande si on creer une nouvelle base de donnees
-        QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous cr\351er une nouvelle base de donn\351es ?\n"),QMessageBox::Yes | QMessageBox::No);
-        mBox.setDefaultButton(QMessageBox::No);
-        int ret = mBox.exec();
-        if(ret == QMessageBox::Yes)m_database->create();
+    //version 1.0
+    if((m_database->connect()==database::DB_CON_OK) && (m_Settings->getDatabase_databaseName().contains(".fdb"))){
+        //Si la migration s'est deroulee correctement, Mise a jour des settings!
+        m_Settings->setDatabase_bdd(m_database->getBdd());
+        m_Settings->setDatabase_hostName(m_database->getHostName());
+        m_Settings->setDatabase_port(m_database->getPort());
+        m_Settings->setDatabase_databaseName(m_database->getDatabaseName());
+        m_Settings->setDatabase_userName(m_database->getUserName());
+        m_Settings->setDatabase_userPassword(m_database->getPassword());
     }
 
+
     /// Construction des widgets!!
-    //board
-    m_board = new board( m_database, m_lang );
     //customers
     m_customerView = new customerView( m_database, m_lang  );
     m_customerView->hide();
     //products
     m_productView = new productView( m_database, m_lang, productView::PRODUCT_VIEW );
     m_productView->hide();
+    m_productView->setIndexSearchProduct( m_Settings->getPositionListSearchProduct() );
+    //board
+    m_board = new board( m_database, m_lang );
+
     //Mis en layout
     ui->verticalLayout->addWidget( m_board );
     ui->verticalLayout->addWidget( m_customerView );
@@ -166,6 +175,7 @@ void MainWindow::on_actionTableau_de_bord_triggered()
 void MainWindow::on_actionClients_triggered()
 {
     m_board->hide();
+    m_customerView->refreshCustomersList();
     m_customerView->show();
     m_productView->hide();
     ui->verticalLayout->update();
@@ -237,8 +247,10 @@ void MainWindow::RefreshLists()
     m_board->listRevenuesToTable();
 }
 
+
+
 /**
-    DEBUG AJOUT DE CLIENTS
+    DEBUG AJOUT DE CLIENTS *****************************************************************************
   */
 void MainWindow::on_actionDebug_Add_triggered()
 {
@@ -291,3 +303,5 @@ void MainWindow::on_actionDebug_prod_triggered()
     }
     delete m_DialogWaiting;
 }
+
+/// ******************************************************************************************************

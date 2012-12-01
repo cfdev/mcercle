@@ -34,5 +34,6 @@
         <file alias="logo">art/logo/mcercle-logo-64.png</file>
         <file alias="revenue">art/view-investment.png</file>
         <file alias="compagny">art/meeting-participant.png</file>
+        <file alias="config">art/configure.png</file>
     </qresource>
 </RCC>

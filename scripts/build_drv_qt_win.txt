@@ -1,6 +1,0 @@
-
-configure.exe -debug-and-release -qt-sql-ibase -I "C:\Firebird_2_1\include" -L "C:\Firebird_2_1\lib" -qt-sql-mysql -I "C:\MySQL-5.1\include" -L "C:\MySQL-5.1\lib\opt" -qt-sql-psql -I "C:\PostgreSQL-9.0\include" -L "C:\PostgreSQL-9.0\lib" -no-webkit -no-qt3support
-ou
-configure.exe -debug-and-release -qt-sql-ibase -I "C:\Firebird_2_1\include" -L "C:\Firebird_2_1\lib" -no-webkit -no-qt3support
-
-mingw32-make

@@ -69,14 +69,7 @@
           </size>
          </property>
          <property name="toolTip">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;table style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
-&lt;tr&gt;
-&lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ajouter un client&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Ajouter un client</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -102,14 +95,7 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
          <property name="toolTip">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans Serif'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;table style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
-&lt;tr&gt;
-&lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Editer le client sélectionné&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Modifier le client</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -138,11 +124,7 @@ p, li { white-space: pre-wrap; }
           </size>
          </property>
          <property name="toolTip">
-          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Sans Serif'; font-weight:600;&quot;&gt;Supprimer le client sélectionné&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>Supprimer le client</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -181,23 +163,10 @@ p, li { white-space: pre-wrap; }
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QComboBox" name="comboBoxFiltre">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
-            </widget>
+            <widget class="QComboBox" name="comboBoxFiltre"/>
            </item>
            <item>
             <widget class="QLineEdit" name="lineEdit_Search">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>25</height>
-              </size>
-             </property>
              <property name="toolTip">
               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -215,11 +184,8 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <widget class="QToolButton" name="toolBut_search">
-             <property name="minimumSize">
-              <size>
-               <width>32</width>
-               <height>25</height>
-              </size>
+             <property name="toolTip">
+              <string>Chercher un client</string>
              </property>
              <property name="text">
               <string>...</string>
@@ -227,6 +193,12 @@ p, li { white-space: pre-wrap; }
              <property name="icon">
               <iconset resource="../ressources.qrc">
                <normaloff>:/app/search</normaloff>:/app/search</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>24</width>
+               <height>24</height>
+              </size>
              </property>
             </widget>
            </item>
@@ -353,7 +325,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <property name="iconSize">
           <size>
@@ -462,9 +434,9 @@ p, li { white-space: pre-wrap; }
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab_interventions">
+         <widget class="QWidget" name="tab_services">
           <attribute name="title">
-           <string>Interventions</string>
+           <string>Services</string>
           </attribute>
           <layout class="QVBoxLayout" name="verticalLayout_11">
            <property name="margin">
@@ -482,8 +454,11 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Ajouter un service</string>
+                 </property>
                  <property name="text">
-                  <string>Ajouter une intervention</string>
+                  <string/>
                  </property>
                  <property name="icon">
                   <iconset resource="../ressources.qrc">
@@ -505,8 +480,11 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Editer un service</string>
+                 </property>
                  <property name="text">
-                  <string>Editer une intervention</string>
+                  <string/>
                  </property>
                  <property name="icon">
                   <iconset resource="../ressources.qrc">
@@ -528,8 +506,11 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Supprimer un service</string>
+                 </property>
                  <property name="text">
-                  <string>Supprimer une intervention</string>
+                  <string/>
                  </property>
                  <property name="icon">
                   <iconset resource="../ressources.qrc">
@@ -563,6 +544,9 @@ p, li { white-space: pre-wrap; }
                    <width>32</width>
                    <height>32</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>imprimer un service</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -608,6 +592,9 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Créer un devis</string>
+                 </property>
                  <property name="text">
                   <string>...</string>
                  </property>
@@ -631,6 +618,9 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Modifier le devis sélectionné</string>
+                 </property>
                  <property name="text">
                   <string>...</string>
                  </property>
@@ -653,6 +643,9 @@ p, li { white-space: pre-wrap; }
                    <width>32</width>
                    <height>32</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Supprimer le devis sélectionné</string>
                  </property>
                  <property name="text">
                   <string>...</string>
@@ -691,7 +684,7 @@ p, li { white-space: pre-wrap; }
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Imprimer la proposition commerciale</string>
+                  <string>Imprimer le devis</string>
                  </property>
                  <property name="text">
                   <string>...</string>
@@ -737,6 +730,9 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Créer une facture</string>
+                 </property>
                  <property name="text">
                   <string>...</string>
                  </property>
@@ -760,6 +756,9 @@ p, li { white-space: pre-wrap; }
                    <height>32</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Modifier la facture sélectionnée</string>
+                 </property>
                  <property name="text">
                   <string>...</string>
                  </property>
@@ -782,6 +781,9 @@ p, li { white-space: pre-wrap; }
                    <width>32</width>
                    <height>32</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Supprimer la facture sélectionnée</string>
                  </property>
                  <property name="text">
                   <string>...</string>

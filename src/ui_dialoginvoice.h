@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialoginvoice.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -64,7 +64,7 @@ public:
     QDateEdit *dateEdit_delivery;
     QLabel *label_delay;
     QSpinBox *spinBox_delayDelivery;
-    QLabel *label_4;
+    QLabel *label_link;
     QLineEdit *lineEdit_linkCode;
     QLabel *label_partpayment;
     QDoubleSpinBox *doubleSpinBox_partPAYMENT;
@@ -230,10 +230,10 @@ public:
 
         gridLayout->addWidget(spinBox_delayDelivery, 3, 3, 1, 1);
 
-        label_4 = new QLabel(DialogInvoice);
-        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_link = new QLabel(DialogInvoice);
+        label_link->setObjectName(QString::fromUtf8("label_link"));
 
-        gridLayout->addWidget(label_4, 2, 0, 1, 1);
+        gridLayout->addWidget(label_link, 2, 0, 1, 1);
 
         lineEdit_linkCode = new QLineEdit(DialogInvoice);
         lineEdit_linkCode->setObjectName(QString::fromUtf8("lineEdit_linkCode"));
@@ -334,6 +334,7 @@ public:
 
         toolButton_rm = new QToolButton(groupBox_invoice);
         toolButton_rm->setObjectName(QString::fromUtf8("toolButton_rm"));
+        toolButton_rm->setMinimumSize(QSize(24, 24));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_rm->setIcon(icon4);
@@ -444,7 +445,7 @@ public:
         dateEdit_delivery->setDisplayFormat(QApplication::translate("DialogInvoice", "dd/MM/yyyy", 0, QApplication::UnicodeUTF8));
         label_delay->setText(QApplication::translate("DialogInvoice", "Dur\303\251e de livraison\n"
 "(en jours) :", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("DialogInvoice", "Facture associ\303\251e : ", 0, QApplication::UnicodeUTF8));
+        label_link->setText(QApplication::translate("DialogInvoice", "Facture associ\303\251e : ", 0, QApplication::UnicodeUTF8));
         label_partpayment->setText(QApplication::translate("DialogInvoice", "Accompte :", 0, QApplication::UnicodeUTF8));
         doubleSpinBox_partPAYMENT->setPrefix(QString());
         doubleSpinBox_partPAYMENT->setSuffix(QApplication::translate("DialogInvoice", " \342\202\254", 0, QApplication::UnicodeUTF8));

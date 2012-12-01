@@ -11,11 +11,12 @@
 ;--------------------------------
 ;General
 	; General Product Description Definitions
-	!define SOFT_NAME "mcercle"
-	!define SOFT_VERSION "1.0"
-	!define SOFT_WEB_SITE "http://frausti.fr"
-	!define SOFT_BUILD "1cf"
-	!define ICON "install.ico"
+	!define SOFT_NAME 		"mcercle"
+	!define SOFT_VERSION 	"1.9"
+	!define SOFT_WEB_SITE 	"http://frausti.fr"
+	!define SOFT_BUILD 		"1cf"
+	!define ARCH       		"win32"
+	!define ICON 			"install.ico"
 	
 	SetCompressor /final /solid lzma
 	CRCCheck force
@@ -23,7 +24,7 @@
 	
 	;Name and file
 	Name "${SOFT_NAME} ${SOFT_VERSION}"
-	OutFile "Installer_${SOFT_NAME}-${SOFT_VERSION}-${SOFT_BUILD}.exe"
+	OutFile "Installer_${SOFT_NAME}-${SOFT_VERSION}-${ARCH}_${SOFT_BUILD}.exe"
 
 	;Default installation folder
 	InstallDir "$PROGRAMFILES\${SOFT_NAME}"
@@ -82,13 +83,14 @@ Section "Logiciel"
 
 	SetOutPath "$INSTDIR"  
 	;ADD YOUR OWN FILES HERE...
-	File /nonfatal /r "..\..\ChangeLog.txt"
-	;File /nonfatal /r "..\..\Licence.txt"
-	File /nonfatal /r "..\..\Todo.txt"
-	File /nonfatal /r "..\..\Authors.txt"
+	File /nonfatal /r "bin\Changelog"
+	File /nonfatal /r "bin\License"
+	File /nonfatal /r "bin\readme"
+	File /nonfatal /r "bin\Authors"
 	
 	File /nonfatal /r "bin\QtCore4.dll"
-	File /nonfatal /r "bin\QtGui4.dll"				
+	File /nonfatal /r "bin\QtGui4.dll"
+	File /nonfatal /r "bin\QtSql4.dll"	
 	File /nonfatal /r "bin\mingwm10.dll"
 	File /nonfatal /r "bin\libgcc_s_dw2-1.dll"
 	File /nonfatal /r "bin\fbclient.dll"

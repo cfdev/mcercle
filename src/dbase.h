@@ -6,25 +6,27 @@
 #include <QLocale>
 #include <QImage>
 
-#include "bdd/ibpp.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlRecord>
+#include <QSqlError>
+
 #include "customer.h"
 #include "product.h"
 
 class customer;
 class product;
 
-#define MCERCLE_VERSION "1.0"
+#define MCERCLE_VERSION "1.9"
 
 class database : public QObject
 {
 private:
-    IBPP::Database db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase db;
 
     QWidget *m_parent;
     bool m_connected;
-    QString m_name, m_hostName, m_login, m_password;
+    QString m_bdd, m_name, m_hostName, m_login, m_password;
     int m_port, m_databaseVersion;
     bool addSample;
     QString m_FDBversion;
@@ -34,12 +36,12 @@ private:
     #define CHARSET     "UTF8"
     #define OPTIONS     "PAGE_SIZE = 4096"
 
-    #define FIREBIRD_SUPPORTED 259 // pour 2.5.9
     #define DBASE_SUPPORTED 1
 
 
     /* Creation des tables */
     bool createTable_informations();
+    bool createTable_bank();
     bool createTable_customers();
     bool createTable_tax();
     bool createTable_products();
@@ -74,15 +76,27 @@ public:
         int tax;
     }Informations;
 
+    typedef struct{
+        //Valeur pour le placement dans un tableau
+        QString codeBanque;
+        QString codeGuichet;
+        QString numCompte;
+        QString keyRIB;
+        QString address;
+        QString IBAN1,IBAN2,IBAN3,IBAN4,IBAN5,IBAN6,IBAN7,IBAN8,IBAN9;
+        QString codeBIC;
+    }Bank;
+
     database(QLocale &lang, QWidget *parent);
     ~database();
 
     /* Methode de pilotage de la bdd */
-    char connect(char type);
-    void close(){db->Disconnect();m_connected = false;}
+    char connect();
+    void close(){db.close();m_connected = false;}
     bool create();
     bool isConnected(){return m_connected;}
 
+    QString getBdd(){return m_bdd;}
     QString getHostName(){return m_hostName;}
     int getPort(){return m_port;}
     QString getDatabaseName(){return m_name;}
@@ -91,8 +105,11 @@ public:
     QString getFireBirdVersion(){return m_FDBversion;}
     int getDatabaseVersion(){return m_databaseVersion;}
     QDate getCurrentDate();
+    QString getDriverName(){return db.driverName();}
+    QStringList getDrivers(){return db.drivers();}
 
-    void setHostName(const QString& hostName){if(!hostName.isEmpty())m_hostName = hostName+ "/" + QString::number(m_port);}
+    void setBdd(const QString& bdd){if(!bdd.isEmpty())m_bdd = bdd;}
+    void setHostName(const QString& hostName){if(!hostName.isEmpty())m_hostName = hostName;}
     void setPort(const int& port){if(port>0)m_port = port;}
     void setDatabaseName(const QString& name){if(!name.isEmpty())m_name = name;}
     void setUserName(const QString& login){if(!login.isEmpty())m_login = login;}
@@ -103,17 +120,11 @@ public:
     QImage getLogoTable_informations();
     bool updateInfo(Informations &info);
     bool getInfo(Informations &info);
+    bool updateBank(Bank &b);
+    bool getBank(Bank &b);
     int getIsTax(){return m_tax;}
 
-
-    enum{DB_CON_OK, DB_CONNECT, DB_CREATE};
-    enum{DB_CON_ERR, DB_NOTEXIST_ERR};
-
-    static QDateTime fromIBPPTimeStamp(IBPP::Timestamp &dateTime);
-    static IBPP::Timestamp toIBPPTimeStamp(const QDateTime &dateTime);
-    static QDate fromIBPPDate(IBPP::Date &IBPPdate);
-    static IBPP::Date toIBPPDate(const QDate &date);
-    static QString IBPPversion();
+    enum{DB_CON_OK, DB_CONNECT, DB_CREATE, DB_CON_ERR, DB_NOTEXIST_ERR};
 
     /* SOUS CLASS */
     customer *m_customer;

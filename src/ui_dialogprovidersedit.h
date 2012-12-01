@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogprovidersedit.ui'
 **
-** Created: Tue Apr 3 11:50:08 2012
-**      by: Qt User Interface Compiler version 4.8.0
+** Created: Mon 21. May 18:06:32 2012
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -49,6 +49,8 @@ public:
     QLineEdit *lineEdit_contact;
     QLabel *label_6;
     QLineEdit *lineEdit_email;
+    QLabel *label_11;
+    QLineEdit *lineEdit_country;
     QLabel *label_7;
     QLineEdit *lineEdit_add1;
     QLineEdit *lineEdit_add2;
@@ -62,7 +64,7 @@ public:
     {
         if (DialogProvidersEdit->objectName().isEmpty())
             DialogProvidersEdit->setObjectName(QString::fromUtf8("DialogProvidersEdit"));
-        DialogProvidersEdit->resize(448, 306);
+        DialogProvidersEdit->resize(448, 343);
         verticalLayout_2 = new QVBoxLayout(DialogProvidersEdit);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         GroupBox = new QGroupBox(DialogProvidersEdit);
@@ -152,6 +154,17 @@ public:
 
         gridLayout->addWidget(lineEdit_email, 1, 4, 1, 1);
 
+        label_11 = new QLabel(GroupBox);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout->addWidget(label_11, 4, 0, 1, 1);
+
+        lineEdit_country = new QLineEdit(GroupBox);
+        lineEdit_country->setObjectName(QString::fromUtf8("lineEdit_country"));
+        lineEdit_country->setMaxLength(64);
+
+        gridLayout->addWidget(lineEdit_country, 4, 1, 1, 1);
+
 
         verticalLayout->addLayout(gridLayout);
 
@@ -208,7 +221,8 @@ public:
         QWidget::setTabOrder(lineEdit_phone, lineEdit_fax);
         QWidget::setTabOrder(lineEdit_fax, lineEdit_city);
         QWidget::setTabOrder(lineEdit_city, lineEdit_zipCode);
-        QWidget::setTabOrder(lineEdit_zipCode, lineEdit_add1);
+        QWidget::setTabOrder(lineEdit_zipCode, lineEdit_country);
+        QWidget::setTabOrder(lineEdit_country, lineEdit_add1);
         QWidget::setTabOrder(lineEdit_add1, lineEdit_add2);
         QWidget::setTabOrder(lineEdit_add2, lineEdit_add3);
         QWidget::setTabOrder(lineEdit_add3, buttonBox);
@@ -228,7 +242,7 @@ public:
         label_2->setText(QApplication::translate("DialogProvidersEdit", "Nom :", 0, QApplication::UnicodeUTF8));
         label_3->setText(QApplication::translate("DialogProvidersEdit", "Fax :", 0, QApplication::UnicodeUTF8));
         label_4->setText(QApplication::translate("DialogProvidersEdit", "Ville :", 0, QApplication::UnicodeUTF8));
-        label_5->setText(QApplication::translate("DialogProvidersEdit", "CodePostale :", 0, QApplication::UnicodeUTF8));
+        label_5->setText(QApplication::translate("DialogProvidersEdit", "Code Postal :", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("DialogProvidersEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -236,6 +250,7 @@ public:
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt; color:#aa0000;\">*</span></p></body></html>", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("DialogProvidersEdit", "Contact : ", 0, QApplication::UnicodeUTF8));
         label_6->setText(QApplication::translate("DialogProvidersEdit", "Email :", 0, QApplication::UnicodeUTF8));
+        label_11->setText(QApplication::translate("DialogProvidersEdit", "Pays :", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("DialogProvidersEdit", "Adresse :", 0, QApplication::UnicodeUTF8));
         label_9->setText(QApplication::translate("DialogProvidersEdit", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"

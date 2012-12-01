@@ -6,15 +6,16 @@
 #include <QLocale>
 #include <QDateTime>
 #include <QIcon>
-#include "bdd/ibpp.h"
 
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QSqlRecord>
 
 class proposal : public QObject {
 
 private:
-    IBPP::Database m_db;
-    IBPP::Transaction m_tr;
-    IBPP::Statement m_st;
+    QSqlDatabase m_db;
 
     QWidget *m_parent;
     int m_id, m_idCustomer, m_state, m_delayDeliveryDate;
@@ -76,7 +77,7 @@ public:
     //State
     enum{WRITING, PROPOSED, VALIDATED};
 
-    proposal(IBPP::Database db, IBPP::Transaction tr, IBPP::Statement st, QWidget *parent = 0);
+    proposal(QSqlDatabase db, QWidget *parent = 0);
     ~proposal();
 
     bool create();
@@ -118,17 +119,17 @@ public:
     QDate getValidDate(){return m_validDate;}
 
 
-    void getProposalList(ProposalList& list, int id_customer, QString order, QString filter, QString field);
-    void getProposalListAlert(ProposalListAlert& list);
+    bool getProposalList(ProposalList& list, int id_customer, QString order, QString filter, QString field);
+    bool getProposalListAlert(ProposalListAlert& list);
 
     //Fonction pour creer le lien entre proposition commerciale et facture
     bool setLink( const int& idProposal, const int& idInvoice );
 
     //recup des articles de la facture
-    void getProposalItemsList(ProposalListItems& list, QString order, QString filter, QString field);
+    bool getProposalItemsList(ProposalListItems& list, QString order, QString filter, QString field);
 
     // Fonction sur un article
-    void getProposalItem(ProposalItem& item);
+    bool getProposalItem(ProposalItem& item);
     bool addProposalItem(ProposalItem& item);
     bool removeProposalItem(int Itemid);
     bool updateProposalItem(ProposalItem& item);
