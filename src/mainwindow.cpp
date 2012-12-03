@@ -312,28 +312,40 @@ void MainWindow::on_actionLivres_des_Recettes_triggered()
 }
 
 /**
-  Sauvegarder la base de données sous..
+  Sauvegarder la base de donnees sous..
 */
 void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
 {
-	//Si on est pas connecte on sort
+	// Si on est pas connecte on sort
 	if(!m_database->isConnected())return;
-	//test de SQLITE
+	// Test de SQLITE
 	if(m_database->getBdd() != "SQLITE"){
 		QMessageBox::information(this, tr("Information"),
 								 tr("Cette fonction est disponible uniquement pour SQLITE !"));
 		return;
 	}
 
-	//Fermeture de la base de donnees
+	// Fermeture de la base de donnees
 	m_database->close();
 	
 	QString source = m_database->getDatabaseName();
 	QString name = source; 
 	name.replace(".db", "_"+QDateTime::currentDateTime().toString(tr("dd-MM-yyyy_HHmmss"))+".db");
 	QString filename = QFileDialog::getSaveFileName(this, "Enregister sous... ",  name, "*.db");
-	//TODO: touver une autre fonction que QFile::copy si le fichier existe deja...
+	// TODO: A tester si le fichier existe deja...
+	// Une confirmation a ete demandee pour la reecriture du fichier via QFileDialog.
 	if( !filename.isEmpty() ) {
+		if(QFile::exists ( filename ){
+			// Si le fichier existe deja on supprime
+			if(!QFile::remove ( fileName ) ){
+				QMessageBox::critical(this, tr("Erreur"),
+									 tr("Impossible de remplacer le fichier!\n\n")+
+									 "Destination: "+name+"\n");
+				// Reouverture de la base de donnees
+				m_database->connect();	
+				return;
+			}	
+		}
 		if( QFile::copy(source, filename) )
 			QMessageBox::information(this, tr("Information"),
 									 tr("Sauvegarde Termin\351e!\n\n")+
@@ -345,7 +357,7 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
 										"Source: "+source+"\n"+
 										"Destination: "+name+"\n");
 	}
-	//Reouverture de la base de donnees
+	// Reouverture de la base de donnees
 	m_database->connect();
 }
 
