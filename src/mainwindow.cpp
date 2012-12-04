@@ -335,9 +335,9 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
 	// TODO: A tester si le fichier existe deja...
 	// Une confirmation a ete demandee pour la reecriture du fichier via QFileDialog.
 	if( !filename.isEmpty() ) {
-		if(QFile::exists ( filename ){
+		if(QFile::exists ( filename )){
 			// Si le fichier existe deja on supprime
-			if(!QFile::remove ( fileName ) ){
+			if(!QFile::remove ( filename ) ){
 				QMessageBox::critical(this, tr("Erreur"),
 									 tr("Impossible de remplacer le fichier!\n\n")+
 									 "Destination: "+name+"\n");

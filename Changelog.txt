@@ -3,9 +3,9 @@
 
 version 2.1 : xx/12/2012
 -------------------------------------------------------
++ Sauvegarde de la bdd
 + Détailler le CA Service et produit sur le Tableau de bord
 + Livre des recettes
-+ Gestion de la TVA, maintenant prêt pour les PME
 + Produits: autocompletion dans le champ recherche
 + Ajout de la mention obligatoire sur les factures/devis “Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)”
 + Lien email sur la fiche client
