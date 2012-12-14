@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogprintchoice.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -57,6 +57,9 @@ public:
         if (DialogPrintChoice->objectName().isEmpty())
             DialogPrintChoice->setObjectName(QString::fromUtf8("DialogPrintChoice"));
         DialogPrintChoice->resize(442, 239);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/print"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogPrintChoice->setWindowIcon(icon);
         verticalLayout_2 = new QVBoxLayout(DialogPrintChoice);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout = new QVBoxLayout();
@@ -118,9 +121,7 @@ public:
         verticalLayout->addWidget(groupBox);
 
         horizontalLayout = new QHBoxLayout();
-#ifndef Q_OS_MAC
-        horizontalLayout->setSpacing(-1);
-#endif
+        horizontalLayout->setSpacing(6);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         horizontalLayout->setContentsMargins(-1, -1, -1, 0);

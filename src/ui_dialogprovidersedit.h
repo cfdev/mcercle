@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogprovidersedit.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -65,6 +65,9 @@ public:
         if (DialogProvidersEdit->objectName().isEmpty())
             DialogProvidersEdit->setObjectName(QString::fromUtf8("DialogProvidersEdit"));
         DialogProvidersEdit->resize(448, 343);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogProvidersEdit->setWindowIcon(icon);
         verticalLayout_2 = new QVBoxLayout(DialogProvidersEdit);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         GroupBox = new QGroupBox(DialogProvidersEdit);

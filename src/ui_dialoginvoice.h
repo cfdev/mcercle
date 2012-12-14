@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialoginvoice.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -105,6 +105,9 @@ public:
         if (DialogInvoice->objectName().isEmpty())
             DialogInvoice->setObjectName(QString::fromUtf8("DialogInvoice"));
         DialogInvoice->resize(635, 484);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/logo"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogInvoice->setWindowIcon(icon);
         verticalLayout_2 = new QVBoxLayout(DialogInvoice);
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         verticalLayout = new QVBoxLayout();
@@ -276,9 +279,9 @@ public:
 
         verticalLayout_6->addWidget(tableWidget_selectService);
 
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/venteComptoire"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget_select->addTab(tabService, icon, QString());
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app/venteComptoire"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_select->addTab(tabService, icon1, QString());
         tabProduct = new QWidget();
         tabProduct->setObjectName(QString::fromUtf8("tabProduct"));
         verticalLayout_7 = new QVBoxLayout(tabProduct);
@@ -288,9 +291,9 @@ public:
 
         verticalLayout_7->addLayout(productLayout);
 
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app/products"), QSize(), QIcon::Normal, QIcon::Off);
-        tabWidget_select->addTab(tabProduct, icon1, QString());
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app/products"), QSize(), QIcon::Normal, QIcon::Off);
+        tabWidget_select->addTab(tabProduct, icon2, QString());
 
         verticalLayout_3->addWidget(tabWidget_select);
 
@@ -305,9 +308,9 @@ public:
 
         toolButton_add = new QToolButton(DialogInvoice);
         toolButton_add->setObjectName(QString::fromUtf8("toolButton_add"));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app/next"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_add->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app/next"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_add->setIcon(icon3);
         toolButton_add->setIconSize(QSize(24, 24));
 
         verticalLayout_5->addWidget(toolButton_add);
@@ -327,9 +330,9 @@ public:
         horizontalLayout_but->setObjectName(QString::fromUtf8("horizontalLayout_but"));
         toolButton_addFreeline = new QToolButton(groupBox_invoice);
         toolButton_addFreeline->setObjectName(QString::fromUtf8("toolButton_addFreeline"));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_addFreeline->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_addFreeline->setIcon(icon4);
         toolButton_addFreeline->setIconSize(QSize(24, 24));
 
         horizontalLayout_but->addWidget(toolButton_addFreeline);
@@ -337,27 +340,27 @@ public:
         toolButton_rm = new QToolButton(groupBox_invoice);
         toolButton_rm->setObjectName(QString::fromUtf8("toolButton_rm"));
         toolButton_rm->setMinimumSize(QSize(32, 24));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_rm->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_rm->setIcon(icon5);
         toolButton_rm->setIconSize(QSize(16, 24));
 
         horizontalLayout_but->addWidget(toolButton_rm);
 
         toolButton_up = new QToolButton(groupBox_invoice);
         toolButton_up->setObjectName(QString::fromUtf8("toolButton_up"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/app/up"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_up->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/app/up"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_up->setIcon(icon6);
         toolButton_up->setIconSize(QSize(24, 24));
 
         horizontalLayout_but->addWidget(toolButton_up);
 
         toolButton_dn = new QToolButton(groupBox_invoice);
         toolButton_dn->setObjectName(QString::fromUtf8("toolButton_dn"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/app/dn"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_dn->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/app/dn"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_dn->setIcon(icon7);
         toolButton_dn->setIconSize(QSize(24, 24));
 
         horizontalLayout_but->addWidget(toolButton_dn);
@@ -401,9 +404,9 @@ public:
         horizontalLayout_button->setObjectName(QString::fromUtf8("horizontalLayout_button"));
         pushButton_createInv = new QPushButton(DialogInvoice);
         pushButton_createInv->setObjectName(QString::fromUtf8("pushButton_createInv"));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/app/ok"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_createInv->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/app/ok"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_createInv->setIcon(icon8);
 
         horizontalLayout_button->addWidget(pushButton_createInv);
 
@@ -419,9 +422,9 @@ public:
 
         pushButton_cancel = new QPushButton(DialogInvoice);
         pushButton_cancel->setObjectName(QString::fromUtf8("pushButton_cancel"));
-        QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_cancel->setIcon(icon8);
+        QIcon icon9;
+        icon9.addFile(QString::fromUtf8(":/app/quit"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_cancel->setIcon(icon9);
         pushButton_cancel->setAutoDefault(false);
 
         horizontalLayout_button->addWidget(pushButton_cancel);

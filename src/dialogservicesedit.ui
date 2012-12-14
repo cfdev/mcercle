@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Edition des services</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../ressources.qrc">
+    <normaloff>:/app/Edit</normaloff>:/app/Edit</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox_IntCom">

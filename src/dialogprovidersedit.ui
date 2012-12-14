@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Services communs</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../ressources.qrc">
+    <normaloff>:/app/Edit</normaloff>:/app/Edit</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QGroupBox" name="GroupBox">
@@ -228,7 +232,9 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_add3</tabstop>
   <tabstop>buttonBox</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../ressources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

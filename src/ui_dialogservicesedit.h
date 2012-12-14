@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogservicesedit.ui'
 **
-** Created: Sat 1. Dec 18:03:31 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -66,6 +66,9 @@ public:
         if (DialogServicesEdit->objectName().isEmpty())
             DialogServicesEdit->setObjectName(QString::fromUtf8("DialogServicesEdit"));
         DialogServicesEdit->resize(582, 439);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
+        DialogServicesEdit->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(DialogServicesEdit);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         groupBox_IntCom = new QGroupBox(DialogServicesEdit);
@@ -89,17 +92,15 @@ public:
 
         pushButton_add = new QPushButton(groupBox_IntCom);
         pushButton_add->setObjectName(QString::fromUtf8("pushButton_add"));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_add->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_add->setIcon(icon1);
 
         horizontalLayout->addWidget(pushButton_add);
 
         pushButton_edit = new QPushButton(groupBox_IntCom);
         pushButton_edit->setObjectName(QString::fromUtf8("pushButton_edit"));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_edit->setIcon(icon1);
+        pushButton_edit->setIcon(icon);
 
         horizontalLayout->addWidget(pushButton_edit);
 

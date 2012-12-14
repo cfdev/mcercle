@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'productView.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -87,6 +87,9 @@ public:
         if (productView->objectName().isEmpty())
             productView->setObjectName(QString::fromUtf8("productView"));
         productView->resize(640, 518);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/app/products"), QSize(), QIcon::Normal, QIcon::Off);
+        productView->setWindowIcon(icon);
         horizontalLayout = new QHBoxLayout(productView);
         horizontalLayout->setContentsMargins(3, 3, 3, 3);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
@@ -116,9 +119,9 @@ public:
         toolButton_addProduct = new QToolButton(productView);
         toolButton_addProduct->setObjectName(QString::fromUtf8("toolButton_addProduct"));
         toolButton_addProduct->setMinimumSize(QSize(32, 32));
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_addProduct->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/app/insert"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_addProduct->setIcon(icon1);
         toolButton_addProduct->setIconSize(QSize(24, 24));
 
         horizontalLayout_buttons->addWidget(toolButton_addProduct);
@@ -126,9 +129,9 @@ public:
         toolButton_editProduct = new QToolButton(productView);
         toolButton_editProduct->setObjectName(QString::fromUtf8("toolButton_editProduct"));
         toolButton_editProduct->setMinimumSize(QSize(32, 32));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_editProduct->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/app/Edit"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_editProduct->setIcon(icon2);
         toolButton_editProduct->setIconSize(QSize(24, 24));
 
         horizontalLayout_buttons->addWidget(toolButton_editProduct);
@@ -137,9 +140,9 @@ public:
         toolButton_remove->setObjectName(QString::fromUtf8("toolButton_remove"));
         toolButton_remove->setMinimumSize(QSize(32, 32));
         toolButton_remove->setMaximumSize(QSize(16777215, 16777215));
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_remove->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QString::fromUtf8(":/app/remove"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_remove->setIcon(icon3);
         toolButton_remove->setIconSize(QSize(16, 24));
 
         horizontalLayout_buttons->addWidget(toolButton_remove);
@@ -147,9 +150,9 @@ public:
         toolButton_print = new QToolButton(productView);
         toolButton_print->setObjectName(QString::fromUtf8("toolButton_print"));
         toolButton_print->setMinimumSize(QSize(32, 32));
-        QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/app/print"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_print->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QString::fromUtf8(":/app/print"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_print->setIcon(icon4);
         toolButton_print->setIconSize(QSize(24, 24));
 
         horizontalLayout_buttons->addWidget(toolButton_print);
@@ -181,9 +184,9 @@ public:
 
         toolButton_searchProduct = new QToolButton(productView);
         toolButton_searchProduct->setObjectName(QString::fromUtf8("toolButton_searchProduct"));
-        QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/app/search"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_searchProduct->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/app/search"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_searchProduct->setIcon(icon5);
         toolButton_searchProduct->setIconSize(QSize(24, 24));
 
         horizontalLayout_4->addWidget(toolButton_searchProduct);
@@ -231,17 +234,17 @@ public:
 
         toolButton_pagePrev = new QToolButton(productView);
         toolButton_pagePrev->setObjectName(QString::fromUtf8("toolButton_pagePrev"));
-        QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/app/prev"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_pagePrev->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QString::fromUtf8(":/app/prev"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_pagePrev->setIcon(icon6);
 
         horizontalLayout_6->addWidget(toolButton_pagePrev);
 
         toolButton_pageNext = new QToolButton(productView);
         toolButton_pageNext->setObjectName(QString::fromUtf8("toolButton_pageNext"));
-        QIcon icon6;
-        icon6.addFile(QString::fromUtf8(":/app/next"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_pageNext->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QString::fromUtf8(":/app/next"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_pageNext->setIcon(icon7);
 
         horizontalLayout_6->addWidget(toolButton_pageNext);
 
@@ -273,16 +276,16 @@ public:
         horizontalLayout_7->setContentsMargins(-1, 0, -1, -1);
         toolButton_clipboard = new QToolButton(scrollAreaWidgetContents);
         toolButton_clipboard->setObjectName(QString::fromUtf8("toolButton_clipboard"));
-        QIcon icon7;
-        icon7.addFile(QString::fromUtf8(":/app/venteComptoire"), QSize(), QIcon::Normal, QIcon::Off);
-        toolButton_clipboard->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QString::fromUtf8(":/app/venteComptoire"), QSize(), QIcon::Normal, QIcon::Off);
+        toolButton_clipboard->setIcon(icon8);
         toolButton_clipboard->setIconSize(QSize(24, 24));
 
         horizontalLayout_7->addWidget(toolButton_clipboard);
 
         toolButton_printInfo = new QToolButton(scrollAreaWidgetContents);
         toolButton_printInfo->setObjectName(QString::fromUtf8("toolButton_printInfo"));
-        toolButton_printInfo->setIcon(icon3);
+        toolButton_printInfo->setIcon(icon4);
         toolButton_printInfo->setIconSize(QSize(24, 24));
 
         horizontalLayout_7->addWidget(toolButton_printInfo);

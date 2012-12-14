@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'board.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Thu 13. Dec 18:04:11 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/

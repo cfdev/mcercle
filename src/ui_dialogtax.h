@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogtax.ui'
 **
-** Created: Wed 28. Nov 17:52:05 2012
-**      by: Qt User Interface Compiler version 4.8.2
+** Created: Fri 14. Dec 20:28:52 2012
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -51,7 +51,7 @@ public:
             DialogTax->setObjectName(QString::fromUtf8("DialogTax"));
         DialogTax->resize(400, 300);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/app/logo_small"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/app/logo"), QSize(), QIcon::Normal, QIcon::Off);
         DialogTax->setWindowIcon(icon);
         verticalLayout = new QVBoxLayout(DialogTax);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
