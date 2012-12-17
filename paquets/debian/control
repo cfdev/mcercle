@@ -1,0 +1,18 @@
+Source: mcercle
+Section: unknown
+Priority: extra
+Maintainer: laurent trinques <5c04pi0810@gmail.com>
+Version: 2
+Build-Depends: cdbs (>= 0.4.89) , debhelper (>= 8), libqt4-dev (>= 4.6)
+Standards-Version: 3.9.3
+Homepage: http://frausti.fr/doku.php?id=project:mcercle
+
+Package: mcercle
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-sql-sqlite
+Description: mcercle est un logiciel de gestion libre pour PME et autoEntrepreneurs
+ Caractéristiques principales:
+ - Clients: Carnet d'adresse, suivi des commandes, interventions, devis, factures.
+ - Produits: Références fournisseurs, gestion du stock avec seuil d'alerte ainsi qu'un classement par catégorie.
+ - Base de données: Sauvegarde des données dans une base de données Firebird, avec la possibilité d'avoir plusieurs logiciels connectés sur la même base.
+

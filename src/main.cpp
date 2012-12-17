@@ -19,10 +19,12 @@
 
 #include <QtGui/QApplication>
 #include <QDesktopWidget>
+#include <QDesktopServices>
 #include <QTextCodec>
-#include "mainwindow.h"
 #include <QMessageBox>
-#include <QPlastiqueStyle>
+
+#include "mainwindow.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +37,9 @@ int main(int argc, char *argv[])
 	//Traduction des chaines de la lib Qt
 	QString locale = QLocale::system().name();
 	QTranslator translator;
-	translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+	if (!translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath))){
+		translator.load("qt_" + locale, QCoreApplication::applicationDirPath() + "/lang/");
+	}
 	app.installTranslator(&translator);
 
 	m_win.init();
