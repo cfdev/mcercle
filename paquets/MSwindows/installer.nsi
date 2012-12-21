@@ -12,7 +12,7 @@
 ;General
 	; General Product Description Definitions
 	!define SOFT_NAME 		"mcercle"
-	!define SOFT_VERSION 	"2.0"
+	!define SOFT_VERSION 	"2.1"
 	!define SOFT_WEB_SITE 	"http://frausti.fr"
 	!define SOFT_BUILD 		"1cf"
 	!define ARCH       		"win32"
@@ -78,7 +78,16 @@ Section "Logiciel"
 
 	SetOutPath "$INSTDIR"  
 	; copy every files in the "files" directory
-	File /nonfatal /r "bin\*"
+	File /nonfatal /r "..\..\out\mcercle.exe"
+	File /nonfatal /r "C:\Qt\4.8.4\bin\QtCore4.dll"
+	File /nonfatal /r "C:\Qt\4.8.4\bin\QtGui4.dll"
+	File /nonfatal /r "C:\Qt\4.8.4\bin\QtSql4.dll"
+	File /nonfatal /r "C:\Qt\qtcreator-2.4.1\mingw\bin\mingwm10.dll"
+	File /nonfatal /r "C:\Qt\qtcreator-2.4.1\mingw\bin\libgcc_s_dw2-1.dll"	
+	SetOutPath "$INSTDIR\sqldrivers"	
+	File /nonfatal /r "C:\Qt\4.8.4\plugins\sqldrivers\qsqlite4.dll"	
+	SetOutPath "$INSTDIR\lang"
+	File /nonfatal /r "..\..\out\lang\qt_fr.qm"
 	
 	SetOutPath "$INSTDIR" 
 	;Store installation folder
