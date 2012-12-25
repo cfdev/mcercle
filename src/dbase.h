@@ -33,10 +33,6 @@ private:
 	QString m_FDBversion;
 	QLocale m_lang;
 
-	#define ROLE        ""
-	#define CHARSET     "UTF8"
-	#define OPTIONS     "PAGE_SIZE = 4096"
-
 	/* Version max supporter par mcercle */
 	#define DBASE_SUPPORTED 2
 

@@ -131,7 +131,7 @@ void DialogInvoiceList::on_pushButton_ok_clicked(){
 void DialogInvoiceList::on_pushButton_print_clicked()
 {
 	//Si on est pas connecte on sort
-	if(!m_data->isConnected())return;
+	if((!m_data->isConnected()) || (ui->tableWidget_Invoices->rowCount()<=0) )return;
 
 	QPrinter printer;
 	printer.setPageSize(QPrinter::A4);
@@ -222,6 +222,7 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer)
 
 	//defini la date de limpression
 	QString sDateTime = tr("(Imprim\351 le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		//Titre
@@ -259,21 +260,27 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer)
 		//DATE
 		rect = fm.boundingRect(mLeft+5,rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Date") );
 		painter.drawText( rect, tr("Date"));
+		rect.setWidth(wUtil/8 -5); //fixe la largeur
 		//CODE
-		rect = fm.boundingRect(mLeft+5+wUtil/8,rect.top(), wUtil/6,0, Qt::AlignLeft, tr("Code")  );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, tr("Code")  );
 		painter.drawText( rect, tr("Code") );
+		rect.setWidth(wUtil/6 -5); //fixe la largeur
 		//CLIENT
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6),rect.top(), wUtil/5,0, Qt::AlignLeft, tr("Client") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, tr("Client") );
 		painter.drawText( rect, tr("Client"));
+		rect.setWidth(wUtil/5 -5); //fixe la largeur
 		//DESCIPTION
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5),rect.top(), wUtil/4,0, Qt::AlignLeft, tr("Description") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/4,0, Qt::AlignLeft, tr("Description") );
 		painter.drawText( rect, tr("Description") );
+		rect.setWidth(wUtil/4 -5); //fixe la largeur
 		//MONTANT
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5)+(wUtil/4),rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Montant") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Montant") );
 		painter.drawText( rect, tr("Montant") );
+		rect.setWidth(wUtil/8 -5); //fixe la largeur
 		//REGLEMENT
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5)+(wUtil/4)+(wUtil/8),rect.top(), wUtil/10,0, Qt::AlignLeft, tr("R\350glement") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, tr("R\350glement") );
 		painter.drawText( rect, tr("R\350glement") );
+		rect.setWidth(wUtil/10 -5); //fixe la largeur
 
 		for(int itemOnpage=0; itemOnpage<itemPerPage;){
 			//sil ne reste plus a afficher on sort
@@ -287,31 +294,31 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer)
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/8,rect.height()+5) );
 
 				//CODE
-				rect = fm.boundingRect(mLeft+5+(wUtil/8),rect.top(), wUtil/6,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text() );
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text() );
 				rect.setWidth(wUtil/6 -5); //fixe la largeur
 				painter.drawText( rect , Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text());
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/6,rect.height()+5) );
 
 				//CLIENT
-				rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6),rect.top(), wUtil/5,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text() );
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text() );
 				rect.setWidth(wUtil/5 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text());
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/5,rect.height()+5) );
 
 				//DESCIPTION
-				rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5),rect.top(), wUtil/4,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/4,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
 				rect.setWidth(wUtil/4 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/4,rect.height()+5) );
 
 				//MONTANT
-				rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5)+(wUtil/4),rect.top(), wUtil/8,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text()+tr(" \244") );
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text().toFloat(),'f',2) );
 				rect.setWidth(wUtil/8 -5); //fixe la largeur
-				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text()+tr(" \244"));
+				painter.drawText( rect,  Qt::AlignLeft , m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text().toFloat(),'f',2) );
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/8,rect.height()+5) );
 
 				//REGLEMENT
-				rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/6)+(wUtil/5)+(wUtil/4)+(wUtil/8),rect.top(), wUtil/10,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_TYPE_PAYMENT)->text() );
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_TYPE_PAYMENT)->text() );
 				rect.setWidth(wUtil/10 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex,COL_TYPE_PAYMENT)->text());
 

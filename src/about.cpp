@@ -33,7 +33,7 @@ about::about(database *pdata, QWidget *parent) :
 	QImage ico = QImage(":/app/logo_small");
 	ui->label_ico->setPixmap(QPixmap::fromImage( ico ));
 
-	QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION + tr(" INSTABLE"); //INSTABLE
+	QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION; 
 	msg += "<br><i>"+ tr("C'est mieux quand c'est simple")+"</i>";
 	msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Auto-entrepreneur/PME.");
 	msg +="<br><a href=\"http://frausti.fr\">http://frausti.fr</a>";
