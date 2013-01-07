@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogsettings.ui'
 **
-** Created: Tue 25. Dec 16:28:14 2012
+** Created: Mon 31. Dec 09:36:31 2012
 **      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -194,7 +194,7 @@ public:
 
         checkBox_TAX = new QCheckBox(tab_compagny);
         checkBox_TAX->setObjectName(QString::fromUtf8("checkBox_TAX"));
-        checkBox_TAX->setEnabled(false);
+        checkBox_TAX->setEnabled(true);
 
         gridLayout_2->addWidget(checkBox_TAX, 1, 3, 1, 1);
 
@@ -674,7 +674,7 @@ public:
         QObject::connect(buttonBox, SIGNAL(accepted()), DialogSettings, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), DialogSettings, SLOT(reject()));
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(DialogSettings);

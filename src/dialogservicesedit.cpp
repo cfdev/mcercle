@@ -202,7 +202,7 @@ void DialogServicesEdit::on_pushButton_del_clicked()
 void DialogServicesEdit::on_pushButton_edit_clicked()
 {
 	int id = m_servComm->isHere( ui->lineEdit_Name->text());
-	if( id != m_servComm->getId() ){
+	if(  (id > 0) && (id != m_servComm->getId()) ){
 		QMessageBox::warning(this, tr("Attention"), tr("Service d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
 	}
 	else{
