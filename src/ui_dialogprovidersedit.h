@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogprovidersedit.ui'
 **
-** Created: Mon 7. Jan 20:15:08 2013
-**      by: Qt User Interface Compiler version 4.8.4
+** Created: Fri 25. Jan 18:33:05 2013
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -239,7 +239,7 @@ public:
 
     void retranslateUi(QDialog *DialogProvidersEdit)
     {
-        DialogProvidersEdit->setWindowTitle(QApplication::translate("DialogProvidersEdit", "Editer le fournisseur", 0, QApplication::UnicodeUTF8));
+        DialogProvidersEdit->setWindowTitle(QApplication::translate("DialogProvidersEdit", "Fournisseur", 0, QApplication::UnicodeUTF8));
         GroupBox->setTitle(QApplication::translate("DialogProvidersEdit", "Fournisseur", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("DialogProvidersEdit", "T\303\251l :", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("DialogProvidersEdit", "Nom :", 0, QApplication::UnicodeUTF8));

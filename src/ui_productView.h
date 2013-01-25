@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'productView.ui'
 **
-** Created: Mon 31. Dec 09:36:31 2012
-**      by: Qt User Interface Compiler version 4.8.4
+** Created: Fri 25. Jan 20:29:52 2013
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -44,16 +44,17 @@ public:
     QToolButton *toolButton_remove;
     QToolButton *toolButton_print;
     QSpacerItem *horizontalSpacer;
-    QHBoxLayout *horizontalLayout_3;
-    QVBoxLayout *verticalLayout_2;
-    QHBoxLayout *horizontalLayout_4;
+    QHBoxLayout *horizontalLayout_product;
+    QVBoxLayout *verticalLayout_product;
+    QHBoxLayout *horizontalLayout_search;
     QComboBox *comboBoxFiltre;
     QLineEdit *lineEdit_searchProduct;
     QToolButton *toolButton_searchProduct;
     QSpacerItem *horizontalSpacer_2;
+    QVBoxLayout *verticalLayout_list;
     QCheckBox *checkBox_viewDiscontinued;
     QTableWidget *tableWidget_products;
-    QHBoxLayout *horizontalLayout_6;
+    QHBoxLayout *horizontalLayout_page;
     QLabel *label_2;
     QLineEdit *lineEdit_page;
     QLabel *label_pageMax;
@@ -80,13 +81,13 @@ public:
     QLabel *label_provider;
     QSpacerItem *verticalSpacer_2;
     QLabel *labelProductsNumber;
-    QSpacerItem *verticalSpacer;
 
     void setupUi(QWidget *productView)
     {
         if (productView->objectName().isEmpty())
             productView->setObjectName(QString::fromUtf8("productView"));
         productView->resize(640, 518);
+        productView->setMinimumSize(QSize(0, 0));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app/products"), QSize(), QIcon::Normal, QIcon::Off);
         productView->setWindowIcon(icon);
@@ -164,23 +165,23 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_buttons);
 
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
-        verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
+        horizontalLayout_product = new QHBoxLayout();
+        horizontalLayout_product->setObjectName(QString::fromUtf8("horizontalLayout_product"));
+        verticalLayout_product = new QVBoxLayout();
+        verticalLayout_product->setObjectName(QString::fromUtf8("verticalLayout_product"));
+        horizontalLayout_search = new QHBoxLayout();
+        horizontalLayout_search->setObjectName(QString::fromUtf8("horizontalLayout_search"));
         comboBoxFiltre = new QComboBox(productView);
         comboBoxFiltre->setObjectName(QString::fromUtf8("comboBoxFiltre"));
 
-        horizontalLayout_4->addWidget(comboBoxFiltre);
+        horizontalLayout_search->addWidget(comboBoxFiltre);
 
         lineEdit_searchProduct = new QLineEdit(productView);
         lineEdit_searchProduct->setObjectName(QString::fromUtf8("lineEdit_searchProduct"));
         lineEdit_searchProduct->setMinimumSize(QSize(0, 0));
         lineEdit_searchProduct->setMaximumSize(QSize(16777215, 16777215));
 
-        horizontalLayout_4->addWidget(lineEdit_searchProduct);
+        horizontalLayout_search->addWidget(lineEdit_searchProduct);
 
         toolButton_searchProduct = new QToolButton(productView);
         toolButton_searchProduct->setObjectName(QString::fromUtf8("toolButton_searchProduct"));
@@ -189,48 +190,56 @@ public:
         toolButton_searchProduct->setIcon(icon5);
         toolButton_searchProduct->setIconSize(QSize(24, 24));
 
-        horizontalLayout_4->addWidget(toolButton_searchProduct);
+        horizontalLayout_search->addWidget(toolButton_searchProduct);
 
         horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_2);
+        horizontalLayout_search->addItem(horizontalSpacer_2);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_4);
+        verticalLayout_product->addLayout(horizontalLayout_search);
 
+        verticalLayout_list = new QVBoxLayout();
+        verticalLayout_list->setObjectName(QString::fromUtf8("verticalLayout_list"));
         checkBox_viewDiscontinued = new QCheckBox(productView);
         checkBox_viewDiscontinued->setObjectName(QString::fromUtf8("checkBox_viewDiscontinued"));
 
-        verticalLayout_2->addWidget(checkBox_viewDiscontinued);
+        verticalLayout_list->addWidget(checkBox_viewDiscontinued);
 
         tableWidget_products = new QTableWidget(productView);
         tableWidget_products->setObjectName(QString::fromUtf8("tableWidget_products"));
         tableWidget_products->setMinimumSize(QSize(350, 0));
+        tableWidget_products->setSizeIncrement(QSize(10, 10));
+        tableWidget_products->setFrameShadow(QFrame::Sunken);
+        tableWidget_products->setAlternatingRowColors(true);
 
-        verticalLayout_2->addWidget(tableWidget_products);
+        verticalLayout_list->addWidget(tableWidget_products);
 
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setObjectName(QString::fromUtf8("horizontalLayout_6"));
+
+        verticalLayout_product->addLayout(verticalLayout_list);
+
+        horizontalLayout_page = new QHBoxLayout();
+        horizontalLayout_page->setObjectName(QString::fromUtf8("horizontalLayout_page"));
         label_2 = new QLabel(productView);
         label_2->setObjectName(QString::fromUtf8("label_2"));
 
-        horizontalLayout_6->addWidget(label_2);
+        horizontalLayout_page->addWidget(label_2);
 
         lineEdit_page = new QLineEdit(productView);
         lineEdit_page->setObjectName(QString::fromUtf8("lineEdit_page"));
         lineEdit_page->setMaximumSize(QSize(50, 16777215));
         lineEdit_page->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_6->addWidget(lineEdit_page);
+        horizontalLayout_page->addWidget(lineEdit_page);
 
         label_pageMax = new QLabel(productView);
         label_pageMax->setObjectName(QString::fromUtf8("label_pageMax"));
 
-        horizontalLayout_6->addWidget(label_pageMax);
+        horizontalLayout_page->addWidget(label_pageMax);
 
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_6->addItem(horizontalSpacer_3);
+        horizontalLayout_page->addItem(horizontalSpacer_3);
 
         toolButton_pagePrev = new QToolButton(productView);
         toolButton_pagePrev->setObjectName(QString::fromUtf8("toolButton_pagePrev"));
@@ -238,7 +247,7 @@ public:
         icon6.addFile(QString::fromUtf8(":/app/prev"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_pagePrev->setIcon(icon6);
 
-        horizontalLayout_6->addWidget(toolButton_pagePrev);
+        horizontalLayout_page->addWidget(toolButton_pagePrev);
 
         toolButton_pageNext = new QToolButton(productView);
         toolButton_pageNext->setObjectName(QString::fromUtf8("toolButton_pageNext"));
@@ -246,13 +255,13 @@ public:
         icon7.addFile(QString::fromUtf8(":/app/next"), QSize(), QIcon::Normal, QIcon::Off);
         toolButton_pageNext->setIcon(icon7);
 
-        horizontalLayout_6->addWidget(toolButton_pageNext);
+        horizontalLayout_page->addWidget(toolButton_pageNext);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_6);
+        verticalLayout_product->addLayout(horizontalLayout_page);
 
 
-        horizontalLayout_3->addLayout(verticalLayout_2);
+        horizontalLayout_product->addLayout(verticalLayout_product);
 
         tabWidget = new QTabWidget(productView);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
@@ -268,7 +277,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 244, 311));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 242, 357));
         verticalLayout_5 = new QVBoxLayout(scrollAreaWidgetContents);
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         horizontalLayout_7 = new QHBoxLayout();
@@ -347,19 +356,15 @@ public:
 
         tabWidget->addTab(tab, QString());
 
-        horizontalLayout_3->addWidget(tabWidget);
+        horizontalLayout_product->addWidget(tabWidget);
 
 
-        verticalLayout->addLayout(horizontalLayout_3);
+        verticalLayout->addLayout(horizontalLayout_product);
 
         labelProductsNumber = new QLabel(productView);
         labelProductsNumber->setObjectName(QString::fromUtf8("labelProductsNumber"));
 
         verticalLayout->addWidget(labelProductsNumber);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer);
 
 
         horizontalLayout->addLayout(verticalLayout);

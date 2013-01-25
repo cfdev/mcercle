@@ -10,7 +10,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 {
 	ui->setupUi(this);
 	// la fenetre est maximisee par defaut
-	setMinimumSize(QSize(640, 480));
+	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
 
 	m_customer = pdata->m_customer;

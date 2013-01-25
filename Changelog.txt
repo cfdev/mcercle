@@ -1,11 +1,11 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
-version 2.1.1 : xx/01/2013
+version 2.2 : 25/01/2013
 -------------------------------------------------------
 * Bug de modification d'un service commun
 * Changement du titre de la fenêtre d'édition des fournisseurs
-
+* DialogInvoice hauteur minimum pour voir les tableaux
 
 
 version 2.1 : 25/12/2012

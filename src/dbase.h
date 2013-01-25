@@ -18,7 +18,7 @@
 class customer;
 class product;
 
-#define MCERCLE_VERSION "2.1.1"
+#define MCERCLE_VERSION "2.2"
 
 class database : public QObject
 {

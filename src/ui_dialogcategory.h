@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogcategory.ui'
 **
-** Created: Mon 31. Dec 09:36:31 2012
-**      by: Qt User Interface Compiler version 4.8.4
+** Created: Fri 25. Jan 18:33:05 2013
+**      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
