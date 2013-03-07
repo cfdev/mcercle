@@ -826,14 +826,14 @@ void DialogInvoice::calcul_Total()
 	//affiche la valeur
 	QString val;
 	if(!m_isTax)
-			val = "<h1>"+ tr("TOTAL: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </h1>");
+			val = "<strong>"+ tr("TOTAL: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
 	else{
-			val = "<h1>"+ tr("TOTAL HT: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </h1>");
-			val += "<h2>"+ tr("TOTAL TTC: ") + QString::number(m_totalTaxPrice,'f',2) + tr(" &euro; </h2>");
+			val = "<strong>"+ tr("TOTAL HT: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
+			val += "<strong>"+ tr("TOTAL TTC: ") + QString::number(m_totalTaxPrice,'f',2) + tr(" &euro; </strong><br>");
 	}
 
 	if(m_DialogType == INVOICE_TYPE){
-		val += "<h2>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </h2>");
+		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
 	}
 	ui->label_Total->setText( val );
 }
