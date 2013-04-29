@@ -109,6 +109,7 @@ bool invoice::update() {
 	req += "CODE='" + m_code.replace("\'","''") + "',";
 	req += "DATE='" + m_userDate.toString(tr("yyyy-MM-dd")) + "',";
 	req += "LIMIT_PAYMENTDATE='" + m_limitPayment.toString(tr("yyyy-MM-dd")) + "',";
+    req += "PAYMENTDATE='" + m_paymentDate.toString(tr("yyyy-MM-dd")) + "',";
 	req += "TYPE_PAYMENT='" + m_typePayment + "',";
 	req += "PART_PAYMENT='" + f.setNum(m_partPayment,'f',2) + "',";
 	req += "PRICE='" + f.setNum(m_price,'f',2) + "',";
@@ -152,7 +153,7 @@ bool invoice::remove(){
   */
 bool invoice::loadFromID(const int& id)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+    QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -169,6 +170,7 @@ bool invoice::loadFromID(const int& id)
 		m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
 		m_userDate = query.value(query.record().indexOf("DATE")).toDate();
 		m_limitPayment = query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate();
+        m_paymentDate = query.value(query.record().indexOf("PAYMENTDATE")).toDate();
 		m_code = query.value(query.record().indexOf("ICODE")).toString();
 		m_proposalCode = query.value(query.record().indexOf("PCODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
@@ -192,7 +194,7 @@ bool invoice::loadFromID(const int& id)
   */
 bool invoice::loadFromCode(const QString& code)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+    QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -208,6 +210,7 @@ bool invoice::loadFromCode(const QString& code)
 		m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
 		m_userDate = query.value(query.record().indexOf("DATE")).toDate();
 		m_limitPayment = query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate();
+        m_paymentDate = query.value(query.record().indexOf("PAYMENTDATE")).toDate();
 		m_id= query.value(query.record().indexOf("ID")).toInt();
 		m_proposalCode = query.value(query.record().indexOf("PCODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
@@ -283,7 +286,7 @@ int invoice::getLastId(){
   */
 bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field) {
 
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.DESCRIPTION, "
+    QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, "
 			"TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
@@ -310,6 +313,7 @@ bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, 
 			list.codeProposal << query.value(query.record().indexOf("PCODE")).toString();
 			list.userDate.push_back( query.value(query.record().indexOf("DATE")).toDate() );
 			list.limitPayment.push_back( query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate());
+            list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
@@ -367,7 +371,7 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
   */
 bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+    QString req =   "SELECT TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -382,6 +386,7 @@ bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 			list.customerLastName << query.value(query.record().indexOf("LASTNAME")).toString();
 			list.userDate.push_back( query.value(query.record().indexOf("DATE")).toDate() );
 			list.limitPayment.push_back( query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate() );
+            list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate() );
 			list.code.push_back( query.value(query.record().indexOf("CODE")).toString());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
