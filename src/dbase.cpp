@@ -878,6 +878,7 @@ bool database::createTable_invoices(){
 			"CREATIONDATE   TIMESTAMP,"
 			"DATE           DATE NOT NULL,"
 			"LIMIT_PAYMENTDATE    DATE NOT NULL,"
+            "PAYMENTDATE    DATE NOT NULL,"
 			"CODE           VARCHAR(64) NOT NULL,"
 			"TYPE_PAYMENT   VARCHAR(2) ,"
 			"PART_PAYMENT   NUMERIC(8,2) NOT NULL,"
@@ -902,33 +903,33 @@ bool database::createTable_invoices(){
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	//INSERT
-	if(addSample){
-		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-					  "VALUES('1', 'FA110802-1', '2011-08-02', '2011-08-02', 'CC', '0.00', '361.02', '0', 'Produits');" );
-		if(!query.exec()) {
-			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-			return false;
-		}
-		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-					  "VALUES('1', 'FA110804-2', '2011-08-04', '2011-08-04', 'CC', '0.00', '1589.10', '1', 'Montage d une pompe hydraulique');" );
-		if(!query.exec()) {
-			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-			return false;
-		}
-		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-					  "VALUES('1', 'FA110820-3', '2011-08-20', '2011-09-02', 'CA', '0.00', '65.99', '1', 'Produits et Services');" );
-		if(!query.exec()) {
-			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-			return false;
-		}
-		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-					  "VALUES('2', 'FA120115-4', '2012-08-15', '2012-01-15', 'CH', '11.55', '20', '1', 'test');" );
-		if(!query.exec()) {
-			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-			return false;
-		}
-	}
+    //INSERT
+    if(addSample){
+        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+                      "VALUES('1', 'FA110802-1', '2011-08-02', '2011-08-02', '2011-08-02', 'CC', '0.00', '361.02', '0', 'Produits');" );
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+                      "VALUES('1', 'FA110804-2', '2011-08-04', '2011-08-04', '2011-08-04', 'CC', '0.00', '1589.10', '1', 'Montage d une pompe hydraulique');" );
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+                      "VALUES('1', 'FA110820-3', '2011-08-20', '2011-09-02', '2011-09-02', 'CA', '0.00', '65.99', '1', 'Produits et Services');" );
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+                      "VALUES('2', 'FA120115-4', '2012-08-15', '2012-01-15', '2012-01-15', 'CH', '11.55', '20', '1', 'test');" );
+        if(!query.exec()) {
+            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+            return false;
+        }
+    }
 	return true;
 }
 
