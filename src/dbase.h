@@ -34,7 +34,7 @@ private:
 	QLocale m_lang;
 
 	/* Version max supporter par mcercle */
-	#define DBASE_SUPPORTED 2
+    #define DBASE_SUPPORTED 3
 
 
 	/* Creation des tables */
@@ -58,8 +58,9 @@ private:
 	int databaseVersion();
 	bool isTax();
 	
-	/* fonction de mise a jour */
+    /* fonctions de mise a jour */
 	bool upgradeToV2();
+    bool upgradeToV3();
 	
 public:
 

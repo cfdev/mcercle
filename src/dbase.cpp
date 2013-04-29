@@ -147,6 +147,12 @@ char database::connect(){
 			mBox.exec();
 		}
 	}
+    if(m_databaseVersion <= 2){
+        if(upgradeToV3()){
+            QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
+            mBox.exec();
+        }
+    }
 
 	return DB_CON_OK;
 }
@@ -1405,4 +1411,35 @@ bool database::upgradeToV2() {
 	}
 	
 	return true;
+}
+
+/**
+   Met a jour la base de donnees en version 3
+  */
+bool database::upgradeToV3() {
+
+    QString req =	"ALTER TABLE TAB_INVOICES ADD PAYMENTDATE;";
+    QSqlQuery query;
+    query.prepare( req );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+
+    // pour les factures existante on prend la date de création comme date de réglement
+    req =	"UPDATE TAB_INVOICES SET PAYMENTDATE = DATE;";
+    query.prepare( req );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+
+    req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=3;";
+    query.prepare( req );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+
+    return true;
 }
