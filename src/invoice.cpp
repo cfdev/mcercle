@@ -332,15 +332,22 @@ bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, 
 	 @return valeur de retour sous forme de liste de chaine de type InvoiceList
   */
 bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
+
+    QString effective_date;
+    if(getCaType() == 1)
+        effective_date = "PAYMENTDATE";
+    else
+        effective_date = "DATE";
+
 	if(month.size()<2)month = '0'+month;
 	QString req =   "SELECT TAB_INVOICES.ID, TAB_INVOICES.CODE, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.DATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.TYPE_PAYMENT "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
 					"WHERE TAB_INVOICES.STATE == '1' AND "
-					"strftime('%m',TAB_INVOICES.DATE)='"+month+"'AND "
-					"strftime('%Y',TAB_INVOICES.DATE)='"+year+"' "
-					"ORDER BY TAB_INVOICES.DATE ASC; ";
+                    "strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
+                    "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' "
+                    "ORDER BY TAB_INVOICES."+effective_date+" ASC; ";
 
 	QSqlQuery query;
 	query.prepare(req);
