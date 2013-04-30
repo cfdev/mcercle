@@ -293,6 +293,7 @@ bool database::createTable_informations(){
 			"WEBSITE        VARCHAR(256),"
 			"LOGO           BLOB,"
 			"CG             TEXT,"
+            "CA_TYPE        INTEGER,"
 		   "PRIMARY KEY (ID)"
 			");";
 
@@ -308,8 +309,8 @@ bool database::createTable_informations(){
 	}
 
 	//INSERT
-	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME)"
-				  "VALUES('2', '0', '');");
+    query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
+                  "VALUES('2', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -1428,6 +1429,13 @@ bool database::upgradeToV3() {
 
     // pour les factures existante on prend la date de création comme date de réglement
     req =	"UPDATE TAB_INVOICES SET PAYMENTDATE = DATE;";
+    query.prepare( req );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+
+    req =	"ALTER TABLE TAB_INFORMATIONS ADD CA_TYPE INT DEFAULT 0;";
     query.prepare( req );
     if(!query.exec()) {
         QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
