@@ -102,6 +102,7 @@ void DialogSettings::on_buttonBox_accepted()
 	inf.address2 = ui->lineEdit_sAdd2->text();
 	inf.address3 = ui->lineEdit_sAdd3->text();
 	inf.tax = ui->checkBox_TAX->checkState();
+    inf.ca_type = ui->comboBox_CA->currentIndex();
 	m_data->updateInfo(inf);
 
 	//sauvegarde les donnees de la banque dans la bdd
@@ -250,6 +251,7 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->lineEdit_sAdd2->setText(inf.address2);
 	 ui->lineEdit_sAdd3->setText(inf.address3);
 	 ui->checkBox_TAX->setCheckState( Qt::CheckState(inf.tax) );
+     ui->comboBox_CA->setCurrentIndex(inf.ca_type);
 
 	 database::Bank b;
 	 m_data->getBank( b );

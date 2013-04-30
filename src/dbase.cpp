@@ -293,6 +293,7 @@ bool database::createTable_informations(){
 			"WEBSITE        VARCHAR(256),"
 			"LOGO           BLOB,"
 			"CG             TEXT,"
+            "CA_TYPE        INTEGER NOT NULL ,"
 		   "PRIMARY KEY (ID)"
 			");";
 
@@ -308,8 +309,8 @@ bool database::createTable_informations(){
 	}
 
 	//INSERT
-	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME)"
-				  "VALUES('2', '0', '');");
+    query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
+                  "VALUES('2', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -1150,8 +1151,8 @@ bool database::updateInfo(Informations &info) {
 	}
 	//Si pas d enregistrement on en creer un
 	if(count<=0){
-		query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME)"
-					  "VALUES('1', '0', '');");
+        query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME,CA_TYPE)"
+                      "VALUES('1', '0', '', '1');");
 		if(!query.exec()) {
 			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 			return false;
@@ -1174,7 +1175,8 @@ bool database::updateInfo(Informations &info) {
 	req += "FAXNUMBER='" + info.faxNumber.replace("\'","''") + "',";
 	req += "EMAIL='" + info.email.replace("\'","''") + "',";
 	req += "WEBSITE='" + info.webSite.replace("\'","''") + "', ";
-	req += "TAX='" + QString::number(info.tax) + "' ";
+    req += "TAX='" + QString::number(info.tax) + "', ";
+    req += "CA_TYPE='" + QString::number(info.ca_type) + "' ";
 	req += "WHERE ID='1';";
 
 	query.prepare(req);
@@ -1212,6 +1214,7 @@ bool database::getInfo(Informations &info) {
 		info.email = query.value(query.record().indexOf("EMAIL")).toString();
 		info.webSite = query.value(query.record().indexOf("WEBSITE")).toString();
 		info.tax = query.value(query.record().indexOf("TAX")).toInt();
+        info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -1428,6 +1431,13 @@ bool database::upgradeToV3() {
 
     // pour les factures existante on prend la date de création comme date de réglement
     req =	"UPDATE TAB_INVOICES SET PAYMENTDATE = DATE;";
+    query.prepare( req );
+    if(!query.exec()) {
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+        return false;
+    }
+
+    req =	"ALTER TABLE TAB_INFORMATIONS ADD CA_TYPE INT DEFAULT 0;";
     query.prepare( req );
     if(!query.exec()) {
         QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
