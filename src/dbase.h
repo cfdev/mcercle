@@ -74,8 +74,8 @@ public:
 		QString zipCode;
 		QString city;
 		QString address1;QString address2;QString address3;
-		int tax;
-	}Informations;
+        int tax; int ca_type;
+    }Informations;
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau
