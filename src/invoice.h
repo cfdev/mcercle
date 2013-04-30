@@ -165,6 +165,8 @@ public:
 	bool removeInvoiceItem(int Itemid);
 	bool updateInvoiceItem(InvoiceItem& item);
 
+    // Paramétrage
+    int  getCaType();
 
 };
 

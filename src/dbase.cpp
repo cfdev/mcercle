@@ -1109,27 +1109,6 @@ int database::databaseVersion() {
 }
 
 /**
-    Obtenir la méthode de calcul du CA
-    @return catype
-  */
-int database::getCaType() {
-    if(!this->m_connected)return -1;
-    int ret=-1;
-
-    QSqlQuery query;
-    query.prepare("SELECT CA_TYPE FROM TAB_INFORMATIONS;");
-
-    if(query.exec()){
-        query.next();
-        ret = query.value(0).toInt();
-    }
-    else{
-        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-    }
-    return ret;
-}
-
-/**
 	Savoir si la societe est assujetti a la TVA
 	@return true if TAX
   */

@@ -601,14 +601,19 @@ qreal invoice::getYearRevenue(QString year) {
 	qreal total=0;
 	if(year.isEmpty())return 0;
 	QString req;
+    QString effective_date;
+    if(getCaType() == 1)
+        effective_date = "PAYMENTDATE";
+    else
+        effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE")
 		req =   "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"strftime('%Y',TAB_INVOICES.DATE)='"+year+"';";
+                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
 	else
 		req =  "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 			   "WHERE TAB_INVOICES.STATE = '1' and "
-			   "extract(YEAR FROM TAB_INVOICES.DATE)='"+year+"';";
+               "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -633,18 +638,23 @@ qreal invoice::getMonthRevenue(QString year, QString month) {
 	qreal total=0; // important init pour le nonReturnValue
 	if(year.isEmpty() | month.isEmpty())return 0;
 	QString req;
+    QString effective_date;
+    if(getCaType() == 1)
+        effective_date = "PAYMENTDATE";
+    else
+        effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
 		req =   "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"strftime('%m',TAB_INVOICES.DATE)='"+month+"'and "
-				"strftime('%Y',TAB_INVOICES.DATE)='"+year+"';";
+                "strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'and "
+                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
 	}
 	else
 		req = "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(MONTH FROM TAB_INVOICES.DATE)='"+month+"'and "
-				"extract(YEAR FROM TAB_INVOICES.DATE)='"+year+"';";
+                "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
+                "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -668,19 +678,24 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 	qreal total=0; // important init pour le nonReturnValue
 	if(year.isEmpty() | month.isEmpty())return 0;
 	QString req;
+    QString effective_date;
+    if(getCaType() == 1)
+        effective_date = "PAYMENTDATE";
+    else
+        effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
 		req =   "SELECT SUM((TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
-				"strftime('%m',TAB_INVOICES.DATE)='"+month+"'AND "
-				"strftime('%Y',TAB_INVOICES.DATE)='"+year+"' AND TAB_INVOICES_DETAILS.ID_PRODUCT <= 0;";
+                "strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
+                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.ID_PRODUCT <= 0;";
 	}
 	//TODO: MYSQL_REQ
   /*  else
 		req = "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(MONTH FROM TAB_INVOICES.DATE)='"+month+"'and "
-				"extract(YEAR FROM TAB_INVOICES.DATE)='"+year+"';";*/
+                "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
+                "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -704,19 +719,24 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 	qreal total=0; // important init pour le nonReturnValue
 	if(year.isEmpty() | month.isEmpty())return 0;
 	QString req;
+    QString effective_date;
+    if( getCaType() == 1)
+        effective_date = "PAYMENTDATE";
+    else
+        effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
 		req =   "SELECT SUM((TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
-				"strftime('%m',TAB_INVOICES.DATE)='"+month+"'AND "
-				"strftime('%Y',TAB_INVOICES.DATE)='"+year+"' AND TAB_INVOICES_DETAILS.ID_PRODUCT > 0;";
+                "strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
+                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.ID_PRODUCT > 0;";
 	}
 	//TODO: MYSQL_REQ
   /*  else
 		req = "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(MONTH FROM TAB_INVOICES.DATE)='"+month+"'and "
-				"extract(YEAR FROM TAB_INVOICES.DATE)='"+year+"';";*/
+                "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
+                "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -730,4 +750,24 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 	}
 
 	return total;
+}
+
+/**
+    Obtenir la méthode de calcul du CA
+    @return catype
+  */
+int invoice::getCaType() {
+    int ret=-1;
+
+    QSqlQuery query;
+    query.prepare("SELECT CA_TYPE FROM TAB_INFORMATIONS;");
+
+    if(query.exec()){
+        query.next();
+        ret = query.value(0).toInt();
+    }
+    else{
+        QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+    }
+    return ret;
 }
