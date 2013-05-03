@@ -18,7 +18,7 @@
 class customer;
 class product;
 
-#define MCERCLE_VERSION "2.2"
+#define MCERCLE_VERSION "2.3 beta"
 
 class database : public QObject
 {
@@ -28,7 +28,7 @@ private:
 	QWidget *m_parent;
 	bool m_connected;
 	QString m_bdd, m_name, m_hostName, m_login, m_password;
-	int m_port, m_databaseVersion;
+    int m_port, m_databaseVersion;
 	bool addSample;
 	QString m_FDBversion;
 	QLocale m_lang;
@@ -74,8 +74,8 @@ public:
 		QString zipCode;
 		QString city;
 		QString address1;QString address2;QString address3;
-		int tax;
-	}Informations;
+        int tax; int ca_type;
+    }Informations;
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau
@@ -124,6 +124,7 @@ public:
 	bool updateBank(Bank &b);
 	bool getBank(Bank &b);
 	bool getIsTax(){return m_isTax;}
+
 
 	enum{DB_CON_OK, DB_CONNECT, DB_CREATE, DB_CON_ERR, DB_NOTEXIST_ERR};
 

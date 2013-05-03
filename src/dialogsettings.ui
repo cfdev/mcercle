@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>412</height>
+    <width>556</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -102,7 +102,14 @@ p, li { white-space: pre-wrap; }
             </layout>
            </item>
            <item>
-            <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0">
+            <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0,0,0">
+             <item row="1" column="2">
+              <widget class="QLabel" name="label_17">
+               <property name="text">
+                <string>Assujetti à la TVA: </string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="0">
               <widget class="QLabel" name="label_7">
                <property name="text">
@@ -186,13 +193,6 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QLabel" name="label_17">
-               <property name="text">
-                <string>Assujetti à la TVA: </string>
-               </property>
-              </widget>
-             </item>
              <item row="3" column="0">
               <widget class="QLabel" name="label_13">
                <property name="text">
@@ -228,17 +228,38 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
-             <item row="4" column="2">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Code Postal: </string>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="3">
               <widget class="QLineEdit" name="lineEdit_sZipCode">
                <property name="maxLength">
                 <number>10</number>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="label_27">
+               <property name="text">
+                <string>Calcul du CA: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QComboBox" name="comboBox_CA">
+               <item>
+                <property name="text">
+                 <string>Date de facturation</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Date du règlement</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLabel" name="label_11">
+               <property name="text">
+                <string>Code Postal: </string>
                </property>
               </widget>
              </item>
@@ -610,6 +631,13 @@ p, li { white-space: pre-wrap; }
               <widget class="QComboBox" name="comboBox_dbase"/>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_db_info">
+             <property name="text">
+              <string>Informations :</string>
+             </property>
+            </widget>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">

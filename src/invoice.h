@@ -30,7 +30,7 @@ private:
 	int m_id, m_idCustomer, m_state ;
 	qreal m_price, m_partPayment;
 	QDateTime m_creationDate;
-    QDate m_userDate, m_limitPayment, m_paymentDate;
+	QDate m_userDate, m_limitPayment, m_paymentDate;
 	QString m_code, m_proposalCode, m_description, m_typePayment;
 	QLocale m_lang;
 
@@ -42,7 +42,7 @@ public:
 		QList<int> id;
 		QList<QDate> userDate;
 		QList<QDate> limitPayment;
-        QList<QDate> paymentDate;
+		QList<QDate> paymentDate;
 		QStringList code;
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
@@ -68,7 +68,7 @@ public:
 		QList<int> id;
 		QList<QDate> userDate;
 		QList<QDate> limitPayment;
-        QList<QDate> paymentDate;
+		QList<QDate> paymentDate;
 		QStringList code;
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
@@ -103,7 +103,7 @@ public:
 
 	//State
 	enum{UNPAID , PAID};
-
+	
 	invoice(QSqlDatabase db, QWidget *parent = 0);
 	~invoice();
 
@@ -126,7 +126,7 @@ public:
 	void setDescription(const  QString& description){m_description = description;}
 	void setUserDate(const QDate& date){m_userDate = date;}
 	void setLimitPayment(const QDate& date){m_limitPayment = date;}
-    void setPaymentDate(const QDate& date){m_paymentDate = date;}
+	void setPaymentDate(const QDate& date){m_paymentDate = date;}
 
 	//recup les valeurs de la facture
 	QIcon getIconState(int state);
@@ -140,7 +140,7 @@ public:
 	QDateTime getCreationDate(){return m_creationDate;}
 	QDate getUserDate(){return m_userDate;}
 	QDate getLimitPayment(){return m_limitPayment;}
-    QDate getPaymentDate(){return m_paymentDate;}
+	QDate getPaymentDate(){return m_paymentDate;}
 	QString getCode(){return m_code;}
 	QString getProposalCode(){return m_proposalCode;}
 	QString getDescription(){return m_description;}
@@ -155,7 +155,6 @@ public:
 	qreal getYearRevenue(QString year);
 
 
-
 	//recup des articles de la facture
 	bool getInvoiceItemsList(InvoiceListItems& list, QString order, QString filter, QString field);
 
@@ -165,6 +164,8 @@ public:
 	bool removeInvoiceItem(int Itemid);
 	bool updateInvoiceItem(InvoiceItem& item);
 
+	// Parametrage
+	int getCaType();
 
 };
 

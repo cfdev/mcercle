@@ -614,8 +614,9 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 
 	ui->tableWidget_Invoices->setSortingEnabled(false);
 	//Style de la table de facture
-	ui->tableWidget_Invoices->setColumnCount(6);
-	ui->tableWidget_Invoices->setColumnWidth(4,250);
+	ui->tableWidget_Invoices->setColumnCount(7);
+	ui->tableWidget_Invoices->setColumnWidth(3,125);
+	ui->tableWidget_Invoices->setColumnWidth(5,250);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_Invoices->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
 #endif
@@ -623,7 +624,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Prix") << tr("Description")  << tr("Etat");
+	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Date R\351glement") << tr("Prix") << tr("Description")  << tr("Etat");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -634,6 +635,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		QTableWidgetItem *item_ID           = new QTableWidgetItem();
 		QTableWidgetItem *item_CODE         = new QTableWidgetItem();
 		QTableWidgetItem *item_DATE         = new QTableWidgetItem();
+		QTableWidgetItem *item_DATEPAYEMENT = new QTableWidgetItem();
 		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
 		QTableWidgetItem *item_DESCRIPTION  = new QTableWidgetItem();
 		QTableWidgetItem *item_STATE        = new QTableWidgetItem();
@@ -641,6 +643,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATEPAYEMENT->setData(Qt::DisplayRole, ilist.paymentDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_invoice->getIconState(ilist.state.at(i)) );
@@ -653,9 +656,10 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ui->tableWidget_Invoices->setItem(i, 0, item_ID);
 		ui->tableWidget_Invoices->setItem(i, 1, item_CODE);
 		ui->tableWidget_Invoices->setItem(i, 2, item_DATE);
-		ui->tableWidget_Invoices->setItem(i, 3, item_PRICE);
-		ui->tableWidget_Invoices->setItem(i, 4, item_DESCRIPTION);
-		ui->tableWidget_Invoices->setItem(i, 5, item_STATE);
+		ui->tableWidget_Invoices->setItem(i, 3, item_DATEPAYEMENT);
+		ui->tableWidget_Invoices->setItem(i, 4, item_PRICE);
+		ui->tableWidget_Invoices->setItem(i, 5, item_DESCRIPTION);
+		ui->tableWidget_Invoices->setItem(i, 6, item_STATE);
 	}
 	ui->tableWidget_Invoices->setSortingEnabled(true);
 	ui->tableWidget_Invoices->selectRow(0);
@@ -672,55 +676,6 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ui->toolButton_printInv->setEnabled(true);
 	}
 }
-
-
-  /*  QFileDialog dialog(this);
-	dialog.setFileMode(QFileDialog::AnyFile);
-
-	QPrinter printer(QPrinter::HighResolution);
-	printer.setOutputFileName("print.pdf");
-	QPainter painter;
-	painter.begin(&printer);
-
-	int numberOfPages=1,lastPage=1;
-
-	for (int page = 0; page < numberOfPages; ++page) {
-
-		// Use the painter to draw on the page.
-		painter.setPen(Qt::blue);
-		painter.setFont(QFont("Arial", 30));
-		painter.drawText(QPoint(30,30), "FRAUSTI Manager");
-
-		if (page != lastPage)
-			printer.newPage();
-	}
-
-	painter.end();*/
-
-
- /*   QFileDialog dialog(this);
-	QString filename = dialog.getSaveFileName(this, "Save file", "order.pdf", "");
-	if( !filename.isEmpty() ) {
-		QPrinter printer(QPrinter::HighResolution);
-		printer.setOutputFileName( filename.toStdString().c_str() );
-		QPainter painter;
-		painter.begin(&printer);
-
-		int numberOfPages=1,lastPage=1;
-
-		for (int page = 0; page < numberOfPages; page++) {
-
-			// Use the painter to draw on the page.
-			painter.setPen(Qt::blue);
-			painter.setFont(QFont("Arial", 30));
-			painter.drawText(QPoint(30,30), "FRAUSTI Manager");
-
-			if (page != lastPage)
-				printer.newPage();
-		}
-
-		painter.end();
-	}*/
 
 
 /**

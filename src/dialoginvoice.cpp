@@ -55,7 +55,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 
 		ui->label_delivery->setText(tr("Date Ech\351ance :"));
 		ui->label_link->setText(tr("Proposition associ\351e : "));
-        ui->label_datevalid->setText(tr("Date R\351glement :"));
+		ui->label_datevalid->setText(tr("Date R\351glement :"));
 		ui->label_delay->setVisible(false);
 		ui->spinBox_delayDelivery->setVisible(false);
 		ui->pushButton_createInv->setVisible(false);
@@ -75,12 +75,12 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	}
 	else{
 		//Set l ID du client pour la creation de la proposition
-		if(m_DialogType == PROPOSAL_TYPE)   m_proposal->setIdCustomer( m_customer->getId() );
-		else                                m_invoice->setIdCustomer( m_customer->getId() );
+		if(m_DialogType == PROPOSAL_TYPE)	m_proposal->setIdCustomer( m_customer->getId() );
+		else								m_invoice->setIdCustomer( m_customer->getId() );
 		ui->dateEdit_DATE->setDateTime( QDateTime::currentDateTime());
 		ui->dateEdit_delivery->setDateTime( QDateTime::currentDateTime());
-        if(m_DialogType == PROPOSAL_TYPE)   ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime().addMonths(1)); /* 1mois pour la duree du devis*/
-        else                                ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
+		if(m_DialogType == PROPOSAL_TYPE)	ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime().addMonths(1)); /* 1mois pour la duree du devis*/
+		else								ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
 		ui->pushButton_ok->setText(tr("Ajouter"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/insert"));
 		//Ajout du
@@ -182,7 +182,7 @@ void DialogInvoice::loadValues(){
 		ui->dateEdit_DATE->setDate( m_invoice->getUserDate() );
 		ui->dateEdit_delivery->setDate( m_invoice->getLimitPayment() ); /* Limit de paiement*/
 		ui->doubleSpinBox_partPAYMENT->setValue( m_invoice->getPartPayment() ); /* accompte */
-        ui->dateEdit_valid->setDate( m_invoice->getPaymentDate() ); /* Date de paiement*/
+		ui->dateEdit_valid->setDate( m_invoice->getPaymentDate() ); /* Date de paiement*/
 
 		ui->comboBox_State->setCurrentIndex( m_invoice->getState());
 		QString typeP = m_invoice->getTypePayment();
@@ -982,7 +982,7 @@ void DialogInvoice::createInvoiceFromProposal() {
 	m_invoice->setLimitPayment( QDate::currentDate() );
 	m_invoice->setPartPayment(0);
 	m_invoice->setState( invoice::UNPAID );
-    m_invoice->setPaymentDate( QDate::currentDate() );
+	m_invoice->setPaymentDate( QDate::currentDate() );
 
 	m_invoice->setTypePayment(m_proposal->getTypePayment());
 	m_invoice->setPrice( m_proposal->getPrice() );
