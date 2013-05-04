@@ -231,7 +231,11 @@ void DialogSettings::loadInfoDatabase() {
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/Off").scaled(24,24)));
 		 ui->pushButton_connect->setText( tr("Se connecter") );
 	 }
-
+	// Informations dbase
+	 QString info = tr("Version: v");
+	 info += QString::number( m_data->getDatabaseVersion() );
+	 ui -> label_db_info -> setText(info);
+	 
 	 //Onglet societe
 	 QImage lo = m_data->getLogoTable_informations();
 	 ui->label_logo->setPixmap(QPixmap::fromImage(lo));

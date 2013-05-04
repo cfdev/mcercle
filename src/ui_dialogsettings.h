@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'dialogsettings.ui'
 **
-** Created: Fri 25. Jan 18:33:04 2013
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Fri 3. May 09:13:41 2013
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -49,6 +49,7 @@ public:
     QPushButton *pushButton_Logo;
     QPushButton *pushButton_ClearImage;
     QGridLayout *gridLayout_2;
+    QLabel *label_17;
     QLabel *label_7;
     QCheckBox *checkBox_TAX;
     QLineEdit *lineEdit_sPhone;
@@ -61,14 +62,15 @@ public:
     QLabel *label_9;
     QLabel *label_12;
     QLineEdit *lineEdit_sFax;
-    QLabel *label_17;
     QLabel *label_13;
     QLineEdit *lineEdit_sEmail;
     QLabel *label_8;
     QLineEdit *lineEdit_sWebSite;
     QLineEdit *lineEdit_sCity;
-    QLabel *label_11;
     QLineEdit *lineEdit_sZipCode;
+    QLabel *label_27;
+    QComboBox *comboBox_CA;
+    QLabel *label_11;
     QLabel *label_10;
     QLineEdit *lineEdit_sAdd1;
     QLineEdit *lineEdit_sAdd2;
@@ -120,6 +122,7 @@ public:
     QToolButton *toolButton_BaseSelect;
     QLabel *label_26;
     QComboBox *comboBox_dbase;
+    QLabel *label_db_info;
     QHBoxLayout *horizontalLayout_4;
     QLabel *label_18;
     QSpacerItem *horizontalSpacer_3;
@@ -133,7 +136,7 @@ public:
     {
         if (DialogSettings->objectName().isEmpty())
             DialogSettings->setObjectName(QString::fromUtf8("DialogSettings"));
-        DialogSettings->resize(500, 412);
+        DialogSettings->resize(556, 455);
         DialogSettings->setMinimumSize(QSize(500, 0));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/app/preference"), QSize(), QIcon::Normal, QIcon::Off);
@@ -187,6 +190,11 @@ public:
 
         gridLayout_2 = new QGridLayout();
         gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+        label_17 = new QLabel(tab_compagny);
+        label_17->setObjectName(QString::fromUtf8("label_17"));
+
+        gridLayout_2->addWidget(label_17, 1, 2, 1, 1);
+
         label_7 = new QLabel(tab_compagny);
         label_7->setObjectName(QString::fromUtf8("label_7"));
 
@@ -194,7 +202,7 @@ public:
 
         checkBox_TAX = new QCheckBox(tab_compagny);
         checkBox_TAX->setObjectName(QString::fromUtf8("checkBox_TAX"));
-        checkBox_TAX->setEnabled(true);
+        checkBox_TAX->setEnabled(false);
 
         gridLayout_2->addWidget(checkBox_TAX, 1, 3, 1, 1);
 
@@ -252,11 +260,6 @@ public:
 
         gridLayout_2->addWidget(lineEdit_sFax, 2, 3, 1, 1);
 
-        label_17 = new QLabel(tab_compagny);
-        label_17->setObjectName(QString::fromUtf8("label_17"));
-
-        gridLayout_2->addWidget(label_17, 1, 2, 1, 1);
-
         label_13 = new QLabel(tab_compagny);
         label_13->setObjectName(QString::fromUtf8("label_13"));
 
@@ -285,16 +288,26 @@ public:
 
         gridLayout_2->addWidget(lineEdit_sCity, 4, 1, 1, 1);
 
-        label_11 = new QLabel(tab_compagny);
-        label_11->setObjectName(QString::fromUtf8("label_11"));
-
-        gridLayout_2->addWidget(label_11, 4, 2, 1, 1);
-
         lineEdit_sZipCode = new QLineEdit(tab_compagny);
         lineEdit_sZipCode->setObjectName(QString::fromUtf8("lineEdit_sZipCode"));
         lineEdit_sZipCode->setMaxLength(10);
 
         gridLayout_2->addWidget(lineEdit_sZipCode, 4, 3, 1, 1);
+
+        label_27 = new QLabel(tab_compagny);
+        label_27->setObjectName(QString::fromUtf8("label_27"));
+
+        gridLayout_2->addWidget(label_27, 5, 0, 1, 1);
+
+        comboBox_CA = new QComboBox(tab_compagny);
+        comboBox_CA->setObjectName(QString::fromUtf8("comboBox_CA"));
+
+        gridLayout_2->addWidget(comboBox_CA, 5, 1, 1, 1);
+
+        label_11 = new QLabel(tab_compagny);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+
+        gridLayout_2->addWidget(label_11, 4, 2, 1, 1);
 
 
         verticalLayout_4->addLayout(gridLayout_2);
@@ -579,6 +592,11 @@ public:
 
         verticalLayout_2->addLayout(gridLayout);
 
+        label_db_info = new QLabel(tab_Database);
+        label_db_info->setObjectName(QString::fromUtf8("label_db_info"));
+
+        verticalLayout_2->addWidget(label_db_info);
+
         horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName(QString::fromUtf8("horizontalLayout_4"));
         label_18 = new QLabel(tab_Database);
@@ -691,6 +709,7 @@ public:
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" text-decoration: underline;\">Logo</span></p></body></html>", 0, QApplication::UnicodeUTF8));
         pushButton_Logo->setText(QApplication::translate("DialogSettings", "Parcourir", 0, QApplication::UnicodeUTF8));
         pushButton_ClearImage->setText(QApplication::translate("DialogSettings", "Effacer", 0, QApplication::UnicodeUTF8));
+        label_17->setText(QApplication::translate("DialogSettings", "Assujetti \303\240 la TVA: ", 0, QApplication::UnicodeUTF8));
         label_7->setText(QApplication::translate("DialogSettings", "Nom: ", 0, QApplication::UnicodeUTF8));
         checkBox_TAX->setText(QString());
         label_6->setText(QApplication::translate("DialogSettings", "Siret: ", 0, QApplication::UnicodeUTF8));
@@ -698,9 +717,14 @@ public:
         label_16->setText(QApplication::translate("DialogSettings", "Capital: ", 0, QApplication::UnicodeUTF8));
         label_9->setText(QApplication::translate("DialogSettings", "Tel: ", 0, QApplication::UnicodeUTF8));
         label_12->setText(QApplication::translate("DialogSettings", "Fax: ", 0, QApplication::UnicodeUTF8));
-        label_17->setText(QApplication::translate("DialogSettings", "Assujetti \303\240 la TVA: ", 0, QApplication::UnicodeUTF8));
         label_13->setText(QApplication::translate("DialogSettings", "Email: ", 0, QApplication::UnicodeUTF8));
         label_8->setText(QApplication::translate("DialogSettings", "Ville: ", 0, QApplication::UnicodeUTF8));
+        label_27->setText(QApplication::translate("DialogSettings", "Calcul du CA: ", 0, QApplication::UnicodeUTF8));
+        comboBox_CA->clear();
+        comboBox_CA->insertItems(0, QStringList()
+         << QApplication::translate("DialogSettings", "Date de facturation", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("DialogSettings", "Date du r\303\250glement", 0, QApplication::UnicodeUTF8)
+        );
         label_11->setText(QApplication::translate("DialogSettings", "Code Postal: ", 0, QApplication::UnicodeUTF8));
         label_10->setText(QApplication::translate("DialogSettings", "Adresse :", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tab_compagny), QApplication::translate("DialogSettings", "Soci\303\251t\303\251", 0, QApplication::UnicodeUTF8));
@@ -719,6 +743,7 @@ public:
         label_5->setText(QApplication::translate("DialogSettings", "Mot de pass : ", 0, QApplication::UnicodeUTF8));
         toolButton_BaseSelect->setText(QApplication::translate("DialogSettings", "...", 0, QApplication::UnicodeUTF8));
         label_26->setText(QApplication::translate("DialogSettings", "Base de donn\303\251es :", 0, QApplication::UnicodeUTF8));
+        label_db_info->setText(QApplication::translate("DialogSettings", "Informations :", 0, QApplication::UnicodeUTF8));
         label_18->setText(QApplication::translate("DialogSettings", "Etat:", 0, QApplication::UnicodeUTF8));
         label_state->setText(QApplication::translate("DialogSettings", "...", 0, QApplication::UnicodeUTF8));
         pushButton_connect->setText(QApplication::translate("DialogSettings", "Se connecter", 0, QApplication::UnicodeUTF8));
