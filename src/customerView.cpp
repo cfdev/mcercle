@@ -1685,11 +1685,17 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
 		for(int itemOnpage=0; itemOnpage<itemPerPage;){
 			//sil ne reste plus a afficher on sort
 			if((ilist.name.count() - pIndex) <= 0)break;
-			rect.translate( 0, rect.height()+5);
+            rect.translate( 0, rect.height()+5);
+
+            if (pIndex>0){
+                QStringList lines = ilist.name.at(pIndex-1).split("\n");
+                lines.count();
+                rect.translate( 0, (lines.count()-1)*rect.height());
+            }
 
 			//DESIGNATION 40%
 			rect = fm.boundingRect(mLeft+5,rect.top(), wUtil*0.40,0, Qt::AlignLeft, ilist.name.at(pIndex) );
-			rect.setWidth(wUtil*0.50); //fixe la largeur
+            rect.setWidth(wUtil*0.50); //fixe la largeur
 			painter.drawText( rect,  Qt::AlignLeft , ilist.name.at(pIndex));
 
 			//TVA 12%
@@ -1697,7 +1703,7 @@ void customerView::on_paintPrinterInvoice(QPrinter *printer)
 				rect = fm.boundingRect(mLeft-5+(wUtil*0.40),rect.top(), wUtil*0.12,0, Qt::AlignRight, m_lang.toString(ilist.tax.at(pIndex),'f',2) );
 				//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignRight , m_lang.toString(ilist.tax.at(pIndex),'f',2) );
-			}
+            }
 
 			//REMISE 12%
 			if(discount){
