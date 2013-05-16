@@ -364,15 +364,19 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 		//definir le tableau
 		ui->tableWidget->setRowCount(i+1);
 
+        QTextEdit *edit_name = new QTextEdit();
+        edit_name->setText(item_NAME->text());
+
 		//remplir les champs
 		ui->tableWidget->setItem(i, COL_ID, item_ID);
 		ui->tableWidget->setItem(i, COL_ID_PRODUCT, item_ID_PRODUCT);
 		ui->tableWidget->setItem(i, COL_ORDER, item_ORDER);
-		ui->tableWidget->setItem(i, COL_NAME, item_NAME);
+        ui->tableWidget->setCellWidget(i,COL_NAME,edit_name);
 		ui->tableWidget->setItem(i, COL_TAX, item_TAX);
 		ui->tableWidget->setItem(i, COL_DISCOUNT, item_DISCOUNT);
 		ui->tableWidget->setItem(i, COL_PRICE, item_PRICE);
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
+
 	}
 	ui->tableWidget->setSortingEnabled(true);
 	ui->tableWidget->selectRow(0);
@@ -589,7 +593,9 @@ void DialogInvoice::updateInvoiceItems(){
 			}
 		}
 
-		itemInv.name = ui->tableWidget->item(j, COL_NAME)->text();
+
+        QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+        itemInv.name = get_name->toPlainText();
 		itemInv.tax = ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
