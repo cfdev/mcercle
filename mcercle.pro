@@ -2,11 +2,6 @@
 # mcercle - Logiciel de gestion libre
 # -------------------------------------------------
 
-# Test la version de Qt
-#lessThan(QT_VERSION, 4.6) {
-#    error("mcercle requires Qt 4.6 or greater")
-#}
-
 QT += sql
 TARGET = mcercle
 TEMPLATE = app
@@ -97,16 +92,16 @@ FORMS += src/mainwindow.ui \
     src/dialogtax.ui \
     src/dialoginvoicelist.ui
 
-UI_SOURCES_DIR = src/
-UI_HEADERS_DIR = src/
+#UI_SOURCES_DIR = src/
+#UI_HEADERS_DIR = src/
 
 # Liste des fichiers qui seront incorpores au binaire en tant que ressources
 RESOURCES += ressources.qrc
 
 # Destination des fichiers objets
-MOC_DIR = out/
-OBJECTS_DIR = out/
-DESTDIR = out/
+#MOC_DIR = out/
+#OBJECTS_DIR = out/
+#DESTDIR = out/
 
 # Description de l'installation
 target.path = /usr/bin/
