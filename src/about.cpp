@@ -74,8 +74,10 @@ about::about(database *pdata, QWidget *parent) :
    // msg += "- FlameRobin - <a href=\"http://www.flamerobin.org\">http://www.flamerobin.org</a>";
 	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2013";
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
-
-	msg += "<br><br><p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("mcercle vous aide dans votre activit\351, aidez son concepteur") + "</p>";
+	
+	msg += "<br><br>Ce programme est fourni « EN L'ETAT », SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT,<br> DE QUALITE MARCHANDE, D'ADEQUATION A UN USAGE PARTICULIER.";
+	
+	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("mcercle vous aide dans votre activit\351, aidez son concepteur") + "</p>";
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );
