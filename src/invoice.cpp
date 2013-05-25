@@ -206,12 +206,13 @@ bool invoice::loadFromCode(const QString& code)
 	query.prepare(req);
 	if(query.exec()){
 		query.next();
+		m_id= query.value(query.record().indexOf("ID")).toInt();
 		m_idCustomer = query.value(query.record().indexOf("ID_CUSTOMER")).toInt();
 		m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
 		m_userDate = query.value(query.record().indexOf("DATE")).toDate();
 		m_limitPayment = query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate();
 		m_paymentDate = query.value(query.record().indexOf("PAYMENTDATE")).toDate();
-		m_id= query.value(query.record().indexOf("ID")).toInt();
+		m_code = query.value(query.record().indexOf("ICODE")).toString();
 		m_proposalCode = query.value(query.record().indexOf("PCODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_partPayment = query.value(query.record().indexOf("PART_PAYMENT")).toFloat();
