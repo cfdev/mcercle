@@ -21,6 +21,7 @@
 #include "ui_board.h"
 
 #include <QMessageBox>
+#include "dialoginvoice.h"
 
 /**
 	Constructeur de la class board
@@ -338,4 +339,26 @@ void board::calculYear(){
 void board::on_comboBox_yearsList_currentIndexChanged() {
 	calculYear();
 	listRevenuesToTable();
+}
+
+/**
+ * @brief board::on_tableWidget_InvoiceAlert_itemDoubleClicked
+ * @param item
+ */
+void board::on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item) {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QString code = ui->tableWidget_InvoiceAlert->item(item -> row(), 0) -> text();
+	//On charge l objet en fonction de la selection
+	m_data->m_customer->m_invoice -> loadFromCode( code );
+
+	DialogInvoice *m_DialogInvoice = new DialogInvoice(m_lang, m_data, DialogInvoice::INVOICE_TYPE, DialogInvoice::EDIT);
+	m_DialogInvoice -> setModal(true);
+	m_DialogInvoice -> setTitle(tr("Modifier une facture"));
+	m_DialogInvoice -> exec();
+
+	delete m_DialogInvoice;
+	//rafraichir la liste
+	listInvoiceAlertToTable();
 }

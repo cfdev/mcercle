@@ -38,6 +38,7 @@ private:
 private slots:
 
 	void on_comboBox_yearsList_currentIndexChanged();
+	void on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item);
 };
 
 #endif // BOARD_H
