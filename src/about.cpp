@@ -24,6 +24,11 @@
 #include <QDesktopServices>
 #include <QUrl>
 
+/**
+ * @brief about::about
+ * @param pdata
+ * @param parent
+ */
 about::about(database *pdata, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::about)
@@ -41,9 +46,14 @@ about::about(database *pdata, QWidget *parent) :
 	msg +=  __DATE__ ;
 	msg += " ";
 	msg += __TIME__;
+	
+#ifdef __GNUC__
 	msg += "<br>GCC ";
 	msg += __VERSION__;
-
+	msg += " - Compil&#233; avec Qt " + QString(QT_VERSION_STR);
+	msg += " - Fonctionne avec Qt "+ QString(qVersion());
+#endif
+	
 	msg += "<br><br>" + tr("mcercle utilise :<br>");
 	msg += tr("- l&#146;interface graphique Qt4. <a href=\"http://qt-project.org\">http://qt-project.org</a><br>");
 
@@ -66,12 +76,7 @@ about::about(database *pdata, QWidget *parent) :
 		}
 	}
 
-	// msg += "- FireBird v"+ pdata->getFireBirdVersion() +". <a href=\"http://www.firebirdsql.org\">http://www.firebirdsql.org</a><br>";
-   // msg += "- IBPP v"+ database::IBPPversion() +". <a href=\"http://www.ibpp.org\">http://www.ibpp.org</a><br>";
 	msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
-
-	//msg += "<br><br>" + tr("Outils :<br>");
-   // msg += "- FlameRobin - <a href=\"http://www.flamerobin.org\">http://www.flamerobin.org</a>";
 	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2013";
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
 	
@@ -88,10 +93,17 @@ about::about(database *pdata, QWidget *parent) :
 /*
 	http://www.commentcamarche.net/contents/html/htmlcarac.php3
 */
+/**
+ * @brief about::~about
+ */
 about::~about() {
 	delete ui;
 }
 
+/**
+ * @brief about::changeEvent
+ * @param e
+ */
 void about::changeEvent(QEvent *e)
 {
 	QDialog::changeEvent(e);
@@ -104,19 +116,25 @@ void about::changeEvent(QEvent *e)
 	}
 }
 
-void about::on_pushBut_Close_clicked()
-{
+/**
+ * @brief about::on_pushBut_Close_clicked
+ */
+void about::on_pushBut_Close_clicked() {
 	this->close();
 }
 
 //don libre https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W
 //don 19.99 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=75YN3QWER2V9S
-void about::on_pushButton_don_clicked()
-{
+/**
+ * @brief about::on_pushButton_don_clicked
+ */
+void about::on_pushButton_don_clicked() {
 	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=75YN3QWER2V9S"));
 }
 
-void about::on_pushButton_donFree_clicked()
-{
+/**
+ * @brief about::on_pushButton_donFree_clicked
+ */
+void about::on_pushButton_donFree_clicked() {
 	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W"));
 }
