@@ -18,12 +18,14 @@ public:
 
 private:
 	service_common* m_servComm;
+	tax* m_taxTable;
 	bool m_tax;
 
 	void setTitle(QString val);
 	void listInterCommToTable();
 	void loadValuesFormService();
 	void loadEmptyValues();
+	void loadTaxList();
 	void setValuesToService();
 
 	Ui::DialogServicesEdit *ui;

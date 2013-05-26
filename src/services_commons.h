@@ -2,8 +2,8 @@
 #define service_common_H
 
 #include <QStringList>
-#include <vector>
 #include <QLocale>
+#include <QList>
 #include <QDateTime>
 
 #include <QSqlDatabase>
@@ -27,12 +27,13 @@ public:
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau.
-		std::vector<int> id;
-		std::vector<QDateTime> creationDate;
-		std::vector<QDateTime> date;
+		QList<int> id;
+		QList<QDateTime> creationDate;
+		QList<QDateTime> date;
 		QStringList name;
 		QStringList description;
-		std::vector<float> price;
+		QList<qreal> price;
+		QList<qreal> tax;
 	}serviceCommList;
 
 	//State
@@ -50,7 +51,8 @@ public:
 	//Appliquer les valeurs
 	void setId(const int& id){m_id = id;}
 	void setIdCustomer(const int& idCustomer){m_idCustomer = idCustomer;}
-	void setPrice(const float& price){m_price = price;}
+	void setPrice(const qreal& price){m_price = price;}
+	void setTax(const qreal& tax) { m_tax = tax; }
 	void setDate(const QDateTime& theDate){m_theDate = theDate;}
 	void setName(const  QString& name){m_name = name;}
 	void setDescription(const  QString& description){m_description = description;}
@@ -59,6 +61,7 @@ public:
 	int getId(){return m_id;}
 	int getIdCustomer(){return m_idCustomer;}
 	qreal getPrice(){return m_price;}
+	qreal getTax() { return m_tax; }
 	QDateTime getCreationDate(){return m_creationDate;}
 	QDateTime getDate(){return m_theDate;}
 	QString getName(){return m_name;}

@@ -12,12 +12,16 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 
 	m_servComm = pdata->m_customer->m_serviceComm;
 	m_tax = pdata->getIsTax();
+	m_taxTable = pdata->m_tax;
 
 	//Affiche ou pas les taxes
 	ui->comboBox_tax->setVisible(m_tax);
 	if(m_tax) ui->label_tax->setText( tr("HT") );
 	else    ui->label_tax->setText( tr("TTC") );
 	ui->label_titletax->setVisible(m_tax);
+
+	// Charge la liste des taxes dans la combo box
+	loadTaxList();
 
 	ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime());
 	listInterCommToTable();
@@ -30,6 +34,22 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 DialogServicesEdit::~DialogServicesEdit()
 {
 	delete ui;
+}
+
+/**
+    Charge la liste des tax
+  */
+void DialogServicesEdit::loadTaxList() {
+	//categories
+	tax::taxList list;
+	//Recuperation des donnees presentent dans la bdd
+	m_taxTable->getTaxList(list, "TAX", "", "");
+	ui->comboBox_tax->clear();
+	QLocale m_lang = QLocale::system().name().section('_', 0, 0);
+
+	for(unsigned int i=0; i<list.value.size(); i++){
+		ui->comboBox_tax->addItem( m_lang.toString(list.value.at(i),'f',2) );
+	}
 }
 
 /**
@@ -131,7 +151,7 @@ void DialogServicesEdit::listInterCommToTable()
 	m_servComm->getServiceCommList(ilist, "NAME", "", "");
 
 	// list all customers
-	for(unsigned int i=0; i<ilist.id.size(); i++){
+	for(int i=0; i<ilist.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
 		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
 
