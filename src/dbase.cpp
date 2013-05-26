@@ -53,8 +53,8 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent)
 }
 
 database::~database(){
-	delete m_customer;
-	delete m_product;
+	if(!m_customer) delete m_customer;
+	if(!m_product) delete m_product;
 }
 
 
@@ -320,7 +320,7 @@ bool database::createTable_informations(){
 
 	//INSERT
     query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-                  "VALUES('2', '0', '','1');");
+                  "VALUES('3', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
