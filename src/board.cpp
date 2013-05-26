@@ -362,3 +362,25 @@ void board::on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item
 	//rafraichir la liste
 	listInvoiceAlertToTable();
 }
+
+/**
+ * @brief board::on_tableWidget_ProposalAlert_itemDoubleClicked
+ * @param item
+ */
+void board::on_tableWidget_ProposalAlert_itemDoubleClicked(QTableWidgetItem *item) {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QString code = ui->tableWidget_ProposalAlert->item(item -> row(), 0) -> text();
+	//On charge l objet en fonction de la selection
+	m_data->m_customer->m_proposal -> loadFromCode( code );
+	
+	DialogInvoice *m_DialogInvoice = new DialogInvoice(m_lang, m_data, DialogInvoice::PROPOSAL_TYPE, DialogInvoice::EDIT);
+	m_DialogInvoice->setModal(true);
+	m_DialogInvoice->setTitle(tr("Modifier une proposition commerciale"));
+	m_DialogInvoice->exec();
+
+	delete m_DialogInvoice;
+	//rafraichir la liste
+	listProposalAlertToTable();
+}
