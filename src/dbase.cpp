@@ -53,8 +53,8 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent)
 }
 
 database::~database(){
-	if(!m_customer) delete m_customer;
-	if(!m_product) delete m_product;
+	if(m_customer>0) delete m_customer;
+	if(m_product>0) delete m_product;
 }
 
 
