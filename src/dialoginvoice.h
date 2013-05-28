@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QList>
 #include <QTableWidgetItem>
+#include <QTextEdit>
 
 #include "dbase.h"
 #include "productView.h"
