@@ -380,7 +380,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
 		
 		// Applique la hauteur de la ligne en fonction des new lines
-		ui->tableWidget->setRowHeight(i, m_ilist.name.at(i).count("\n") * 30); 
+		ui->tableWidget->setRowHeight(i, (m_ilist.name.at(i).count("\n")+1) * 30); 
 	}
 
 	ui->tableWidget->setSortingEnabled(true);
@@ -881,12 +881,12 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	// on increment la quantite si article deja present
 	else{
 		for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
-			if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME))->toPlainText()) &&
-				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ){
-			QTableWidgetItem *item_QUANT  = new QTableWidgetItem();
-			item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
-			ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
-			return;
+			if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
+				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
+				QTableWidgetItem *item_QUANT  = new QTableWidgetItem();
+				item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
+				ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
+				return;
 			}
 		}
 	}
