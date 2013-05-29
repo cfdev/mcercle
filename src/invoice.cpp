@@ -510,7 +510,7 @@ bool invoice::addInvoiceItem(InvoiceItem& item){
 	req += "VALUES(";
 	req += "'" + QString::number(this->m_id) + "',";
 	req += "'" + QString::number(item.idProduct) + "',";
-	req += "'" + item.name.replace("\'","''").mid(0, 128)+ "',";
+	req += "'" + item.name.replace("\'","''") + "',";
 	req += "'" + QString::number(item.quantity)  + "',";
 	req += "'" + QString::number(item.discount)  + "',";
 	req += "'" + f.setNum(item.price,'f',2) + "',";
@@ -554,7 +554,7 @@ bool invoice::updateInvoiceItem(InvoiceItem& item) {
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
 	QString req = "UPDATE TAB_INVOICES_DETAILS SET ";
-	req += "NAME='" + item.name /*.replace("\'","''").mid(0, 128)*/ + "',";
+	req += "NAME='" + item.name.replace("\'","''") + "',";
 	req += "ID_PRODUCT='" + QString::number(item.idProduct)  + "',";
 	req += "DISCOUNT='" + QString::number(item.discount)  + "',";
 	req += "QUANTITY='" + QString::number(item.quantity)  + "',";
