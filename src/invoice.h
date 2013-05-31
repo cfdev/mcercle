@@ -63,6 +63,7 @@ public:
 	}InvoicesBook;
 
 	typedef struct{
+		QList<int> customerId;
 		QStringList customerFirstName;
 		QStringList customerLastName;
 		QList<int> id;

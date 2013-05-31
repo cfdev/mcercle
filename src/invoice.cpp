@@ -379,7 +379,7 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
   */
 bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -390,8 +390,10 @@ bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 	query.prepare(req);
 	if(query.exec()){
 		while (query.next()){
+			list.customerId << query.value(query.record().indexOf("C_ID")).toInt();
 			list.customerFirstName << query.value(query.record().indexOf("FIRSTNAME")).toString();
 			list.customerLastName << query.value(query.record().indexOf("LASTNAME")).toString();
+			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.userDate.push_back( query.value(query.record().indexOf("DATE")).toDate() );
 			list.limitPayment.push_back( query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate() );
 			list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate() );
