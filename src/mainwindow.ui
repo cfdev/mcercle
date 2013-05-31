@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>450</width>
+    <width>703</width>
     <height>331</height>
    </rect>
   </property>
@@ -41,8 +41,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>450</width>
-     <height>21</height>
+     <width>703</width>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -67,6 +67,8 @@
     <addaction name="actionTableau_de_bord"/>
     <addaction name="actionClients"/>
     <addaction name="actionProduits"/>
+    <addaction name="actionServices_common"/>
+    <addaction name="actionActionProvider"/>
    </widget>
    <widget class="QMenu" name="menuOutils">
     <property name="title">
@@ -107,6 +109,7 @@
    <addaction name="separator"/>
    <addaction name="actionClients"/>
    <addaction name="actionProduits"/>
+   <addaction name="actionServices_common"/>
    <addaction name="actionActionProvider"/>
    <addaction name="separator"/>
    <addaction name="actionConfiguration"/>
@@ -267,6 +270,15 @@
    </property>
    <property name="text">
     <string>Sauvegarder la base de données sous...</string>
+   </property>
+  </action>
+  <action name="actionServices_common">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/services</normaloff>:/app/services</iconset>
+   </property>
+   <property name="text">
+    <string>Services</string>
    </property>
   </action>
  </widget>

@@ -38,5 +38,6 @@
         <file alias="up">art/up.png</file>
         <file alias="dn">art/dn.png</file>
         <file alias="save_as">art/document_save_as.png</file>
+        <file alias="services">art/services.png</file>
     </qresource>
 </RCC>

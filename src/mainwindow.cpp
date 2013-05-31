@@ -23,7 +23,6 @@
 #include <QPrintDialog>
 #include <QFileDialog>
 #include <QDesktopServices>
-//#include <QDebug>
 
 #include "dialogsettings.h"
 #include "dialogproviders.h"
@@ -31,6 +30,7 @@
 #include "ui_mainwindow.h"
 #include "dialogwaiting.h"
 #include "dialoginvoicelist.h"
+#include "dialogservicesedit.h"
 
 /**
 	Constructeur de la class MainWindow
@@ -362,3 +362,13 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
 }
 
 
+/**
+ * @brief MainWindow::on_actionServices_common_triggered
+ */
+void MainWindow::on_actionServices_common_triggered() {
+	DialogServicesEdit *m_DServComm = new DialogServicesEdit(m_database);
+	m_DServComm->setModal(true);
+	m_DServComm->exec();
+
+	delete m_DServComm;
+}
