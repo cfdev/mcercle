@@ -289,7 +289,8 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		ui->tableWidget->setRowHeight(i, (ilist.name.at(i).count("\n")+1) * 30); 
 
 	}
-	//ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->sortItems(COL_ORDER, Qt::AscendingOrder);
 	ui->tableWidget->selectRow(0);
 }
 
@@ -388,6 +389,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 	}
 
 	ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->sortItems(COL_ORDER, Qt::AscendingOrder);
 	ui->tableWidget->selectRow(0);
 }
 
@@ -410,15 +412,16 @@ void DialogInvoice::listServiceToTable()
 
 	ui->tableWidget_selectService->setSortingEnabled(false);
 	//Style de la table de l intervention
-	ui->tableWidget_selectService->setColumnCount(3);
+	ui->tableWidget_selectService->setColumnCount(4);
 	ui->tableWidget_selectService->setColumnWidth(1,225);
 	ui->tableWidget_selectService->setColumnWidth(2,100);
+	ui->tableWidget_selectService->setColumnWidth(3,225);
 	ui->tableWidget_selectService->setColumnHidden(0, true); //On cache la colonne des ID
 	ui->tableWidget_selectService->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_selectService->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_selectService->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Nom") << tr("Prix") ;
+	titles << tr("Id") << tr("Nom") << tr("Prix") << tr("D\351tail") ;
 	ui->tableWidget_selectService->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des services commun avec ID = 0
@@ -429,12 +432,14 @@ void DialogInvoice::listServiceToTable()
 	// list des services communs
 	for(int i=0; i<servicesListCommon.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
 		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
+		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
+		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
-		item_PRICE->setData(Qt::DisplayRole, servicesListCommon.price.at(i));
 		item_NAME->setData(Qt::DisplayRole, "#"+servicesListCommon.name.at(i));
+		item_PRICE->setData(Qt::DisplayRole, servicesListCommon.price.at(i));
+		item_Detail->setData(Qt::DisplayRole, servicesListCommon.description.at(i));
 
 		//definir le tableau
 		ui->tableWidget_selectService->setRowCount(i+1);
@@ -443,18 +448,21 @@ void DialogInvoice::listServiceToTable()
 		ui->tableWidget_selectService->setItem(i, 0, item_ID);
 		ui->tableWidget_selectService->setItem(i, 1, item_NAME);
 		ui->tableWidget_selectService->setItem(i, 2, item_PRICE);
+		ui->tableWidget_selectService->setItem(i, 3, item_Detail);
 	}
 
 	// list des services utilisateur
 	for(unsigned int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE     = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
+		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
+		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
+		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(userServicesList.id.at(i)));
-		item_PRICE->setData(Qt::DisplayRole, userServicesList.price.at(i));
 		item_NAME->setData(Qt::DisplayRole, userServicesList.name.at(i));
-
+		item_PRICE->setData(Qt::DisplayRole, userServicesList.price.at(i));
+		item_Detail->setData(Qt::DisplayRole, userServicesList.description.at(i));
+		
 		//definir le tableau
 		ui->tableWidget_selectService->insertRow( j );
 
@@ -462,6 +470,7 @@ void DialogInvoice::listServiceToTable()
 		ui->tableWidget_selectService->setItem(j, 0, item_ID);
 		ui->tableWidget_selectService->setItem(j, 1, item_NAME);
 		ui->tableWidget_selectService->setItem(j, 2, item_PRICE);
+		ui->tableWidget_selectService->setItem(j, 3, item_Detail);
 	}
 
 	ui->tableWidget_selectService->setSortingEnabled(true);
@@ -951,7 +960,9 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		int m_index_tabService = ui->tableWidget_selectService->currentRow();
 		//Si index < 0 on sort
 		if(m_index_tabService<0)return;
-		add_to_Table( 0, ui->tableWidget_selectService->item(m_index_tabService, 1)->text(),
+		QString text = ui->tableWidget_selectService->item(m_index_tabService, 1)->text() + "\n";
+		text += ui->tableWidget_selectService->item(m_index_tabService, 3)->text();
+		add_to_Table( 0, text,
 					  0.0, ui->tableWidget_selectService->item(m_index_tabService, 2)->text().toFloat() );
 	}
 	//ou un produit
@@ -1069,6 +1080,9 @@ void DialogInvoice::on_toolButton_up_clicked(){
 		// Attention ne pas recupere la colonne derniere col TOTAL qui est inseree en auto par une autre fonction!!!
 		// d ou le ui->tableWidget->columnCount()-1
 		for (int col = 0; col < ui->tableWidget->columnCount()-1; ++col) {
+			rowItemsToUp << ui->tableWidget->takeItem(index, col);
+			rowItemsToDn << ui->tableWidget->takeItem(index-1, col);
+			
 			if( col == COL_NAME){
 				QTextEdit *EtoUp = new QTextEdit();
 				EtoUp -> setText( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index, col))->toPlainText() );
@@ -1081,23 +1095,21 @@ void DialogInvoice::on_toolButton_up_clicked(){
 				rowEditToUp << EtoUp;
 				rowEditToDn << EtoDn;
 			}
-			else{
-				rowItemsToUp << ui->tableWidget->takeItem(index, col);
-				rowItemsToDn << ui->tableWidget->takeItem(index-1, col);
-			}
 		}
 
 		// Change les lignes
 		for (int colu = 0, item=0, widg=0; colu < ui->tableWidget->columnCount()-1; ++colu) {
+			ui->tableWidget->removeCellWidget(index-1, colu);
+			ui->tableWidget->removeCellWidget(index, colu);
+			
+			ui->tableWidget->setItem(index-1, colu, rowItemsToUp.at(item));
+			ui->tableWidget->setItem(index, colu, rowItemsToDn.at(item++));
+			
 			if( colu == COL_NAME){
-				ui->tableWidget->removeCellWidget(index-1, colu);
+				
 				ui->tableWidget->setCellWidget(index-1, colu, rowEditToUp.at(widg));				
-				ui->tableWidget->removeCellWidget(index, colu);
+				
 				ui->tableWidget->setCellWidget(index, colu, rowEditToDn.at(widg++));
-			}
-			else{
-				ui->tableWidget->setItem(index-1, colu, rowItemsToUp.at(item));
-				ui->tableWidget->setItem(index, colu, rowItemsToDn.at(item++));
 			}
 		}
 		// Reselection ligne en question
