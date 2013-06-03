@@ -37,7 +37,8 @@ SOURCES += src/mainwindow.cpp \
     src/dialogprintchoice.cpp \
     src/dialogtax.cpp \
     src/tax.cpp \
-    src/dialoginvoicelist.cpp
+    src/dialoginvoicelist.cpp \
+    src/printc.cpp
 
 
 
@@ -69,7 +70,8 @@ HEADERS += src/mainwindow.h \
     src/dialogprintchoice.h \
     src/dialogtax.h \
     src/tax.h \
-    src/dialoginvoicelist.h
+    src/dialoginvoicelist.h \
+    src/printc.h
 
 
 
