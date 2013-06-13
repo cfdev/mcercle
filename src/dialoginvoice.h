@@ -44,8 +44,11 @@ private slots:
 	
 	void on_toolButton_dn_clicked();
 	
+	void on_pushButton_print_clicked();
+	
 	private:
 	Ui::DialogInvoice *ui;
+	database *m_data;
 	customer *m_customer;
 	product *m_product;
 	invoice *m_invoice;

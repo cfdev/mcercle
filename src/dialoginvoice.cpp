@@ -1,5 +1,6 @@
 #include "dialoginvoice.h"
 #include "ui_dialoginvoice.h"
+#include "printc.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -14,6 +15,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
 
+	m_data = pdata;
 	m_customer = pdata->m_customer;
 	m_proposal = pdata->m_customer->m_proposal;
 	m_invoice = pdata->m_customer->m_invoice;
@@ -1172,3 +1174,19 @@ void DialogInvoice::on_toolButton_dn_clicked()
 	}
 }
 
+/**
+ * @brief DialogInvoice::on_pushButton_print_clicked
+ */
+void DialogInvoice::on_pushButton_print_clicked() {
+	// Si c est un devis
+	if(m_DialogType == PROPOSAL_TYPE){
+		Printc print(m_data, m_lang);
+		print.print_Proposal( m_proposal -> getId() );
+	}
+	// ou une facture
+	else{
+		Printc print(m_data, m_lang);
+		print.print_Invoice( m_invoice -> getId() );
+	}
+}
+	

@@ -486,6 +486,17 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_button">
      <item>
+      <widget class="QPushButton" name="pushButton_print">
+       <property name="text">
+        <string>Imprimer</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../ressources.qrc">
+         <normaloff>:/app/print</normaloff>:/app/print</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="pushButton_createInv">
        <property name="text">
         <string>Créer une facture</string>
