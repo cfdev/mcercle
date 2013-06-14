@@ -31,9 +31,12 @@
 #include <QDir>
 #include <QDebug>
 
-
-database::database(QLocale &lang, QWidget *parent): m_parent(parent)
-{
+/**
+ * @brief database::database
+ * @param lang
+ * @param parent
+ */
+database::database(QLocale &lang, QWidget *parent): m_parent(parent) {
 	m_name = "mcercle.db";
 	m_port = 3306;
 	m_hostName = "localhost";
@@ -110,7 +113,6 @@ char database::connect(){
 
 	//DI SQLITE activation des foreign Keys
 	if(db.driverName() == "QSQLITE"){
-
 		QSqlQuery query;
 		query.prepare("PRAGMA foreign_keys = ON;");
 
