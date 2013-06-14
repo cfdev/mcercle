@@ -32,11 +32,11 @@ private:
 
 private slots:
 	void checkConditions();
-	void on_buttonBox_accepted();
 	void on_tableWidget_Inter_itemSelectionChanged();
 	void on_pushButton_add_clicked();
 	void on_pushButton_edit_clicked();
 	void on_pushButton_del_clicked();
+	void on_pushButton_close_clicked();
 };
 
 #endif // DIALOGSERVICESEDIT_H

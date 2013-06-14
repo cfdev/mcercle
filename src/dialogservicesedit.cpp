@@ -113,12 +113,6 @@ void DialogServicesEdit::setValuesToService(){
 	m_servComm->setDescription( desc );
 }
 
-void DialogServicesEdit::on_buttonBox_accepted()
-{
-//
-}
-
-
 /**
 	Affiche les Services generales
 */
@@ -231,4 +225,11 @@ void DialogServicesEdit::on_pushButton_edit_clicked()
 	}
 }
 
+
+/**
+ * @brief Fermeture de la dialogue
+ */
+void DialogServicesEdit::on_pushButton_close_clicked() {
+	this -> close();
+}
 
