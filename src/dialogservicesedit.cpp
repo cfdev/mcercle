@@ -213,17 +213,22 @@ void DialogServicesEdit::on_pushButton_del_clicked()
 /**
 	Modification de l intervention generale
   */
-void DialogServicesEdit::on_pushButton_edit_clicked()
-{
+void DialogServicesEdit::on_pushButton_edit_clicked() {
 	int id = m_servComm->isHere( ui->lineEdit_Name->text());
-	if(  (id > 0) && (id != m_servComm->getId()) ){
-		QMessageBox::warning(this, tr("Attention"), tr("Service d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
+	
+	if( m_servComm->getName() != ui->lineEdit_Name->text() ){
+		if(  (id > 0) && (id != m_servComm->getId()) ){
+			QMessageBox::warning(this, tr("Attention"), tr("Service d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
+			return;
+		}
 	}
-	else{
-		setValuesToService();
-		if( m_servComm->update() ) listInterCommToTable();
+	setValuesToService();
+	if( m_servComm->update() ){
+		listInterCommToTable();
+		QMessageBox::information(this, tr("information"), tr("Service modifi\351") );
 	}
 }
+
 
 
 /**
@@ -232,4 +237,5 @@ void DialogServicesEdit::on_pushButton_edit_clicked()
 void DialogServicesEdit::on_pushButton_close_clicked() {
 	this -> close();
 }
+
 
