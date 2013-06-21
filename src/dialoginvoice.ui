@@ -503,7 +503,7 @@
        </property>
        <property name="icon">
         <iconset resource="../ressources.qrc">
-         <normaloff>:/app/ok</normaloff>:/app/ok</iconset>
+         <normaloff>:/app/insert</normaloff>:/app/insert</iconset>
        </property>
       </widget>
      </item>
@@ -531,13 +531,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_cancel">
+      <widget class="QPushButton" name="pushButton_close">
        <property name="text">
-        <string>Annuler</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../ressources.qrc">
-         <normaloff>:/app/quit</normaloff>:/app/quit</iconset>
+        <string>Fermer</string>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -558,7 +554,7 @@
   <tabstop>tableWidget</tabstop>
   <tabstop>toolButton_add</tabstop>
   <tabstop>pushButton_ok</tabstop>
-  <tabstop>pushButton_cancel</tabstop>
+  <tabstop>pushButton_close</tabstop>
  </tabstops>
  <resources>
   <include location="../ressources.qrc"/>

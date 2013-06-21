@@ -27,7 +27,42 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 
 	m_DialogType = type;
 	m_DialogState = state;
+	//Configuration de l'UI
+	setUI();
 
+	//Event
+	connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
+	connect(ui->lineEdit_description, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
+}
+
+DialogInvoice::~DialogInvoice() {
+	delete ui;
+}
+
+/**
+	 Test les conditions pour activer le bouton Ajouter/modifier
+  */
+void DialogInvoice::checkConditions() {
+	if((!ui->lineEdit_description->text().isEmpty())
+		&& (!ui->lineEdit_code->text().isEmpty())
+		)
+		ui->pushButton_ok->setEnabled(true);
+	else
+		ui->pushButton_ok->setEnabled(false);
+}
+
+/**
+	Renseigne le titre
+	@param titre de la fenetre
+  */
+void DialogInvoice::setTitle(QString val){
+	ui->labelTitle->setText(val);
+}
+
+/**
+ * @brief DialogInvoice::setUI
+ */
+void DialogInvoice::setUI() {
 	QStringList plist;
 	if(m_DialogType == PROPOSAL_TYPE){
 		this->setWindowTitle( tr("Proposition commerciale") );
@@ -64,10 +99,6 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 		ui->pushButton_createInv->setVisible(false);
 	}
 	ui->pushButton_ok->setEnabled(false);
-	//Event
-	connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
-	connect(ui->lineEdit_description, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
-
 	/// chargement de la Proposition commerciale apres init de l UI !
 	if(m_DialogState == EDIT){
 		ui->pushButton_ok->setText(tr("Modifier"));
@@ -90,7 +121,6 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 		else								ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
 		ui->pushButton_ok->setText(tr("Ajouter"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/insert"));
-		//Ajout du
 		ui->lineEdit_code->setText(tr("Automatique"));
 		ui->pushButton_createInv->setVisible(false);
 	}
@@ -101,10 +131,11 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui->tabWidget_select->setCurrentIndex(0);
 
 	//Products
-	m_productView = new productView( pdata, m_lang, productView::INVOICE_VIEW );
+	m_productView = new productView( m_data, m_lang, productView::INVOICE_VIEW );
 	//Mis en layout
 	ui->productLayout->addWidget( m_productView );
 
+	checkConditions();
 	//DRAG AND DROP
 	//TODO : DRAG AND DROP
 	//http://www.siteduzero.com/forum-83-540738-p1-qt-qtablewidget-drag-drop.html
@@ -122,32 +153,6 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget->setDragDropOverwriteMode(false);*/
 }
-
-DialogInvoice::~DialogInvoice() {
-	delete ui;
-}
-
-/**
-	 Test les conditions pour activer le bouton Ajouter/modifier
-  */
-void DialogInvoice::checkConditions() {
-	if((!ui->lineEdit_description->text().isEmpty())
-		&& (!ui->lineEdit_code->text().isEmpty())
-		)
-		ui->pushButton_ok->setEnabled(true);
-	else
-		ui->pushButton_ok->setEnabled(false);
-}
-
-/**
-	Renseigne le titre
-	@param titre de la fenetre
-  */
-void DialogInvoice::setTitle(QString val){
-	ui->labelTitle->setText(val);
-}
-
-
 /**
   Renseigne les informations
   */
@@ -679,7 +684,9 @@ void DialogInvoice::setProposal(unsigned char proc){
 		QString typp = tr("PR");
 		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
-		m_proposal->create();
+		if( m_proposal -> create() ) {
+			createSuccess();
+		}
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
 		m_proposal->loadFromID(lastID+1);
 	}
@@ -720,12 +727,22 @@ void DialogInvoice::setInvoice(unsigned char proc){
 		QString typp = tr("FA");
 		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
-		m_invoice->create();
+		if( m_invoice -> create() ) {
+			createSuccess();
+		}
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
 		m_invoice->loadFromID(lastID+1);
 	}
 }
 
+/**
+ * @brief DialogInvoice::createSuccess
+ */
+void DialogInvoice::createSuccess() {
+	QMessageBox::information(this, tr("Information"), tr("Cr\351ation r\351alis\351e"), QMessageBox::Ok);
+	loadValues();
+	ui->pushButton_ok->setEnabled(false);
+}
 
 /**
 	Applique les changements au devis/facture
@@ -781,36 +798,31 @@ void DialogInvoice::apply() {
 /**
   Ajout/Modification de la proposition
 */
-void DialogInvoice::on_pushButton_ok_clicked()
-{
+void DialogInvoice::on_pushButton_ok_clicked() {
 	apply();
-	this->close();
 }
 
 
+
 /**
-	Annulation fermeture de la fenetre
-  */
-void DialogInvoice::on_pushButton_cancel_clicked()
-{
+ * @brief DialogInvoice::on_pushButton_close_clicked
+ */
+void DialogInvoice::on_pushButton_close_clicked() {
 	this->close();
 }
 
 /**
 	Sur ledition de laccompte on recalcule le total
   */
-void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged()
-{
+void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 	emit(calcul_Total());
 }
-
 
 
 /**
 	Sur ledition des cellules on calcule le total
 */
- void DialogInvoice::on_tableWidget_cellChanged(int row, int column)
-{
+ void DialogInvoice::on_tableWidget_cellChanged(int row, int column) {
    if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (column == COL_DISCOUNT)){
 		//SECURITE LORS DES DEPLACEMENTS
 		//Car cela vide la cellule de sont objet "QTableWidgetItem" donc -> SIGFAULT
@@ -981,13 +993,9 @@ void DialogInvoice::on_toolButton_add_clicked() {
 /**
   Ajoute une ligne dedition libre
   */
-void DialogInvoice::on_toolButton_addFreeline_clicked()
-{
+void DialogInvoice::on_toolButton_addFreeline_clicked() {
 	add_to_Table( 0, "", 0.0,0 );
 }
-
-
-
 
 
 /**
@@ -1189,4 +1197,4 @@ void DialogInvoice::on_pushButton_print_clicked() {
 		print.print_Invoice( m_invoice -> getId() );
 	}
 }
-	
+
