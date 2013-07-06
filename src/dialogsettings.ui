@@ -33,7 +33,7 @@
        </property>
        <property name="iconSize">
         <size>
-         <width>24</width>
+         <width>16</width>
          <height>24</height>
         </size>
        </property>
@@ -707,6 +707,20 @@ p, li { white-space: pre-wrap; }
             </spacer>
            </item>
           </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_printing">
+        <attribute name="icon">
+         <iconset resource="../ressources.qrc">
+          <normaloff>:/app/print</normaloff>:/app/print</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Impression</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8"/>
          </item>
         </layout>
        </widget>
