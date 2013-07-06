@@ -325,7 +325,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <property name="iconSize">
           <size>
@@ -358,7 +358,7 @@ p, li { white-space: pre-wrap; }
                   <x>0</x>
                   <y>0</y>
                   <width>256</width>
-                  <height>303</height>
+                  <height>299</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -435,6 +435,10 @@ p, li { white-space: pre-wrap; }
           </layout>
          </widget>
          <widget class="QWidget" name="tab_services">
+          <attribute name="icon">
+           <iconset resource="../ressources.qrc">
+            <normaloff>:/app/services</normaloff>:/app/services</iconset>
+          </attribute>
           <attribute name="title">
            <string>Services</string>
           </attribute>
