@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QLocale>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
+#include <QPainter>
+#include <QFont>
 
 #include "dbase.h"
 
@@ -10,7 +14,7 @@ class Printc : public QObject
 {
 	Q_OBJECT
 	public:
-	explicit Printc(database *pdata, QLocale &lang, QObject *parent = 0);
+	Printc(database *pdata, QLocale &lang, QObject *parent = 0);
 	~Printc();
 	
 	void print_Proposal(const int &);
@@ -24,9 +28,19 @@ class Printc : public QObject
 	invoice *m_inv;
 	proposal *m_pro;
 	service *m_serv;
+	QImage mlogo;
+	QString mtextInfo, mtextidentity, mfooterTextInfo;
 	
-	void print_header(const QPainter &painter);
-	void print_footer(const QPainter &painter);
+	// print
+	qreal mLeft, mTop, mRight, mBottom;
+	QFont mFont;
+	qreal mwUtil;
+	QRectF mpageRect, mRectContent;
+	int mBlockHeight;
+	
+	void load_parameters(QPrinter *printer, QPainter &painter);
+	QRectF print_header(QPainter &painter);
+	QRectF print_footer(QPainter &painter);
 	
 	private slots:
 	// slots dimpression
