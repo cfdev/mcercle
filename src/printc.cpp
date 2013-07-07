@@ -113,53 +113,82 @@ void Printc::print_Proposal(const int &id) {
  * @param painter
  * @return 
  */
-QRectF Printc::print_header(QPainter &painter) {
-	//Logo
+QRectF Printc::print_header(QPainter &painter, int type) {
+	///Logo
 	QRectF rect = QRect(mLeft+5, mTop, mlogo.width(), mlogo.height() );
 	painter.drawImage(rect, mlogo);
 
-	//Info societe
+	///Info societe
 	mFont.setPointSize(10);
 	painter.setFont(mFont);
 	rect.translate( 0, rect.height()+5);
 	rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top(), 0,0, Qt::AlignLeft, mtextInfo );
 	painter.drawText( rect, mtextInfo);
 
-	//Titre
+	///Titre
+	QString title;
+	if(type == T_PROPOSAL) title = tr("Devis");
+	else if(type == T_INVOICE) title = tr("Facture");
+	else if(type == T_SERVICE) title = tr("Service");
 	mFont.setPointSize(24);
 	painter.setFont(mFont);
 	rect = QRect(mLeft, mTop, mpageRect.width() - (mLeft+mRight),
-						painter.fontMetrics().boundingRect( tr("Devis") ).height());
-	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Devis") );
+						painter.fontMetrics().boundingRect( title ).height());
+	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, title );
 
+	///Code en fonction du type
 	mFont.setPointSize(14);
 	painter.setFont(mFont);
-	rect.translate( 0, 32);
-	//Ajustement de la hauteur du au changement de px
-	rect.setHeight( painter.fontMetrics().boundingRect( tr("Code: ") + m_pro -> getCode() ).height() );
-	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Code: ") + m_pro -> getCode());
-
+	rect.translate( 0, rect.height());
+	if(type == T_PROPOSAL) {
+		//Ajustement de la hauteur du au changement de px
+		rect.setHeight( painter.fontMetrics().boundingRect( tr("Code: ") + m_pro -> getCode() ).height() );
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Code: ") + m_pro -> getCode());
+	}
+	else if(type == T_INVOICE) {
+		//Ajustement de la hauteur du au changement de px
+		rect.setHeight( painter.fontMetrics().boundingRect( tr("Code: ") + m_inv -> getCode() ).height() );
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Code: ") + m_inv -> getCode());
+		if(!m_inv -> getProposalCode().isEmpty()){
+			rect.translate( 0, rect.height());
+			rect.setHeight( painter.fontMetrics().boundingRect( tr("Ref: ") + m_inv -> getProposalCode() ).height() );
+			painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Ref: ") + m_inv -> getProposalCode());
+		}
+	}
+	
+	///Date en fonction du type
 	mFont.setPointSize(12);
 	painter.setFont(mFont);
-	rect.translate( 0, 20);
-	//Ajustement de la hauteur du au changement de px
-	rect.setHeight( painter.fontMetrics().boundingRect( tr("Date: ")+m_pro -> getUserDate().toString(tr("dd-MM-yyyy")) ).height() );
-	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
-					  tr("Date: ")+
-					  m_pro -> getUserDate().toString(tr("dd-MM-yyyy")) );
 	rect.translate( 0, rect.height());
-	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
-					  tr("Date fin validit\351: ")+
-					  m_pro -> getValidDate().toString(tr("dd-MM-yyyy")) );
+	if(type == T_PROPOSAL) {
+		//Ajustement de la hauteur du au changement de px
+		rect.setHeight( painter.fontMetrics().boundingRect( tr("Date: ")+m_pro -> getUserDate().toString(tr("dd-MM-yyyy")) ).height() );
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
+						  tr("Date: ")+
+						  m_pro -> getUserDate().toString(tr("dd-MM-yyyy")) );
+		rect.translate( 0, rect.height());
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
+						  tr("Date fin validit\351: ")+
+						  m_pro -> getValidDate().toString(tr("dd-MM-yyyy")) );
+	}
+	else if(type == T_INVOICE) {
+		//Ajustement de la hauteur du au changement de px
+		rect.setHeight( painter.fontMetrics().boundingRect( tr("Date: ")+m_inv -> getUserDate().toString(tr("dd-MM-yyyy")) ).height() );
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
+						  tr("Date: ")+
+						  m_inv -> getUserDate().toString(tr("dd-MM-yyyy")) );
+		rect.translate( 0, rect.height());
+		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
+						  tr("Date Ech\351ance: ")+
+						  m_inv -> getLimitPayment().toString(tr("dd-MM-yyyy")) );
+	}
 
 	/// Identite du client
 	mFont.setPointSize(10);
 	painter.setFont(mFont);
-	//rect.translate( wUtil/2, rect.bottom());
 	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+15, 0, 0, Qt::AlignLeft, tr("Client: ") );
 	painter.drawText(rect, tr("Client: "));
 
-	//rect.translate( 0, rect.height()+5);
 	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+5, 0, 0, Qt::AlignLeft, mtextidentity );
 	painter.drawText(rect, mtextidentity);
 	rect.translate(-5,-5);
@@ -176,12 +205,28 @@ QRectF Printc::print_header(QPainter &painter) {
 	return rect;
 }
 
+
 /**
  * @brief Printc::print_footer
  * @param painter
  */
-QRectF Printc::print_footer(QPainter &painter) {
-	//TODO: make print footer
+QRectF Printc::print_footer(QPainter &painter, QRectF rect, QString page) {
+	//Information pied de page
+	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
+	rect.translate( 0, -rect.height());
+	painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
+
+	//Num de page
+	if(!page.isEmpty()) {
+		QString pageText = "- " + tr("Page ") + page + " -";
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.top(), mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
+		//rect.translate( 0, -rect.height());
+		painter.drawText( rect, Qt::AlignCenter, pageText);
+	}
+
+	//Ligne
+	painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
+	return rect;
 }
 
 /**
@@ -226,8 +271,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		/// Header
-		rect = print_header(painter);
-
+		rect = print_header(painter, T_PROPOSAL);
 		///content header
 		rect.translate( 0, 5);
 		//DESIGNATION 40%
@@ -323,24 +367,11 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 			//Nombre ditem max atteind?
 			if( (itemOnpage - linePerPage) >= 0) break;
 		}
-
-		//Information pied de page
-		rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
-		rect.translate( 0, -rect.height());
-		painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
-
-		//Num de page
-		pageText = "- " + tr("Page ") + QString::number(page) + " -";
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.top(), mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
-		//rect.translate( 0, -rect.height());
-		painter.drawText( rect, Qt::AlignCenter, pageText);
-
-		//Ligne
-		//rect.translate( 0, -rect.height());
-		painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
+		// Imprime le pied de page
+		print_footer(painter, rect, QString::number(page));
+		// Met a jour la progression
 		m_DialogWaiting->setProgressBar(page);
-
-		//New page ?
+		// Nouvelle page ?
 		if( (itemsToPrint - itemPrinted) > 0) printer->newPage();
 	}
 
@@ -509,7 +540,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		/// Header
-		rect = print_header(painter);
+		rect = print_header(painter, T_INVOICE);
 		/// Content
 		rect.translate( 0, 5);
 		//DESIGNATION 40%
@@ -611,22 +642,9 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 			//Nombre ditem max atteind?
 			if( (itemOnpage - linePerPage) >= 0) break;
 		}
-
-		//Information pied de page
-		rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
-		rect.translate( 0, -rect.height());
-		painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
-
-		//Num de page
-		pageText = "- " + tr("Page ") + QString::number(page) /*+ '/' + QString::number(printer->copyCount())*/ + " -";
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.top(), mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
-		//rect.translate( 0, -rect.height());
-		painter.drawText( rect, Qt::AlignCenter, pageText);
-
-		//Ligne
-		//rect.translate( 0, -rect.height());
-		painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
-
+		// Imprime le pied de page
+		print_footer(painter, rect, QString::number(page));
+		// Met a jour la progression
 		m_DialogWaiting->setProgressBar(page);
 		//New page ?
 		if( (itemsToPrint - itemPrinted) > 0) printer->newPage();
@@ -776,7 +794,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	load_parameters(printer, painter);	
 	
 	/// Header
-	QRectF rect = print_header(painter);
+	QRectF rect = print_header(painter, T_SERVICE);
 	/// contenu
 	//contour du contenu
 	int blockHeight;
@@ -829,14 +847,8 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	rect.setWidth(6 + mLeft + mwUtil/2);
 	painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
 
-	//Information pied de page
-	mFont.setPointSize(10);
-	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
-	rect.translate( 0, -rect.height());
-
-	painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
-	painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
-
+	// Imprime le pied de page
+	print_footer(painter, rect, "");
+	// Fin du painter
 	painter.end();
 }

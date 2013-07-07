@@ -22,6 +22,8 @@ class Printc : public QObject
 	void print_Service(const int &);
 	
 	private:
+	enum{T_PROPOSAL, T_INVOICE, T_SERVICE};
+		
 	QLocale m_lang;
 	database *m_data;
 	customer *m_cus;
@@ -39,12 +41,11 @@ class Printc : public QObject
 	int mBlockHeight;
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
-	QRectF print_header(QPainter &painter);
-	QRectF print_footer(QPainter &painter);
+	QRectF print_header(QPainter &painter, int type);
+	QRectF print_footer(QPainter &painter, QRectF rect, QString page);
 	
 	private slots:
 	// slots dimpression
-
 	void on_paintPrinterProposal(QPrinter *printer);
 	void on_paintPrinterInvoice(QPrinter *printer);
 	void on_paintPrinterService(QPrinter *printer);
