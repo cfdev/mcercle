@@ -20,6 +20,7 @@
 #include "printc.h"
 #include "dialogprintchoice.h"
 #include "dialogwaiting.h"
+#include "settings.h"
 
 #include <QFileDialog>
 #include <QDebug>
@@ -74,9 +75,13 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	else mBlockHeight = 500;
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
 	
+	// Charge le fichier de configurations
+	/// TODO :Print Attention certaine font provoque des seugfault A voir comment tester ca!
+	Settings m_settings;
+	painter.setFont( m_settings.getPrintFont() );
+
 	mFont = painter.font();
 	mwUtil = mpageRect.width() - (mLeft+mRight); // Largeur utile. pour la repartition des cases
-	//painter.setPen(QPen(Qt::black, 0.5)) ; //epaisseur du trait
 }
 
 

@@ -55,8 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
 /**
 	Destructeur de la class MainWindow
 */
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
 	//sauvegarde les index des champs de recherche
 	m_Settings->setPositionListSearchProduct( m_productView->getIndexSearchProduct() );
 
@@ -68,8 +67,7 @@ MainWindow::~MainWindow()
 /**
 	Change de language
 */
-void MainWindow::changeEvent(QEvent *e)
-{
+void MainWindow::changeEvent(QEvent *e) {
 	QMainWindow::changeEvent(e);
 	switch (e->type()) {
 	case QEvent::LanguageChange:
@@ -132,24 +130,21 @@ void MainWindow::init(){
 /**
 	Affiche les informations au sujet de Qt
 */
-void MainWindow::on_actionA_propos_de_Qt_triggered()
-{
+void MainWindow::on_actionA_propos_de_Qt_triggered() {
 	QApplication::aboutQt();
 }
 
 /**
 	Quitte l application
 */
-void MainWindow::on_actionQuitter_triggered()
-{
+void MainWindow::on_actionQuitter_triggered() {
 	close();
 }
 
 /**
 	Affiche le tableau de bord
 */
-void MainWindow::on_actionTableau_de_bord_triggered()
-{
+void MainWindow::on_actionTableau_de_bord_triggered() {
 	m_board->show();
 	m_board->listStockAlertToTable();
 	m_board->listInvoiceAlertToTable();
@@ -165,8 +160,7 @@ void MainWindow::on_actionTableau_de_bord_triggered()
 /**
 	Affiche la gestion clients
 */
-void MainWindow::on_actionClients_triggered()
-{
+void MainWindow::on_actionClients_triggered() {
 	m_board->hide();
 	m_customerView->refreshCustomersList();
 	m_customerView->show();
@@ -177,8 +171,7 @@ void MainWindow::on_actionClients_triggered()
 /**
 	Affiche la gestion produits
 */
-void MainWindow::on_actionProduits_triggered()
-{
+void MainWindow::on_actionProduits_triggered() {
 	m_board->hide();
 	m_customerView->hide();
 	m_productView->refreshProductsList();
@@ -189,8 +182,7 @@ void MainWindow::on_actionProduits_triggered()
 /**
 	Affiche la liste des fournisseurs
 */
-void MainWindow::on_actionActionProvider_triggered()
-{
+void MainWindow::on_actionActionProvider_triggered() {
 	//Si on est pas connecte on sort
 	if(!m_database->isConnected())return;
 
@@ -203,8 +195,7 @@ void MainWindow::on_actionActionProvider_triggered()
 /**
 	Affiche les informations de l application
 */
-void MainWindow::on_actionA_propos_triggered()
-{
+void MainWindow::on_actionA_propos_triggered() {
 	//fenetre a propos
 	m_about = new about(m_database, this);
 	m_about->setModal(true);
@@ -214,8 +205,7 @@ void MainWindow::on_actionA_propos_triggered()
 /**
 	Ouvrir la fenetre de configuration
   */
-void MainWindow::on_actionConfiguration_triggered()
-{
+void MainWindow::on_actionConfiguration_triggered() {
    DialogSettings *m_DialogSettings = new DialogSettings(m_Settings, m_database, m_lang, this);
    m_DialogSettings->setModal(true);
    QObject::connect(m_DialogSettings, SIGNAL(askRefreshList()), this, SLOT(RefreshLists()));
@@ -225,8 +215,7 @@ void MainWindow::on_actionConfiguration_triggered()
 /**
 	Rafraichir les listes clients et produits
   */
-void MainWindow::RefreshLists()
-{
+void MainWindow::RefreshLists() {
 	m_customerView->listCustomers(1);
 	m_customerView->listServices();
 	m_customerView->listProposals();
@@ -245,8 +234,7 @@ void MainWindow::RefreshLists()
 /**
 	DEBUG AJOUT DE CLIENTS *****************************************************************************
   */
-void MainWindow::on_actionDebug_Add_triggered()
-{
+void MainWindow::on_actionDebug_Add_triggered() {
 	/* TEST NUMBER OF CUSTOMERS */
 	//Affichage de la fenetre d attente
 	DialogWaiting* m_DialogWaiting = new DialogWaiting();
@@ -270,8 +258,7 @@ void MainWindow::on_actionDebug_Add_triggered()
 	delete m_DialogWaiting;
 }
 
-void MainWindow::on_actionDebug_prod_triggered()
-{
+void MainWindow::on_actionDebug_prod_triggered() {
 	/* TEST NUMBER OF PRODUCTS */
 	//Affichage de la fenetre d attente
 	DialogWaiting* m_DialogWaiting = new DialogWaiting();
@@ -302,8 +289,7 @@ void MainWindow::on_actionDebug_prod_triggered()
 /**
 	Ouvre le dialog pour lister les factures
   */
-void MainWindow::on_actionLivres_des_Recettes_triggered()
-{
+void MainWindow::on_actionLivres_des_Recettes_triggered() {
 	if(m_database->isConnected()){
 		DialogInvoiceList *m_DialogInvList = new DialogInvoiceList(m_lang, m_database, this);
 		m_DialogInvList->setModal(true);
@@ -314,8 +300,7 @@ void MainWindow::on_actionLivres_des_Recettes_triggered()
 /**
   Sauvegarder la base de donnees sous..
 */
-void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered()
-{
+void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
 	// Si on est pas connecte on sort
 	if(!m_database->isConnected())return;
 	// Test de SQLITE

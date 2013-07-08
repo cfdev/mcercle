@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QFont>
 
 
 class Settings : public QObject
@@ -26,6 +27,8 @@ public:
 	void setDatabase_default();
 	void setPositionListSearchProduct(int pos);
 	void setPositionListSearchCustomer(int pos);
+	//Impression	
+	void setPrintFont(const QString& printFont);
 
 	QString getDatabase_bdd();
 	QString getDatabase_hostName();
@@ -35,6 +38,8 @@ public:
 	QString getDatabase_userPassword();
 	int getPositionListSearchProduct();
 	int getPositionListSearchCustomer();
+	//Impression
+	QFont getPrintFont();
 
 	bool settingIsOk();
 	void setSettingState(bool state);

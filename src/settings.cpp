@@ -75,6 +75,17 @@ QString Settings::getDatabase_userPassword(){
 	return val;
 }
 
+/**
+ * @brief Settings::getPrintFont
+ * @return 
+ */
+QFont Settings::getPrintFont(){
+	m_settings->beginGroup("print");
+	QFont val( m_settings->value("font").toString() );
+	m_settings->endGroup();
+	return val;
+}
+
 
 /**
 	Sauvegarde dans le fichier les donnees relatif a la base de donnees
@@ -128,7 +139,9 @@ void Settings::setDatabase_default() {
 
 
 /**
-  */
+ * @brief Settings::settingIsOk
+ * @return 
+ */
 bool Settings::settingIsOk() {
 	m_settings->beginGroup("main");
 	bool val = m_settings->value("settingState").toBool();
@@ -151,9 +164,23 @@ void Settings::setPositionListSearchProduct(int pos) {
 	m_settings->endGroup();
 }
 
+/**
+ * @brief Settings::getPositionListSearchProduct
+ * @return 
+ */
 int Settings::getPositionListSearchProduct(){
 	m_settings->beginGroup("list");
 	int val = m_settings->value("searchProduct").toInt();
 	m_settings->endGroup();
 	return val;
+}
+
+/**
+ * @brief setPrintFont
+ * @param printFont
+ */
+void Settings::setPrintFont(const QString& printFont){
+	m_settings->beginGroup("print");
+	m_settings->setValue("font", printFont);
+	m_settings->endGroup();
 }
