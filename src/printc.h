@@ -33,6 +33,15 @@ class Printc : public QObject
 	QImage mlogo;
 	QString mtextInfo, mtextidentity, mfooterTextInfo;
 	
+	typedef struct{
+		QStringList designation;
+		QList<qreal> tax;
+		QList<int> discount;
+		QList<qreal> price;
+		QList<int> quantity;
+		QList<qreal> totalPrice;
+	}itemList;
+	
 	// print
 	qreal mLeft, mTop, mRight, mBottom;
 	QFont mFont;
@@ -42,6 +51,7 @@ class Printc : public QObject
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
 	QRectF print_header(QPainter &painter, int type);
+	QRectF print_content(QPainter &painter, QRectF rect, itemList Ilist);
 	QRectF print_footer(QPainter &painter, QRectF rect, QString page);
 	
 	private slots:
