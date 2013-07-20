@@ -351,6 +351,9 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
  * @brief MainWindow::on_actionServices_common_triggered
  */
 void MainWindow::on_actionServices_common_triggered() {
+	// Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+	
 	DialogServicesEdit *m_DServComm = new DialogServicesEdit(m_database);
 	m_DServComm->setModal(true);
 	m_DServComm->exec();
