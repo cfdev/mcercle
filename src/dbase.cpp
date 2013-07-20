@@ -145,9 +145,28 @@ char database::connect(){
 	}
 	qDebug() << "version base:" <<QString::number(m_databaseVersion);
 	
-	//Mise a jour de la base de donnees
-	if(m_databaseVersion <= 1) {
-		if(upgradeToV2()){
+	// Mise a jour de la base de donnees
+	if(m_databaseVersion < DBASE_SUPPORTED){
+		int ret = QMessageBox::warning(
+								this->m_parent,
+								tr("Attention"),
+								tr("Cette version de mcercle doit mettre à jour la base de donn\351e pour fonctionner.\n\nVoulez-vous mettre à jour la base de donn\351e"),
+								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
+								);
+	
+		if(ret == QMessageBox::Yes){
+			if(m_databaseVersion <= 1) {
+				if(!upgradeToV2()){
+					this->close();
+					return DB_CON_ERR;
+				}
+			}
+			else if(m_databaseVersion <= 2 ) {
+				if(!upgradeToV3()){
+					this->close();
+					return DB_CON_ERR;
+				}
+			}
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
 			mBox.exec();
 		}
@@ -156,16 +175,7 @@ char database::connect(){
 			return DB_CON_ERR;
 		}
 	}
-	else if(m_databaseVersion <= 2 ) {
-		if(upgradeToV3()){
-			QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
-			mBox.exec();
-		}
-		else{
-			this->close();
-			return DB_CON_ERR;
-		}
-	}
+	
 	return DB_CON_OK;
 }
 
