@@ -50,9 +50,9 @@ class Printc : public QObject
 	int mBlockHeight;
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
-	QRectF print_header(QPainter &painter, int type);
-	QRectF print_content(QPainter &painter, QRectF rect, itemList Ilist);
-	QRectF print_footer(QPainter &painter, QRectF rect, QString page);
+	void print_header(QPainter &painter, QRectF &rect,  int type);
+	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int &linePerPage);
+	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
 	
 	private slots:
 	// slots dimpression
