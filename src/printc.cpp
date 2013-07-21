@@ -72,12 +72,14 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	printer -> getPageMargins(&mLeft, &mTop, &mRight, &mBottom, QPrinter::DevicePixel);
 	mpageRect = printer -> pageRect();
 	
-	if(printer->orientation() == QPrinter::Landscape) mBlockHeight = 200;
-	else mBlockHeight = 500;
+	if(printer->orientation() == QPrinter::Landscape)
+			mBlockHeight = 200;
+	else	
+			mBlockHeight = 500;
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
 	
 	// Charge le fichier de configurations
-	/// TODO :Print Attention certaine font provoque des seugfault A voir comment tester ca!
+	/// TODO :Print Attention certaines FONTs provoquent des seugfault A voir comment tester ca!
 	Settings m_settings;
 	painter.setFont( m_settings.getPrintFont() );
 
@@ -201,27 +203,25 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	rect.setHeight(rect.height()+10);
 	rect.setWidth(6 + mLeft + mwUtil/2);
 	painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
-
-	// Contour du contenu, dessine le rectangle avec 5 de radius
+	// Creation dun espace
 	rect.translate( 0, rect.height()+25);
-	mRectContent = QRect(mLeft, rect.top(), mwUtil, mBlockHeight);
-	painter.drawRoundedRect(mRectContent, 5, 5);
-	
 }
 
 /**
+  Imprime le contenu de la facture/devis
  */
 void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int &linePerPage) {
+	// sauvegarde de la position haute du contenu 
+	int rectTop_content = rect.top();
+	int rectTop_LineTitre;
+	
 	/// Content title
 	rect.translate( 0, 5);
-	
 	//DESIGNATION 40%
 	rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, tr("D\351signation") );
 	painter.drawText( rect, tr("D\351signation"));
 	//TVA 12%
 	if(m_data->getIsTax()){
-		painter.drawLine(QPoint(mLeft+mwUtil*0.40, mRectContent.top()),
-						 QPoint(mLeft+mwUtil*0.40, mRectContent.bottom()) );
 		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.40),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("TVA %") );
 		painter.drawText( rect, tr("TVA %") );
 	}
@@ -233,31 +233,22 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 			break;
 		}
 	if(discount){
-		painter.drawLine(QPoint(mLeft+mwUtil*0.52, mRectContent.top()),
-						 QPoint(mLeft+mwUtil*0.52, mRectContent.bottom()) );
 		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.52),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Remise %"));
 		painter.drawText( rect, tr("Remise %"));
 	}
 	//PRIX UNITAIRE 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*0.64, mRectContent.top()),
-					 QPoint(mLeft+mwUtil*0.64, mRectContent.bottom()) );
 	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.64),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Prix U. ")+ QChar(8364) );
 	painter.drawText( rect, tr("Prix U. ")+ QChar(8364));
 	//QUANTITE 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*0.76, mRectContent.top()),
-					 QPoint(mLeft+mwUtil*0.76, mRectContent.bottom()) );
 	rect = painter.fontMetrics().boundingRect(mLeft+5+mwUtil*0.76,rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Quantit\351")  );
 	painter.drawText( rect, tr("Quantit\351") );
 	//TOTAL 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*0.88, mRectContent.top()),
-					 QPoint(mLeft+mwUtil*0.88, mRectContent.bottom()) );
 	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.88),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("TOTAL ")+ QChar(8364) );
 	painter.drawText( rect, tr("TOTAL ")+ QChar(8364) );
-	painter.drawLine(QPoint(mRectContent.left(), rect.bottom()+5),
-					 QPoint(mRectContent.right(),rect.bottom()+5));
+	// Sauvegarde de la position pour la line de separation
+	rectTop_LineTitre = rect.bottom()+5;
 	
-	// TODO: Avoir pour maximiser le contenu des pages autre que celle du total
-	// TODO: Avoir lorsque un item multilignes est a cheval sur 2 pages
+	// TODO: PRINT maximiser le contenu des pages autre que celle du total
 	/// Content
 	rect.translate( 0, 5);
 	QStringList lines;
@@ -266,37 +257,35 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		// sil ne reste plus d item a afficher on sort
 		if((Ilist.designation.count() - itemPrinted) <= 0)break;
 		
-		rect.translate( 0, rect.height()+5);		
+		rect.translate( 0, rect.height()+5);
 		// Adaptation du rect en fonction du nombre de lignes
 		if (itemPrinted>0){
 			lines = Ilist.designation.at(itemPrinted-1).split("\n");
-			rect.translate( 0, (lines.count()-1)*rect.height());
-		}
+			// Si multiligne on ajout un espace a la fin pour la lisibilite de la facture/devis
+			if(lines.count() > 1)
+				rect.translate( 0, (lines.count())*rect.height());
+			else
+				rect.translate( 0, (lines.count()-1)*rect.height());
+		}		
+		//DESIGNATION 40%
+		rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
+		rect.setWidth(mwUtil*0.50); //fixe la largeur
+		painter.drawText( rect,  Qt::AlignLeft , Ilist.designation.at(itemPrinted));
 		
-		//DESIGNATION 40%
-		rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
-		rect.setWidth(mwUtil*0.50); //fixe la largeur
-		painter.drawText( rect,  Qt::AlignLeft , Ilist.designation.at(itemPrinted));
-
-		//DESIGNATION 40%
-		rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
-		rect.setWidth(mwUtil*0.50); //fixe la largeur
-		painter.drawText( rect,  Qt::AlignLeft , Ilist.designation.at(itemPrinted));
-
 		//TVA 12%
 		if(m_data->getIsTax()){
 			rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.40),rect.top(), mwUtil*0.12,0, Qt::AlignRight, m_lang.toString(Ilist.tax.at(itemPrinted),'f',2) );
 			//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
 			painter.drawText( rect,  Qt::AlignRight , m_lang.toString(Ilist.tax.at(itemPrinted),'f',2) );
 		}
-
+		
 		//REMISE 12%
 		if(discount){
 			rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.52),rect.top(), mwUtil*0.12,0, Qt::AlignRight, QString::number(Ilist.discount.at(itemPrinted)) );
 			//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
 			painter.drawText( rect,  Qt::AlignRight , QString::number(Ilist.discount.at(itemPrinted)) );
 		}
-
+		
 		//PRIX UNITAIRE 12%
 		rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.64),rect.top(), mwUtil*0.12,0, Qt::AlignRight, m_lang.toString(Ilist.price.at(itemPrinted),'f',2) );
 		//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
@@ -315,15 +304,49 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		
 		// Incrementer le nombre le ligne imprimee
 		linePrinted += Ilist.designation.at(itemPrinted).split("\n").count();
-		// Nombre ditem max atteind?
+		// Nombre d item max atteind?
 		qDebug() << "---";
 		qDebug() << "linePerPage: " << linePerPage;
 		qDebug() << "linePrinted: " << linePrinted;
 		
 		// Incrementer le nombre d item imprime
 		itemPrinted++;
-		if( (linePrinted - linePerPage) >= 0) break;
+		
+		// Si le nombre de lignes par page et atteind  -> ON SORT
+		if((linePrinted - linePerPage) >= 0) break; 
+		// sil reste des items a afficher et
+		// Si le nombre de lignes de l item suivant depasse le max de ligne -> ON SORT
+		// Important: cela evite un item multilignes d etre a cheval sur 2 pages !!!
+		if((Ilist.designation.count() - itemPrinted) > 0){
+			if((linePrinted + Ilist.designation.at(itemPrinted).split("\n").count()) > linePerPage) break;
+		}
 	}
+	
+	/// Dessine les contours du contenu.
+	mRectContent = QRect(mLeft, rectTop_content, mwUtil, rect.bottom());
+	painter.drawRoundedRect(mRectContent, 5, 5);
+	// LIGNE de separation des TITRES
+	painter.drawLine(QPoint(mRectContent.left(), rectTop_LineTitre),
+					 QPoint(mRectContent.right(),rectTop_LineTitre));
+	// LIGNE de separation TVA 12%
+	if(m_data -> getIsTax()){
+		painter.drawLine(QPoint(mLeft+mwUtil*0.40, mRectContent.top()),
+						 QPoint(mLeft+mwUtil*0.40, mRectContent.bottom()) );
+	}
+	// LIGNE de separation DISCOUNT
+	if(discount){
+		painter.drawLine(QPoint(mLeft+mwUtil*0.52, mRectContent.top()),
+						 QPoint(mLeft+mwUtil*0.52, mRectContent.bottom()) );
+	}
+	// LIGNE de separation PRIX UNITAIRE 12%
+	painter.drawLine(QPoint(mLeft+mwUtil*0.64, mRectContent.top()),
+					 QPoint(mLeft+mwUtil*0.64, mRectContent.bottom()) );
+	// LIGNE de separation QUANTITE 12%
+	painter.drawLine(QPoint(mLeft+mwUtil*0.76, mRectContent.top()),
+					 QPoint(mLeft+mwUtil*0.76, mRectContent.bottom()) );
+	// LIGNE de separation TOTAL 12%
+	painter.drawLine(QPoint(mLeft+mwUtil*0.88, mRectContent.top()),
+					 QPoint(mLeft+mwUtil*0.88, mRectContent.bottom()) );
 }
 
 
@@ -337,17 +360,18 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
 	rect.translate( 0, -rect.height());
 	painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
 
-	//Num de page
+	// Num de page
 	if(!page.isEmpty()) {
 		QString pageText = tr("Page ") + page + " / " + NbOfpage;
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.top()+5, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
 		//rect.translate( 0, -rect.height());
 		painter.drawText( rect, Qt::AlignCenter, pageText);
 	}
-
-	//Ligne
+	// Ligne
 	painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
 }
+
+
 
 /**
  * @brief Printc::on_paintPrinterProposal
@@ -357,7 +381,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	QPainter painter;
 	painter.begin(printer);	
 	// charge les parametres d impression
-	load_parameters(printer, painter);	
+	load_parameters(printer, painter);
 	
 	// Recuperation des donnees presentent dans la bdd
 	proposal::ProposalListItems plist;
@@ -417,7 +441,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 		// Nouvelle page ?
 		if( (itemsToPrint - itemPrinted) > 0){
 			qDebug() << "-> Nouvelle page";
-			printer->newPage();
+			printer -> newPage();
 		}
 	}
 
@@ -871,7 +895,6 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
    /* QString price = tr("Prix: ") + QString::number(m_cus->m_service->getPrice())+ QChar(8364);
 	if(m_data->getIsTax()){
 		price += tr(" HT");
-		//TODO:complete...
 	}
 	else{
 		price += tr(" TTC");
