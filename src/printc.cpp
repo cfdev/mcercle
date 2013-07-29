@@ -251,22 +251,24 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	// TODO: PRINT maximiser le contenu des pages autre que celle du total
 	/// Content
 	rect.translate( 0, 5);
-	QStringList lines;
+	QStringList lines_prev, lines;
 	qDebug() << "itemPrinted :" << itemPrinted;
+	
+	// Boucle des articles
 	for(int linePrinted=0; linePrinted<linePerPage; ){
 		// sil ne reste plus d item a afficher on sort
-		if((Ilist.designation.count() - itemPrinted) <= 0)break;
-		
+		if((Ilist.designation.count() - itemPrinted) <= 0)break;		
 		rect.translate( 0, rect.height()+5);
 		// Adaptation du rect en fonction du nombre de lignes
-		if (itemPrinted>0){
-			lines = Ilist.designation.at(itemPrinted-1).split("\n");
+		// En fonction de l item precedent dou le test >0
+		if ((itemPrinted>0) && (linePrinted>0)){
+			lines_prev = Ilist.designation.at(itemPrinted-1).split("\n");
 			// Si multiligne on ajout un espace a la fin pour la lisibilite de la facture/devis
-			if(lines.count() > 1)
-				rect.translate( 0, (lines.count())*rect.height());
+			if(lines_prev.count() > 1)
+				rect.translate( 0, lines_prev.count()*rect.height());
 			else
-				rect.translate( 0, (lines.count()-1)*rect.height());
-		}		
+				rect.translate( 0, (lines_prev.count()-1)*rect.height());
+		}
 		//DESIGNATION 40%
 		rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
 		rect.setWidth(mwUtil*0.50); //fixe la largeur
@@ -303,7 +305,13 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		//ListTotalPrice.push_back( printList.totalPrice.at(pIndex) );
 		
 		// Incrementer le nombre le ligne imprimee
-		linePrinted += Ilist.designation.at(itemPrinted).split("\n").count();
+		// Si multiligne on ajoute une ligne espace dans l increment
+		lines = Ilist.designation.at(itemPrinted).split("\n");
+		if(lines.count() > 1)
+			linePrinted += lines.count()+1;
+		else
+			linePrinted += lines.count();
+
 		// Nombre d item max atteind?
 		qDebug() << "---";
 		qDebug() << "linePerPage: " << linePerPage;
@@ -313,17 +321,27 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		itemPrinted++;
 		
 		// Si le nombre de lignes par page et atteind  -> ON SORT
-		if((linePrinted - linePerPage) >= 0) break; 
+		if((linePrinted - linePerPage) >= 0)
+			break; 
 		// sil reste des items a afficher et
 		// Si le nombre de lignes de l item suivant depasse le max de ligne -> ON SORT
 		// Important: cela evite un item multilignes d etre a cheval sur 2 pages !!!
 		if((Ilist.designation.count() - itemPrinted) > 0){
-			if((linePrinted + Ilist.designation.at(itemPrinted).split("\n").count()) > linePerPage) break;
+			if(lines.count() > 1) {
+				if((linePrinted + lines.count()+1) > linePerPage)
+					break;
+			}
+			else{
+				if((linePrinted + lines.count()) > linePerPage)
+					break;
+			}
 		}
 	}
-	
 	/// Dessine les contours du contenu.
-	mRectContent = QRect(mLeft, rectTop_content, mwUtil, rect.bottom());
+	mRectContent = QRect();
+	// Si multiligne on adapte la hauteur du rect
+	if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
+	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rect.bottom());
 	painter.drawRoundedRect(mRectContent, 5, 5);
 	// LIGNE de separation des TITRES
 	painter.drawLine(QPoint(mRectContent.left(), rectTop_LineTitre),
@@ -394,7 +412,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	// Defini le nombre de produit par page
 	int linePerPage;
 	if(printer -> orientation() == QPrinter::Landscape) linePerPage = 8;
-	else linePerPage = 20;
+	else linePerPage = 25;
 	// Defini le nombre a imprimer
 	int itemsToPrint = plist.name.count();
 	int lineToPrint = itemsToPrint;
