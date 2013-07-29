@@ -518,7 +518,6 @@ void DialogInvoice::on_toolButton_rm_clicked()
 		ui->tableWidget->removeRow(m_index_tabInvoice);
 		//Important selection litem 0 pour eviter des erreurs d index
 		ui->tableWidget->selectRow(0);
-		/// TODO:recalcul du total : arf marche po!!!
 		emit(calcul_Total());
 	}
 }

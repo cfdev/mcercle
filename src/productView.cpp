@@ -394,8 +394,7 @@ void productView::on_tableWidget_products_itemSelectionChanged()
 	TODO: DEPLACER LE FILTRAGE DU PORDUIT OBSOLETE DANS LE BAS NIV SQL!!
 	m_ShowObsoleteProduct
   */
-void productView::on_checkBox_viewDiscontinued_clicked(bool checked)
-{
+void productView::on_checkBox_viewDiscontinued_clicked(bool checked) {
 /**/
 	m_ShowObsoleteProduct = checked;
 	listProductsFilter( m_prodPage, ui->lineEdit_searchProduct->text() );
@@ -662,9 +661,7 @@ void productView::on_toolButton_printInfo_clicked(){
 /**
 	Paint pour l apercu de l impression Informations produit
   */
-void productView::on_paintPrinterInfoProduct(QPrinter *printer)
-{
-	///TODO: a voir pour le mode paysage
+void productView::on_paintPrinterInfoProduct(QPrinter *printer) {
 	QPainter painter;
 	painter.begin(printer);
    // int res = printer->resolution();
@@ -845,8 +842,7 @@ int productView::getIndexSearchProduct(){
 /**
 	Selection du champ filtre
   */
-void productView::on_comboBoxFiltre_currentIndexChanged(int index)
-{
+void productView::on_comboBoxFiltre_currentIndexChanged(int index) {
 	// TODO: VOIR POUR FAIRE PLUS PROPRE
 	if(index == 0 )m_prodfield = "TAB_PRODUCTS.CODE ";
 	if(index == 1 )m_prodfield = "TAB_PRODUCTS.NAME ";
