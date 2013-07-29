@@ -426,7 +426,7 @@ bool invoice::getInvoiceItemsList(InvoiceListItems& list, QString order, QString
 		req += filter;
 		req += "%' )";
 	}
-	req += " ORDER BY UPPER("+order+" ) ASC;";
+	req += " ORDER BY CAST("+order+" AS int) ASC;";
 
 	/* Clear les vals */
 	list.id.clear();

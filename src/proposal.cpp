@@ -388,7 +388,7 @@ bool proposal::getProposalItemsList(ProposalListItems& list, QString order, QStr
 		req += filter.replace("\'","''");
 		req += "%')";
 	}
-	req += " ORDER BY UPPER("+order.replace("\'","''")+") ASC;";
+	req += " ORDER BY CAST("+order+" AS int) ASC;";
 
 	/* Clear les vals */
 	list.id.clear();
