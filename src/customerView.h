@@ -58,9 +58,7 @@ private slots:
 	void on_toolButton_delService_clicked();
 	void on_tableWidget_Services_itemSelectionChanged();
 
-
 	void on_lineEdit_Search_returnPressed();
-
 	void on_toolButton_editProposal_clicked();
 	void on_toolButton_addProposal_clicked();
 
@@ -68,7 +66,6 @@ private slots:
 	void on_toolBut_Edit_clicked();
 	void on_tableWidget_itemSelectionChanged();
 	void on_toolBut_search_clicked();
-
 
 	void on_toolButton_addInvoice_clicked();
 	void on_toolButton_editInvoice_clicked();
@@ -78,20 +75,13 @@ private slots:
 	void on_lineEdit_page_returnPressed();
 
 	void on_toolButton_clipboard_clicked();
-
 	void on_toolButton_delInvoice_clicked();
 	void on_toolButton_delProposal_clicked();
-
 	void on_toolButton_Del_clicked();
 
 	void on_toolButton_printServ_clicked();
 	void on_toolButton_printPro_clicked();
 	void on_toolButton_printInv_clicked();
-
-	// slots dimpression
-	void on_paintPrinterService(QPrinter *printer);
-	void on_paintPrinterProposal(QPrinter *printer);
-	void on_paintPrinterInvoice(QPrinter *printer);
 
 	void on_tableWidget_itemDoubleClicked();
 	void on_tableWidget_Services_itemDoubleClicked();

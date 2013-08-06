@@ -343,7 +343,7 @@ bool proposal::getProposalList(ProposalList& list, int id_customer, QString orde
   */
 bool proposal::getProposalListAlert(ProposalListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_PROPOSALS.ID, TAB_PROPOSALS.DATE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.CODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE "
+	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_PROPOSALS.ID, TAB_PROPOSALS.DATE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.CODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE "
 					"FROM TAB_PROPOSALS "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_PROPOSALS.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -354,6 +354,7 @@ bool proposal::getProposalListAlert(ProposalListAlert& list) {
 	query.prepare(req);
 	if(query.exec()){
 		while (query.next()){
+			list.customerId << query.value(query.record().indexOf("C_ID")).toInt();
 			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.customerFirstName << query.value(query.record().indexOf("FIRSTNAME")).toString();
 			list.customerLastName << query.value(query.record().indexOf("LASTNAME")).toString();
@@ -387,7 +388,7 @@ bool proposal::getProposalItemsList(ProposalListItems& list, QString order, QStr
 		req += filter.replace("\'","''");
 		req += "%')";
 	}
-	req += " ORDER BY UPPER("+order.replace("\'","''")+") ASC;";
+	req += " ORDER BY CAST("+order+" AS int) ASC;";
 
 	/* Clear les vals */
 	list.id.clear();

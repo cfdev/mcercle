@@ -31,9 +31,12 @@
 #include <QDir>
 #include <QDebug>
 
-
-database::database(QLocale &lang, QWidget *parent): m_parent(parent)
-{
+/**
+ * @brief database::database
+ * @param lang
+ * @param parent
+ */
+database::database(QLocale &lang, QWidget *parent): m_parent(parent) {
 	m_name = "mcercle.db";
 	m_port = 3306;
 	m_hostName = "localhost";
@@ -53,8 +56,8 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent)
 }
 
 database::~database(){
-	delete m_customer;
-	delete m_product;
+	if(m_customer>0) delete m_customer;
+	if(m_product>0) delete m_product;
 }
 
 
@@ -110,7 +113,6 @@ char database::connect(){
 
 	//DI SQLITE activation des foreign Keys
 	if(db.driverName() == "QSQLITE"){
-
 		QSqlQuery query;
 		query.prepare("PRAGMA foreign_keys = ON;");
 
@@ -143,9 +145,28 @@ char database::connect(){
 	}
 	qDebug() << "version base:" <<QString::number(m_databaseVersion);
 	
-	//Mise a jour de la base de donnees
-	if(m_databaseVersion <= 1) {
-		if(upgradeToV2()){
+	// Mise a jour de la base de donnees
+	if(m_databaseVersion < DBASE_SUPPORTED){
+		int ret = QMessageBox::warning(
+								this->m_parent,
+								tr("Attention"),
+								tr("Cette version de mcercle doit mettre à jour la base de donn\351e pour fonctionner.\n\nVoulez-vous mettre à jour la base de donn\351e"),
+								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
+								);
+	
+		if(ret == QMessageBox::Yes){
+			if(m_databaseVersion <= 1) {
+				if(!upgradeToV2()){
+					this->close();
+					return DB_CON_ERR;
+				}
+			}
+			else if(m_databaseVersion <= 2 ) {
+				if(!upgradeToV3()){
+					this->close();
+					return DB_CON_ERR;
+				}
+			}
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
 			mBox.exec();
 		}
@@ -154,16 +175,7 @@ char database::connect(){
 			return DB_CON_ERR;
 		}
 	}
-	else if(m_databaseVersion <= 2 ) {
-		if(upgradeToV3()){
-			QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
-			mBox.exec();
-		}
-		else{
-			this->close();
-			return DB_CON_ERR;
-		}
-	}
+	
 	return DB_CON_OK;
 }
 
@@ -320,7 +332,7 @@ bool database::createTable_informations(){
 
 	//INSERT
     query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-                  "VALUES('2', '0', '','1');");
+                  "VALUES('3', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;

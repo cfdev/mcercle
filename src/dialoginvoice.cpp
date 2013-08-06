@@ -1,7 +1,9 @@
 #include "dialoginvoice.h"
 #include "ui_dialoginvoice.h"
+#include "printc.h"
 
 #include <QMessageBox>
+#include <QDebug>
 
 
 DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type, unsigned char state, QWidget *parent) :
@@ -13,6 +15,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
 
+	m_data = pdata;
 	m_customer = pdata->m_customer;
 	m_proposal = pdata->m_customer->m_proposal;
 	m_invoice = pdata->m_customer->m_invoice;
@@ -24,7 +27,42 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 
 	m_DialogType = type;
 	m_DialogState = state;
+	//Configuration de l'UI
+	setUI();
 
+	//Event
+	connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
+	connect(ui->lineEdit_description, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
+}
+
+DialogInvoice::~DialogInvoice() {
+	delete ui;
+}
+
+/**
+	 Test les conditions pour activer le bouton Ajouter/modifier
+  */
+void DialogInvoice::checkConditions() {
+	if((!ui->lineEdit_description->text().isEmpty())
+		&& (!ui->lineEdit_code->text().isEmpty())
+		)
+		ui->pushButton_ok->setEnabled(true);
+	else
+		ui->pushButton_ok->setEnabled(false);
+}
+
+/**
+	Renseigne le titre
+	@param titre de la fenetre
+  */
+void DialogInvoice::setTitle(QString val){
+	ui->labelTitle->setText(val);
+}
+
+/**
+ * @brief DialogInvoice::setUI
+ */
+void DialogInvoice::setUI() {
 	QStringList plist;
 	if(m_DialogType == PROPOSAL_TYPE){
 		this->setWindowTitle( tr("Proposition commerciale") );
@@ -61,17 +99,17 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 		ui->pushButton_createInv->setVisible(false);
 	}
 	ui->pushButton_ok->setEnabled(false);
-	//Event
-	connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
-	connect(ui->lineEdit_description, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
-
 	/// chargement de la Proposition commerciale apres init de l UI !
 	if(m_DialogState == EDIT){
 		ui->pushButton_ok->setText(tr("Modifier"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/Edit"));
 		loadValues();
-		if(m_DialogType == PROPOSAL_TYPE)   listProposalDetailsToTable("", "");
-		else                                listInvoiceDetailsToTable("", "");
+		if(m_DialogType == PROPOSAL_TYPE) {
+			listProposalDetailsToTable("", "");
+		}
+		else{
+			listInvoiceDetailsToTable("", "");
+		}
 	}
 	else{
 		//Set l ID du client pour la creation de la proposition
@@ -83,7 +121,6 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 		else								ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
 		ui->pushButton_ok->setText(tr("Ajouter"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/insert"));
-		//Ajout du
 		ui->lineEdit_code->setText(tr("Automatique"));
 		ui->pushButton_createInv->setVisible(false);
 	}
@@ -94,10 +131,11 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui->tabWidget_select->setCurrentIndex(0);
 
 	//Products
-	m_productView = new productView( pdata, m_lang, productView::INVOICE_VIEW );
+	m_productView = new productView( m_data, m_lang, productView::INVOICE_VIEW );
 	//Mis en layout
 	ui->productLayout->addWidget( m_productView );
 
+	checkConditions();
 	//DRAG AND DROP
 	//TODO : DRAG AND DROP
 	//http://www.siteduzero.com/forum-83-540738-p1-qt-qtablewidget-drag-drop.html
@@ -115,34 +153,6 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget->setDragDropOverwriteMode(false);*/
 }
-
-DialogInvoice::~DialogInvoice()
-{
-	delete ui;
-}
-
-/**
-	 Test les conditions pour activer le bouton Ajouter/modifier
-  */
-void DialogInvoice::checkConditions()
-{
-	if((!ui->lineEdit_description->text().isEmpty())
-		&& (!ui->lineEdit_code->text().isEmpty())
-		)
-		ui->pushButton_ok->setEnabled(true);
-	else
-		ui->pushButton_ok->setEnabled(false);
-}
-
-/**
-	Renseigne le titre
-	@param titre de la fenetre
-  */
-void DialogInvoice::setTitle(QString val){
-	ui->labelTitle->setText(val);
-}
-
-
 /**
   Renseigne les informations
   */
@@ -241,7 +251,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		QTableWidgetItem *item_ID           = new QTableWidgetItem();
 		QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
 		QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME         = new QTableWidgetItem();
+		QTableWidgetItem *item_Name         = new QTableWidgetItem();
 		QTableWidgetItem *item_TAX          = new QTableWidgetItem();
 		QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
 		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
@@ -255,18 +265,18 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		item_ORDER->setData(Qt::DisplayRole, ilist.order.at(i));
 		item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		
-		item_NAME->setData(Qt::DisplayRole, ilist.name.at(i));
-		// Ne pas rendre editable si c est un produit!
+		QTextEdit *edit_name = new QTextEdit();
+		edit_name ->setText( ilist.name.at(i) );
+		// Ne pas rendre editable si c est un produit! + Ajout d'image
 		// Car il il y a une liaison pour la gestion du stock
 		if(ilist.idProduct.at(i) > 0){
-			item_NAME->setFlags(item_NAME->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
-			item_NAME->setIcon( QIcon(":/app/products") );
+			item_Name -> setIcon( QIcon(":/app/products") );
+			edit_name -> setReadOnly(true);
 		}
 		item_TAX->setData(Qt::DisplayRole, ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, ilist.discount.at(i));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_QUANTITY->setData(Qt::DisplayRole, ilist.quantity.at(i));
-
 
 		//definir le tableau
 		ui->tableWidget->setRowCount(i+1);
@@ -275,14 +285,19 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		ui->tableWidget->setItem(i, COL_ID, item_ID);
 		ui->tableWidget->setItem(i, COL_ID_PRODUCT, item_ID_PRODUCT);
 		ui->tableWidget->setItem(i, COL_ORDER, item_ORDER);
-		ui->tableWidget->setItem(i, COL_NAME, item_NAME);
+		ui->tableWidget->setItem(i, COL_NAME, item_Name);
+		ui->tableWidget->setCellWidget(i, COL_NAME, edit_name);
 		ui->tableWidget->setItem(i, COL_TAX, item_TAX);
 		ui->tableWidget->setItem(i, COL_DISCOUNT, item_DISCOUNT);
 		ui->tableWidget->setItem(i, COL_PRICE, item_PRICE);
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
+		
+		// Applique la hauteur de la ligne en fonction des new lines
+		ui->tableWidget->setRowHeight(i, (ilist.name.at(i).count("\n")+1) * 30); 
 
 	}
-	//ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->sortItems(COL_ORDER, Qt::AscendingOrder);
 	ui->tableWidget->selectRow(0);
 }
 
@@ -336,7 +351,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 		QTableWidgetItem *item_ID           = new QTableWidgetItem();
 		QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
 		QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME         = new QTableWidgetItem();
+		QTableWidgetItem *item_Name         = new QTableWidgetItem();
 		QTableWidgetItem *item_TAX          = new QTableWidgetItem();
 		QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
 		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
@@ -349,12 +364,13 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 		item_ORDER->setData(Qt::DisplayRole, m_ilist.order.at(i));
 		item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		
-		item_NAME->setData(Qt::DisplayRole, m_ilist.name.at(i));
-		// Ne pas rendre editable si c est un produit!
+		QTextEdit *edit_name = new QTextEdit();
+		edit_name ->setText( m_ilist.name.at(i) );
+		// Ne pas rendre editable si c est un produit! + Ajout d'image
 		// Car il il y a une liaison pour la gestion du stock
 		if(m_ilist.idProduct.at(i) > 0){
-			item_NAME->setFlags(item_NAME->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
-			item_NAME->setIcon( QIcon(":/app/products") );
+			item_Name -> setIcon( QIcon(":/app/products") );
+			edit_name -> setReadOnly(true);
 		}
 		item_TAX->setData(Qt::DisplayRole, m_ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, m_ilist.discount.at(i));
@@ -364,21 +380,23 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 		//definir le tableau
 		ui->tableWidget->setRowCount(i+1);
 
-        QTextEdit *edit_name = new QTextEdit();
-        edit_name->setText(item_NAME->text());
-
 		//remplir les champs
 		ui->tableWidget->setItem(i, COL_ID, item_ID);
 		ui->tableWidget->setItem(i, COL_ID_PRODUCT, item_ID_PRODUCT);
 		ui->tableWidget->setItem(i, COL_ORDER, item_ORDER);
-        ui->tableWidget->setCellWidget(i,COL_NAME,edit_name);
+		ui->tableWidget->setItem(i, COL_NAME, item_Name);
+		ui->tableWidget->setCellWidget(i, COL_NAME, edit_name);
 		ui->tableWidget->setItem(i, COL_TAX, item_TAX);
 		ui->tableWidget->setItem(i, COL_DISCOUNT, item_DISCOUNT);
 		ui->tableWidget->setItem(i, COL_PRICE, item_PRICE);
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
-
+		
+		// Applique la hauteur de la ligne en fonction des new lines
+		ui->tableWidget->setRowHeight(i, (m_ilist.name.at(i).count("\n")+1) * 30); 
 	}
+
 	ui->tableWidget->setSortingEnabled(true);
+	ui->tableWidget->sortItems(COL_ORDER, Qt::AscendingOrder);
 	ui->tableWidget->selectRow(0);
 }
 
@@ -401,15 +419,16 @@ void DialogInvoice::listServiceToTable()
 
 	ui->tableWidget_selectService->setSortingEnabled(false);
 	//Style de la table de l intervention
-	ui->tableWidget_selectService->setColumnCount(3);
+	ui->tableWidget_selectService->setColumnCount(4);
 	ui->tableWidget_selectService->setColumnWidth(1,225);
 	ui->tableWidget_selectService->setColumnWidth(2,100);
+	ui->tableWidget_selectService->setColumnWidth(3,225);
 	ui->tableWidget_selectService->setColumnHidden(0, true); //On cache la colonne des ID
 	ui->tableWidget_selectService->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_selectService->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_selectService->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Nom") << tr("Prix") ;
+	titles << tr("Id") << tr("Nom") << tr("Prix") << tr("D\351tail") ;
 	ui->tableWidget_selectService->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des services commun avec ID = 0
@@ -418,14 +437,16 @@ void DialogInvoice::listServiceToTable()
 	m_service->getServiceList(userServicesList, m_customer->getId(), "NAME", "", "");
 
 	// list des services communs
-	for(unsigned int i=0; i<servicesListCommon.id.size(); i++){
+	for(int i=0; i<servicesListCommon.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE     = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
+		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
+		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
+		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
-		item_PRICE->setData(Qt::DisplayRole, servicesListCommon.price.at(i));
 		item_NAME->setData(Qt::DisplayRole, "#"+servicesListCommon.name.at(i));
+		item_PRICE->setData(Qt::DisplayRole, servicesListCommon.price.at(i));
+		item_Detail->setData(Qt::DisplayRole, servicesListCommon.description.at(i));
 
 		//definir le tableau
 		ui->tableWidget_selectService->setRowCount(i+1);
@@ -434,18 +455,21 @@ void DialogInvoice::listServiceToTable()
 		ui->tableWidget_selectService->setItem(i, 0, item_ID);
 		ui->tableWidget_selectService->setItem(i, 1, item_NAME);
 		ui->tableWidget_selectService->setItem(i, 2, item_PRICE);
+		ui->tableWidget_selectService->setItem(i, 3, item_Detail);
 	}
 
 	// list des services utilisateur
 	for(unsigned int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE     = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
+		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
+		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
+		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(userServicesList.id.at(i)));
-		item_PRICE->setData(Qt::DisplayRole, userServicesList.price.at(i));
 		item_NAME->setData(Qt::DisplayRole, userServicesList.name.at(i));
-
+		item_PRICE->setData(Qt::DisplayRole, userServicesList.price.at(i));
+		item_Detail->setData(Qt::DisplayRole, userServicesList.description.at(i));
+		
 		//definir le tableau
 		ui->tableWidget_selectService->insertRow( j );
 
@@ -453,6 +477,7 @@ void DialogInvoice::listServiceToTable()
 		ui->tableWidget_selectService->setItem(j, 0, item_ID);
 		ui->tableWidget_selectService->setItem(j, 1, item_NAME);
 		ui->tableWidget_selectService->setItem(j, 2, item_PRICE);
+		ui->tableWidget_selectService->setItem(j, 3, item_Detail);
 	}
 
 	ui->tableWidget_selectService->setSortingEnabled(true);
@@ -485,7 +510,7 @@ void DialogInvoice::on_toolButton_rm_clicked()
 	QString mess;
 	int ret = QMessageBox::warning(this, tr("Attention"),
 								   tr("Voulez-vous vraiment supprimer cet article<br><b>")+
-								   ui->tableWidget->item(m_index_tabInvoice, COL_NAME)->text()+
+								   qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME))->toPlainText()+
 								   " </b>  ?",
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
@@ -493,7 +518,6 @@ void DialogInvoice::on_toolButton_rm_clicked()
 		ui->tableWidget->removeRow(m_index_tabInvoice);
 		//Important selection litem 0 pour eviter des erreurs d index
 		ui->tableWidget->selectRow(0);
-		/// TODO:recalcul du total : arf marche po!!!
 		emit(calcul_Total());
 	}
 }
@@ -530,16 +554,19 @@ void DialogInvoice::updateProposalItems(){
 		itemInv.id = id;
 		id = ui->tableWidget->item(j, COL_ID_PRODUCT)->text().toInt();
 		itemInv.idProduct = id;
-		itemInv.name = ui->tableWidget->item(j, COL_NAME)->text();
+
+		QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+		itemInv.name = get_name->toPlainText();
 		itemInv.tax =  ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
 		itemInv.quantity = ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
-		itemInv.order = j;
+		itemInv.order = j;		
+
 		// si article present dans la bdd on modifi
-		if(itemInv.id>-1)   m_proposal->updateProposalItem( itemInv );
+		if(itemInv.id>-1) m_proposal->updateProposalItem( itemInv );
 		//sinon on ajoute le produit
-		else        m_proposal->addProposalItem( itemInv );
+		else  m_proposal->addProposalItem( itemInv );
 	}
 }
 
@@ -594,17 +621,17 @@ void DialogInvoice::updateInvoiceItems(){
 		}
 
 
-        QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
-        itemInv.name = get_name->toPlainText();
+		QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+		itemInv.name = get_name->toPlainText();
 		itemInv.tax = ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
 		itemInv.quantity = ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
 		itemInv.order = j;
 		// si article present dans la bdd on modifie
-		if(itemInv.id>-1)   m_invoice->updateInvoiceItem( itemInv );
+		if(itemInv.id>-1) m_invoice->updateInvoiceItem( itemInv );
 		//sinon on ajoute le produit
-		else        m_invoice->addInvoiceItem( itemInv );
+		else m_invoice->addInvoiceItem( itemInv );
 	}
 }
 /**
@@ -656,7 +683,9 @@ void DialogInvoice::setProposal(unsigned char proc){
 		QString typp = tr("PR");
 		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
-		m_proposal->create();
+		if( m_proposal -> create() ) {
+			createSuccess();
+		}
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
 		m_proposal->loadFromID(lastID+1);
 	}
@@ -697,12 +726,22 @@ void DialogInvoice::setInvoice(unsigned char proc){
 		QString typp = tr("FA");
 		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
-		m_invoice->create();
+		if( m_invoice -> create() ) {
+			createSuccess();
+		}
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
 		m_invoice->loadFromID(lastID+1);
 	}
 }
 
+/**
+ * @brief DialogInvoice::createSuccess
+ */
+void DialogInvoice::createSuccess() {
+	QMessageBox::information(this, tr("Information"), tr("Cr\351ation r\351alis\351e"), QMessageBox::Ok);
+	loadValues();
+	ui->pushButton_ok->setEnabled(false);
+}
 
 /**
 	Applique les changements au devis/facture
@@ -758,36 +797,31 @@ void DialogInvoice::apply() {
 /**
   Ajout/Modification de la proposition
 */
-void DialogInvoice::on_pushButton_ok_clicked()
-{
+void DialogInvoice::on_pushButton_ok_clicked() {
 	apply();
-	this->close();
 }
 
 
+
 /**
-	Annulation fermeture de la fenetre
-  */
-void DialogInvoice::on_pushButton_cancel_clicked()
-{
+ * @brief DialogInvoice::on_pushButton_close_clicked
+ */
+void DialogInvoice::on_pushButton_close_clicked() {
 	this->close();
 }
 
 /**
 	Sur ledition de laccompte on recalcule le total
   */
-void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged()
-{
+void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 	emit(calcul_Total());
 }
-
 
 
 /**
 	Sur ledition des cellules on calcule le total
 */
- void DialogInvoice::on_tableWidget_cellChanged(int row, int column)
-{
+ void DialogInvoice::on_tableWidget_cellChanged(int row, int column) {
    if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (column == COL_DISCOUNT)){
 		//SECURITE LORS DES DEPLACEMENTS
 		//Car cela vide la cellule de sont objet "QTableWidgetItem" donc -> SIGFAULT
@@ -855,7 +889,7 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	if(cRow<=0){
 		//Style de la table de proposition
 		ui->tableWidget->setColumnCount(COL_COUNT);
-		ui->tableWidget->setColumnWidth(COL_NAME,200);
+		ui->tableWidget->setColumnWidth(COL_NAME, 200);
 	#ifdef QT_NO_DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID, true); //cache la colonne ID ou DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID_PRODUCT, true); //cache la colonne ID ou DEBUG
@@ -876,19 +910,18 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	// on increment la quantite si article deja present
 	else{
 		for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
-			if( (name  == ui->tableWidget->item(j, COL_NAME)->text()) &&
-				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ){
-			QTableWidgetItem *item_QUANT  = new QTableWidgetItem();
-			item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
-			ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
-			return;
+			if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
+				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
+				QTableWidgetItem *item_QUANT  = new QTableWidgetItem();
+				item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
+				ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
+				return;
 			}
 		}
 	}
 	QTableWidgetItem *item_ID           = new QTableWidgetItem();
 	QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
 	QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-	QTableWidgetItem *item_NAME         = new QTableWidgetItem();
 	QTableWidgetItem *item_TAX          = new QTableWidgetItem();
 	QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
 	QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
@@ -901,12 +934,13 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	item_ORDER->setData(Qt::DisplayRole, ui->tableWidget->rowCount());
 	item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 
-	item_NAME->setData(Qt::DisplayRole, name);
+	QTextEdit *edit_name = new QTextEdit();
+	edit_name ->setText( name );
+	// Ne pas rendre editable si c est un produit! + Ajout d'image
+	// Car il il y a une liaison pour la gestion du stock
 	if(idProduct > 0){
-		item_NAME->setFlags(item_NAME->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
-		item_NAME->setIcon( QIcon(":/app/products") );
+		edit_name -> setReadOnly(true);
 	}
-
 	item_PRICE->setData(Qt::DisplayRole, price);
 	item_TAX->setData(Qt::DisplayRole, mtax);
 	item_QUANTITY->setData(Qt::DisplayRole, 1);
@@ -919,7 +953,7 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	ui->tableWidget->setItem(cRow, COL_ID, item_ID);
 	ui->tableWidget->setItem(cRow, COL_ID_PRODUCT, item_ID_PRODUCT);
 	ui->tableWidget->setItem(cRow, COL_ORDER, item_ORDER);
-	ui->tableWidget->setItem(cRow, COL_NAME, item_NAME);
+	ui->tableWidget->setCellWidget(cRow, COL_NAME, edit_name);
 	ui->tableWidget->setItem(cRow, COL_TAX, item_TAX);
 	ui->tableWidget->setItem(cRow, COL_DISCOUNT, item_DISCOUNT);
 	ui->tableWidget->setItem(cRow, COL_PRICE, item_PRICE);
@@ -939,7 +973,9 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		int m_index_tabService = ui->tableWidget_selectService->currentRow();
 		//Si index < 0 on sort
 		if(m_index_tabService<0)return;
-		add_to_Table( 0, ui->tableWidget_selectService->item(m_index_tabService, 1)->text(),
+		QString text = ui->tableWidget_selectService->item(m_index_tabService, 1)->text() + "\n";
+		text += ui->tableWidget_selectService->item(m_index_tabService, 3)->text();
+		add_to_Table( 0, text,
 					  0.0, ui->tableWidget_selectService->item(m_index_tabService, 2)->text().toFloat() );
 	}
 	//ou un produit
@@ -956,13 +992,9 @@ void DialogInvoice::on_toolButton_add_clicked() {
 /**
   Ajoute une ligne dedition libre
   */
-void DialogInvoice::on_toolButton_addFreeline_clicked()
-{
+void DialogInvoice::on_toolButton_addFreeline_clicked() {
 	add_to_Table( 0, "", 0.0,0 );
 }
-
-
-
 
 
 /**
@@ -1050,21 +1082,46 @@ void DialogInvoice::on_toolButton_up_clicked(){
 	else{
 		/// Deplacement de ligne
 		/// Pas prevue par l API d origine :-/
-		// Recupere 2 lignes pour permutter
-		QList<QTableWidgetItem*>  rowItemsToUp;
-		QList<QTableWidgetItem*>  rowItemsToDn;
+		// Recupere 2 lignes pour permutter		
+		QList<QTableWidgetItem*>  rowItemsToUp, rowItemsToDn;
+		QList<QTextEdit*> rowEditToUp, rowEditToDn;
+
 		// Attention ne pas recupere la colonne derniere col TOTAL qui est inseree en auto par une autre fonction!!!
 		// d ou le ui->tableWidget->columnCount()-1
 		for (int col = 0; col < ui->tableWidget->columnCount()-1; ++col) {
 			rowItemsToUp << ui->tableWidget->takeItem(index, col);
 			rowItemsToDn << ui->tableWidget->takeItem(index-1, col);
+			
+			if( col == COL_NAME){
+				QTextEdit *EtoUp = new QTextEdit();
+				EtoUp -> setText( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index, col))->toPlainText() );
+				EtoUp -> setReadOnly( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index, col))->isReadOnly() );
+				
+				QTextEdit *EtoDn = new QTextEdit();
+				EtoDn -> setText( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index-1, col))->toPlainText() );
+				EtoDn -> setReadOnly( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index-1, col))->isReadOnly() );
+
+				rowEditToUp << EtoUp;
+				rowEditToDn << EtoDn;
+			}
 		}
+
 		// Change les lignes
-		for (int colu = 0; colu < ui->tableWidget->columnCount()-1; ++colu) {
-			ui->tableWidget->setItem(index-1, colu, rowItemsToUp.at(colu));	
-			ui->tableWidget->setItem(index, colu, rowItemsToDn.at(colu));
+		for (int colu = 0, item=0, widg=0; colu < ui->tableWidget->columnCount()-1; ++colu) {
+			ui->tableWidget->removeCellWidget(index-1, colu);
+			ui->tableWidget->removeCellWidget(index, colu);
+			
+			ui->tableWidget->setItem(index-1, colu, rowItemsToUp.at(item));
+			ui->tableWidget->setItem(index, colu, rowItemsToDn.at(item++));
+			
+			if( colu == COL_NAME){
+				
+				ui->tableWidget->setCellWidget(index-1, colu, rowEditToUp.at(widg));				
+				
+				ui->tableWidget->setCellWidget(index, colu, rowEditToDn.at(widg++));
+			}
 		}
-		// Reselection ligne en question		
+		// Reselection ligne en question
 		ui->tableWidget->selectRow(index-1);
 	}
 }
@@ -1082,21 +1139,61 @@ void DialogInvoice::on_toolButton_dn_clicked()
 		/// Deplacement de ligne
 		/// Pas prevue par l API d origine :-/
 		// Recupere 2 lignes pour permutter
-		QList<QTableWidgetItem*>  rowItemsToUp;
-		QList<QTableWidgetItem*>  rowItemsToDn;
+		QList<QTableWidgetItem*>  rowItemsToUp, rowItemsToDn;
+		QList<QTextEdit*> rowEditToUp, rowEditToDn;
+		
 		// Attention ne pas recupere la colonne derniere col TOTAL qui est inseree en auto par une autre fonction!!!
 		// d ou le ui->tableWidget->columnCount()-1
 		for (int col = 0; col < ui->tableWidget->columnCount()-1; ++col) {
-			rowItemsToUp << ui->tableWidget->takeItem(index+1, col);
-			rowItemsToDn << ui->tableWidget->takeItem(index, col);
+			if( col == COL_NAME){
+				QTextEdit *EtoUp = new QTextEdit();
+				EtoUp -> setText( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index+1, col))->toPlainText() );
+				EtoUp -> setReadOnly( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index+1, col))->isReadOnly() );
+				
+				QTextEdit *EtoDn = new QTextEdit();
+				EtoDn -> setText( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index, col))->toPlainText() );
+				EtoDn -> setReadOnly( qobject_cast<QTextEdit*>( ui->tableWidget->cellWidget(index, col))->isReadOnly() );
+
+				rowEditToUp << EtoUp;
+				rowEditToDn << EtoDn;
+			}
+			else{
+				rowItemsToUp << ui->tableWidget->takeItem(index+1, col);
+				rowItemsToDn << ui->tableWidget->takeItem(index, col);
+			}
 		}
+
 		// Change les lignes
-		for (int colu = 0; colu < ui->tableWidget->columnCount()-1; ++colu) {
-			ui->tableWidget->setItem(index, colu, rowItemsToUp.at(colu));	
-			ui->tableWidget->setItem(index+1, colu, rowItemsToDn.at(colu));
+		for (int colu = 0, item=0, widg=0; colu < ui->tableWidget->columnCount()-1; ++colu) {
+			if( colu == COL_NAME){				
+				ui->tableWidget->removeCellWidget(index, colu);
+				ui->tableWidget->setCellWidget(index, colu, rowEditToUp.at(widg));
+				ui->tableWidget->removeCellWidget(index+1, colu);
+				ui->tableWidget->setCellWidget(index+1, colu, rowEditToDn.at(widg++));
+			}
+			else{
+				ui->tableWidget->setItem(index, colu, rowItemsToUp.at(item));
+				ui->tableWidget->setItem(index+1, colu, rowItemsToDn.at(item++));
+			}
 		}
 		// Reselection ligne en question		
 		ui->tableWidget->selectRow(index+1);
+	}
+}
+
+/**
+ * @brief DialogInvoice::on_pushButton_print_clicked
+ */
+void DialogInvoice::on_pushButton_print_clicked() {
+	// Si c est un devis
+	if(m_DialogType == PROPOSAL_TYPE){
+		Printc print(m_data, m_lang);
+		print.print_Proposal( m_proposal -> getId() );
+	}
+	// ou une facture
+	else{
+		Printc print(m_data, m_lang);
+		print.print_Invoice( m_invoice -> getId() );
 	}
 }
 

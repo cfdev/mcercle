@@ -58,6 +58,8 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
 	}
 	ui->comboBox_dbase->setCurrentIndex(select);
 
+	//Impression
+	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
 	//Active ou desactive selon letat de la connexion
 	setDbaseEditState(!m_data->isConnected());
 
@@ -85,8 +87,7 @@ DialogSettings::~DialogSettings()
 /**
 	Sauvegarde des valeurs
   */
-void DialogSettings::on_buttonBox_accepted()
-{
+void DialogSettings::on_buttonBox_accepted() {
 	//sauvegarde les donnees de la societe dans la bdd
 	database::Informations inf;
 	inf.name = ui->lineEdit_sName->text();
@@ -102,8 +103,8 @@ void DialogSettings::on_buttonBox_accepted()
 	inf.address2 = ui->lineEdit_sAdd2->text();
 	inf.address3 = ui->lineEdit_sAdd3->text();
 	inf.tax = ui->checkBox_TAX->checkState();
-    inf.ca_type = ui->comboBox_CA->currentIndex();
-	m_data->updateInfo(inf);
+	inf.ca_type = ui->comboBox_CA->currentIndex();
+	m_data -> updateInfo(inf);
 
 	//sauvegarde les donnees de la banque dans la bdd
 	database::Bank b;
@@ -122,22 +123,22 @@ void DialogSettings::on_buttonBox_accepted()
 	b.IBAN8 = ui->lineEdit_IBAN8->text();
 	b.IBAN9 = ui->lineEdit_IBAN9->text();
 	b.codeBIC = ui->lineEdit_BIC->text();
-	m_data->updateBank(b);
+	m_data -> updateBank(b);
 
 	//settings
-	m_Settings->setDatabase_bdd( ui->comboBox_dbase->currentText() );
-	m_Settings->setDatabase_hostName( ui->lineEdit_hostName->text() );
-	m_Settings->setDatabase_port( ui->lineEdit_port->text().toInt() );
-	m_Settings->setDatabase_databaseName( ui->lineEdit_databaseName->text() );
-	m_Settings->setDatabase_userName( ui->lineEdit_login->text());
-	m_Settings->setDatabase_userPassword( ui->lineEdit_password->text() );
+	m_Settings -> setDatabase_bdd( ui->comboBox_dbase->currentText() );
+	m_Settings -> setDatabase_hostName( ui->lineEdit_hostName->text() );
+	m_Settings -> setDatabase_port( ui->lineEdit_port->text().toInt() );
+	m_Settings -> setDatabase_databaseName( ui->lineEdit_databaseName->text() );
+	m_Settings -> setDatabase_userName( ui->lineEdit_login->text());
+	m_Settings -> setDatabase_userPassword( ui->lineEdit_password->text() );
+	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText() );
 }
 
 /**
 	Ouverture d'un dialog pour le chargement d'un image
   */
-void DialogSettings::on_pushButton_Logo_clicked()
-{
+void DialogSettings::on_pushButton_Logo_clicked() {
 	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
 	if(fileName.isEmpty())return;

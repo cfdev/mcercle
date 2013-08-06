@@ -12,12 +12,16 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 
 	m_servComm = pdata->m_customer->m_serviceComm;
 	m_tax = pdata->getIsTax();
+	m_taxTable = pdata->m_tax;
 
 	//Affiche ou pas les taxes
 	ui->comboBox_tax->setVisible(m_tax);
 	if(m_tax) ui->label_tax->setText( tr("HT") );
 	else    ui->label_tax->setText( tr("TTC") );
 	ui->label_titletax->setVisible(m_tax);
+
+	// Charge la liste des taxes dans la combo box
+	loadTaxList();
 
 	ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime());
 	listInterCommToTable();
@@ -30,6 +34,22 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 DialogServicesEdit::~DialogServicesEdit()
 {
 	delete ui;
+}
+
+/**
+    Charge la liste des tax
+  */
+void DialogServicesEdit::loadTaxList() {
+	//categories
+	tax::taxList list;
+	//Recuperation des donnees presentent dans la bdd
+	m_taxTable->getTaxList(list, "TAX", "", "");
+	ui->comboBox_tax->clear();
+	QLocale m_lang = QLocale::system().name().section('_', 0, 0);
+
+	for(unsigned int i=0; i<list.value.size(); i++){
+		ui->comboBox_tax->addItem( m_lang.toString(list.value.at(i),'f',2) );
+	}
 }
 
 /**
@@ -93,12 +113,6 @@ void DialogServicesEdit::setValuesToService(){
 	m_servComm->setDescription( desc );
 }
 
-void DialogServicesEdit::on_buttonBox_accepted()
-{
-//
-}
-
-
 /**
 	Affiche les Services generales
 */
@@ -131,7 +145,7 @@ void DialogServicesEdit::listInterCommToTable()
 	m_servComm->getServiceCommList(ilist, "NAME", "", "");
 
 	// list all customers
-	for(unsigned int i=0; i<ilist.id.size(); i++){
+	for(int i=0; i<ilist.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
 		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
 
@@ -199,16 +213,29 @@ void DialogServicesEdit::on_pushButton_del_clicked()
 /**
 	Modification de l intervention generale
   */
-void DialogServicesEdit::on_pushButton_edit_clicked()
-{
+void DialogServicesEdit::on_pushButton_edit_clicked() {
 	int id = m_servComm->isHere( ui->lineEdit_Name->text());
-	if(  (id > 0) && (id != m_servComm->getId()) ){
-		QMessageBox::warning(this, tr("Attention"), tr("Service d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
+	
+	if( m_servComm->getName() != ui->lineEdit_Name->text() ){
+		if(  (id > 0) && (id != m_servComm->getId()) ){
+			QMessageBox::warning(this, tr("Attention"), tr("Service d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
+			return;
+		}
 	}
-	else{
-		setValuesToService();
-		if( m_servComm->update() ) listInterCommToTable();
+	setValuesToService();
+	if( m_servComm->update() ){
+		listInterCommToTable();
+		QMessageBox::information(this, tr("information"), tr("Service modifi\351") );
 	}
+}
+
+
+
+/**
+ * @brief Fermeture de la dialogue
+ */
+void DialogServicesEdit::on_pushButton_close_clicked() {
+	this -> close();
 }
 
 

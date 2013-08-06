@@ -35,17 +35,21 @@ private slots:
 	void on_tableWidget_cellChanged(int row, int column);
 	void on_doubleSpinBox_partPAYMENT_valueChanged();
 	void on_pushButton_ok_clicked();
-	void on_pushButton_cancel_clicked();
 	void on_toolButton_add_clicked();
 
 	void on_pushButton_createInv_clicked();
 	void on_toolButton_addFreeline_clicked();
 	void on_toolButton_up_clicked();	
-	
 	void on_toolButton_dn_clicked();
+	
+	void on_pushButton_print_clicked();	
+
+	
+	void on_pushButton_close_clicked();
 	
 	private:
 	Ui::DialogInvoice *ui;
+	database *m_data;
 	customer *m_customer;
 	product *m_product;
 	invoice *m_invoice;
@@ -63,7 +67,6 @@ private slots:
 	productView *m_productView;
 
 #define COL_COUNT 9
-
 #define COL_ID 0
 #define COL_ID_PRODUCT 1
 #define COL_ORDER 2
@@ -74,7 +77,9 @@ private slots:
 #define COL_QUANTITY 7
 #define COL_TOTAL 8
 
+	void setUI();
 	void apply();
+	void createSuccess();
 	void setProposal(unsigned char proc);
 	void setInvoice(unsigned char proc);
 

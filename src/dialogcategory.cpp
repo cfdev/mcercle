@@ -119,15 +119,14 @@ void DialogCategory::on_pushButton_del_clicked()
 {
 	int ret = QMessageBox::warning(this, tr("Attention"),
 								   tr("Voulez-vous vraiment supprimer la categorie:<br><b>")
-								   + m_product->m_category->getName()
+								   + m_product -> m_category -> getName()
 								   +"</b><br>Ceci supprimera aussi la categorie dans la liste des produits",
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
 		// Avant il faut supprimer toutes les references a ce fournisseur
 		// dans la table produits !!!!
-		//TODO: avoir si ca pose pas de soucis pour les produits...?
-		m_product->m_category->remove();
+		m_product -> m_category -> remove();
 		//list les categories
 		listCategoriesToTable("NAME", "", "");
 		ui->lineEdit_name->setText("");

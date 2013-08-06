@@ -158,15 +158,14 @@ void DialogProviders::on_pushButton_delete_clicked()
 {
 	int ret = QMessageBox::warning(this, tr("Attention"),
 								   tr("Voulez-vous vraiment supprimer le fournisseur:<br><b>")
-								   + m_product->m_provider->getName()
+								   + m_product -> m_provider -> getName()
 								   +"</b><br>Ceci supprimera aussi le fournisseur dans la liste des produits",
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
 		// Avant il faut supprimer toutes les references a ce fournisseur
 		// dans la table produits !!!!
-		//TODO: avoir si ca pose pas de soucis pour les produits...?
-		m_product->m_provider->remove();
+		m_product -> m_provider -> remove();
 		//list les fournisseurs
 		listProvidersToTable("NAME", "", "");
 	}

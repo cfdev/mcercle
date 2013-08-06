@@ -206,12 +206,13 @@ bool invoice::loadFromCode(const QString& code)
 	query.prepare(req);
 	if(query.exec()){
 		query.next();
+		m_id= query.value(query.record().indexOf("ID")).toInt();
 		m_idCustomer = query.value(query.record().indexOf("ID_CUSTOMER")).toInt();
 		m_creationDate = query.value(query.record().indexOf("CREATIONDATE")).toDateTime();
 		m_userDate = query.value(query.record().indexOf("DATE")).toDate();
 		m_limitPayment = query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate();
 		m_paymentDate = query.value(query.record().indexOf("PAYMENTDATE")).toDate();
-		m_id= query.value(query.record().indexOf("ID")).toInt();
+		m_code = query.value(query.record().indexOf("ICODE")).toString();
 		m_proposalCode = query.value(query.record().indexOf("PCODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_partPayment = query.value(query.record().indexOf("PART_PAYMENT")).toFloat();
@@ -378,7 +379,7 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
   */
 bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -389,8 +390,10 @@ bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 	query.prepare(req);
 	if(query.exec()){
 		while (query.next()){
+			list.customerId << query.value(query.record().indexOf("C_ID")).toInt();
 			list.customerFirstName << query.value(query.record().indexOf("FIRSTNAME")).toString();
 			list.customerLastName << query.value(query.record().indexOf("LASTNAME")).toString();
+			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.userDate.push_back( query.value(query.record().indexOf("DATE")).toDate() );
 			list.limitPayment.push_back( query.value(query.record().indexOf("LIMIT_PAYMENTDATE")).toDate() );
 			list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate() );
@@ -423,7 +426,7 @@ bool invoice::getInvoiceItemsList(InvoiceListItems& list, QString order, QString
 		req += filter;
 		req += "%' )";
 	}
-	req += " ORDER BY UPPER("+order+" ) ASC;";
+	req += " ORDER BY CAST("+order+" AS int) ASC;";
 
 	/* Clear les vals */
 	list.id.clear();
@@ -509,7 +512,7 @@ bool invoice::addInvoiceItem(InvoiceItem& item){
 	req += "VALUES(";
 	req += "'" + QString::number(this->m_id) + "',";
 	req += "'" + QString::number(item.idProduct) + "',";
-	req += "'" + item.name.replace("\'","''").mid(0, 128)+ "',";
+	req += "'" + item.name.replace("\'","''") + "',";
 	req += "'" + QString::number(item.quantity)  + "',";
 	req += "'" + QString::number(item.discount)  + "',";
 	req += "'" + f.setNum(item.price,'f',2) + "',";
@@ -553,7 +556,7 @@ bool invoice::updateInvoiceItem(InvoiceItem& item) {
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
 	QString req = "UPDATE TAB_INVOICES_DETAILS SET ";
-	req += "NAME='" + item.name.replace("\'","''").mid(0, 128) + "',";
+	req += "NAME='" + item.name.replace("\'","''") + "',";
 	req += "ID_PRODUCT='" + QString::number(item.idProduct)  + "',";
 	req += "DISCOUNT='" + QString::number(item.discount)  + "',";
 	req += "QUANTITY='" + QString::number(item.quantity)  + "',";

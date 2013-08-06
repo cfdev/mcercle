@@ -21,6 +21,7 @@
 #include "ui_board.h"
 
 #include <QMessageBox>
+#include "dialoginvoice.h"
 
 /**
 	Constructeur de la class board
@@ -144,29 +145,35 @@ void board::listInvoiceAlertToTable()
 
 	ui->tableWidget_InvoiceAlert->setSortingEnabled(false);
 	//Style de la table
-	ui->tableWidget_InvoiceAlert->setColumnCount(5);
-	ui->tableWidget_InvoiceAlert->setColumnWidth(2,175); // description
-	ui->tableWidget_InvoiceAlert->setColumnWidth(3,175); // Customer
+	ui->tableWidget_InvoiceAlert->setColumnCount(6);
+	ui->tableWidget_InvoiceAlert->setColumnWidth(1,40); // id
+	ui->tableWidget_InvoiceAlert->setColumnWidth(3,175); // description
+	ui->tableWidget_InvoiceAlert->setColumnWidth(4,175); // Customer
 	ui->tableWidget_InvoiceAlert->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_InvoiceAlert->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_InvoiceAlert->setEditTriggers(QAbstractItemView::NoEditTriggers);
+#ifdef QT_NO_DEBUG
+	ui->tableWidget_InvoiceAlert->setColumnHidden(1 , true); //cache la colonne ID ou DEBUG
+#endif
 	QStringList titles;
 	titles.clear();
-	titles << tr("Codes") << tr("Date") << tr("Description") << tr("Client") << tr("Status");
+	titles << tr("Codes") << tr("C_Id") << tr("Date") << tr("Description") << tr("Client") << tr("Status");
 	ui->tableWidget_InvoiceAlert->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
 	m_data->m_customer->m_invoice->getInvoiceListAlert(ilist);
-
+	
 	// list all products
 	for(int i=0,j=0; i<ilist.code.count();i++){
 		QTableWidgetItem *item_CODE      = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE     = new QTableWidgetItem();
+		QTableWidgetItem *item_C_Id      = new QTableWidgetItem();
+		QTableWidgetItem *item_DATE      = new QTableWidgetItem();
 		QTableWidgetItem *item_DESCRIPTION     = new QTableWidgetItem();
 		QTableWidgetItem *item_CUSTOMER     = new QTableWidgetItem();
 		QTableWidgetItem *item_STATE     = new QTableWidgetItem();
 
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i) );
+		item_C_Id->setData(Qt::DisplayRole, ilist.customerId.at(i) );
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, ilist.customerFirstName.at(i)+" "+ilist.customerLastName.at(i));
@@ -183,10 +190,11 @@ void board::listInvoiceAlertToTable()
 		ui->tableWidget_InvoiceAlert->setRowCount(j+1);
 		//remplir les champs
 		ui->tableWidget_InvoiceAlert->setItem(j, 0, item_CODE);
-		ui->tableWidget_InvoiceAlert->setItem(j, 1, item_DATE);
-		ui->tableWidget_InvoiceAlert->setItem(j, 2, item_DESCRIPTION);
-		ui->tableWidget_InvoiceAlert->setItem(j, 3, item_CUSTOMER);
-		ui->tableWidget_InvoiceAlert->setItem(j, 4, item_STATE);
+		ui->tableWidget_InvoiceAlert->setItem(j, 1, item_C_Id);
+		ui->tableWidget_InvoiceAlert->setItem(j, 2, item_DATE);
+		ui->tableWidget_InvoiceAlert->setItem(j, 3, item_DESCRIPTION);
+		ui->tableWidget_InvoiceAlert->setItem(j, 4, item_CUSTOMER);
+		ui->tableWidget_InvoiceAlert->setItem(j, 5, item_STATE);
 		j++;
 	}
 	ui->tableWidget_InvoiceAlert->setSortingEnabled(true);
@@ -211,15 +219,19 @@ void board::listProposalAlertToTable()
 
 	ui->tableWidget_ProposalAlert->setSortingEnabled(false);
 	//Style de la table
-	ui->tableWidget_ProposalAlert->setColumnCount(4);
-	ui->tableWidget_ProposalAlert->setColumnWidth(2,175); // description
-	ui->tableWidget_ProposalAlert->setColumnWidth(3,175); // Customer
+	ui->tableWidget_ProposalAlert->setColumnCount(5);
+	ui->tableWidget_ProposalAlert->setColumnWidth(1,40); // id
+	ui->tableWidget_ProposalAlert->setColumnWidth(3,175); // description
+	ui->tableWidget_ProposalAlert->setColumnWidth(4,175); // Customer
 	ui->tableWidget_ProposalAlert->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_ProposalAlert->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_ProposalAlert->setEditTriggers(QAbstractItemView::NoEditTriggers);
+#ifdef QT_NO_DEBUG
+	ui->tableWidget_ProposalAlert->setColumnHidden(1 , true); //cache la colonne ID ou DEBUG
+#endif
 	QStringList titles;
 	titles.clear();
-	titles << tr("Codes") << tr("Date") << tr("Description") << tr("Client");
+	titles << tr("Codes") << tr("C_Id") << tr("Date") << tr("Description") << tr("Client");
 	ui->tableWidget_ProposalAlert->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -227,12 +239,14 @@ void board::listProposalAlertToTable()
 
 	// list all products
 	for(int i=0,j=0; i<list.code.count();i++){
-		QTableWidgetItem *item_CODE      = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE     = new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION     = new QTableWidgetItem();
-		QTableWidgetItem *item_CUSTOMER     = new QTableWidgetItem();
+		QTableWidgetItem *item_CODE		= new QTableWidgetItem();
+		QTableWidgetItem *item_C_Id		= new QTableWidgetItem();
+		QTableWidgetItem *item_DATE		= new QTableWidgetItem();
+		QTableWidgetItem *item_DESCRIPTION	= new QTableWidgetItem();
+		QTableWidgetItem *item_CUSTOMER		= new QTableWidgetItem();
 
 		item_CODE->setData(Qt::DisplayRole, list.code.at(i) );
+		item_C_Id->setData(Qt::DisplayRole, list.customerId.at(i) );
 		item_DATE->setData(Qt::DisplayRole, list.userDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_DESCRIPTION->setData(Qt::DisplayRole, list.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, list.customerFirstName.at(i)+" "+list.customerLastName.at(i));
@@ -240,9 +254,10 @@ void board::listProposalAlertToTable()
 		ui->tableWidget_ProposalAlert->setRowCount(j+1);
 		//remplir les champs
 		ui->tableWidget_ProposalAlert->setItem(j, 0, item_CODE);
-		ui->tableWidget_ProposalAlert->setItem(j, 1, item_DATE);
-		ui->tableWidget_ProposalAlert->setItem(j, 2, item_DESCRIPTION);
-		ui->tableWidget_ProposalAlert->setItem(j, 3, item_CUSTOMER);
+		ui->tableWidget_ProposalAlert->setItem(j, 1, item_C_Id);
+		ui->tableWidget_ProposalAlert->setItem(j, 2, item_DATE);
+		ui->tableWidget_ProposalAlert->setItem(j, 3, item_DESCRIPTION);
+		ui->tableWidget_ProposalAlert->setItem(j, 4, item_CUSTOMER);
 		j++;
 	}
 	ui->tableWidget_InvoiceAlert->setSortingEnabled(true);
@@ -338,4 +353,54 @@ void board::calculYear(){
 void board::on_comboBox_yearsList_currentIndexChanged() {
 	calculYear();
 	listRevenuesToTable();
+}
+
+/**
+ * @brief board::on_tableWidget_InvoiceAlert_itemDoubleClicked
+ * @param item
+ */
+void board::on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item) {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QString codeFA = ui->tableWidget_InvoiceAlert->item(item -> row(), 0) -> text();
+	int CustomerId = ui->tableWidget_InvoiceAlert->item(item -> row(), 1) -> text().toInt();
+	
+	m_data->m_customer->loadFromID(CustomerId);
+	//On charge l objet en fonction de la selection
+	m_data->m_customer->m_invoice -> loadFromCode( codeFA );
+
+	DialogInvoice *m_DialogInvoice = new DialogInvoice(m_lang, m_data, DialogInvoice::INVOICE_TYPE, DialogInvoice::EDIT);
+	m_DialogInvoice -> setModal(true);
+	m_DialogInvoice -> setTitle(tr("Modifier une facture"));
+	m_DialogInvoice -> exec();
+
+	delete m_DialogInvoice;
+	//rafraichir la liste
+	listInvoiceAlertToTable();
+}
+
+/**
+ * @brief board::on_tableWidget_ProposalAlert_itemDoubleClicked
+ * @param item
+ */
+void board::on_tableWidget_ProposalAlert_itemDoubleClicked(QTableWidgetItem *item) {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QString codePR = ui->tableWidget_ProposalAlert->item(item -> row(), 0) -> text();
+	int CustomerId = ui->tableWidget_ProposalAlert->item(item -> row(), 1) -> text().toInt();
+	
+	m_data->m_customer->loadFromID(CustomerId);
+	//On charge l objet en fonction de la selection
+	m_data->m_customer->m_proposal -> loadFromCode( codePR );
+	
+	DialogInvoice *m_DialogInvoice = new DialogInvoice(m_lang, m_data, DialogInvoice::PROPOSAL_TYPE, DialogInvoice::EDIT);
+	m_DialogInvoice->setModal(true);
+	m_DialogInvoice->setTitle(tr("Modifier une proposition commerciale"));
+	m_DialogInvoice->exec();
+
+	delete m_DialogInvoice;
+	//rafraichir la liste
+	listProposalAlertToTable();
 }

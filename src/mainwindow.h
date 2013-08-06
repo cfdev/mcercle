@@ -57,7 +57,9 @@ private slots:
 
 	void on_actionSauvegarder_la_base_de_donn_es_sous_triggered();
 
-public slots:
+	void on_actionServices_common_triggered();
+	
+	public slots:
 	void RefreshLists();
 };
 

@@ -70,10 +70,8 @@ void DialogProvidersEdit::loadValuesFormProvider(){
 	  Chargement des informations dans l objet provider sur l acceptation
 	  de la fenetre
   */
-void DialogProvidersEdit::on_buttonBox_accepted()
-{
+void DialogProvidersEdit::on_buttonBox_accepted() {
 	if(m_type == PROVIDER_ADD){
-		//TODO: Test d'un doublon Avoir pour le faire hors de la fonction accept!!
 		if(m_product->m_provider->isHere( ui->lineEdit_name->text() )){
 			QMessageBox::warning(this, tr("Attention"), tr("Fournisseur d&eacute;ja pr&eacute;sent...<br>Merci de changer de nom") );
 			this->reject();

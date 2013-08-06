@@ -18,23 +18,25 @@ public:
 
 private:
 	service_common* m_servComm;
+	tax* m_taxTable;
 	bool m_tax;
 
 	void setTitle(QString val);
 	void listInterCommToTable();
 	void loadValuesFormService();
 	void loadEmptyValues();
+	void loadTaxList();
 	void setValuesToService();
 
 	Ui::DialogServicesEdit *ui;
 
 private slots:
 	void checkConditions();
-	void on_buttonBox_accepted();
 	void on_tableWidget_Inter_itemSelectionChanged();
 	void on_pushButton_add_clicked();
 	void on_pushButton_edit_clicked();
 	void on_pushButton_del_clicked();
+	void on_pushButton_close_clicked();
 };
 
 #endif // DIALOGSERVICESEDIT_H
