@@ -72,11 +72,27 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	printer -> getPageMargins(&mLeft, &mTop, &mRight, &mBottom, QPrinter::DevicePixel);
 	mpageRect = printer -> pageRect();
 	
-	if(printer->orientation() == QPrinter::Landscape)
+	if(printer -> orientation() == QPrinter::Landscape){
+			mlinePerLastPage = 8;
+			mlinePerPage = mlinePerLastPage +2;
 			mBlockHeight = 200;
-	else	
-			mBlockHeight = 500;
+	}
+	else{
+			mlinePerLastPage = 25;
+			mlinePerPage =  mlinePerLastPage +5;
+			mBlockHeight = 600;
+	}
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
+	
+	database::Bank mb;
+	m_data -> getBank(mb);
+	mBankTextID = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
+	mBankTextID += tr("Compte: ")+mb.numCompte+"  "+tr("Cl\351 RIB: ")+mb.keyRIB+'\n';
+	mBankTextID += tr("Domiciliation: ");
+	mBankTextID += mb.address+"\n\n";
+	mBankTextID += tr("IBAN: ");
+	mBankTextID += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
+	mBankTextID += tr("BIC: ") + mb.codeBIC+'\n';
 	
 	// Charge le fichier de configurations
 	/// TODO :Print Attention certaines FONTs provoquent des seugfault A voir comment tester ca!
@@ -210,7 +226,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 /**
   Imprime le contenu de la facture/devis
  */
-void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int &linePerPage) {
+void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int page, int NbOfpage) {
 	// sauvegarde de la position haute du contenu 
 	int rectTop_content = rect.top();
 	int rectTop_LineTitre;
@@ -248,16 +264,22 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	// Sauvegarde de la position pour la line de separation
 	rectTop_LineTitre = rect.bottom()+5;
 	
-	// TODO: PRINT maximiser le contenu des pages autre que celle du total
 	/// Content
 	rect.translate( 0, 5);
 	QStringList lines_prev, lines;
 	qDebug() << "itemPrinted :" << itemPrinted;
 	
+	//Defini le nombre de line par page
+	int maxLine=0;
+	if(page >= NbOfpage)
+		maxLine = mlinePerLastPage;
+	else
+		maxLine = mlinePerPage;
+
 	// Boucle des articles
-	for(int linePrinted=0; linePrinted<linePerPage; ){
+	for(int linePrinted=0; linePrinted<maxLine; ){
 		// sil ne reste plus d item a afficher on sort
-		if((Ilist.designation.count() - itemPrinted) <= 0)break;		
+		if((Ilist.designation.count() - itemPrinted) <= 0)break;
 		rect.translate( 0, rect.height()+5);
 		// Adaptation du rect en fonction du nombre de lignes
 		// En fonction de l item precedent dou le test >0
@@ -304,35 +326,30 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(Ilist.totalPrice.at(itemPrinted), 'f', 2) );
 		//ListTotalPrice.push_back( printList.totalPrice.at(pIndex) );
 		
-		// Incrementer le nombre le ligne imprimee
+		// Incrementer le nombre de ligne imprimee
 		// Si multiligne on ajoute une ligne espace dans l increment
 		lines = Ilist.designation.at(itemPrinted).split("\n");
 		if(lines.count() > 1)
 			linePrinted += lines.count()+1;
 		else
 			linePrinted += lines.count();
-
-		// Nombre d item max atteind?
-		qDebug() << "---";
-		qDebug() << "linePerPage: " << linePerPage;
-		qDebug() << "linePrinted: " << linePrinted;
 		
 		// Incrementer le nombre d item imprime
 		itemPrinted++;
 		
 		// Si le nombre de lignes par page et atteind  -> ON SORT
-		if((linePrinted - linePerPage) >= 0)
+		if((linePrinted - maxLine) >= 0)
 			break; 
 		// sil reste des items a afficher et
 		// Si le nombre de lignes de l item suivant depasse le max de ligne -> ON SORT
 		// Important: cela evite un item multilignes d etre a cheval sur 2 pages !!!
 		if((Ilist.designation.count() - itemPrinted) > 0){
 			if(lines.count() > 1) {
-				if((linePrinted + lines.count()+1) > linePerPage)
+				if((linePrinted + lines.count()+1) > maxLine)
 					break;
 			}
 			else{
-				if((linePrinted + lines.count()) > linePerPage)
+				if((linePrinted + lines.count()) > maxLine)
 					break;
 			}
 		}
@@ -340,9 +357,14 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	/// Dessine les contours du contenu.
 	mRectContent = QRect();
 	// Si multiligne on adapte la hauteur du rect
-	if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
-	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rect.bottom());
+	//if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
+	// Si derniere page on adapte la taille
+	if(page >= NbOfpage)
+		mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rectTop_content + mBlockHeight);
+	else
+		mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rectTop_content + mBlockHeight + 150);
 	painter.drawRoundedRect(mRectContent, 5, 5);
+	
 	// LIGNE de separation des TITRES
 	painter.drawLine(QPoint(mRectContent.left(), rectTop_LineTitre),
 					 QPoint(mRectContent.right(),rectTop_LineTitre));
@@ -397,7 +419,7 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
  */
 void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	QPainter painter;
-	painter.begin(printer);	
+	painter.begin(printer);
 	// charge les parametres d impression
 	load_parameters(printer, painter);
 	
@@ -409,10 +431,6 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	m_DialogWaiting -> setTitle(tr("<b>GESTION D IMPRESSION</b>"));
 	m_DialogWaiting -> setDetail(tr("<i>Preparation En cours...</i>"));
 
-	// Defini le nombre de produit par page
-	int linePerPage;
-	if(printer -> orientation() == QPrinter::Landscape) linePerPage = 8;
-	else linePerPage = 25;
 	// Defini le nombre a imprimer
 	int itemsToPrint = plist.name.count();
 	int lineToPrint = itemsToPrint;
@@ -420,10 +438,14 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	for(int i=0; i<plist.name.count(); i++){
 		lineToPrint += plist.name.at(i).count("\n");
 	}
-	int numberOfPage = ceil((qreal)lineToPrint/linePerPage);
+	int numberOfPage = ceil((qreal)lineToPrint/mlinePerLastPage);
+	if(numberOfPage > 1) {
+		int nbLines = ((numberOfPage-1)*mlinePerPage)+mlinePerLastPage;
+		if((lineToPrint - nbLines) >0) numberOfPage++;
+	}
 	
 	qDebug() << "lineToPrint: " << lineToPrint;
-	qDebug() << "numberOfPage: " << ceil((qreal)lineToPrint/linePerPage);
+	qDebug() << "numberOfPage: " << numberOfPage;
 	
 	m_DialogWaiting -> setProgressBarRange(0, numberOfPage);
 	m_DialogWaiting -> setModal(true);
@@ -451,11 +473,11 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 		/// Imprime l entete
 		print_header(painter, rect, T_PROPOSAL);
 		/// Imprime le contenu
-		print_content(painter, rect, printList, itemPrinted, linePerPage);
+		print_content(painter, rect, printList, itemPrinted, page, numberOfPage);
 		/// Imprime le pied de page
 		print_footer(painter, rect, QString::number(page), QString::number(numberOfPage));
 		// Met a jour la progression
-		m_DialogWaiting->setProgressBar(page);
+		m_DialogWaiting -> setProgressBar(page);
 		// Nouvelle page ?
 		if( (itemsToPrint - itemPrinted) > 0){
 			qDebug() << "-> Nouvelle page";
@@ -471,9 +493,11 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	//dessine le fond
 	painter.setBrush( Qt::lightGray );
 	painter.setPen(Qt::NoPen);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15, rect.height() +10), 5, 5 );
+	QRect rectTotal = QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15, rect.height() +10);
+	painter.drawRoundedRect(rectTotal, 5, 5 );
 	painter.setPen(Qt::black);
 	painter.drawText( rect, tr("TOTAL : "));
+
 
 	//mFont = painter.font();
 	mFont.setBold(true);
@@ -531,8 +555,6 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 	/// RIB
 	if(typeP == TRANSFER){
-		database::Bank mb;
-		m_data->getBank(mb);
 		text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
 		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top(), mwUtil*0.36 +15, rect.height() +10, Qt::AlignCenter, text );
 		painter.drawText(rect, text);
@@ -542,16 +564,9 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 		mFont.setPointSize(8);
 		painter.setFont(mFont);
-		text = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
-		text += tr("Compte: ")+mb.numCompte+"  "+tr("Cl\351 RIB: ")+mb.keyRIB+'\n';
-		text += tr("Domiciliation: ");
-		text += mb.address+"\n\n";
-		text += tr("IBAN: ");
-		text += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
-		text += tr("BIC: ") + mb.codeBIC+'\n';
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+15, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, text );
+		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+15, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, mBankTextID );
 		rect.setWidth(mwUtil*0.36); //fixe la largeur
-		painter.drawText(rect, text);
+		painter.drawText(rect, mBankTextID);
 	}
 
 	delete m_DialogWaiting;
@@ -606,15 +621,11 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	m_DialogWaiting->setTitle(tr("<b>GESTION D IMPRESSION</b>"));
 	m_DialogWaiting->setDetail(tr("<i>Preparation En cours...</i>"));
 
-	//Defini le nombre de produit par page
-	int linePerPage;
-	if(printer->orientation() == QPrinter::Landscape) linePerPage = 8;
-	else linePerPage = 20;
 	//Defini le nombre a imprimer
 	int itemsToPrint = ilist.name.count();
-	if(itemsToPrint < linePerPage )linePerPage = itemsToPrint;
-	if(linePerPage== 0)linePerPage++;
-	int numberOfPage = itemsToPrint/linePerPage;
+	if(itemsToPrint < mlinePerPage )mlinePerPage = itemsToPrint;
+	if(mlinePerPage== 0)mlinePerPage++;
+	int numberOfPage = itemsToPrint/mlinePerPage;
 	
 	m_DialogWaiting->setProgressBarRange(0, numberOfPage);
 	m_DialogWaiting->setModal(true);
@@ -673,7 +684,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 						 QPoint(mRectContent.right(),rect.bottom()+5));
 
 		rect.translate( 0, 5);
-		for(int itemOnpage=0; itemOnpage<linePerPage;){
+		for(int itemOnpage=0; itemOnpage<mlinePerPage;){
 			//sil ne reste plus a afficher on sort
 			if((ilist.name.count() - pIndex) <= 0)break;
             rect.translate( 0, rect.height()+5);
@@ -729,7 +740,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 
 			pIndex++;
 			//Nombre ditem max atteind?
-			if( (itemOnpage - linePerPage) >= 0) break;
+			if( (itemOnpage - mlinePerPage) >= 0) break;
 		}
 		// Imprime le pied de page
 		print_footer(painter, rect, QString::number(page), QString::number(numberOfPage));
