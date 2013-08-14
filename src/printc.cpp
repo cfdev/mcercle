@@ -34,7 +34,7 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	m_cus  = pdata -> m_customer;
 	m_inv  = pdata -> m_customer -> m_invoice;
 	m_pro  = pdata -> m_customer -> m_proposal;
-	m_serv = pdata -> m_customer -> m_service;	
+	m_serv = pdata -> m_customer -> m_service;
 	mlogo  = m_data -> getLogoTable_informations();
 	
 	///Info societe
@@ -411,7 +411,154 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
 	painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
 }
 
+/**
+ * @brief Printc::print_total
+ * @param painter
+ * @param rect
+ * @param totalPrice
+ */
+void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal &totalPrice ,int type) {
+	/*//TOTAL
+	totalPrice=0;
+	for(int i=0; i<ListTotalPrice.size(); i++)
+		totalPrice += ListTotalPrice.at(i);
+	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
+	painter.drawText( rect, tr("TOTAL : "));
+	mFont.setBold(true);
+	painter.setFont(mFont);
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
+	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
+	mFont.setBold(false);
+	painter.setFont(mFont);
 
+
+
+	//TOTAL TAX
+	QString text;
+	if(m_data->getIsTax()){
+	}
+	else{
+		text = tr("TVA non applicable - Article 293 B du CGI");
+		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
+		painter.drawText( rect, text );
+	}*/
+	
+	//TOTAL
+	totalPrice=0;
+	for(int i=0; i<Ilist.totalPrice.size(); i++)
+		totalPrice += Ilist.totalPrice.at(i);
+	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
+	//dessine le fond
+	painter.setBrush( Qt::lightGray );
+	painter.setPen(Qt::NoPen);
+	QRect rectTotal = QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15, rect.height() +10);
+	painter.drawRoundedRect(rectTotal, 5, 5 );
+	painter.setPen(Qt::black);
+	painter.drawText( rect, tr("TOTAL : "));
+
+	mFont.setBold(true);
+	painter.setFont( mFont );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
+	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
+
+	mFont.setBold(false);
+	painter.setFont( mFont );
+	painter.setBrush( Qt::NoBrush );
+
+	if(type == T_INVOICE){
+		//ACOMPTE
+		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+5, mwUtil*0.36,0, Qt::AlignLeft, tr("ACOMPTE : ") );
+		painter.drawText( rect, tr("ACOMPTE : "));
+		mFont.setBold(true);
+		painter.setFont(mFont);
+		rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+		rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+		mFont.setBold(false);
+		painter.setFont(mFont);
+	
+		//RESTE
+		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*0.36,0, Qt::AlignLeft, tr("RESTE A PAYER : ") );
+		//dessine le fond
+		painter.setBrush( Qt::lightGray );
+		painter.setPen(Qt::NoPen);
+		painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15,rect.height() +10), 5, 5 );
+		painter.setPen(Qt::black);
+		painter.drawText( rect, tr("RESTE A PAYER : "));
+		mFont.setBold(true);
+		painter.setFont(mFont);
+		rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice-m_inv->getPartPayment(), 'f', 2) );
+		rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice-m_inv->getPartPayment(), 'f', 2) );
+		mFont.setBold(false);
+		painter.setFont(mFont);
+		painter.setBrush( Qt::NoBrush );
+	}
+	
+	//TOTAL TAX
+	QString text;
+	if(m_data -> getIsTax()) {
+	}
+	else{
+		text = tr("TVA non applicable - Article 293 B du CGI");
+		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
+		painter.drawText( rect, text );
+	}
+}
+	
+/**
+ * @brief Printc::print_reglement
+ * @param painter
+ * @param rect
+ */
+void Printc::print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice) {
+	//Mode de reglement
+	QString typePayment;
+	QString typeP = m_pro -> getTypePayment();
+	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
+	if(typeP == CASH)           typePayment = tr("Espece");
+	if(typeP == CHECK)          typePayment = tr("Cheque");
+	if(typeP == CREDIT_CARD)    typePayment = tr("Carte Bancaire");
+	if(typeP == INTERBANK)      typePayment = tr("TIP");
+	if(typeP == TRANSFER)       typePayment = tr("Virement");
+	if(typeP == DEBIT)          typePayment = tr("Prelevement");
+	if(typeP == OTHER)          typePayment = tr("Autre");
+	QString text = tr("Mode de r\350glement : ")+typePayment;
+	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
+	painter.drawText( rect, text );
+
+	if((typeP == INTERBANK)||(typeP == DEBIT)){
+		text = tr("Merci de nous fournir un RIB pour ce mode de r\350glement.");
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
+		painter.drawText( rect, text );
+	}
+
+	//Condition de reglement
+	text = tr("Conditions de r\350glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
+	text += m_lang.toString(totalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
+	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
+	painter.drawText( rect, text);
+	
+	/// RIB
+	if(typeP == TRANSFER){
+		text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
+		rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+10, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
+		painter.drawText(rect, text);
+		
+		mFont.setPointSize(8);
+		painter.setFont(mFont);
+		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+20, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, mBankTextID );
+		rect.setWidth(mwUtil*0.36); //fixe la largeur
+		painter.drawText(rect, mBankTextID);
+		
+		painter.setPen( Qt::DashLine );
+		rect = QRect(mLeft,rect.top()-5, mwUtil*0.36 +15, rect.height());
+		painter.drawRoundedRect( rect, 5, 5 );
+		painter.setPen( Qt::SolidLine );
+	}
+}
 
 /**
  * @brief Printc::on_paintPrinterProposal
@@ -484,91 +631,17 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 			printer -> newPage();
 		}
 	}
-
-	//TOTAL
-	totalPrice=0;
-	for(int i=0; i<printList.totalPrice.size(); i++)
-		totalPrice += printList.totalPrice.at(i);
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
-	//dessine le fond
-	painter.setBrush( Qt::lightGray );
-	painter.setPen(Qt::NoPen);
-	QRect rectTotal = QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15, rect.height() +10);
-	painter.drawRoundedRect(rectTotal, 5, 5 );
-	painter.setPen(Qt::black);
-	painter.drawText( rect, tr("TOTAL : "));
-
-
-	//mFont = painter.font();
-	mFont.setBold(true);
-	painter.setFont( mFont );
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
-	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
-
-	mFont.setBold(false);
-	painter.setFont( mFont );
-	painter.setBrush( Qt::NoBrush );
-
-	//TOTAL TAX
-	QString text;
-	if(m_data->getIsTax()){
-	}
-	else{
-		text = tr("TVA non applicable - Article 293 B du CGI");
-		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
-		painter.drawText( rect, text );
-	}
-
-	//Mode de reglement
-	QString typePayment;
-	QString typeP = m_pro -> getTypePayment();
-	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
-	if(typeP == CASH)           typePayment = tr("Espece");
-	if(typeP == CHECK)          typePayment = tr("Cheque");
-	if(typeP == CREDIT_CARD)    typePayment = tr("Carte Bancaire");
-	if(typeP == INTERBANK)      typePayment = tr("TIP");
-	if(typeP == TRANSFER)       typePayment = tr("Virement");
-	if(typeP == DEBIT)          typePayment = tr("Prelevement");
-	if(typeP == OTHER)          typePayment = tr("Autre");
-	text = tr("Mode de r\350glement : ")+typePayment;
-	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
-	painter.drawText( rect, text );
-
-	if((typeP == INTERBANK)||(typeP == DEBIT)){
-		text = tr("Merci de nous fournir un RIB pour ce mode de r\350glement.");
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
-		painter.drawText( rect, text );
-	}
-
-	//Condition de reglement
-	text = tr("Conditions de r\350glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
-	text += m_lang.toString(totalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
-	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
-	painter.drawText( rect, text);
+	// Imprime le total
+	print_total(painter, rect, printList, totalPrice, T_PROPOSAL);
+	// Imprime le mode de reglement
+	print_reglement(painter, rect, totalPrice);
 
 	/// Signature Client
-	text = "Signature client:\n\n\n\n\n\n";
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, rect.bottom()+15, 0, 0, Qt::AlignLeft, text );
+	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n\n";
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, rect.top(), 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15, rect.height() +10), 5, 5 );
-
-	/// RIB
-	if(typeP == TRANSFER){
-		text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top(), mwUtil*0.36 +15, rect.height() +10, Qt::AlignCenter, text );
-		painter.drawText(rect, text);
-		painter.setPen( Qt::DashLine );
-		painter.drawRoundedRect( QRect(mLeft,rect.top()-5, mwUtil*0.36 +15, rect.height()), 5, 5 );
-		painter.setPen( Qt::SolidLine );
-
-		mFont.setPointSize(8);
-		painter.setFont(mFont);
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+15, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, mBankTextID );
-		rect.setWidth(mwUtil*0.36); //fixe la largeur
-		painter.drawText(rect, mBankTextID);
-	}
-
+	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36 +15, rect.height()), 5, 5 );
+	
 	delete m_DialogWaiting;
 	painter.end();
 }
@@ -611,243 +684,73 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	QPainter painter;
 	painter.begin(printer);
 	// charge les parametres d impression
-	load_parameters(printer, painter);	
+	load_parameters(printer, painter);
 
-	invoice::InvoiceListItems ilist;
+	invoice::InvoiceListItems plist;
 	//Recuperation des donnees presentent dans la bdd
-	m_inv->getInvoiceItemsList(ilist, "ITEM_ORDER", "", "");
+	m_inv -> getInvoiceItemsList(plist, "ITEM_ORDER", "", "");
 	//Affichage de la fenetre d attente
 	DialogWaiting* m_DialogWaiting = new DialogWaiting();
 	m_DialogWaiting->setTitle(tr("<b>GESTION D IMPRESSION</b>"));
 	m_DialogWaiting->setDetail(tr("<i>Preparation En cours...</i>"));
 
-	//Defini le nombre a imprimer
-	int itemsToPrint = ilist.name.count();
-	if(itemsToPrint < mlinePerPage )mlinePerPage = itemsToPrint;
-	if(mlinePerPage== 0)mlinePerPage++;
-	int numberOfPage = itemsToPrint/mlinePerPage;
+	// Defini le nombre a imprimer
+	int itemsToPrint = plist.name.count();
+	int lineToPrint = itemsToPrint;
+	//recupere le nombre de lignes.
+	for(int i=0; i<plist.name.count(); i++){
+		lineToPrint += plist.name.at(i).count("\n");
+	}
+	int numberOfPage = ceil((qreal)lineToPrint/mlinePerLastPage);
+	if(numberOfPage > 1) {
+		int nbLines = ((numberOfPage-1)*mlinePerPage)+mlinePerLastPage;
+		if((lineToPrint - nbLines) >0) numberOfPage++;
+	}
 	
-	m_DialogWaiting->setProgressBarRange(0, numberOfPage);
-	m_DialogWaiting->setModal(true);
-	m_DialogWaiting->show();
+	qDebug() << "lineToPrint: " << lineToPrint;
+	qDebug() << "numberOfPage: " << numberOfPage;
+	
+	m_DialogWaiting -> setProgressBarRange(0, numberOfPage);
+	m_DialogWaiting -> setModal(true);
+	m_DialogWaiting -> show();
 
+	// Variables
 	QRectF rect;
 	qreal totalPrice=0;
-	QList<float> ListTotalPrice;
-	QString pageText;
-
+	// Charge les items
+	itemList printList;
+	for(int i=0; i<plist.name.count();i++){
+		printList.designation.push_back( plist.name.at(i) );
+		printList.tax.push_back( plist.tax.at(i) );
+		printList.discount.push_back( plist.discount.at(i) );
+		printList.price.push_back( plist.price.at(i) );
+		printList.quantity.push_back( plist.quantity.at(i) );
+		//total des items
+		totalPrice = plist.price.at(i)*plist.quantity.at(i);
+		if(plist.discount.at(i)>0) totalPrice -= totalPrice*(plist.discount.at(i)/100.0);
+		printList.totalPrice.push_back( totalPrice );
+	}
+	
 	// list all products
-	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
-		/// Header
-		print_header(painter,rect, T_INVOICE);
-		/// Content
-		rect.translate( 0, 5);
-		//DESIGNATION 40%
-		rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, tr("D\351signation") );
-		painter.drawText( rect, tr("D\351signation"));
-		//TVA 12%
-		if(m_data->getIsTax()){
-			painter.drawLine(QPoint(mLeft+mwUtil*0.40, mRectContent.top()),
-							 QPoint(mLeft+mwUtil*0.40, mRectContent.bottom()) );
-			rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.40),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("TVA %") );
-			painter.drawText( rect, tr("TVA %") );
-		}
-		//REMISE 12%
-		bool discount=false;
-		for(int i=0; i<ilist.discount.size(); i++)
-			if(ilist.discount.at(i) > 0){
-			discount=true;
-			break;
-			}
-		if(discount){
-			painter.drawLine(QPoint(mLeft+mwUtil*0.52, mRectContent.top()),
-							 QPoint(mLeft+mwUtil*0.52, mRectContent.bottom()) );
-			rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.52),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Remise %"));
-			painter.drawText( rect, tr("Remise %"));
-		}
-		//PRIX UNITAIRE 12%
-		painter.drawLine(QPoint(mLeft+mwUtil*0.64, mRectContent.top()),
-						 QPoint(mLeft+mwUtil*0.64, mRectContent.bottom()) );
-		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.64),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Prix U. ")+ QChar(8364) );
-		painter.drawText( rect, tr("Prix U. ")+ QChar(8364));
-		//QUANTITE 12%
-		painter.drawLine(QPoint(mLeft+mwUtil*0.76, mRectContent.top()),
-						 QPoint(mLeft+mwUtil*0.76, mRectContent.bottom()) );
-		rect = painter.fontMetrics().boundingRect(mLeft+5+mwUtil*0.76,rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("Quantit\351")  );
-		painter.drawText( rect, tr("Quantit\351") );
-		//TOTAL 12%
-		painter.drawLine(QPoint(mLeft+mwUtil*0.88, mRectContent.top()),
-						 QPoint(mLeft+mwUtil*0.88, mRectContent.bottom()) );
-		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.88),rect.top(), mwUtil*0.12,0, Qt::AlignLeft, tr("TOTAL ")+ QChar(8364) );
-		painter.drawText( rect, tr("TOTAL ")+ QChar(8364) );
-		painter.drawLine(QPoint(mRectContent.left(), rect.bottom()+5),
-						 QPoint(mRectContent.right(),rect.bottom()+5));
-
-		rect.translate( 0, 5);
-		for(int itemOnpage=0; itemOnpage<mlinePerPage;){
-			//sil ne reste plus a afficher on sort
-			if((ilist.name.count() - pIndex) <= 0)break;
-            rect.translate( 0, rect.height()+5);
-			
-			//adaptation du rect en fonction du nombre de lignes
-            if (pIndex>0){
-                QStringList lines = ilist.name.at(pIndex-1).split("\n");
-                lines.count();
-                rect.translate( 0, (lines.count()-1)*rect.height());
-            }
-
-			//DESIGNATION 40%
-			rect = painter.fontMetrics().boundingRect(mLeft+5,rect.top(), mwUtil*0.40,0, Qt::AlignLeft, ilist.name.at(pIndex) );
-            rect.setWidth(mwUtil*0.50); //fixe la largeur
-			painter.drawText( rect,  Qt::AlignLeft , ilist.name.at(pIndex));
-
-			//TVA 12%
-			if(m_data->getIsTax()){
-				rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.40),rect.top(), mwUtil*0.12,0, Qt::AlignRight, m_lang.toString(ilist.tax.at(pIndex),'f',2) );
-				//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
-				painter.drawText( rect,  Qt::AlignRight , m_lang.toString(ilist.tax.at(pIndex),'f',2) );
-            }
-
-			//REMISE 12%
-			if(discount){
-				rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.52),rect.top(), mwUtil*0.12,0, Qt::AlignRight, QString::number(ilist.discount.at(pIndex)) );
-				//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
-				painter.drawText( rect,  Qt::AlignRight , QString::number(ilist.discount.at(pIndex)) );
-			}
-
-			//PRIX UNITAIRE 12%
-			rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.64),rect.top(), mwUtil*0.12,0, Qt::AlignRight, m_lang.toString(ilist.price.at(pIndex),'f',2) );
-			//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
-			painter.drawText( rect,  Qt::AlignRight , m_lang.toString(ilist.price.at(pIndex),'f',2) );
-
-			//QUANTITE 12%
-			rect = painter.fontMetrics().boundingRect(mLeft-5+mwUtil*0.76,rect.top(), mwUtil*0.12,0, Qt::AlignRight, QString::number(ilist.quantity.at(pIndex)) );
-			//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
-			painter.drawText( rect , Qt::AlignRight , QString::number(ilist.quantity.at(pIndex)));
-
-			//TOTAL 12%
-			totalPrice = ilist.price.at(pIndex)*ilist.quantity.at(pIndex);
-			if(ilist.discount.at(pIndex)>0)totalPrice -= totalPrice*(ilist.discount.at(pIndex)/100.0);
-			rect = painter.fontMetrics().boundingRect(mLeft-5+(mwUtil*0.88),rect.top(), mwUtil*0.12,0, Qt::AlignRight,
-								   m_lang.toString(totalPrice, 'f', 2) );
-			//rect.setWidth(wUtil*0.12 -5); //fixe la largeur
-			painter.drawText( rect,  Qt::AlignRight ,
-								   m_lang.toString(totalPrice, 'f', 2) );
-			ListTotalPrice.push_back(totalPrice);
-
-			itemPrinted++;
-			itemOnpage++;
-
-			pIndex++;
-			//Nombre ditem max atteind?
-			if( (itemOnpage - mlinePerPage) >= 0) break;
-		}
-		// Imprime le pied de page
+	for(int page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
+		/// Imprime l entete
+		print_header(painter, rect, T_INVOICE);
+		/// Imprime le contenu
+		print_content(painter, rect, printList, itemPrinted, page, numberOfPage);
+		/// Imprime le pied de page
 		print_footer(painter, rect, QString::number(page), QString::number(numberOfPage));
 		// Met a jour la progression
-		m_DialogWaiting->setProgressBar(page);
-		//New page ?
-		if( (itemsToPrint - itemPrinted) > 0) printer->newPage();
+		m_DialogWaiting -> setProgressBar(page);
+		// Nouvelle page ?
+		if( (itemsToPrint - itemPrinted) > 0){
+			qDebug() << "-> Nouvelle page";
+			printer -> newPage();
+		}
 	}
-
-	//TOTAL
-	totalPrice=0;
-	for(int i=0; i<ListTotalPrice.size(); i++)
-		totalPrice += ListTotalPrice.at(i);
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
-	painter.drawText( rect, tr("TOTAL : "));
-	mFont.setBold(true);
-	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
-	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
-	mFont.setBold(false);
-	painter.setFont(mFont);
-
-	//ACOMPTE
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+5, mwUtil*0.36,0, Qt::AlignLeft, tr("ACOMPTE : ") );
-	painter.drawText( rect, tr("ACOMPTE : "));
-	mFont.setBold(true);
-	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
-	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
-	mFont.setBold(false);
-	painter.setFont(mFont);
-
-	//RESTE
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*0.36,0, Qt::AlignLeft, tr("RESTE A PAYER : ") );
-	//dessine le fond
-	painter.setBrush( Qt::lightGray );
-	painter.setPen(Qt::NoPen);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15,rect.height() +10), 5, 5 );
-	painter.setPen(Qt::black);
-	painter.drawText( rect, tr("RESTE A PAYER : "));
-	mFont.setBold(true);
-	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice-m_inv->getPartPayment(), 'f', 2) );
-	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice-m_inv->getPartPayment(), 'f', 2) );
-	mFont.setBold(false);
-	painter.setFont(mFont);
-	painter.setBrush( Qt::NoBrush );
-
-	//TOTAL TAX
-	QString text;
-	if(m_data->getIsTax()){
-	}
-	else{
-		text = tr("TVA non applicable - Article 293 B du CGI");
-		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
-		painter.drawText( rect, text );
-	}
-
-	//Mode de reglement
-	QString typePayment;
-	QString typeP = m_inv -> getTypePayment();
-	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
-	if(typeP == CASH)           typePayment = tr("Espece");
-	if(typeP == CHECK)          typePayment = tr("Cheque");
-	if(typeP == CREDIT_CARD)    typePayment = tr("Carte Bancaire");
-	if(typeP == INTERBANK)      typePayment = tr("TIP");
-	if(typeP == TRANSFER)       typePayment = tr("Virement");
-	if(typeP == DEBIT)          typePayment = tr("Prelevement");
-	if(typeP == OTHER)          typePayment = tr("Autre");
-	text = tr("Mode de r\350glement : ")+typePayment;
-	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
-	painter.drawText( rect, text );
-
-	if((typeP == INTERBANK)||(typeP == DEBIT)){
-		text = tr("Merci de nous fournir un RIB pour ce mode de r\350glement.");
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
-		painter.drawText( rect, text );
-	}
-
-	/// RIB
-	if(typeP == TRANSFER){
-		database::Bank mb;
-		m_data->getBank(mb);
-		text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.bottom()+65, mwUtil*0.36 +15, rect.height() +10, Qt::AlignCenter, text );
-		painter.drawText(rect, text);
-		painter.setPen( Qt::DashLine );
-		painter.drawRoundedRect( QRect(mLeft,rect.top()-5, mwUtil*0.36 +15, rect.height()), 5, 5 );
-		painter.setPen( Qt::SolidLine );
-
-		mFont.setPointSize(8);
-		painter.setFont(mFont);
-		text = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
-		text += tr("Compte: ")+mb.numCompte+"  "+tr("Cl\351 RIB: ")+mb.keyRIB+'\n';
-		text += tr("Domiciliation: ");
-		text += mb.address+"\n\n";
-		text += tr("IBAN: ");
-		text += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
-		text += tr("BIC: ") + mb.codeBIC+'\n';
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+15, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, text );
-		rect.setWidth(mwUtil*0.36); //fixe la largeur
-		painter.drawText(rect, text);
-	}
-
+	// Imprime le total
+	print_total(painter, rect, printList, totalPrice, T_INVOICE);
+	// Imprime le mode de reglement
+	print_reglement(painter, rect, totalPrice);
 	delete m_DialogWaiting;
 	painter.end();
 }
