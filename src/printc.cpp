@@ -24,7 +24,7 @@
 
 #include <QFileDialog>
 #include <QDebug>
-#include <tgmath.h>
+#include <math.h>
 
 Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	QObject(parent)
