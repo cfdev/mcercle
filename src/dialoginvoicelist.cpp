@@ -8,33 +8,32 @@
 #include <QPainter>
 #include <QImage>
 #include <QFileDialog>
+#include <QMenu>
+#include <QDebug>
 
 DialogInvoiceList::DialogInvoiceList(QLocale &lang, database *pdata, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogInvoiceList)
 {
-	ui->setupUi(this);
-	m_data = pdata;
-	m_invoice = pdata->m_customer->m_invoice;
-	m_isTax = pdata->getIsTax();
-	m_lang = lang;
+	ui -> setupUi(this);
+	m_data		= pdata;
+	m_invoice	= pdata -> m_customer->m_invoice;
+	m_isTax		= pdata -> getIsTax();
+	m_lang		= lang;
 
-	ui->dateEdit->setDate( QDate::currentDate());
+	ui -> dateEdit -> setDate( QDate::currentDate());
 }
 
-DialogInvoiceList::~DialogInvoiceList()
-{
+DialogInvoiceList::~DialogInvoiceList() {
 	delete ui;
 }
-
 
 /**
 	Affiche les factures
 	@param filter, filtre a appliquer
 	@param field, champ ou appliquer le filtre
 */
-void DialogInvoiceList::listInvoicesToTable(QDate mdate)
-{
+void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	invoice::InvoicesBook ilist;
 
 	//Clear les items, attention tjs utiliser la fonction clear()
@@ -47,7 +46,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 	ui->tableWidget_Invoices->setSortingEnabled(false);
 	//Style de la table de facture
 	ui->tableWidget_Invoices->setColumnCount( COL_COUNT );
-	ui->tableWidget_Invoices->setColumnWidth(4,250);
+	ui->tableWidget_Invoices->setColumnWidth(5,250);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_Invoices->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
 #endif
@@ -55,7 +54,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("R\350glement");
+	titles  << tr("Id") << tr("selection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("R\350glement");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -65,6 +64,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 	QString typeP;
 	for(int i=0; i<ilist.code.count(); i++){
 		QTableWidgetItem *item_ID           = new QTableWidgetItem();
+		QTableWidgetItem *item_State        = new QTableWidgetItem();
 		QTableWidgetItem *item_DATE         = new QTableWidgetItem();
 		QTableWidgetItem *item_CODE         = new QTableWidgetItem();
 		QTableWidgetItem *item_CUSTOMER     = new QTableWidgetItem();
@@ -73,6 +73,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 		QTableWidgetItem *item_TYPE_PAYMENT = new QTableWidgetItem();
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
+		item_State -> setData(Qt::CheckStateRole, Qt::Checked);
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
 		if(ilist.customerFirstName.at(i).isEmpty())
@@ -99,6 +100,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 
 		//remplir les champs
 		ui->tableWidget_Invoices->setItem(i, COL_ID, item_ID);
+		ui->tableWidget_Invoices->setItem(i, COL_STATE, item_State);
 		ui->tableWidget_Invoices->setItem(i, COL_DATE, item_DATE);
 		ui->tableWidget_Invoices->setItem(i, COL_CODE, item_CODE);
 		ui->tableWidget_Invoices->setItem(i, COL_CUSTOMER, item_CUSTOMER);
@@ -113,7 +115,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate)
 /**
 	Sur le changement de Date on liste des factures
   */
-void DialogInvoiceList::on_dateEdit_dateChanged(const QDate &date){
+void DialogInvoiceList::on_dateEdit_dateChanged(const QDate &date) {
 	m_date = date;
 	listInvoicesToTable(m_date);
 }
@@ -121,15 +123,14 @@ void DialogInvoiceList::on_dateEdit_dateChanged(const QDate &date){
 /**
 	Fermeture du dialog
   */
-void DialogInvoiceList::on_pushButton_ok_clicked(){
+void DialogInvoiceList::on_pushButton_ok_clicked() {
 	this->close();
 }
 
 /**
    Impression du livre des recettes
   */
-void DialogInvoiceList::on_pushButton_print_clicked()
-{
+void DialogInvoiceList::on_pushButton_print_clicked() {
 	//Si on est pas connecte on sort
 	if((!m_data->isConnected()) || (ui->tableWidget_Invoices->rowCount()<=0) )return;
 
@@ -158,8 +159,7 @@ void DialogInvoiceList::on_pushButton_print_clicked()
 /**
 	Paint pour l apercu de l impression
   */
-void DialogInvoiceList::on_paintPrinter(QPrinter *printer)
-{
+void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 	QPainter painter;
 	painter.begin(printer);
    // int res = printer->resolution();
@@ -356,3 +356,18 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer)
 	painter.end();
 }
 
+/**
+ * @brief DialogInvoiceList::on_toolButton_selAll_clicked
+ */
+void DialogInvoiceList::on_toolButton_selAll_clicked() {
+	for(int i=0; i<ui -> tableWidget_Invoices -> rowCount();i++)
+		ui -> tableWidget_Invoices -> item(i, COL_STATE)->setCheckState(Qt::Checked);
+}
+
+/**
+ * @brief DialogInvoiceList::on_toolButton_unSel_clicked
+ */
+void DialogInvoiceList::on_toolButton_unSel_clicked() {
+	for(int i=0; i<ui -> tableWidget_Invoices -> rowCount();i++)
+		ui -> tableWidget_Invoices -> item(i, COL_STATE)->setCheckState(Qt::Unchecked);
+}
