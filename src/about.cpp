@@ -40,7 +40,7 @@ about::about(database *pdata, QWidget *parent) :
 
 	QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION; 
 	msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Auto-entrepreneur/PME.");
-	msg +="<br><a href=\"http://frausti.fr\">http://frausti.fr</a>";
+	msg +="<br><a href=\"https://github.com/cfdev/mcercle\">https://github.com/cfdev/mcercle</a>";
 
 	msg += "<br><br>"+ tr("Compilation: ");
 	msg +=  __DATE__ ;
