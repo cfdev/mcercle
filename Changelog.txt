@@ -1,6 +1,25 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
+version 13.09 : xx/09/2013
+-------------------------------------------------------
++ Ajout de l'impression multiple pour les factures
++ création d'une class d'impression client
++ Demande à l'utilisateur s'il veut mettre à jour sa base de données
++ Ajout du choix des font/police pour l'impression
++ Ajout de la date écheance sur l'impression facture
++ DialogInvoic: il est maintenant possible d'imprimer après avoir créée ou modifé la facture (pas de fermeture de dialog brutal) ajout d'un bouton "FERMER".
++ Ajout d'un bouton "Fermer" pour la liste des services communs
++ Ajout d'un bouton impression sur la dialoginvoice
++ Pouvoir accéder aux services communs directement depuis la mainwindows !
++ Ouverture des factures/devis depuis les tableaux des alertes.
++ Ajout multilignes dans les items facture/devis
+
+* Correction de l'ordre des items avec CAST AS int
+* Correction de l'édition d'un service commun (bug sur le test du nom)
+...
+
+
 version 2.2 : 25/01/2013
 -------------------------------------------------------
 * Bug de modification d'un service commun
