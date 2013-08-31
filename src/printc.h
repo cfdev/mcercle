@@ -19,6 +19,7 @@ class Printc : public QObject
 	
 	void print_Proposal(const int &);
 	void print_Invoice(const int &);
+	void print_InvoicesList(QList<int> listofId);
 	void print_Service(const int &);
 	
 	private:

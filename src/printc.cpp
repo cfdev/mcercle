@@ -23,6 +23,7 @@
 #include "settings.h"
 
 #include <QFileDialog>
+#include <QPrintDialog>
 #include <QDebug>
 #include <math.h>
 
@@ -668,13 +669,58 @@ void Printc::print_Invoice(const int &id) {
 
 	if(m_DialogPrintChoice->result() == QDialog::Accepted) {
 		QWidget fenetre;
-		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
+		/*QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinterInvoice(QPrinter *)));
 		m_PreviewDialog.setWindowState(Qt::WindowMaximized);
-		m_PreviewDialog.exec();
+		m_PreviewDialog.exec();*/
+		QPrintDialog pDialog(&printer, &fenetre);
+		if(pDialog.exec() == QDialog::Accepted) {
+			on_paintPrinterInvoice(&printer);
+		}
 	}
 }
 
+/**
+ * @brief Printc::print_InvoicesList
+ * @param listofId
+ */
+void Printc::print_InvoicesList(QList<int> listofId) {
+	QPrinter printer;
+	QString name;
+	QWidget fenetre;
+	QPrintDialog pDialog(&printer, &fenetre);
+	// Dialog de choix dimpression
+	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
+	m_DialogPrintChoice -> setModal(true);
+	m_DialogPrintChoice -> exec();
+	
+	if(m_DialogPrintChoice -> result() == QDialog::Accepted){
+		if(m_DialogPrintChoice->typePrint() == DialogPrintChoice::PRINT_FILE)
+			if(pDialog.exec() == QDialog::Rejected) {
+			 return;
+			}
+		///TODO:Definition des marges en dur pour le moment
+		printer.setPageMargins(5.0,5.0,5.0,10.0, QPrinter::Millimeter);
+		// Boucle pour l impression multiple
+		foreach(int id, listofId) {
+			m_inv -> loadFromID(id);
+			name = m_inv -> getCode();
+			// Si impression en fichier ou normale
+			if(m_DialogPrintChoice->typePrint() == DialogPrintChoice::PRINT_FILE){
+				printer.setOutputFormat(QPrinter::NativeFormat);
+				printer.setOutputFileName( m_DialogPrintChoice -> pathFile() );
+			}
+			else{
+				printer.setOutputFormat(QPrinter::PdfFormat);
+				printer.setOutputFileName( m_DialogPrintChoice -> pathFile()+ name + ".pdf");
+			}
+			printer.setDocName( name );
+			printer.setCreator("mcercle");
+			// Impression avec le painter
+			on_paintPrinterInvoice(&printer);
+		}
+	}
+}
 
 /**
  * @brief Printc::on_paintPrinterInvoice
@@ -758,7 +804,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 
 
 /**
- * @brief Printc::print_Proposal
+ * @brief Printc::print_Service
  * @param id
  */
 void Printc::print_Service(const int &id) {
