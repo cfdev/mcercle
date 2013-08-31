@@ -26,6 +26,8 @@ private slots:
 	void on_toolButton_selAll_clicked();
 	void on_toolButton_unSel_clicked();
 	
+	void on_pushButton_printAll_clicked();
+	
 	private:
 	Ui::DialogInvoiceList *ui;
 	database *m_data;
@@ -41,6 +43,7 @@ enum{COL_ID=0, COL_STATE, COL_DATE,
 	 COL_PRICE, COL_TYPE_PAYMENT};
 
 	void listInvoicesToTable(QDate mdate);
+	QList<int> list_of_InvoiceSelected();
 };
 
 #endif // DIALOGINVOICELIST_H

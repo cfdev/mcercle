@@ -2,6 +2,7 @@
 #include "ui_dialoginvoicelist.h"
 #include "dialogwaiting.h"
 #include "dialogprintchoice.h"
+#include "printc.h"
 
 #include <QPrintPreviewDialog>
 #include <QPrinter>
@@ -371,3 +372,29 @@ void DialogInvoiceList::on_toolButton_unSel_clicked() {
 	for(int i=0; i<ui -> tableWidget_Invoices -> rowCount();i++)
 		ui -> tableWidget_Invoices -> item(i, COL_STATE)->setCheckState(Qt::Unchecked);
 }
+
+/**
+ * @brief get list of Diagrams is selected
+ * @return this list of Diagrams
+ */
+QList<int> DialogInvoiceList::list_of_InvoiceSelected() {
+	QList<int> listID;
+	for(int i=0; i<ui -> tableWidget_Invoices -> rowCount();i++){
+		if(ui -> tableWidget_Invoices -> item(i, COL_STATE)->checkState()){
+			listID.push_back( ui -> tableWidget_Invoices -> item(i, COL_ID)->text().toInt() );
+		}
+	}
+	return listID;
+}
+
+/**
+ * @brief DialogInvoiceList::on_pushButton_printAll_clicked
+ */
+void DialogInvoiceList::on_pushButton_printAll_clicked() {
+	QList <int>ListOfID = list_of_InvoiceSelected();
+	if(ListOfID.count()>0) {
+		Printc *mPrintc = new Printc(m_data,m_lang,this);
+		mPrintc -> print_InvoicesList( ListOfID );
+	}
+}
+
