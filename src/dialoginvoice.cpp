@@ -113,12 +113,19 @@ void DialogInvoice::setUI() {
 	}
 	else{
 		//Set l ID du client pour la creation de la proposition
-		if(m_DialogType == PROPOSAL_TYPE)	m_proposal->setIdCustomer( m_customer->getId() );
-		else								m_invoice->setIdCustomer( m_customer->getId() );
+		if(m_DialogType == PROPOSAL_TYPE)
+			m_proposal->setIdCustomer( m_customer->getId() );
+		else
+			m_invoice->setIdCustomer( m_customer->getId() );
+		
 		ui->dateEdit_DATE->setDateTime( QDateTime::currentDateTime());
 		ui->dateEdit_delivery->setDateTime( QDateTime::currentDateTime());
-		if(m_DialogType == PROPOSAL_TYPE)	ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime().addMonths(1)); /* 1mois pour la duree du devis*/
-		else								ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
+
+		if(m_DialogType == PROPOSAL_TYPE)
+			ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime().addMonths(1)); /* 1mois pour la duree du devis*/
+		else
+			ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime());
+		
 		ui->pushButton_ok->setText(tr("Ajouter"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/insert"));
 		ui->lineEdit_code->setText(tr("Automatique"));
@@ -699,9 +706,9 @@ void DialogInvoice::setInvoice(unsigned char proc){
 	m_invoice->setDescription( ui->lineEdit_description->text() );
 	m_invoice->setUserDate( ui->dateEdit_DATE->date() );
 	m_invoice->setLimitPayment( ui->dateEdit_delivery->date() );
+	m_invoice->setPaymentDate( ui->dateEdit_valid->date() );
 	m_invoice->setPartPayment( ui->doubleSpinBox_partPAYMENT->value());
 	m_invoice->setState( ui->comboBox_State->currentIndex() );
-    m_invoice->setPaymentDate( ui->dateEdit_valid->date() );
 
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
@@ -730,7 +737,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
 			createSuccess();
 		}
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
-		m_invoice->loadFromID(lastID+1);
+		m_invoice -> loadFromID(lastID+1);
 	}
 }
 
@@ -1016,13 +1023,13 @@ void DialogInvoice::on_pushButton_createInv_clicked()
 void DialogInvoice::createInvoiceFromProposal() {
 	m_invoice->setIdCustomer( m_proposal->getIdCustomer() );
 	m_invoice->setDescription( m_proposal->getDescription() );
-	m_invoice->setUserDate( QDate::currentDate() );
-	m_invoice->setLimitPayment( QDate::currentDate() );
 	m_invoice->setPartPayment(0);
 	m_invoice->setState( invoice::UNPAID );
-	m_invoice->setPaymentDate( QDate::currentDate() );
+	m_invoice->setUserDate( m_proposal->getUserDate() );
+	m_invoice->setLimitPayment( QDate::currentDate() );
+	m_invoice->setPaymentDate( QDate::currentDate().addMonths(1) );
 
-	m_invoice->setTypePayment(m_proposal->getTypePayment());
+	m_invoice->setTypePayment( m_proposal->getTypePayment() );
 	m_invoice->setPrice( m_proposal->getPrice() );
 	//Recupere le dernier ID
 	int lastID = m_invoice->getLastId();
