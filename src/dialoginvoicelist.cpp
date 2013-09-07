@@ -47,9 +47,9 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	ui->tableWidget_Invoices->setSortingEnabled(false);
 	//Style de la table de facture
 	ui->tableWidget_Invoices->setColumnCount( COL_COUNT );
-	ui->tableWidget_Invoices->setColumnWidth(5,250);
+	ui->tableWidget_Invoices->setColumnWidth( COL_DESCRIPTION, 250 );
 #ifdef QT_NO_DEBUG
-	ui->tableWidget_Invoices->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
+	ui->tableWidget_Invoices->setColumnHidden(COL_ID , true); //cache la colonne ID ou DEBUG
 #endif
 	ui->tableWidget_Invoices->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
