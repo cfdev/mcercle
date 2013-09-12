@@ -144,7 +144,7 @@ char database::connect(){
 		return DB_CON_ERR;
 	}
 	qDebug() << "version base:" <<QString::number(m_databaseVersion);
-	
+
 	// Mise a jour de la base de donnees
 	if(m_databaseVersion < DBASE_SUPPORTED){
 		int ret = QMessageBox::warning(
@@ -153,7 +153,7 @@ char database::connect(){
 								tr("Cette version de mcercle doit mettre à jour la base de donn\351e pour fonctionner.\n\nVoulez-vous mettre à jour la base de donn\351e"),
 								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
 								);
-	
+
 		if(ret == QMessageBox::Yes){
 			if(m_databaseVersion <= 1) {
 				if(!upgradeToV2()){
@@ -167,6 +167,12 @@ char database::connect(){
 					return DB_CON_ERR;
 				}
 			}
+			else if(m_databaseVersion <= 3 ) {
+				if(!upgradeToV4()){
+					this->close();
+					return DB_CON_ERR;
+				}
+			}
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), tr("Mise à jour de la base de donnees reussie !"),QMessageBox::Ok);
 			mBox.exec();
 		}
@@ -175,7 +181,7 @@ char database::connect(){
 			return DB_CON_ERR;
 		}
 	}
-	
+
 	return DB_CON_OK;
 }
 
@@ -315,7 +321,7 @@ bool database::createTable_informations(){
 			"WEBSITE        VARCHAR(256),"
 			"LOGO           BLOB,"
 			"CG             TEXT,"
-            "CA_TYPE        INTEGER NOT NULL ,"
+			"CA_TYPE        INTEGER NOT NULL ,"
 		   "PRIMARY KEY (ID)"
 			");";
 
@@ -331,8 +337,8 @@ bool database::createTable_informations(){
 	}
 
 	//INSERT
-    query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-                  "VALUES('3', '0', '','1');");
+	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
+				  "VALUES('4', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -818,7 +824,7 @@ bool database::createTable_proposals_details(){
 			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"ID_PROPOSAL    INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
-			"NAME           VARCHAR(128) NOT NULL,"
+			"NAME           TEXT NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
 			"TAX            NUMERIC(5,2),"
@@ -907,7 +913,7 @@ bool database::createTable_invoices(){
 			"CREATIONDATE   TIMESTAMP,"
 			"DATE           DATE NOT NULL,"
 			"LIMIT_PAYMENTDATE    DATE NOT NULL,"
-            "PAYMENTDATE    DATE NOT NULL,"
+			"PAYMENTDATE    DATE NOT NULL,"
 			"CODE           VARCHAR(64) NOT NULL,"
 			"TYPE_PAYMENT   VARCHAR(2) ,"
 			"PART_PAYMENT   NUMERIC(8,2) NOT NULL,"
@@ -932,33 +938,33 @@ bool database::createTable_invoices(){
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-    //INSERT
-    if(addSample){
-        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-                      "VALUES('1', 'FA110802-1', '2011-08-02', '2011-08-02', '2011-08-02', 'CC', '0.00', '361.02', '0', 'Produits');" );
-        if(!query.exec()) {
-            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-            return false;
-        }
-        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-                      "VALUES('1', 'FA110804-2', '2011-08-04', '2011-08-04', '2011-08-04', 'CC', '0.00', '1589.10', '1', 'Montage d une pompe hydraulique');" );
-        if(!query.exec()) {
-            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-            return false;
-        }
-        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-                      "VALUES('1', 'FA110820-3', '2011-08-20', '2011-09-02', '2011-09-02', 'CA', '0.00', '65.99', '1', 'Produits et Services');" );
-        if(!query.exec()) {
-            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-            return false;
-        }
-        query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
-                      "VALUES('2', 'FA120115-4', '2012-08-15', '2012-01-15', '2012-01-15', 'CH', '11.55', '20', '1', 'test');" );
-        if(!query.exec()) {
-            QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-            return false;
-        }
-    }
+	//INSERT
+	if(addSample){
+		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+					  "VALUES('1', 'FA110802-1', '2011-08-02', '2011-08-02', '2011-08-02', 'CC', '0.00', '361.02', '0', 'Produits');" );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+					  "VALUES('1', 'FA110804-2', '2011-08-04', '2011-08-04', '2011-08-04', 'CC', '0.00', '1589.10', '1', 'Montage d une pompe hydraulique');" );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+					  "VALUES('1', 'FA110820-3', '2011-08-20', '2011-09-02', '2011-09-02', 'CA', '0.00', '65.99', '1', 'Produits et Services');" );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+		query.prepare("INSERT INTO TAB_INVOICES(ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION)"
+					  "VALUES('2', 'FA120115-4', '2012-08-15', '2012-01-15', '2012-01-15', 'CH', '11.55', '20', '1', 'test');" );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -971,7 +977,7 @@ bool database::createTable_invoices_details(){
 			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"ID_INVOICE     INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
-			"NAME           VARCHAR(128) NOT NULL,"
+			"NAME           TEXT NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
 			"TAX            NUMERIC(5,2),"
@@ -1173,8 +1179,8 @@ bool database::updateInfo(Informations &info) {
 	}
 	//Si pas d enregistrement on en creer un
 	if(count<=0){
-        query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME,CA_TYPE)"
-                      "VALUES('1', '0', '', '1');");
+		query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME,CA_TYPE)"
+					  "VALUES('1', '0', '', '1');");
 		if(!query.exec()) {
 			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 			return false;
@@ -1197,8 +1203,8 @@ bool database::updateInfo(Informations &info) {
 	req += "FAXNUMBER='" + info.faxNumber.replace("\'","''") + "',";
 	req += "EMAIL='" + info.email.replace("\'","''") + "',";
 	req += "WEBSITE='" + info.webSite.replace("\'","''") + "', ";
-    req += "TAX='" + QString::number(info.tax) + "', ";
-    req += "CA_TYPE='" + QString::number(info.ca_type) + "' ";
+	req += "TAX='" + QString::number(info.tax) + "', ";
+	req += "CA_TYPE='" + QString::number(info.ca_type) + "' ";
 	req += "WHERE ID='1';";
 
 	query.prepare(req);
@@ -1236,7 +1242,7 @@ bool database::getInfo(Informations &info) {
 		info.email = query.value(query.record().indexOf("EMAIL")).toString();
 		info.webSite = query.value(query.record().indexOf("WEBSITE")).toString();
 		info.tax = query.value(query.record().indexOf("TAX")).toInt();
-        info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
+		info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -1420,21 +1426,21 @@ bool database::upgradeToV2() {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	
+
 	req =	"ALTER TABLE TAB_INVOICES_DETAILS ADD ITEM_ORDER INTEGER;";
 	query.prepare( req );
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	
+
 	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=2;";
 	query.prepare( req );
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -1442,7 +1448,7 @@ bool database::upgradeToV2() {
    Met a jour la base de donnees en version 3
   */
 bool database::upgradeToV3() {
-	
+
 	QString req =	"ALTER TABLE TAB_INVOICES ADD PAYMENTDATE;";
 	QSqlQuery query;
 	query.prepare( req );
@@ -1472,6 +1478,105 @@ bool database::upgradeToV3() {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
+
+	return true;
+}
+
+
+	/**
+	   Met a jour la base de donnees en version 4
+	  */
+	bool database::upgradeToV4() {
+
+		QString req =	"ALTER TABLE 'TAB_PROPOSALS_DETAILS' RENAME TO 'TAB_PROPOSALS_DETAILS_TEMP';";
+		QSqlQuery query;
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"CREATE TABLE IF NOT EXISTS TAB_PROPOSALS_DETAILS ("
+				"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
+				"ID_PROPOSAL    INTEGER NOT NULL,"
+				"ID_PRODUCT     INTEGER,"
+				"NAME           TEXT NOT NULL,"
+				"DISCOUNT       INTEGER NOT NULL,"
+				"QUANTITY       INTEGER NOT NULL,"
+				"TAX            NUMERIC(5,2),"
+				"PRICE          NUMERIC(8,2) NOT NULL,"
+				"ITEM_ORDER     INTEGER,"
+				"FOREIGN KEY(ID_PROPOSAL) REFERENCES TAB_PROPOSALS(ID) ON DELETE CASCADE"
+				"); ";
+		if(db.driverName() == "QMYSQL")
+			req.replace("AUTOINCREMENT","AUTO_INCREMENT");
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"INSERT INTO 'TAB_PROPOSALS_DETAILS' SELECT * FROM 'TAB_PROPOSALS_DETAILS_TEMP';";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"DROP TABLE 'TAB_PROPOSALS_DETAILS_TEMP';";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"ALTER TABLE 'TAB_INVOICES_DETAILS' RENAME TO 'TAB_INVOICES_DETAILS_TEMP';";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"CREATE TABLE IF NOT EXISTS TAB_INVOICES_DETAILS ("
+				"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
+				"ID_INVOICE     INTEGER NOT NULL,"
+				"ID_PRODUCT     INTEGER,"
+				"NAME           TEXT NOT NULL,"
+				"DISCOUNT       INTEGER NOT NULL,"
+				"QUANTITY       INTEGER NOT NULL,"
+				"TAX            NUMERIC(5,2),"
+				"PRICE          NUMERIC(8,2) NOT NULL,"
+				"ITEM_ORDER     INTEGER,"
+				"FOREIGN KEY(ID_INVOICE) REFERENCES TAB_INVOICES(ID) ON DELETE CASCADE"
+				");";
+		if(db.driverName() == "QMYSQL")
+			req.replace("AUTOINCREMENT","AUTO_INCREMENT");
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"INSERT INTO 'TAB_INVOICES_DETAILS' SELECT * FROM 'TAB_INVOICES_DETAILS_TEMP';";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"DROP TABLE 'TAB_INVOICES_DETAILS_TEMP';";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
+
+		req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=4;";
+		query.prepare( req );
+		if(!query.exec()) {
+			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+			return false;
+		}
 
 	return true;
 }
