@@ -34,7 +34,7 @@ private:
 	QLocale m_lang;
 
 	/* Version max supporter par mcercle */
-    #define DBASE_SUPPORTED 3
+    #define DBASE_SUPPORTED 4
 
 
 	/* Creation des tables */
@@ -61,6 +61,7 @@ private:
     /* fonctions de mise a jour */
 	bool upgradeToV2();
     bool upgradeToV3();
+    bool upgradeToV4();
 	
 public:
 
