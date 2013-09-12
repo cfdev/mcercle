@@ -39,12 +39,10 @@ private slots:
 
 	void on_pushButton_createInv_clicked();
 	void on_toolButton_addFreeline_clicked();
-	void on_toolButton_up_clicked();	
+	void on_toolButton_up_clicked();
 	void on_toolButton_dn_clicked();
 	
-	void on_pushButton_print_clicked();	
-
-	
+	void on_pushButton_print_clicked();
 	void on_pushButton_close_clicked();
 	
 	private:

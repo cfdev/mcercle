@@ -15,16 +15,22 @@ class DialogPrintChoice : public QDialog
 public:
 	explicit DialogPrintChoice(QPrinter * printer, QWidget *parent = 0);
 	~DialogPrintChoice();
-
+	int typePrint(){return m_typePrint;}
+	QString pathFile(){return mpathFile;}
+	
+	enum{PRINT_FILE , PRINT_PDF};
+	
 private slots:
 	void on_radioButton_pdf_clicked();
 	void on_radioButton_printer_clicked();
-
 	void on_buttonBox_accepted();
 
 private:
 	QPrinter *m_printer;
 	Ui::DialogPrintChoice *ui;
+	int m_typePrint;
+	QString mpathFile;
+	
 };
 
 #endif // DIALOGPRINTCHOICE_H

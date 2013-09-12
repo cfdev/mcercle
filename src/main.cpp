@@ -31,9 +31,6 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	MainWindow m_win;
 
-	//Plastique style
-	//QApplication::setStyle(new QPlastiqueStyle);
-
 	//Traduction des chaines de la lib Qt
 	QString locale = QLocale::system().name();
 	QTranslator translator;

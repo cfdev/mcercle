@@ -124,6 +124,8 @@ void MainWindow::init(){
    /* qDebug() << "MCERCLE_DEBUG :" <<QString(m_database->m_customer->m_invoice->getYearsList().at(0)+' '+
 				QString::number(m_database->m_customer->m_invoice->getYearRevenue("2011"))+' '+
 				QString::number(m_database->m_customer->m_invoice->getMonthRevenue("2011","8")) );*/
+
+	//QApplication::setStyle("plastique");
 }
 
 

@@ -73,12 +73,13 @@ bool invoice::create() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
-	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION) ";
+	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION) ";
 	req += "VALUES(";
 	req += "'" + QDateTime::currentDateTime().toString(tr("yyyy-MM-dd HH:mm:ss")) + "',";
 	req += "'" + QString::number(m_idCustomer) + "',";
 	req += "'" + m_code.replace("\'","''") + "',";
 	req += "'" + m_userDate.toString(tr("yyyy-MM-dd")) + "',";
+	req += "'" + m_paymentDate.toString(tr("yyyy-MM-dd")) + "',";
 	req += "'" + m_limitPayment.toString(tr("yyyy-MM-dd")) + "',";
 	req += "'" + m_typePayment + "',";
 	req += "'" + f.setNum(m_partPayment,'f',2) + "',";

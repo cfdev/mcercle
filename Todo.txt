@@ -1,6 +1,4 @@
-#TODO mcercle 2
-
-- Creation dune class impression !!
+#TODO mcercle
 
 - Gestion TVA
 

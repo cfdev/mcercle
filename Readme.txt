@@ -21,7 +21,8 @@ Caractéristiques techniques:
 
 License: GPL V3
 Author:  Cyril Frausti
-website: http://frausti.fr/mcercle-logiciel-de-gestion-libre/
+website: https://github.com/cfdev/mcercle
+build: http://download.frausti.fr/mcercle
 
 -------------------------------------------------------
 

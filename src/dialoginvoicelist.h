@@ -23,8 +23,12 @@ private slots:
 
 	// slots dimpression
 	void on_paintPrinter(QPrinter *printer);
-
-private:
+	void on_toolButton_selAll_clicked();
+	void on_toolButton_unSel_clicked();
+	
+	void on_pushButton_printAll_clicked();
+	
+	private:
 	Ui::DialogInvoiceList *ui;
 	database *m_data;
 	invoice *m_invoice;
@@ -32,18 +36,14 @@ private:
 	QLocale m_lang;
 	QDate m_date;
 
-#define COL_COUNT 7
+#define COL_COUNT 8
 
-#define COL_ID 0
-#define COL_DATE 1
-#define COL_CODE 2
-#define COL_CUSTOMER 3
-#define COL_DESCRIPTION 4
-#define COL_PRICE 5
-#define COL_TYPE_PAYMENT 6
-
+enum{COL_ID=0, COL_STATE, COL_DATE,
+	 COL_CODE, COL_CUSTOMER, COL_DESCRIPTION,
+	 COL_PRICE, COL_TYPE_PAYMENT};
 
 	void listInvoicesToTable(QDate mdate);
+	QList<int> list_of_InvoiceSelected();
 };
 
 #endif // DIALOGINVOICELIST_H

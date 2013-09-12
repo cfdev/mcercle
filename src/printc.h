@@ -19,6 +19,7 @@ class Printc : public QObject
 	
 	void print_Proposal(const int &);
 	void print_Invoice(const int &);
+	void print_InvoicesList(QList<int> listofId);
 	void print_Service(const int &);
 	
 	private:
@@ -31,7 +32,7 @@ class Printc : public QObject
 	proposal *m_pro;
 	service *m_serv;
 	QImage mlogo;
-	QString mtextInfo, mtextidentity, mfooterTextInfo;
+	QString mtextInfo, mtextidentity, mfooterTextInfo, mBankTextID;
 	
 	typedef struct{
 		QStringList designation;
@@ -48,10 +49,13 @@ class Printc : public QObject
 	qreal mwUtil;
 	QRectF mpageRect, mRectContent;
 	int mBlockHeight;
+	int mlinePerPage, mlinePerLastPage;
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
-	void print_header(QPainter &painter, QRectF &rect,  int type);
-	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int &linePerPage);
+	void print_header(QPainter &painter, QRectF &rect, int type);
+	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int page, int NbOfpage);
+	void print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal &totalPrice, int type);
+	void print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
 	
 	private slots:
