@@ -164,8 +164,7 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 /**
 	Efface l'image du logo
   */
-void DialogSettings::on_pushButton_ClearImage_clicked()
-{
+void DialogSettings::on_pushButton_ClearImage_clicked() {
 	QImage logo;
 	//ajout a la base de donnees
 	m_data->updateLogoTable_informations(logo);
@@ -177,8 +176,7 @@ void DialogSettings::on_pushButton_ClearImage_clicked()
 /**
 	Selectionnez la base de donnees
   */
-void DialogSettings::on_toolButton_BaseSelect_clicked()
-{
+void DialogSettings::on_toolButton_BaseSelect_clicked() {
 	QString path = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
 	QString filename = QFileDialog::getOpenFileName(this, "Selectionnez un fichier *.db",  path.toStdString().c_str(), "*.db");
 	if( !filename.isEmpty() ) {
@@ -189,8 +187,7 @@ void DialogSettings::on_toolButton_BaseSelect_clicked()
 /**
 	Gerer la connexion avec la base de donnees
   */
-void DialogSettings::on_pushButton_connect_clicked()
-{
+void DialogSettings::on_pushButton_connect_clicked() {
 	if(!m_data->isConnected()){
 		m_data->setBdd( ui->comboBox_dbase->currentText() );
 		m_data->setHostName( ui->lineEdit_hostName->text() );
