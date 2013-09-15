@@ -17,6 +17,7 @@ public:
 	~DialogPrintChoice();
 	int typePrint(){return m_typePrint;}
 	QString pathFile(){return mpathFile;}
+	QString path(){return mpath;}
 	
 	enum{PRINT_FILE , PRINT_PDF};
 	
@@ -25,11 +26,13 @@ private slots:
 	void on_radioButton_printer_clicked();
 	void on_buttonBox_accepted();
 
-private:
+	void on_toolButton_path_clicked();
+	
+	private:
 	QPrinter *m_printer;
 	Ui::DialogPrintChoice *ui;
 	int m_typePrint;
-	QString mpathFile;
+	QString mpath, mpathFile;
 	
 };
 

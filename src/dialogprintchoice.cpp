@@ -1,30 +1,44 @@
 #include "dialogprintchoice.h"
 #include "ui_dialogprintchoice.h"
 #include <QDesktopServices>
+#include <QFileDialog>
 
 DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogPrintChoice)
 {
 	ui->setupUi(this);
-
 	m_printer = printer,
 	ui->radioButton_printer->setChecked(true);
-	ui->lineEdit_path->setEnabled(false);
-	ui->lineEdit_path->setText( QDesktopServices::storageLocation ( QDesktopServices::HomeLocation )+'/'+
-								m_printer->outputFileName() );
+	on_radioButton_printer_clicked();
+	
+	mpath = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+	if( m_printer -> outputFileName().isEmpty() )
+		mpathFile = mpath + QDir::separator() +"FAxxx.pdf";
+	else
+		mpathFile = mpath + QDir::separator() + m_printer->outputFileName();
+	
+	ui->lineEdit_path->setText( mpathFile );
 }
 
 DialogPrintChoice::~DialogPrintChoice() {
 	delete ui;
 }
 
+/**
+ * @brief Active les controles pour l export fichier
+ */
 void DialogPrintChoice::on_radioButton_pdf_clicked() {
-	ui->lineEdit_path->setEnabled(true);
+	ui -> lineEdit_path -> setEnabled(true);
+	ui -> toolButton_path -> setEnabled(true);
 }
 
+/**
+ * @brief Desactive les controles pour l export fichier
+ */
 void DialogPrintChoice::on_radioButton_printer_clicked() {
-	ui->lineEdit_path->setEnabled(false);
+	ui -> lineEdit_path -> setEnabled(false);
+	ui -> toolButton_path -> setEnabled(false);
 }
 
 /**
@@ -44,5 +58,18 @@ void DialogPrintChoice::on_buttonBox_accepted() {
 		mpathFile = ui->lineEdit_path->text();
 		m_printer -> setOutputFormat(QPrinter::PdfFormat);
 		m_printer -> setOutputFileName( ui->lineEdit_path->text() );
+	}
+}
+
+/**
+ * @brief Lance l explorer de fichier
+ */
+void DialogPrintChoice::on_toolButton_path_clicked() {
+	
+	QString filename = QFileDialog::getSaveFileName(this, "Emplacement du fichier", mpathFile.toStdString().c_str(), "*.pdf");
+	if( !filename.isEmpty() ) {
+		QFileInfo file( filename );
+		mpath = file.dir().absolutePath()+ QDir::separator();
+		ui -> lineEdit_path -> setText(filename);
 	}
 }
