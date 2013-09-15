@@ -669,14 +669,10 @@ void Printc::print_Invoice(const int &id) {
 
 	if(m_DialogPrintChoice->result() == QDialog::Accepted) {
 		QWidget fenetre;
-		/*QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
+		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinterInvoice(QPrinter *)));
 		m_PreviewDialog.setWindowState(Qt::WindowMaximized);
-		m_PreviewDialog.exec();*/
-		QPrintDialog pDialog(&printer, &fenetre);
-		if(pDialog.exec() == QDialog::Accepted) {
-			on_paintPrinterInvoice(&printer);
-		}
+		m_PreviewDialog.exec();
 	}
 }
 
@@ -712,7 +708,7 @@ void Printc::print_InvoicesList(QList<int> listofId) {
 			}
 			else{
 				printer.setOutputFormat(QPrinter::PdfFormat);
-				printer.setOutputFileName( m_DialogPrintChoice -> pathFile()+ name + ".pdf");
+				printer.setOutputFileName( m_DialogPrintChoice ->path() + name + ".pdf");
 			}
 			printer.setDocName( name );
 			printer.setCreator("mcercle");
