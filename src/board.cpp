@@ -110,6 +110,16 @@ void board::listStockAlertToTable()
 		if(plist.stock.at(i) <= plist.stockWarning.at(i)) state = 1;
 		else  state = 0;
 
+		// Mettre un fond/text en couleur
+		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
+		item_CODE->setTextColor(TABLE_TXT_COLOR);
+		item_NAME->setBackgroundColor(TABLE_BG_COLOR);
+		item_NAME->setTextColor(TABLE_TXT_COLOR);
+		item_STOCK->setBackgroundColor(TABLE_BG_COLOR);
+		item_STOCK->setTextColor(TABLE_TXT_COLOR);
+		item_STATE->setBackgroundColor(TABLE_BG_COLOR);
+		item_STATE->setTextColor(TABLE_TXT_COLOR);
+		
 		item_STATE->setIcon( m_data->m_product->getIconState(state) );
 		item_STATE->setText( m_data->m_product->getTextState(state) );
 
@@ -186,6 +196,20 @@ void board::listInvoiceAlertToTable()
 			item_STATE->setIcon( QIcon(":/app/quit") );
 			item_STATE->setText( tr("Ech\351ance d\351pass\351e") );
 		}
+		// Mettre un fond/text en couleur
+		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
+		item_CODE->setTextColor(TABLE_TXT_COLOR);
+		item_C_Id->setBackgroundColor(TABLE_BG_COLOR);
+		item_C_Id->setTextColor(TABLE_TXT_COLOR);
+		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
+		item_DATE->setTextColor(TABLE_TXT_COLOR);
+		item_DESCRIPTION->setBackgroundColor(TABLE_BG_COLOR);
+		item_DESCRIPTION->setTextColor(TABLE_TXT_COLOR);
+		item_CUSTOMER->setBackgroundColor(TABLE_BG_COLOR);
+		item_CUSTOMER->setTextColor(TABLE_TXT_COLOR);
+		item_STATE->setBackgroundColor(TABLE_BG_COLOR);
+		item_STATE->setTextColor(TABLE_TXT_COLOR);
+		
 		//definir le tableau
 		ui->tableWidget_InvoiceAlert->setRowCount(j+1);
 		//remplir les champs
@@ -250,6 +274,19 @@ void board::listProposalAlertToTable()
 		item_DATE->setData(Qt::DisplayRole, list.userDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_DESCRIPTION->setData(Qt::DisplayRole, list.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, list.customerFirstName.at(i)+" "+list.customerLastName.at(i));
+		
+		// Mettre un fond/text en couleur
+		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
+		item_CODE->setTextColor(TABLE_TXT_COLOR);
+		item_C_Id->setBackgroundColor(TABLE_BG_COLOR);
+		item_C_Id->setTextColor(TABLE_TXT_COLOR);
+		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
+		item_DATE->setTextColor(TABLE_TXT_COLOR);
+		item_DESCRIPTION->setBackgroundColor(TABLE_BG_COLOR);
+		item_DESCRIPTION->setTextColor(TABLE_TXT_COLOR);
+		item_CUSTOMER->setBackgroundColor(TABLE_BG_COLOR);
+		item_CUSTOMER->setTextColor(TABLE_TXT_COLOR);
+		
 		//definir le tableau
 		ui->tableWidget_ProposalAlert->setRowCount(j+1);
 		//remplir les champs
@@ -306,6 +343,17 @@ void board::listRevenuesToTable()
 		item_MonthProductRevenue->setData(Qt::DisplayRole, monthProductRevenue);
 
 		item_MonthRevenue->setData(Qt::DisplayRole, monthServiceRevenue + monthProductRevenue);
+		
+		// Mettre un fond/text en couleur
+		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
+		item_DATE->setTextColor(TABLE_TXT_COLOR);
+		item_MonthServiceRevenue->setBackgroundColor(TABLE_BG_COLOR);
+		item_MonthServiceRevenue->setTextColor(TABLE_TXT_COLOR);
+		item_MonthProductRevenue->setBackgroundColor(TABLE_BG_COLOR);
+		item_MonthProductRevenue->setTextColor(TABLE_TXT_COLOR);
+		item_MonthRevenue->setBackgroundColor(TABLE_BG_COLOR);
+		item_MonthRevenue->setTextColor(TABLE_TXT_COLOR);
+		
 		//definir le tableau
 		ui->tableWidget_revenue->setRowCount(j+1);
 		//remplir les champs

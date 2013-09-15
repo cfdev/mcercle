@@ -44,7 +44,9 @@ private:
 	#define CODE_ROW 1
 	#define NAME_ROW 2
 	#define PRICE_ROW 4
-
+	#define TABLE_BG_COLOR QColor(69,69,69,255)
+	#define TABLE_TXT_COLOR QColor(219,219,219,255)
+	
 	//info produit
 	void listProductsFilter(int page, QString val);
 	void listProductsToTable(int page, QString filter, QString field);

@@ -64,13 +64,11 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 	}
 }
 
-productView::~productView()
-{
+productView::~productView() {
 	delete ui;
 }
 
-void productView::changeEvent(QEvent *e)
-{
+void productView::changeEvent(QEvent *e) {
 	QWidget::changeEvent(e);
 	switch (e->type()) {
 	case QEvent::LanguageChange:
@@ -84,16 +82,14 @@ void productView::changeEvent(QEvent *e)
 /**
 	Rafraichit la liste des produits
 */
-void productView::refreshProductsList()
-{
+void productView::refreshProductsList() {
 	 listProductsToTable(m_prodPage, m_prodfilter, m_prodfield);
 }
 
 /**
 	Afficher Tous les produits
 */
-void productView::listProducts(int page)
-{
+void productView::listProducts(int page) {
 	//show all
 	listProductsToTable(page, m_prodfilter, m_prodfield);
 }
@@ -103,8 +99,7 @@ void productView::listProducts(int page)
 	Trie les produits selon leur code
 	@param string de filtrage
 */
-void productView::listProductsFilter(int page, QString val)
-{
+void productView::listProductsFilter(int page, QString val) {
 	if(!m_data->isConnected())return;
 	//show with filter
 	m_prodfilter = val;
@@ -116,8 +111,7 @@ void productView::listProductsFilter(int page, QString val)
 	Affiche les produits
 	@param ...
 */
-void productView::listProductsToTable(int page, QString filter, QString field)
-{
+void productView::listProductsToTable(int page, QString filter, QString field) {
 	product::ProductList plist;
 
 	//Clear les items, attention tjs utiliser la fonction clear()
@@ -146,6 +140,7 @@ void productView::listProductsToTable(int page, QString filter, QString field)
 	ui->tableWidget_products->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_products->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_products->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	ui->tableWidget_products->setAlternatingRowColors(true);
 	QStringList titles;
 	titles.clear();
 	titles << tr("Id") << tr("Codes") << tr("Noms") << tr("Stock") << tr("Prix de vente") << tr("Cat\351gorie");
@@ -189,6 +184,19 @@ void productView::listProductsToTable(int page, QString filter, QString field)
 				item_PRICE->setBackgroundColor(QColor(208,195,195,255));
 				item_CATEGORY->setBackgroundColor(QColor(208,195,195,255));
 			}else{
+				item_ID->setBackgroundColor(TABLE_BG_COLOR);
+				item_ID->setTextColor(TABLE_TXT_COLOR);
+				item_CODE->setBackgroundColor(TABLE_BG_COLOR);
+				item_CODE->setTextColor(TABLE_TXT_COLOR);
+				item_NAME->setBackgroundColor(TABLE_BG_COLOR);
+				item_NAME->setTextColor(TABLE_TXT_COLOR);
+				item_STOCK->setBackgroundColor(TABLE_BG_COLOR);
+				item_STOCK->setTextColor(TABLE_TXT_COLOR);
+				item_PRICE->setBackgroundColor(TABLE_BG_COLOR);
+				item_PRICE->setTextColor(TABLE_TXT_COLOR);
+				item_CATEGORY->setBackgroundColor(TABLE_BG_COLOR);
+				item_CATEGORY->setTextColor(TABLE_TXT_COLOR);
+
 				//couleur de la categorie
 				if( (plist.categoryColor.at(i).isValid()) && (plist.categoryColor.at(i)) != QColor(0, 0, 0, 255))
 					item_CATEGORY->setBackgroundColor( plist.categoryColor.at(i) );
