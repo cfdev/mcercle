@@ -25,6 +25,7 @@
 #include "dialogprintchoice.h"
 #include "dialogwaiting.h"
 #include "printc.h"
+#include "table.h"
 
 #include <QMessageBox>
 #include <QPrintPreviewDialog>
@@ -263,14 +264,14 @@ void customerView::listCustomersToTable(int page, QString filter, QString field)
 
 	// list all customers
 	for(unsigned int i=0; i<clist.id.size(); i++){
-		QTableWidgetItem *item_ID          = new QTableWidgetItem();
-		QTableWidgetItem *item_LASTNAME      = new QTableWidgetItem();
-		QTableWidgetItem *item_FIRSTNAME     = new QTableWidgetItem();
+		ItemOfTable *item_ID			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_LASTNAME	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_FIRSTNAME	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, clist.id.at(i));
 		item_LASTNAME->setData(Qt::DisplayRole, clist.lastName.at(i));
 		item_FIRSTNAME->setData(Qt::DisplayRole, clist.firstName.at(i));
-
+		
 		//definir le tableau
 		ui->tableWidget->setRowCount(i+1);
 
@@ -462,12 +463,12 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 
 	// list tous les devis
 	for(int i=0; i<ilist.code.count(); i++){
-		QTableWidgetItem *item_ID           = new QTableWidgetItem();
-		QTableWidgetItem *item_CODE         = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE         = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION  = new QTableWidgetItem();
-		QTableWidgetItem *item_STATE        = new QTableWidgetItem();
+		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_STATE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
@@ -550,10 +551,10 @@ void customerView::listServicesToTable(QString filter, QString field)
 
 	// list all customers
 	for(unsigned int i=0; i<ilist.id.size(); i++){
-		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE      = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE     = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
+		ItemOfTable *item_ID			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, QString::number(ilist.id.at(i)));
 		item_DATE->setData(Qt::DisplayRole, ilist.date.at(i).toString("dd/MM/yyyy hh:mm:ss"));
@@ -632,13 +633,13 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 
 	// list all customers
 	for(int i=0; i<ilist.code.count(); i++){
-		QTableWidgetItem *item_ID           = new QTableWidgetItem();
-		QTableWidgetItem *item_CODE         = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE         = new QTableWidgetItem();
-		QTableWidgetItem *item_DATEPAYEMENT = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION  = new QTableWidgetItem();
-		QTableWidgetItem *item_STATE        = new QTableWidgetItem();
+		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATEPAYEMENT = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_STATE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));

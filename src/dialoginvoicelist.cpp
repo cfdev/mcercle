@@ -3,6 +3,7 @@
 #include "dialogwaiting.h"
 #include "dialogprintchoice.h"
 #include "printc.h"
+#include "table.h"
 
 #include <QPrintPreviewDialog>
 #include <QPrinter>
@@ -64,15 +65,16 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	// list all customers
 	QString typeP;
 	for(int i=0; i<ilist.code.count(); i++){
-		QTableWidgetItem *item_ID           = new QTableWidgetItem();
-		QTableWidgetItem *item_State        = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE         = new QTableWidgetItem();
-		QTableWidgetItem *item_CODE         = new QTableWidgetItem();
-		QTableWidgetItem *item_CUSTOMER     = new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION  = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-		QTableWidgetItem *item_TYPE_PAYMENT = new QTableWidgetItem();
 
+		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_State        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CUSTOMER     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TYPE_PAYMENT = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_State -> setData(Qt::CheckStateRole, Qt::Checked);
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));

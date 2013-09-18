@@ -26,9 +26,6 @@ public:
 	void listYear();
 	void calculYear();
 
-protected:
-	void changeEvent(QEvent *e);
-
 private:
 	Ui::board *ui;
 

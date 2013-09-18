@@ -1,5 +1,6 @@
 #include "dialogservicesedit.h"
 #include "ui_dialogservicesedit.h"
+#include "table.h"
 
 #include <QPushButton>
 #include <QMessageBox>
@@ -152,6 +153,12 @@ void DialogServicesEdit::listInterCommToTable()
 		item_ID->setData(Qt::DisplayRole, QString::number(ilist.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, ilist.name.at(i));
 
+		// Mettre un fond/text en couleur
+		item_ID->setBackgroundColor(TABLE_BG_COLOR);
+		item_ID->setTextColor(TABLE_TXT_COLOR);
+		item_NAME->setBackgroundColor(TABLE_BG_COLOR);
+		item_NAME->setTextColor(TABLE_TXT_COLOR);
+		
 		//definir le tableau
 		ui->tableWidget_Inter->setRowCount(i+1);
 

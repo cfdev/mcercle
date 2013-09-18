@@ -20,6 +20,8 @@
 #include "dialogproviders.h"
 #include "ui_dialogproviders.h"
 #include "dialogprovidersedit.h"
+#include "table.h"
+
 #include <QMessageBox>
 
 
@@ -70,15 +72,16 @@ void DialogProviders::listProvidersToTable(QString order, QString filter, QStrin
 
 	// list all products
 	for(int i=0,j=0; i<plist.name.count();i++){
-		QTableWidgetItem *item_NAME      = new QTableWidgetItem();
-		QTableWidgetItem *item_PHONENUMBER      = new QTableWidgetItem();
-		QTableWidgetItem *item_FAXNUMBER     = new QTableWidgetItem();
-		QTableWidgetItem *item_EMAIL     = new QTableWidgetItem();
+		ItemOfTable *item_NAME      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PHONENUMBER      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_FAXNUMBER     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_EMAIL     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_NAME->setText(         plist.name.at(i));
 		item_PHONENUMBER->setText(  plist.phoneNumber.at(i));
 		item_FAXNUMBER->setText(    plist.faxNumber.at(i));
 		item_EMAIL->setText(        plist.email.at(i));
+		
 		//definir le tableau
 		ui->tableWidget_providers->setRowCount(j+1);
 		//remplir les champs

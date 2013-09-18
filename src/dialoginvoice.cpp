@@ -1,6 +1,26 @@
+/**
+  This file is a part of mcercle
+  Copyright (C) 2010-2013 Cyril FRAUSTI
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
 #include "dialoginvoice.h"
 #include "ui_dialoginvoice.h"
 #include "printc.h"
+#include "table.h"
 
 #include <QMessageBox>
 #include <QDebug>
@@ -255,14 +275,14 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 	m_proposal->getProposalItemsList(ilist, "ITEM_ORDER", filter, field);
 	// list all
 	for(int i=0; i<ilist.name.count(); i++){
-		QTableWidgetItem *item_ID           = new QTableWidgetItem();
-		QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
-		QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-		QTableWidgetItem *item_Name         = new QTableWidgetItem();
-		QTableWidgetItem *item_TAX          = new QTableWidgetItem();
-		QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-		QTableWidgetItem *item_QUANTITY     = new QTableWidgetItem();
+		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
@@ -355,14 +375,14 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 	m_invoice->getInvoiceItemsList(m_ilist, "ITEM_ORDER", filter, field);
 	// list all
 	for(int i=0; i<m_ilist.name.count(); i++){
-		QTableWidgetItem *item_ID           = new QTableWidgetItem();
-		QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
-		QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-		QTableWidgetItem *item_Name         = new QTableWidgetItem();
-		QTableWidgetItem *item_TAX          = new QTableWidgetItem();
-		QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-		QTableWidgetItem *item_QUANTITY     = new QTableWidgetItem();
+		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, m_ilist.id.at(i));
 		item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
@@ -445,10 +465,10 @@ void DialogInvoice::listServiceToTable()
 
 	// list des services communs
 	for(int i=0; i<servicesListCommon.id.size(); i++){
-		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
-		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
+		ItemOfTable *item_ID      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Detail  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, "#"+servicesListCommon.name.at(i));
@@ -467,10 +487,10 @@ void DialogInvoice::listServiceToTable()
 
 	// list des services utilisateur
 	for(unsigned int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
-		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
-		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
-		QTableWidgetItem *item_Detail  = new QTableWidgetItem();
+		ItemOfTable *item_ID      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Detail  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, QString::number(userServicesList.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, userServicesList.name.at(i));
@@ -831,7 +851,7 @@ void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
  void DialogInvoice::on_tableWidget_cellChanged(int row, int column) {
    if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (column == COL_DISCOUNT)){
 		//SECURITE LORS DES DEPLACEMENTS
-		//Car cela vide la cellule de sont objet "QTableWidgetItem" donc -> SIGFAULT
+		//Car cela vide la cellule de sont objet "ItemOfTable" donc -> SIGFAULT
 		
 		//Test pour savoir si les colonnes sont renseignees
 		if((ui->tableWidget->item(row, COL_PRICE) == NULL)||
@@ -846,7 +866,7 @@ void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 		qreal price = priceU * quantity;
 		price -= price * (discount/100.0);
 		//Item du total
-		QTableWidgetItem *item_Total  = new QTableWidgetItem();
+		ItemOfTable *item_Total  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		item_Total->setData(Qt::DisplayRole, price);
 		item_Total->setFlags(item_Total->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		ui->tableWidget->setItem(row, COL_TOTAL, item_Total);
@@ -919,20 +939,20 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 		for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
 			if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
 				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
-				QTableWidgetItem *item_QUANT  = new QTableWidgetItem();
+				ItemOfTable *item_QUANT  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 				item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
 				ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
 				return;
 			}
 		}
 	}
-	QTableWidgetItem *item_ID           = new QTableWidgetItem();
-	QTableWidgetItem *item_ID_PRODUCT   = new QTableWidgetItem();
-	QTableWidgetItem *item_ORDER        = new QTableWidgetItem();
-	QTableWidgetItem *item_TAX          = new QTableWidgetItem();
-	QTableWidgetItem *item_DISCOUNT     = new QTableWidgetItem();
-	QTableWidgetItem *item_PRICE        = new QTableWidgetItem();
-	QTableWidgetItem *item_QUANTITY     = new QTableWidgetItem();
+	ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 	item_ID->setData(Qt::DisplayRole, -1);
 	item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable

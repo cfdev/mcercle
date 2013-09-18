@@ -19,9 +19,11 @@
 
 #include "board.h"
 #include "ui_board.h"
+#include "dialoginvoice.h"
+#include "table.h"
 
 #include <QMessageBox>
-#include "dialoginvoice.h"
+
 
 /**
 	Constructeur de la class board
@@ -51,24 +53,10 @@ board::~board()
 	delete ui;
 }
 
-void board::changeEvent(QEvent *e)
-{
-	QWidget::changeEvent(e);
-	switch (e->type()) {
-	case QEvent::LanguageChange:
-		ui->retranslateUi(this);
-		break;
-	default:
-		break;
-	}
-}
-
-
 /**
 	Affiche les alertes du stock
 */
-void board::listStockAlertToTable()
-{
+void board::listStockAlertToTable() {
 	product::ProductList plist;
 	int state;
 	//Clear les items, attention tjs utiliser la fonction clear()
@@ -98,10 +86,10 @@ void board::listStockAlertToTable()
 
 	// list all products
 	for(int i=0,j=0; i<plist.code.count();i++){
-		QTableWidgetItem *item_CODE      = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME      = new QTableWidgetItem();
-		QTableWidgetItem *item_STOCK     = new QTableWidgetItem();
-		QTableWidgetItem *item_STATE     = new QTableWidgetItem();
+		ItemOfTable *item_CODE      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_STOCK     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_STATE     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
 		item_NAME->setData(Qt::DisplayRole, plist.name.at(i));
@@ -110,16 +98,6 @@ void board::listStockAlertToTable()
 		if(plist.stock.at(i) <= plist.stockWarning.at(i)) state = 1;
 		else  state = 0;
 
-		// Mettre un fond/text en couleur
-		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
-		item_CODE->setTextColor(TABLE_TXT_COLOR);
-		item_NAME->setBackgroundColor(TABLE_BG_COLOR);
-		item_NAME->setTextColor(TABLE_TXT_COLOR);
-		item_STOCK->setBackgroundColor(TABLE_BG_COLOR);
-		item_STOCK->setTextColor(TABLE_TXT_COLOR);
-		item_STATE->setBackgroundColor(TABLE_BG_COLOR);
-		item_STATE->setTextColor(TABLE_TXT_COLOR);
-		
 		item_STATE->setIcon( m_data->m_product->getIconState(state) );
 		item_STATE->setText( m_data->m_product->getTextState(state) );
 
@@ -175,12 +153,12 @@ void board::listInvoiceAlertToTable()
 	
 	// list all products
 	for(int i=0,j=0; i<ilist.code.count();i++){
-		QTableWidgetItem *item_CODE      = new QTableWidgetItem();
-		QTableWidgetItem *item_C_Id      = new QTableWidgetItem();
-		QTableWidgetItem *item_DATE      = new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION     = new QTableWidgetItem();
-		QTableWidgetItem *item_CUSTOMER     = new QTableWidgetItem();
-		QTableWidgetItem *item_STATE     = new QTableWidgetItem();
+		ItemOfTable *item_CODE	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_C_Id	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DESCRIPTION	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CUSTOMER		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_STATE			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i) );
 		item_C_Id->setData(Qt::DisplayRole, ilist.customerId.at(i) );
@@ -196,19 +174,6 @@ void board::listInvoiceAlertToTable()
 			item_STATE->setIcon( QIcon(":/app/quit") );
 			item_STATE->setText( tr("Ech\351ance d\351pass\351e") );
 		}
-		// Mettre un fond/text en couleur
-		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
-		item_CODE->setTextColor(TABLE_TXT_COLOR);
-		item_C_Id->setBackgroundColor(TABLE_BG_COLOR);
-		item_C_Id->setTextColor(TABLE_TXT_COLOR);
-		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
-		item_DATE->setTextColor(TABLE_TXT_COLOR);
-		item_DESCRIPTION->setBackgroundColor(TABLE_BG_COLOR);
-		item_DESCRIPTION->setTextColor(TABLE_TXT_COLOR);
-		item_CUSTOMER->setBackgroundColor(TABLE_BG_COLOR);
-		item_CUSTOMER->setTextColor(TABLE_TXT_COLOR);
-		item_STATE->setBackgroundColor(TABLE_BG_COLOR);
-		item_STATE->setTextColor(TABLE_TXT_COLOR);
 		
 		//definir le tableau
 		ui->tableWidget_InvoiceAlert->setRowCount(j+1);
@@ -263,30 +228,18 @@ void board::listProposalAlertToTable()
 
 	// list all products
 	for(int i=0,j=0; i<list.code.count();i++){
-		QTableWidgetItem *item_CODE		= new QTableWidgetItem();
-		QTableWidgetItem *item_C_Id		= new QTableWidgetItem();
-		QTableWidgetItem *item_DATE		= new QTableWidgetItem();
-		QTableWidgetItem *item_DESCRIPTION	= new QTableWidgetItem();
-		QTableWidgetItem *item_CUSTOMER		= new QTableWidgetItem();
+		ItemOfTable *item_CODE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_C_Id		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DESCRIPTION	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CUSTOMER		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_CODE->setData(Qt::DisplayRole, list.code.at(i) );
 		item_C_Id->setData(Qt::DisplayRole, list.customerId.at(i) );
 		item_DATE->setData(Qt::DisplayRole, list.userDate.at(i).toString(tr("dd/MM/yyyy")));
 		item_DESCRIPTION->setData(Qt::DisplayRole, list.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, list.customerFirstName.at(i)+" "+list.customerLastName.at(i));
-		
-		// Mettre un fond/text en couleur
-		item_CODE->setBackgroundColor(TABLE_BG_COLOR);
-		item_CODE->setTextColor(TABLE_TXT_COLOR);
-		item_C_Id->setBackgroundColor(TABLE_BG_COLOR);
-		item_C_Id->setTextColor(TABLE_TXT_COLOR);
-		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
-		item_DATE->setTextColor(TABLE_TXT_COLOR);
-		item_DESCRIPTION->setBackgroundColor(TABLE_BG_COLOR);
-		item_DESCRIPTION->setTextColor(TABLE_TXT_COLOR);
-		item_CUSTOMER->setBackgroundColor(TABLE_BG_COLOR);
-		item_CUSTOMER->setTextColor(TABLE_TXT_COLOR);
-		
+
 		//definir le tableau
 		ui->tableWidget_ProposalAlert->setRowCount(j+1);
 		//remplir les champs
@@ -329,10 +282,10 @@ void board::listRevenuesToTable()
 	ui->tableWidget_revenue->setHorizontalHeaderLabels( titles );
 
 	for(int i=1,j=0; i<13;i++){
-		QTableWidgetItem *item_DATE     = new QTableWidgetItem();
-		QTableWidgetItem *item_MonthRevenue  = new QTableWidgetItem();
-		QTableWidgetItem *item_MonthServiceRevenue  = new QTableWidgetItem();
-		QTableWidgetItem *item_MonthProductRevenue  = new QTableWidgetItem();
+		ItemOfTable *item_DATE				= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_MonthRevenue		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_MonthServiceRevenue  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_MonthProductRevenue  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_DATE->setData(Qt::DisplayRole, QDate::longMonthName ( i,QDate::DateFormat) );
 
@@ -343,16 +296,6 @@ void board::listRevenuesToTable()
 		item_MonthProductRevenue->setData(Qt::DisplayRole, monthProductRevenue);
 
 		item_MonthRevenue->setData(Qt::DisplayRole, monthServiceRevenue + monthProductRevenue);
-		
-		// Mettre un fond/text en couleur
-		item_DATE->setBackgroundColor(TABLE_BG_COLOR);
-		item_DATE->setTextColor(TABLE_TXT_COLOR);
-		item_MonthServiceRevenue->setBackgroundColor(TABLE_BG_COLOR);
-		item_MonthServiceRevenue->setTextColor(TABLE_TXT_COLOR);
-		item_MonthProductRevenue->setBackgroundColor(TABLE_BG_COLOR);
-		item_MonthProductRevenue->setTextColor(TABLE_TXT_COLOR);
-		item_MonthRevenue->setBackgroundColor(TABLE_BG_COLOR);
-		item_MonthRevenue->setTextColor(TABLE_TXT_COLOR);
 		
 		//definir le tableau
 		ui->tableWidget_revenue->setRowCount(j+1);

@@ -23,6 +23,7 @@
 #include "dialogproviders.h"
 #include "dialogwaiting.h"
 #include "dialogprintchoice.h"
+#include "table.h"
 
 #include <QMessageBox>
 #include <QTableWidgetItem>
@@ -52,12 +53,10 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 	listProducts(m_prodPage);
 	// Si cest une vue pour la selection de la facture on cache des elements
 	if( type == INVOICE_VIEW){
-		ui->labeltitle->hide();
 		ui->toolButton_addProduct->hide();
 		ui->toolButton_editProduct->hide();
 		ui->toolButton_remove->hide();
 		ui->toolButton_print->hide();
-		ui->line_top->hide();
 		ui->tabWidget->hide();
 
 		delete ui->horizontalLayout_buttons; // ajuste la hauteur sinon perte de place
@@ -160,12 +159,12 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	// list all products
 	for(unsigned int i=0,j=0; i<plist.id.size();i++){
 		if((m_ShowObsoleteProduct)||(plist.state.at(i) == 1)){
-			QTableWidgetItem *item_ID          = new QTableWidgetItem();
-			QTableWidgetItem *item_CODE      = new QTableWidgetItem();
-			QTableWidgetItem *item_NAME     = new QTableWidgetItem();
-			QTableWidgetItem *item_STOCK     = new QTableWidgetItem();
-			QTableWidgetItem *item_PRICE     = new QTableWidgetItem();
-			QTableWidgetItem *item_CATEGORY    = new QTableWidgetItem();
+			ItemOfTable *item_ID       = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_CODE     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_NAME     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_STOCK    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_PRICE    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_CATEGORY = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 			item_ID->setData(Qt::DisplayRole, plist.id.at(i));
 			item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
@@ -184,19 +183,6 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 				item_PRICE->setBackgroundColor(QColor(208,195,195,255));
 				item_CATEGORY->setBackgroundColor(QColor(208,195,195,255));
 			}else{
-				item_ID->setBackgroundColor(TABLE_BG_COLOR);
-				item_ID->setTextColor(TABLE_TXT_COLOR);
-				item_CODE->setBackgroundColor(TABLE_BG_COLOR);
-				item_CODE->setTextColor(TABLE_TXT_COLOR);
-				item_NAME->setBackgroundColor(TABLE_BG_COLOR);
-				item_NAME->setTextColor(TABLE_TXT_COLOR);
-				item_STOCK->setBackgroundColor(TABLE_BG_COLOR);
-				item_STOCK->setTextColor(TABLE_TXT_COLOR);
-				item_PRICE->setBackgroundColor(TABLE_BG_COLOR);
-				item_PRICE->setTextColor(TABLE_TXT_COLOR);
-				item_CATEGORY->setBackgroundColor(TABLE_BG_COLOR);
-				item_CATEGORY->setTextColor(TABLE_TXT_COLOR);
-
 				//couleur de la categorie
 				if( (plist.categoryColor.at(i).isValid()) && (plist.categoryColor.at(i)) != QColor(0, 0, 0, 255))
 					item_CATEGORY->setBackgroundColor( plist.categoryColor.at(i) );
