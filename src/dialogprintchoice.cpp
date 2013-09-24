@@ -14,9 +14,9 @@ DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	
 	mpath = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
 	if( m_printer -> outputFileName().isEmpty() )
-		mpathFile = mpath + QDir::separator() +"FAxxx.pdf";
+		mpathFile = mpath + "/FAxxx.pdf";
 	else
-		mpathFile = mpath + QDir::separator() + m_printer->outputFileName();
+		mpathFile = mpath + '/' + m_printer->outputFileName();
 	
 	ui->lineEdit_path->setText( mpathFile );
 }
@@ -46,19 +46,21 @@ void DialogPrintChoice::on_radioButton_printer_clicked() {
  */
 void DialogPrintChoice::on_buttonBox_accepted() {
 	//impression physique
+	mpathFile = ui->lineEdit_path->text();
+	QFileInfo file( mpathFile );
+	mpath = file.dir().absolutePath()+ '/';
+	
 	if( ui->radioButton_printer->isChecked() ){
 		m_typePrint = PRINT_FILE;
 		mpathFile = "";
 		m_printer -> setOutputFormat(QPrinter::NativeFormat);
-		m_printer -> setOutputFileName(mpathFile);
 	}
 	//impression PDF
 	else{
 		m_typePrint = PRINT_PDF;
-		mpathFile = ui->lineEdit_path->text();
 		m_printer -> setOutputFormat(QPrinter::PdfFormat);
-		m_printer -> setOutputFileName( ui->lineEdit_path->text() );
 	}
+	m_printer -> setOutputFileName(mpathFile);
 }
 
 /**
@@ -69,7 +71,7 @@ void DialogPrintChoice::on_toolButton_path_clicked() {
 	QString filename = QFileDialog::getSaveFileName(this, "Emplacement du fichier", mpathFile.toStdString().c_str(), "*.pdf");
 	if( !filename.isEmpty() ) {
 		QFileInfo file( filename );
-		mpath = file.dir().absolutePath()+ QDir::separator();
+		mpath = file.dir().absolutePath()+ '/';
 		ui -> lineEdit_path -> setText(filename);
 	}
 }
