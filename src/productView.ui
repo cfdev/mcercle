@@ -256,7 +256,7 @@ p, li { white-space: pre-wrap; }
               <enum>QFrame::Sunken</enum>
              </property>
              <property name="alternatingRowColors">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
             </widget>
            </item>

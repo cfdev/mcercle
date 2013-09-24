@@ -69,7 +69,11 @@ p, li { white-space: pre-wrap; }
           </layout>
          </item>
          <item>
-          <widget class="QTableWidget" name="tableWidget_revenue"/>
+          <widget class="QTableWidget" name="tableWidget_revenue">
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -85,7 +89,11 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QTableWidget" name="tableWidget_InvoiceAlert"/>
+        <widget class="QTableWidget" name="tableWidget_InvoiceAlert">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="1" column="1">
         <widget class="QLabel" name="label_proposal">
@@ -99,7 +107,11 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QTableWidget" name="tableWidget_ProposalAlert"/>
+        <widget class="QTableWidget" name="tableWidget_ProposalAlert">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_stock">
@@ -113,7 +125,11 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
        <item row="4" column="1">
-        <widget class="QTableWidget" name="tableWidget_stock"/>
+        <widget class="QTableWidget" name="tableWidget_stock">
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

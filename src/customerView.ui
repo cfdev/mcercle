@@ -210,6 +210,9 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="alternatingRowColors">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -298,7 +301,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>3</number>
          </property>
          <property name="iconSize">
           <size>
@@ -543,7 +546,11 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <widget class="QTableWidget" name="tableWidget_Services"/>
+              <widget class="QTableWidget" name="tableWidget_Services">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -681,7 +688,11 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <widget class="QTableWidget" name="tableWidget_Proposals"/>
+              <widget class="QTableWidget" name="tableWidget_Proposals">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -819,7 +830,11 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <widget class="QTableWidget" name="tableWidget_Invoices"/>
+              <widget class="QTableWidget" name="tableWidget_Invoices">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

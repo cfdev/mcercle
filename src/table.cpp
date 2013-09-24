@@ -25,8 +25,8 @@
  * @param colorTXT
  */
 ItemOfTable::ItemOfTable(const QColor& colorBG, const QColor& colorTXT) {
-	this -> setBackgroundColor( colorBG );
-	this -> setTextColor( colorTXT );
+	/*this -> setBackgroundColor( colorBG );
+	this -> setTextColor( colorTXT );*/
 }
 
 /**
@@ -34,6 +34,7 @@ ItemOfTable::ItemOfTable(const QColor& colorBG, const QColor& colorTXT) {
  * @param parent
  */
 Table::Table( QWidget *parent) : QTableWidget(parent) {
+	setAlternatingRowColors(true);
 	setSelectionBehavior(QAbstractItemView::SelectRows);
 	setSelectionMode(QAbstractItemView::SingleSelection);
 	setEditTriggers(QAbstractItemView::NoEditTriggers);
