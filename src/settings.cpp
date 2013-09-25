@@ -144,7 +144,8 @@ void Settings::setDatabase_default() {
  */
 bool Settings::settingIsOk() {
 	m_settings->beginGroup("main");
-	bool val = m_settings->value("settingState").toBool();
+	bool val = false;
+	val = m_settings->value("settingState").toBool();
 	m_settings->endGroup();
 	return val;
 }
