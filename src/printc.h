@@ -24,6 +24,7 @@ class Printc : public QObject
 	
 	private:
 	enum{T_PROPOSAL, T_INVOICE, T_SERVICE};
+#define OFFSET_BOT_TOTAL 275
 		
 	QLocale m_lang;
 	database *m_data;

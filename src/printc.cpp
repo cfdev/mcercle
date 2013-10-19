@@ -74,16 +74,17 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	mpageRect = printer -> pageRect();
 	
 	if(printer -> orientation() == QPrinter::Landscape){
-			mlinePerLastPage = 8;
-			mlinePerPage = mlinePerLastPage +2;
-			mBlockHeight = 200;
+		mlinePerLastPage = 8;
+		mlinePerPage = mlinePerLastPage +2;
+		mBlockHeight = 200;
 	}
 	else{
-			mlinePerLastPage = 25;
-			mlinePerPage =  mlinePerLastPage +5;
-			mBlockHeight = 600;
+		mlinePerLastPage = 25;
+		mlinePerPage =  mlinePerLastPage +5;
+		mBlockHeight = 875;
 	}
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
+	qDebug() << "LinePerPage:" << mlinePerPage << " LinePerLastPage:" << mlinePerLastPage;
 	
 	database::Bank mb;
 	m_data -> getBank(mb);
@@ -276,7 +277,8 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		maxLine = mlinePerLastPage;
 	else
 		maxLine = mlinePerPage;
-
+	qDebug() << "Page:" << page << " Maxline:" << maxLine;
+	
 	// Boucle des articles
 	for(int linePrinted=0; linePrinted<maxLine; ){
 		// sil ne reste plus d item a afficher on sort
@@ -341,10 +343,12 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		// Si le nombre de lignes par page et atteind  -> ON SORT
 		if((linePrinted - maxLine) >= 0)
 			break; 
+		
 		// sil reste des items a afficher et
 		// Si le nombre de lignes de l item suivant depasse le max de ligne -> ON SORT
 		// Important: cela evite un item multilignes d etre a cheval sur 2 pages !!!
 		if((Ilist.designation.count() - itemPrinted) > 0){
+			lines = Ilist.designation.at(itemPrinted).split("\n");
 			if(lines.count() > 1) {
 				if((linePrinted + lines.count()+1) > maxLine)
 					break;
@@ -358,12 +362,9 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	/// Dessine les contours du contenu.
 	mRectContent = QRect();
 	// Si multiligne on adapte la hauteur du rect
-	//if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
-	// Si derniere page on adapte la taille
-	if(page >= NbOfpage)
-		mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rectTop_content + mBlockHeight);
-	else
-		mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, rectTop_content + mBlockHeight + 150);
+	if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
+	if(mBlockHeight < rect.bottom()) mBlockHeight = rect.bottom();
+	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, mBlockHeight);
 	painter.drawRoundedRect(mRectContent, 5, 5);
 	
 	// LIGNE de separation des TITRES
@@ -419,37 +420,11 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
  * @param totalPrice
  */
 void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal &totalPrice ,int type) {
-	/*//TOTAL
-	totalPrice=0;
-	for(int i=0; i<ListTotalPrice.size(); i++)
-		totalPrice += ListTotalPrice.at(i);
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
-	painter.drawText( rect, tr("TOTAL : "));
-	mFont.setBold(true);
-	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+5, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
-	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
-	mFont.setBold(false);
-	painter.setFont(mFont);
-
-
-
-	//TOTAL TAX
-	QString text;
-	if(m_data->getIsTax()){
-	}
-	else{
-		text = tr("TVA non applicable - Article 293 B du CGI");
-		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
-		painter.drawText( rect, text );
-	}*/
-	
 	//TOTAL
 	totalPrice=0;
 	for(int i=0; i<Ilist.totalPrice.size(); i++)
 		totalPrice += Ilist.totalPrice.at(i);
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
+	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),/*mRectContent.bottom()+15*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL, mwUtil*0.36,0, Qt::AlignLeft, tr("TOTAL : ") );
 	//dessine le fond
 	painter.setBrush( Qt::lightGray );
 	painter.setPen(Qt::NoPen);
@@ -460,7 +435,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal 
 
 	mFont.setBold(true);
 	painter.setFont( mFont );
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mRectContent.bottom()+15, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),/*mRectContent.bottom()+15*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL, mwUtil*0.36,0, Qt::AlignRight, m_lang.toString(totalPrice, 'f', 2) );
 	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
 	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(totalPrice, 'f', 2) );
 
@@ -504,7 +479,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal 
 	}
 	else{
 		text = tr("TVA non applicable - Article 293 B du CGI");
-		rect = painter.fontMetrics().boundingRect(mLeft, mRectContent.bottom()+5 , mwUtil*0.50,0, Qt::AlignLeft, text );
+		rect = painter.fontMetrics().boundingRect(mLeft, /*mRectContent.bottom()+5*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL , mwUtil*0.50,0, Qt::AlignLeft, text );
 		painter.drawText( rect, text );
 	}
 }
@@ -515,6 +490,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal 
  * @param rect
  */
 void Printc::print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice) {
+	qreal topRect = mpageRect.height() - mBottom - OFFSET_BOT_TOTAL + 15;
 	//Mode de reglement
 	QString typePayment;
 	QString typeP = m_pro -> getTypePayment();
@@ -527,7 +503,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice)
 	if(typeP == DEBIT)          typePayment = tr("Prelevement");
 	if(typeP == OTHER)          typePayment = tr("Autre");
 	QString text = tr("Mode de r\350glement : ")+typePayment;
-	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
+	rect = painter.fontMetrics().boundingRect(mLeft, topRect, mwUtil*0.50,0, Qt::AlignLeft, text );
 	painter.drawText( rect, text );
 
 	if((typeP == INTERBANK)||(typeP == DEBIT)){
@@ -539,18 +515,18 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice)
 	//Condition de reglement
 	text = tr("Conditions de r\350glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
 	text += m_lang.toString(totalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
-	rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
+	rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
 	painter.drawText( rect, text);
 	
 	/// RIB
 	if(typeP == TRANSFER){
 		text = "Relev\351 d'Itentit\351 Bancaire\n\n\n\n\n\n";
-		rect = painter.fontMetrics().boundingRect(mLeft,rect.bottom()+10, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom(), mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
 		painter.drawText(rect, text);
 		
 		mFont.setPointSize(8);
 		painter.setFont(mFont);
-		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+20, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, mBankTextID );
+		rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top()+25, mwUtil*0.36 +15, rect.height(), Qt::AlignLeft, mBankTextID );
 		rect.setWidth(mwUtil*0.36); //fixe la largeur
 		painter.drawText(rect, mBankTextID);
 		
@@ -581,15 +557,22 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 	// Defini le nombre a imprimer
 	int itemsToPrint = plist.name.count();
-	int lineToPrint = itemsToPrint;
+	int lineToPrint = 0;
 	//recupere le nombre de lignes.
 	for(int i=0; i<plist.name.count(); i++){
-		lineToPrint += plist.name.at(i).count("\n");
+		// Si multiligne on ajout un saut de ligne
+		if(plist.name.at(i).count("\n")>0) lineToPrint++;
+		// ajout le nombre d'item avec le nombre de lignes
+		lineToPrint += ( plist.name.at(i).count("\n")+1 );
 	}
-	int numberOfPage = ceil((qreal)lineToPrint/mlinePerLastPage);
-	if(numberOfPage > 1) {
+	int numberOfPage = 0;
+	if(lineToPrint > mlinePerLastPage) {
+		numberOfPage = ceil((qreal)lineToPrint/mlinePerPage);
 		int nbLines = ((numberOfPage-1)*mlinePerPage)+mlinePerLastPage;
 		if((lineToPrint - nbLines) >0) numberOfPage++;
+	}
+	else {
+		numberOfPage = 1;
 	}
 	
 	qDebug() << "lineToPrint: " << lineToPrint;
@@ -626,10 +609,20 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 		print_footer(painter, rect, QString::number(page), QString::number(numberOfPage));
 		// Met a jour la progression
 		m_DialogWaiting -> setProgressBar(page);
-		// Nouvelle page ?
+		// Si il reste des items -> Nouvelle page
 		if( (itemsToPrint - itemPrinted) > 0){
 			qDebug() << "-> Nouvelle page";
 			printer -> newPage();
+		}
+		// Sinon on creer une nouvelle page avec le total uniquement
+		else if( page < numberOfPage){
+			page++;
+			qDebug() << "-> Nouvelle page avec total";
+			printer -> newPage();
+			/// Imprime l entete
+			print_header(painter, rect, T_PROPOSAL);
+			/// Imprime le pied de page
+			print_footer(painter, rect, QString::number(page), QString::number(numberOfPage));
 		}
 	}
 	// Imprime le total
@@ -639,7 +632,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 	/// Signature Client
 	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n\n";
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, rect.top(), 0, 0, Qt::AlignLeft, text );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, /*rect.top()*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL + 45, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
 	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36 +15, rect.height()), 5, 5 );
 	
