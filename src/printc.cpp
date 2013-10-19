@@ -73,15 +73,18 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	printer -> getPageMargins(&mLeft, &mTop, &mRight, &mBottom, QPrinter::DevicePixel);
 	mpageRect = printer -> pageRect();
 	
+	qDebug() << "mpageRect.height: " << mpageRect.height();
 	if(printer -> orientation() == QPrinter::Landscape){
 		mlinePerLastPage = 8;
 		mlinePerPage = mlinePerLastPage +2;
-		mBlockHeight = 200;
+		// Ajuster la hauteur
+		mBlockHeight = mpageRect.height() / 4.4;
 	}
 	else{
 		mlinePerLastPage = 25;
 		mlinePerPage =  mlinePerLastPage +5;
-		mBlockHeight = 875;
+		// Ajuster la hauteur
+		mBlockHeight = mpageRect.height() / 1.4;
 	}
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
 	qDebug() << "LinePerPage:" << mlinePerPage << " LinePerLastPage:" << mlinePerLastPage;
