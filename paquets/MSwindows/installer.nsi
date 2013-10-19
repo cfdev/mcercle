@@ -12,8 +12,8 @@
 ;General
 	; General Product Description Definitions
 	!define SOFT_NAME 		"mcercle"
-	!define SOFT_VERSION 	"13.09_BETA"
-	!define SOFT_WEB_SITE 	"http://frausti.fr"
+	!define SOFT_VERSION 	"13.10_RC"
+	!define SOFT_WEB_SITE 	"http://cyril.frausti.fr"
 	!define SOFT_BUILD 		"1cf"
 	!define ARCH       		"win32"
 	!define ICON 			"install.ico"
@@ -99,6 +99,7 @@ Section "Logiciel"
 
 	; use defaults for parameters, icon, etc.
 	; shortcuts in the start menu
+	SetShellVarContext all ; all users
 	CreateDirectory "$SMPROGRAMS\${SOFT_NAME}"
 	CreateShortCut "$SMPROGRAMS\${SOFT_NAME}\mcercle.lnk" "$INSTDIR\mcercle.exe" 0 "$INSTDIR\mcercle.ico"
 	CreateShortCut "$DESKTOP\mcercle.lnk" "$INSTDIR\mcercle.exe" 0 "$INSTDIR\mcercle.ico"
@@ -123,7 +124,7 @@ FunctionEnd
 UninstallIcon ${ICON}
 
 Section "Uninstall"
-
+	SetShellVarContext all ; all users
 	;remove start menu shortcuts
 	Delete "$DESKTOP\mcercle.lnk"
 	Delete "$SMPROGRAMS\${SOFT_NAME}\mcercle.lnk"
@@ -136,7 +137,7 @@ Section "Uninstall"
 	;remove installation registary keys
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SOFT_NAME}"
 	DeleteRegKey /ifempty HKCU "Software\${SOFT_NAME}"
-
+	
 	IfFileExists "$INSTDIR" 0 NoErrorMsg
 	MessageBox MB_OK "Note: $INSTDIR could not be removed!" IDOK 0 ; skipped if file doesn't exist
 	NoErrorMsg:
