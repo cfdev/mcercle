@@ -24,6 +24,9 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 
+#include <QStyle>
+#include <QGtkStyle>
+
 #include "dialogsettings.h"
 #include "dialogproviders.h"
 #include "mainwindow.h"
@@ -49,6 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	m_database = new database( m_lang, this);
 	m_Settings = new Settings(this);
+	
+	//QApplication::this->setStyle( new QCleanlooksStyle);
 }
 
 

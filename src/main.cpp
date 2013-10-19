@@ -22,7 +22,6 @@
 #include <QDesktopServices>
 #include <QTextCodec>
 #include <QMessageBox>
-
 #include "mainwindow.h"
 
 
@@ -38,7 +37,13 @@ int main(int argc, char *argv[])
 		translator.load("qt_" + locale, QCoreApplication::applicationDirPath() + "/lang/");
 	}
 	app.installTranslator(&translator);
-
+	
+	// Style dark
+/*	app.setStyleSheet(	"QMainWindow {background: rgb(100,100,100,255);} "
+						"QTableWidget {background: rgb(100,100,100,255);}  "
+					);
+*/
+	
 	m_win.init();
 	m_win.show();
 
