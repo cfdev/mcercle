@@ -24,6 +24,7 @@
 #include <QStringList>
 #include <QWidget>
 #include <QVariant>
+#include <QDebug>
 
 invoice::invoice(QSqlDatabase db, QWidget *parent): m_parent(parent) {
 	m_db = db;
@@ -715,12 +716,12 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
                 "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
                 "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
+	//qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
 		query.next();
 		total = query.value(query.record().indexOf("TOTAL")).toFloat();
-
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
