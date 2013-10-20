@@ -364,10 +364,15 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	}
 	/// Dessine les contours du contenu.
 	mRectContent = QRect();
-	// Si multiligne on adapte la hauteur du rect
-	if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
-	if(mBlockHeight < rect.bottom()) mBlockHeight = rect.bottom();
-	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, mBlockHeight);
+	qreal heightContent = mBlockHeight;
+	// Si ce n'est pas la derniere page on adapte la hauteur
+	if(page < NbOfpage) {
+		qDebug() << "Ajuste hauteur RectContent page " << page;
+		// Si multiligne on adapte la hauteur du rect
+		if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
+		if(heightContent < rect.bottom()) heightContent = rect.bottom();
+	}
+	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, heightContent);
 	painter.drawRoundedRect(mRectContent, 5, 5);
 	
 	// LIGNE de separation des TITRES
