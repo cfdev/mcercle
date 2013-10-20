@@ -12,7 +12,7 @@
 ;General
 	; General Product Description Definitions
 	!define SOFT_NAME 		"mcercle"
-	!define SOFT_VERSION 	"13.10_RC"
+	!define SOFT_VERSION 	"13.10"
 	!define SOFT_WEB_SITE 	"http://cyril.frausti.fr"
 	!define SOFT_BUILD 		"1cf"
 	!define ARCH       		"win32"
