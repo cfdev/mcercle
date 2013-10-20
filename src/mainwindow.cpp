@@ -26,6 +26,8 @@
 
 #include <QStyle>
 #include <QGtkStyle>
+#include <QGtkStyle>
+#include <QPlastiqueStyle>
 
 #include "dialogsettings.h"
 #include "dialogproviders.h"
@@ -53,7 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_database = new database( m_lang, this);
 	m_Settings = new Settings(this);
 	
-	//QApplication::this->setStyle( new QCleanlooksStyle);
+	//QApplication::setStyle( new QCleanlooksStyle);
+	QApplication::setStyle(new QPlastiqueStyle);
 }
 
 
