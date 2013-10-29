@@ -79,6 +79,7 @@ Section "Logiciel"
 	SetOutPath "$INSTDIR"  
 	; copy every files in the "files" directory
 	File /nonfatal /r "mcercle.exe"
+	File /nonfatal /r "..\..\art\logo\mcercle.ico"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtCore4.dll"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtGui4.dll"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtSql4.dll"
