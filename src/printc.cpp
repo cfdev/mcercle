@@ -82,7 +82,7 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	}
 	else{
 		mlinePerLastPage = 25;
-		mlinePerPage =  mlinePerLastPage +5;
+		mlinePerPage =  mlinePerLastPage +10;
 		// Ajuster la hauteur
 		mBlockHeight = mpageRect.height() / 1.4;
 	}
@@ -371,6 +371,12 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		// Si multiligne on adapte la hauteur du rect
 		if(lines.count() > 1) rect.setHeight( (lines.count()+1)*rect.height() );
 		if(heightContent < rect.bottom()) heightContent = rect.bottom();
+		//Bornage si depassement du pied de page
+		if( ((rectTop_content+heightContent) >= get_RecFooter(painter).top())){
+			qDebug() << "TopFooter: " << get_RecFooter(painter).top() << " rectTop_content+heightContent" << rectTop_content+heightContent;
+			heightContent = get_RecFooter(painter).top() - 25;
+			qDebug() << "Bornage -> depassement du pied de page: " << heightContent;
+		}
 	}
 	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, heightContent);
 	painter.drawRoundedRect(mRectContent, 5, 5);
@@ -399,26 +405,36 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 					 QPoint(mLeft+mwUtil*0.88, mRectContent.bottom()) );
 }
 
+/**
+ * @brief Printc::get_RecFooter
+ * @return 
+ */
+QRectF Printc::get_RecFooter(QPainter &painter) {
+	QRectF rect;
+	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
+	rect.translate( 0, -rect.height());
+	return rect;
+}
 
 /**
  * @brief Printc::print_footer
  * @param painter
  */
 void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage) {
-	//Information pied de page
-	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
-	rect.translate( 0, -rect.height());
-	painter.drawText( rect, Qt::AlignCenter, mfooterTextInfo);
+	// Ligne
+	painter.drawLine(QPoint(mLeft, get_RecFooter(painter).top()) , QPoint(mLeft + mwUtil, get_RecFooter(painter).top()));
 
 	// Num de page
 	if(!page.isEmpty()) {
 		QString pageText = tr("Page ") + page + " / " + NbOfpage;
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.top()+5, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
-		//rect.translate( 0, -rect.height());
-		painter.drawText( rect, Qt::AlignCenter, pageText);
+		rect = painter.fontMetrics().boundingRect(mLeft, get_RecFooter(painter).top(), mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
+		rect.translate( 0, +rect.height());
+		painter.drawText( rect, Qt::AlignVCenter |Qt::AlignRight, pageText);
 	}
-	// Ligne
-	painter.drawLine(QPoint(mLeft, rect.top()) , QPoint(mLeft + mwUtil, rect.top()));
+	//Information pied de page
+	rect = get_RecFooter(painter);
+	rect.translate( 0, 10);
+	painter.drawText(rect , Qt::AlignHCenter, mfooterTextInfo);
 }
 
 /**

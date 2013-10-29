@@ -57,6 +57,7 @@ class Printc : public QObject
 	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int page, int NbOfpage);
 	void print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal &totalPrice, int type);
 	void print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice);
+	QRectF get_RecFooter(QPainter &painter);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
 	
 	private slots:
