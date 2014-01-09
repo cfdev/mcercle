@@ -2,16 +2,11 @@
 # mcercle - Logiciel de gestion libre
 # -------------------------------------------------
 
-QT += sql
+QT += sql widgets printsupport
 TARGET = mcercle
 TEMPLATE = app
 CONFIG += ordered
 INCLUDEPATH += src
-
-# Fichiers sources
-#SOURCES += src/*.cpp
-#HEADERS += src/*.h
-#FORMS += src/*.ui
 
 # Liste des fichiers qui seront incorpores au binaire en tant que ressources
 RESOURCES += ressources.qrc
@@ -71,7 +66,8 @@ HEADERS += \
     src/customerView.h \
     src/customer.h \
     src/board.h \
-    src/about.h
+    src/about.h \
+    src/mcercle.h
 
 SOURCES += \
     src/tax.cpp \
