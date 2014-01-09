@@ -45,7 +45,7 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 	m_lang = lang;
 	ui->comboBoxFiltre->addItem(tr("Codes"));
 	ui->comboBoxFiltre->addItem(tr("Nom"));
-	ui->comboBoxFiltre->addItem(tr("Cat\351gorie"));
+	ui->comboBoxFiltre->addItem(QLatin1String("Catégorie"));
 	//Ne pas afficher les produits hors vente
 	m_ShowObsoleteProduct = false;
 	//afficher la liste des produits
@@ -131,7 +131,7 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 
 	ui->tableWidget_products->setSortingEnabled(false);
 	//Style de la table produit
-	ui->tableWidget_products->setColumnCount(6);
+	ui->tableWidget_products->setColumnCount(7);
 	ui->tableWidget_products->setColumnWidth(2,200);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_products->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
@@ -142,7 +142,7 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	ui->tableWidget_products->setAlternatingRowColors(true);
 	QStringList titles;
 	titles.clear();
-	titles << tr("Id") << tr("Codes") << tr("Noms") << tr("Stock") << tr("Prix de vente") << tr("Cat\351gorie");
+	titles << tr("Id") << tr("Codes") << tr("Noms") << QLatin1String("Catégorie") << tr("Prix de vente") << tr("Tva") << tr("Stock") ;
 	ui->tableWidget_products->setHorizontalHeaderLabels( titles );
 
 	//Cacul en fonction de la page
@@ -157,21 +157,22 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	m_data->m_product->getProductList(plist, first, skip, filter, field);
 
 	// list all products
-	for(unsigned int i=0,j=0; i<plist.id.size();i++){
+	for(int i=0,j=0; i<plist.id.size();i++){
 		if((m_ShowObsoleteProduct)||(plist.state.at(i) == 1)){
 			ItemOfTable *item_ID       = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 			ItemOfTable *item_CODE     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 			ItemOfTable *item_NAME     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 			ItemOfTable *item_STOCK    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 			ItemOfTable *item_PRICE    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_TAX    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 			ItemOfTable *item_CATEGORY = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 			item_ID->setData(Qt::DisplayRole, plist.id.at(i));
 			item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
 			item_NAME->setData(Qt::DisplayRole, plist.name.at(i));
-			//item_NAME->setText(plist.name.at(i));
 			item_STOCK->setData(Qt::DisplayRole, plist.stock.at(i));
 			item_PRICE->setData(Qt::DisplayRole, plist.selling_price.at(i));
+			item_TAX->setData(Qt::DisplayRole, plist.tax.at(i));
 			item_CATEGORY->setData(Qt::DisplayRole, plist.category.at(i));
 
 			//couleur de fond pour les produits obsoletes
@@ -181,6 +182,7 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 				item_NAME->setBackgroundColor(QColor(208,195,195,255));
 				item_STOCK->setBackgroundColor(QColor(208,195,195,255));
 				item_PRICE->setBackgroundColor(QColor(208,195,195,255));
+				item_TAX->setBackgroundColor(QColor(208,195,195,255));
 				item_CATEGORY->setBackgroundColor(QColor(208,195,195,255));
 			}else{
 				//couleur de la categorie
@@ -190,12 +192,13 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 			//definir le tableau
 			ui->tableWidget_products->setRowCount(j+1);
 			//remplir les champs
-			ui->tableWidget_products->setItem(j, 0, item_ID);
-			ui->tableWidget_products->setItem(j, 1, item_CODE);
-			ui->tableWidget_products->setItem(j, 2, item_NAME);
-			ui->tableWidget_products->setItem(j, 3, item_STOCK);
-			ui->tableWidget_products->setItem(j, 4, item_PRICE);
-			ui->tableWidget_products->setItem(j, 5, item_CATEGORY);
+			ui->tableWidget_products->setItem(j, ID_ROW, item_ID);
+			ui->tableWidget_products->setItem(j, CODE_ROW, item_CODE);
+			ui->tableWidget_products->setItem(j, NAME_ROW, item_NAME);
+			ui->tableWidget_products->setItem(j, CATEGORY_ROW, item_CATEGORY);
+			ui->tableWidget_products->setItem(j, PRICE_ROW, item_PRICE);
+			ui->tableWidget_products->setItem(j, TAX_ROW, item_TAX);
+			ui->tableWidget_products->setItem(j, STOCK_ROW, item_STOCK);
 			j++;
 		}
 	}
@@ -502,11 +505,11 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 	footerTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty()) footerTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())     footerTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispens\351 d'immatriculation au registre du commerce et des soci\351t\351 (RCS) et au r\351pertoire des m\351tiers (RM)");
+	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
 	QString pageText;
 
 	//defini la date de limpression
-	QString sDateTime = tr("(Imprim\351 le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	QString sDateTime = tr("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		//Titre
@@ -548,8 +551,8 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 		rect = fm.boundingRect(mLeft+5+wUtil/8.0,rect.top(), wUtil/3.0,0, Qt::AlignLeft, tr("Noms")  );
 		painter.drawText( rect, tr("Noms") );
 		//CATEGORY
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/3),rect.top(), wUtil/5.0,0, Qt::AlignLeft, tr("Cat\351gories") );
-		painter.drawText( rect, tr("Cat\351gories"));
+		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/3),rect.top(), wUtil/5.0,0, Qt::AlignLeft, tr("Catégories") );
+		painter.drawText( rect, tr("Catégories"));
 		//STOCK
 		rect = fm.boundingRect(mLeft+5+(wUtil/8.0)+(wUtil/3.0)*2,rect.top(), wUtil/10.0,0, Qt::AlignLeft, tr("Stock") );
 		painter.drawText( rect, tr("Stock") );
@@ -799,6 +802,16 @@ qreal productView::getSelectedProductPrice(){
 	 //Si index < 0 on sort
 	if(m_index_tab<0)return 0;
 	else return ui->tableWidget_products->item(m_index_tab, PRICE_ROW)->text().toFloat();
+}
+
+/**
+  avoir le prix du produit selectionne
+*/
+qreal productView::getSelectedProductTax(){
+	int m_index_tab = ui->tableWidget_products->currentRow();
+	 //Si index < 0 on sort
+	if(m_index_tab<0)return 0;
+	else return ui->tableWidget_products->item(m_index_tab, TAX_ROW)->text().toFloat();
 }
 
 /**

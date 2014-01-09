@@ -28,6 +28,7 @@ DialogCategory::DialogCategory(product *prod, QWidget *parent) :
 	ui(new Ui::DialogCategory)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_product = prod;
 	//list les categories
 	listCategoriesToTable("NAME", "", "");

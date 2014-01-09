@@ -19,7 +19,8 @@ public:
 private:
 	service_common* m_servComm;
 	tax* m_taxTable;
-	bool m_tax;
+	QLocale m_lang;
+	bool Istax_;
 
 	void setTitle(QString val);
 	void listInterCommToTable();

@@ -58,8 +58,8 @@ QIcon invoice::getIconState(int state)
 QString invoice::getTextState(int state)
 {
 	switch(state){
-		case UNPAID:return tr("Non R\351gl\351e");break;
-		case PAID:return tr("R\351gl\351e");break;
+		case UNPAID:return QLatin1String("Non Réglée");break;
+		case PAID:return QLatin1String("Réglée");break;
 		default: break;
 	}
 	return "";

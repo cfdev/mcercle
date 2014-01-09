@@ -47,7 +47,7 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	m_data = pdata;
 	m_lang = lang;
 	ui->comboBoxFiltre->addItem(tr("Noms"));
-	ui->comboBoxFiltre->addItem(tr("Pr\351noms"));
+	ui->comboBoxFiltre->addItem(QLatin1String("Prénoms"));
 
 	m_custPage=1;
 	m_custfilter = m_custfield = "";
@@ -129,10 +129,10 @@ void customerView::on_toolButton_Del_clicked()
 	if(!m_data->isConnected())return;
 
 	int ret = QMessageBox::critical(this, tr("Attention"),
-								   tr("Ceci est fortement d\351conseill&eacute; !<br>"
+								   tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
 									  "Voulez-vous vraiment supprimer le client<br><br><b>")+
 								   m_data->m_customer->getFirstName()+" - "+
-								   m_data->m_customer->getLastName()+"</b> Ainsi que toutes ses donn&eacute;es (services,propositions,factures) ?",
+								   m_data->m_customer->getLastName()+"</b> Ainsi que toutes ses donn&eacute;es (services, devis, factures) ?",
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
@@ -248,7 +248,7 @@ void customerView::listCustomersToTable(int page, QString filter, QString field)
 	ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Noms") << tr("Pr\351noms");
+	titles << tr("Id") << tr("Noms") << QLatin1String("Prénoms");
 	ui->tableWidget->setHorizontalHeaderLabels( titles );
 
 	//Cacul en fonction de la page
@@ -550,8 +550,8 @@ void customerView::listServicesToTable(QString filter, QString field)
 	m_data->m_customer->m_service->getServiceList(ilist, m_data->m_customer->getId(), "THEDATE", filter, field);
 
 	// list all customers
-	for(unsigned int i=0; i<ilist.id.size(); i++){
-		ItemOfTable *item_ID			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	for(int i=0; i<ilist.id.size(); i++){
+		ItemOfTable *item_ID		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_DATE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_PRICE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_NAME		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -625,7 +625,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Date R\351glement") << tr("Prix") << tr("Description")  << tr("Etat");
+	titles  << tr("Id") << tr("Codes") << tr("Date") << QLatin1String("Date Réglement") << tr("Prix") << tr("Description")  << tr("Etat");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -735,8 +735,8 @@ void customerView::on_toolButton_delProposal_clicked()
 	m_data->m_customer->m_proposal->loadFromID(m_InvId);
 
 	int ret = QMessageBox::critical(this, tr("Attention"),
-								   tr("Ceci est fortement d\351conseill\351 !<br>"
-									  "Voulez-vous vraiment supprimer la proposition commerciale<br><br><b>")+
+								   tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
+									  "Voulez-vous vraiment supprimer le devis<br><br><b>")+
 								   m_data->m_customer->m_proposal->getCode() +" - "+
 								   m_data->m_customer->m_proposal->getDescription()+"</b>",
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
@@ -882,7 +882,7 @@ void customerView::on_toolButton_delInvoice_clicked()
 	m_data->m_customer->m_invoice->loadFromID(m_InvId);
 
 	int ret = QMessageBox::critical(this, tr("Attention"),
-								   tr("Ceci est fortement d\351conseill\351 !<br>"
+								   tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
 									  "Voulez-vous vraiment supprimer la facture<br><br><b>")+
 								   m_data->m_customer->m_invoice->getCode() +" - "+
 								   m_data->m_customer->m_invoice->getDescription()+"</b>",

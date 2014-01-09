@@ -19,18 +19,20 @@
 
 #include "dialogsettings.h"
 #include "ui_dialogsettings.h"
+#include "dialogtax.h"
+#include "mcercle.h"
 
 #include <QFileDialog>
 #include <QImage>
 #include <QMessageBox>
-#include <QDesktopServices>
+#include <QStandardPaths>
 
 DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogSettings)
 {
 	ui->setupUi(this);
-
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_Settings = s;
 	m_data = pdata;
 	m_lang = lang;
@@ -62,7 +64,7 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
 	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
 	//Active ou desactive selon letat de la connexion
 	setDbaseEditState(!m_data->isConnected());
-
+	
 	//charge les info de la base de donnees
 	loadInfoDatabase();
 	//Selectionne la tab 0
@@ -139,7 +141,7 @@ void DialogSettings::on_buttonBox_accepted() {
 	Ouverture d'un dialog pour le chargement d'un image
   */
 void DialogSettings::on_pushButton_Logo_clicked() {
-	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+	QString pathPictures = QStandardPaths::writableLocation( QStandardPaths::PicturesLocation );
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
 	if(fileName.isEmpty())return;
 
@@ -147,7 +149,7 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 	QImage logo;
 	int ret = logo.load(fileName);
 	if(!ret){
-		QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image...D\351soler :("));
+		QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image...Désoler :("));
 		return;
 	}
 	if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
@@ -177,8 +179,14 @@ void DialogSettings::on_pushButton_ClearImage_clicked() {
 	Selectionnez la base de donnees
   */
 void DialogSettings::on_toolButton_BaseSelect_clicked() {
-	QString path = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
-	QString filename = QFileDialog::getOpenFileName(this, "Selectionnez un fichier *.db",  path.toStdString().c_str(), "*.db");
+	//charge le chemin s il existe
+	QString pathFile = ui->lineEdit_databaseName->text();
+	if(!pathFile.isEmpty()) {
+		QFileInfo file( pathFile );
+		pathFile = file.dir().absolutePath()+ '/';
+	}
+	// ouvre le dialogue du choix
+	QString filename = QFileDialog::getOpenFileName(this, "Selectionnez un fichier *.db",  pathFile.toStdString().c_str(), "*.db");
 	if( !filename.isEmpty() ) {
 		ui->lineEdit_databaseName->setText(filename);
 	}
@@ -198,7 +206,7 @@ void DialogSettings::on_pushButton_connect_clicked() {
 
 		if(m_data->connect() == database::DB_NOTEXIST_ERR){
 			// Demande si on creer une nouvelle base de donnees
-			QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous cr\351er une nouvelle base de donn\351es ?\n"),QMessageBox::Yes | QMessageBox::No);
+			QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous créer une nouvelle base de données ?\n"),QMessageBox::Yes | QMessageBox::No);
 			mBox.setDefaultButton(QMessageBox::No);
 			int ret = mBox.exec();
 			if(ret == QMessageBox::Yes)m_data->create();
@@ -223,7 +231,10 @@ void DialogSettings::loadInfoDatabase() {
 	//Etat de la connexion
 	 if(m_data->isConnected()){
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/On").scaled(24,24)));
-		 ui->pushButton_connect->setText( tr("Se d\351connecter") );
+		 ui->pushButton_connect->setText( tr("Se déconnecter") );
+		 //TAX
+		 DialogTax *m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
+		 ui->verticalLayout_tax->addWidget(m_DialogTax);
 	 }
 	 else{
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/Off").scaled(24,24)));
@@ -253,7 +264,8 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->lineEdit_sAdd2->setText(inf.address2);
 	 ui->lineEdit_sAdd3->setText(inf.address3);
 	 ui->checkBox_TAX->setCheckState( Qt::CheckState(inf.tax) );
-     ui->comboBox_CA->setCurrentIndex(inf.ca_type);
+	 ui->lineEdit_numTVA->setEnabled( Qt::CheckState(inf.tax) );
+	 ui->comboBox_CA->setCurrentIndex(inf.ca_type);
 
 	 database::Bank b;
 	 m_data->getBank( b );
@@ -272,4 +284,12 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->lineEdit_IBAN8->setText( b.IBAN8 );
 	 ui->lineEdit_IBAN9->setText( b.IBAN9 );
 	 ui->lineEdit_BIC->setText( b.codeBIC );
+}
+
+/**
+ * @brief DialogSettings::on_checkBox_TAX_toggled
+ * @param checked
+ */
+void DialogSettings::on_checkBox_TAX_toggled(bool checked) {
+	ui->lineEdit_numTVA->setEnabled( checked );
 }

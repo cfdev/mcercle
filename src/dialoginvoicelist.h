@@ -2,6 +2,8 @@
 #define DIALOGINVOICELIST_H
 
 #include <QDialog>
+#include <QPrinter>
+
 #include "dbase.h"
 
 namespace Ui {

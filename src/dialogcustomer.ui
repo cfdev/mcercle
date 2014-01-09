@@ -281,18 +281,18 @@ Naissance :</string>
        </item>
        <item row="2" column="4">
         <widget class="QDateEdit" name="dateEdit">
+         <property name="displayFormat">
+          <string>dd/MM/yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
          <property name="date">
           <date>
            <year>1970</year>
            <month>1</month>
            <day>1</day>
           </date>
-         </property>
-         <property name="displayFormat">
-          <string>dd/MM/yyyy</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -401,7 +401,7 @@ Naissance :</string>
      <item>
       <widget class="QCheckBox" name="checkBox_promo">
        <property name="text">
-        <string>Accept de reçevoir des emails promotionnels</string>
+        <string>Accepte de reçevoir des emails promotionnels</string>
        </property>
       </widget>
      </item>

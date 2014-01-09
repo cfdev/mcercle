@@ -13,16 +13,13 @@ class DialogTax : public QDialog
 	Q_OBJECT
 
 public:
-	explicit DialogTax(tax *t, QWidget *parent = 0);
+	explicit DialogTax(tax *t, int typeUI = 0,QWidget *parent = 0);
 	~DialogTax();
 
 private slots:
 	void on_pushButton_add_clicked();
-
 	void on_pushButton_edit_clicked();
-
 	void on_pushButton_del_clicked();
-
 	void on_tableWidget_itemSelectionChanged();
 
 private:

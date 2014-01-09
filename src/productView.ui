@@ -24,7 +24,16 @@
     <normaloff>:/app/products</normaloff>:/app/products</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
     <number>3</number>
    </property>
    <item>
@@ -384,7 +393,7 @@ p, li { white-space: pre-wrap; }
                      </property>
                      <property name="icon">
                       <iconset resource="../ressources.qrc">
-                       <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
+                       <normaloff>:/app/check</normaloff>:/app/check</iconset>
                      </property>
                      <property name="iconSize">
                       <size>

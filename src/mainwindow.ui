@@ -193,7 +193,7 @@
   </action>
   <action name="actionCaisse">
    <property name="icon">
-    <iconset resource="../ressources.qrc">
+    <iconset>
      <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
    </property>
    <property name="text">
@@ -256,7 +256,7 @@
   </action>
   <action name="actionLivres_des_Recettes">
    <property name="icon">
-    <iconset resource="../ressources.qrc">
+    <iconset>
      <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
    </property>
    <property name="text">

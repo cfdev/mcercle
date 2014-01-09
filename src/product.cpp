@@ -346,7 +346,7 @@ int product::getLastId(){
   */
 bool product::getProductList(ProductList& list, int first, int skip, QString filter, QString field) {
 
-	QString req = "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE"
+	QString req = "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS.TAX, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE"
 				  " FROM TAB_PRODUCTS"
 				  " LEFT OUTER JOIN TAB_PRODUCTS_CATEGORIES"
 				  "  ON TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID"
@@ -370,7 +370,8 @@ bool product::getProductList(ProductList& list, int first, int skip, QString fil
 			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.code << query.value(query.record().indexOf("CODE")).toString();
 			list.name << query.value(query.record().indexOf("NAME")).toString();
-			list.selling_price.push_back( query.value(query.record().indexOf("SELLING_PRICE")).toFloat() );
+			list.selling_price.push_back( query.value(query.record().indexOf("SELLING_PRICE")).toDouble() );
+			list.tax.push_back( query.value(query.record().indexOf("TAX")).toDouble() );
 			list.category << query.value(query.record().indexOf("CATEGORY")).toString();
 			list.categoryColor.push_back( query.value(query.record().indexOf("CATEGORYCOLOR")).toString() );
 			list.provider << query.value(query.record().indexOf("PROVIDER")).toString();

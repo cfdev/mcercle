@@ -26,6 +26,7 @@ DialogWaiting::DialogWaiting(QWidget *parent) :
 	ui(new Ui::DialogWaiting)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 }
 

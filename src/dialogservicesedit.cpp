@@ -1,25 +1,31 @@
 #include "dialogservicesedit.h"
 #include "ui_dialogservicesedit.h"
 #include "table.h"
+#include "mcercle.h"
 
+#include <QLocale>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QDebug>
 
 DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogServicesEdit)
 {
 	ui->setupUi(this);
-
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_servComm = pdata->m_customer->m_serviceComm;
-	m_tax = pdata->getIsTax();
-	m_taxTable = pdata->m_tax;
+	Istax_ = pdata->getIsTax();
+	m_taxTable = pdata -> m_tax;
+	m_lang = pdata->lang();
 
 	//Affiche ou pas les taxes
-	ui->comboBox_tax->setVisible(m_tax);
-	if(m_tax) ui->label_tax->setText( tr("HT") );
-	else    ui->label_tax->setText( tr("TTC") );
-	ui->label_titletax->setVisible(m_tax);
+	ui->comboBox_tax->setVisible(Istax_);
+	ui->label_titletax->setVisible(Istax_);
+	if(Istax_)
+		ui->label_tax->setText( tr("HT") );
+	else
+		ui->label_tax->setText( tr("TTC") );
 
 	// Charge la liste des taxes dans la combo box
 	loadTaxList();
@@ -87,6 +93,14 @@ void DialogServicesEdit::loadValuesFormService(){
 	ui->dateTimeEdit->setDateTime( m_servComm->getDate() );
 	ui->doubleSpinBox->setValue( m_servComm->getPrice() );
 	ui->textEdit_Desc->setPlainText( m_servComm->getDescription() );
+	
+	for(int i=0; i<ui->comboBox_tax->count(); i++){
+		if(ui->comboBox_tax->itemText(i) == m_lang.toString(m_servComm->getTax(),'f',2) ) {
+			ui->comboBox_tax->setCurrentIndex(i);
+			break;
+		}
+	}
+	
 }
 
 
@@ -110,7 +124,8 @@ void DialogServicesEdit::setValuesToService(){
 	if(desc.size() > 1000) desc.resize(1000);
 	m_servComm->setName( ui->lineEdit_Name->text()  );
 	m_servComm->setDate( ui->dateTimeEdit->dateTime() );
-	m_servComm->setPrice( ui->doubleSpinBox->value() );
+	m_servComm->setPrice( ui->doubleSpinBox->value() );	
+	m_servComm->setTax( m_lang.toDouble(ui->comboBox_tax->currentText()) );
 	m_servComm->setDescription( desc );
 }
 
@@ -142,7 +157,7 @@ void DialogServicesEdit::listInterCommToTable()
 	titles << tr("Id") << tr("Nom");
 	ui->tableWidget_Inter->setHorizontalHeaderLabels( titles );
 
-   //Recuperation des services commun avec ID = 0
+	//Recuperation des services commun avec ID = 0
 	m_servComm->getServiceCommList(ilist, "NAME", "", "");
 
 	// list all customers
@@ -232,7 +247,7 @@ void DialogServicesEdit::on_pushButton_edit_clicked() {
 	setValuesToService();
 	if( m_servComm->update() ){
 		listInterCommToTable();
-		QMessageBox::information(this, tr("information"), tr("Service modifi\351") );
+		QMessageBox::information(this, tr("information"), tr("<p>Service modifi&eacute;</p>") );
 	}
 }
 

@@ -8,11 +8,12 @@ DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	ui(new Ui::DialogPrintChoice)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_printer = printer,
 	ui->radioButton_printer->setChecked(true);
 	on_radioButton_printer_clicked();
 	
-	mpath = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+	mpath = QStandardPaths::writableLocation( QStandardPaths::HomeLocation );
 	if( m_printer -> outputFileName().isEmpty() )
 		mpathFile = mpath + "/FAxxx.pdf";
 	else

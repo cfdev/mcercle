@@ -19,6 +19,7 @@
 
 #include "dialoginvoice.h"
 #include "ui_dialoginvoice.h"
+#include "mcercle.h"
 #include "printc.h"
 #include "table.h"
 
@@ -31,6 +32,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui(new Ui::DialogInvoice)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	// la fenetre est maximisee par defaut
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
@@ -85,7 +87,7 @@ void DialogInvoice::setTitle(QString val){
 void DialogInvoice::setUI() {
 	QStringList plist;
 	if(m_DialogType == PROPOSAL_TYPE){
-		this->setWindowTitle( tr("Proposition commerciale") );
+		this->setWindowTitle( tr("Devis") );
 		plist << "" << tr("Espece") << tr("Cheque") << tr("CB") << tr("TIP") << tr("Virement") << tr("Prelevement") << tr("Autre");
 		ui->comboBox_TYPE_PAYMENT->addItems(plist);
 		ui->comboBox_State->addItem(m_proposal->getIconState( proposal::WRITING ),
@@ -96,7 +98,7 @@ void DialogInvoice::setUI() {
 								m_proposal->getTextState( proposal::VALIDATED ));
 
 		ui->label_delivery->setText(tr("Date de livraison :"));
-		ui->label_link->setText(tr("Facture associ\351e : "));
+		ui->label_link->setText(QLatin1String("Facture associée : "));
 		ui->label_partpayment->setVisible(false);
 		ui->doubleSpinBox_partPAYMENT->setVisible(false);
 
@@ -111,9 +113,9 @@ void DialogInvoice::setUI() {
 		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::PAID ),
 								m_invoice->getTextState( invoice::PAID ));
 
-		ui->label_delivery->setText(tr("Date Ech\351ance :"));
-		ui->label_link->setText(tr("Proposition associ\351e : "));
-		ui->label_datevalid->setText(tr("Date R\351glement :"));
+		ui->label_delivery->setText(QLatin1String("Date Echéance :"));
+		ui->label_link->setText(QLatin1String("Devis associée : "));
+		ui->label_datevalid->setText(QLatin1String("Date Réglement :"));
 		ui->label_delay->setVisible(false);
 		ui->spinBox_delayDelivery->setVisible(false);
 		ui->pushButton_createInv->setVisible(false);
@@ -199,17 +201,17 @@ void DialogInvoice::loadValues(){
 		//Si deja signee et pas associee deja a une facture on autorise la creation dune facture
 		if( (m_proposal->getState() ==  proposal::VALIDATED) && (m_proposal->getInvoiceCode().isEmpty()) )
 				ui->pushButton_createInv->setEnabled(true);
-		else    ui->pushButton_createInv->setEnabled(false);
+		else	ui->pushButton_createInv->setEnabled(false);
 
 		QString typeP = m_proposal->getTypePayment();
 		if(typeP.isEmpty() || typeP.isNull()) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(0);
-		if(typeP == CASH) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(1);
-		if(typeP == CHECK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(2);
-		if(typeP == CREDIT_CARD) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(3);
-		if(typeP == INTERBANK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(4);
-		if(typeP == TRANSFER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(5);
-		if(typeP == DEBIT) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(6);
-		if(typeP == OTHER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(7);
+		if(typeP == MCERCLE::CASH) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(1);
+		if(typeP == MCERCLE::CHECK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(2);
+		if(typeP == MCERCLE::CREDIT_CARD) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(3);
+		if(typeP == MCERCLE::INTERBANK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(4);
+		if(typeP == MCERCLE::TRANSFER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(5);
+		if(typeP == MCERCLE::DEBIT) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(6);
+		if(typeP == MCERCLE::OTHER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(7);
 	}
 	else{
 		ui->lineEdit_code->setText( m_invoice->getCode() );
@@ -224,13 +226,13 @@ void DialogInvoice::loadValues(){
 		ui->comboBox_State->setCurrentIndex( m_invoice->getState());
 		QString typeP = m_invoice->getTypePayment();
 		//if(typeP.isEmpty() || typeP.isNull()) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(0);
-		if(typeP == CASH) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(1);
-		if(typeP == CHECK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(2);
-		if(typeP == CREDIT_CARD) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(3);
-		if(typeP == INTERBANK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(4);
-		if(typeP == TRANSFER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(5);
-		if(typeP == DEBIT) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(6);
-		if(typeP == OTHER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(7);
+		if(typeP == MCERCLE::CASH) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(1);
+		if(typeP == MCERCLE::CHECK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(2);
+		if(typeP == MCERCLE::CREDIT_CARD) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(3);
+		if(typeP == MCERCLE::INTERBANK) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(4);
+		if(typeP == MCERCLE::TRANSFER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(5);
+		if(typeP == MCERCLE::DEBIT) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(6);
+		if(typeP == MCERCLE::OTHER) ui->comboBox_TYPE_PAYMENT->setCurrentIndex(7);
 	}
 }
 
@@ -263,7 +265,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 #endif
 
 	QStringList titles;
-	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << tr("Quantite");
+	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 	if(!m_isTax){
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
@@ -361,15 +363,13 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
 #endif
 
 	QStringList titles;
-	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << tr("Quantite");
+	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 	if(!m_isTax){
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
 	}
 	else    titles << tr("Total HT");
 	ui->tableWidget->setHorizontalHeaderLabels( titles );
-
-	if(!m_isTax) ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
 
 	//Recuperation des donnees presentent dans la bdd
 	m_invoice->getInvoiceItemsList(m_ilist, "ITEM_ORDER", filter, field);
@@ -446,16 +446,20 @@ void DialogInvoice::listServiceToTable()
 
 	ui->tableWidget_selectService->setSortingEnabled(false);
 	//Style de la table de l intervention
-	ui->tableWidget_selectService->setColumnCount(4);
-	ui->tableWidget_selectService->setColumnWidth(1,225);
-	ui->tableWidget_selectService->setColumnWidth(2,100);
-	ui->tableWidget_selectService->setColumnWidth(3,225);
-	ui->tableWidget_selectService->setColumnHidden(0, true); //On cache la colonne des ID
+	ui->tableWidget_selectService->setColumnCount(SERV_COL_COUNT);
+	ui->tableWidget_selectService->setColumnWidth(SERV_COL_NAME,225);
+	ui->tableWidget_selectService->setColumnWidth(SERV_COL_PRICE,100);
+	ui->tableWidget_selectService->setColumnWidth(SERV_COL_DETAIL,225);
+	ui->tableWidget_selectService->setColumnHidden(SERV_COL_ID, true); //On cache la colonne des ID
 	ui->tableWidget_selectService->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_selectService->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_selectService->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Nom") << tr("Prix") << tr("D\351tail") ;
+	titles << tr("Id") << tr("Nom") << tr("Prix") << tr("Tva") << QLatin1String("Détail") ;
+	if(!m_isTax){
+			ui->tableWidget->setColumnHidden(SERV_COL_TAX , true); //cache la colonne TVA
+	}
+	
 	ui->tableWidget_selectService->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des services commun avec ID = 0
@@ -465,46 +469,54 @@ void DialogInvoice::listServiceToTable()
 
 	// list des services communs
 	for(int i=0; i<servicesListCommon.id.size(); i++){
-		ItemOfTable *item_ID      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_NAME    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_Detail  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID_COM      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME_COM    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_PRICE_COM   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TAX_COM     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Detail_COM  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
-		item_ID->setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
-		item_NAME->setData(Qt::DisplayRole, "#"+servicesListCommon.name.at(i));
-		item_PRICE->setData(Qt::DisplayRole, servicesListCommon.price.at(i));
-		item_Detail->setData(Qt::DisplayRole, servicesListCommon.description.at(i));
+		item_ID_COM ->		setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
+		item_NAME_COM ->	setIcon( QIcon(":/app/services") );
+		item_NAME_COM ->	setData(Qt::DisplayRole, servicesListCommon.name.at(i));
+		item_PRICE_COM ->	setData(Qt::DisplayRole, servicesListCommon.price.at(i));
+		item_TAX_COM ->		setData(Qt::DisplayRole, servicesListCommon.tax.at(i));
+		item_Detail_COM ->	setData(Qt::DisplayRole, servicesListCommon.description.at(i));
 
 		//definir le tableau
 		ui->tableWidget_selectService->setRowCount(i+1);
 
 		//remplir les champs
-		ui->tableWidget_selectService->setItem(i, 0, item_ID);
-		ui->tableWidget_selectService->setItem(i, 1, item_NAME);
-		ui->tableWidget_selectService->setItem(i, 2, item_PRICE);
-		ui->tableWidget_selectService->setItem(i, 3, item_Detail);
+		ui->tableWidget_selectService->setItem(i, SERV_COL_ID, item_ID_COM);
+		ui->tableWidget_selectService->setItem(i, SERV_COL_NAME, item_NAME_COM);
+		ui->tableWidget_selectService->setItem(i, SERV_COL_PRICE, item_PRICE_COM);
+		ui->tableWidget_selectService->setItem(i, SERV_COL_TAX, item_TAX_COM);
+		ui->tableWidget_selectService->setItem(i, SERV_COL_DETAIL, item_Detail_COM);
 	}
 
 	// list des services utilisateur
-	for(unsigned int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
+	
+	for(int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
 		ItemOfTable *item_ID      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_NAME    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_PRICE   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TAX   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_Detail  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 
 		item_ID->setData(Qt::DisplayRole, QString::number(userServicesList.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, userServicesList.name.at(i));
 		item_PRICE->setData(Qt::DisplayRole, userServicesList.price.at(i));
+		item_TAX->setData(Qt::DisplayRole, userServicesList.tax.at(i));
 		item_Detail->setData(Qt::DisplayRole, userServicesList.description.at(i));
 		
 		//definir le tableau
 		ui->tableWidget_selectService->insertRow( j );
 
 		//remplir les champs
-		ui->tableWidget_selectService->setItem(j, 0, item_ID);
-		ui->tableWidget_selectService->setItem(j, 1, item_NAME);
-		ui->tableWidget_selectService->setItem(j, 2, item_PRICE);
-		ui->tableWidget_selectService->setItem(j, 3, item_Detail);
+		ui->tableWidget_selectService->setItem(j, SERV_COL_ID, item_ID);
+		ui->tableWidget_selectService->setItem(j, SERV_COL_NAME, item_NAME);
+		ui->tableWidget_selectService->setItem(j, SERV_COL_PRICE, item_PRICE);
+		ui->tableWidget_selectService->setItem(j, SERV_COL_TAX, item_TAX);
+		ui->tableWidget_selectService->setItem(j, SERV_COL_DETAIL, item_Detail);
 	}
 
 	ui->tableWidget_selectService->setSortingEnabled(true);
@@ -530,21 +542,22 @@ void DialogInvoice::on_tableWidget_itemSelectionChanged()
 /**
 	Elever l article selectionnee de la proposition
   */
-void DialogInvoice::on_toolButton_rm_clicked()
-{
+void DialogInvoice::on_toolButton_rm_clicked() {
 	//Si plus d article on sort
-	if(ui->tableWidget->rowCount()<=0)return;
-	QString mess;
+	if(ui->tableWidget->rowCount()<=0)return;	
+	QString mess = tr("Voulez-vous vraiment supprimer cet article<br><b>");
+	if(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME)){
+		mess += qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME))->toPlainText();
+	}
+	mess += " </b>  ?";
 	int ret = QMessageBox::warning(this, tr("Attention"),
-								   tr("Voulez-vous vraiment supprimer cet article<br><b>")+
-								   qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME))->toPlainText()+
-								   " </b>  ?",
-								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+									mess,
+									QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
-		ui->tableWidget->removeRow(m_index_tabInvoice);
+		ui -> tableWidget -> removeRow(m_index_tabInvoice);
 		//Important selection litem 0 pour eviter des erreurs d index
-		ui->tableWidget->selectRow(0);
+		ui -> tableWidget -> selectRow(0);
 		emit(calcul_Total());
 	}
 }
@@ -582,8 +595,10 @@ void DialogInvoice::updateProposalItems(){
 		id = ui->tableWidget->item(j, COL_ID_PRODUCT)->text().toInt();
 		itemInv.idProduct = id;
 
-		QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
-		itemInv.name = get_name->toPlainText();
+		if(ui->tableWidget->cellWidget(j, COL_NAME)){
+			QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+			itemInv.name = get_name->toPlainText();
+		}
 		itemInv.tax =  ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
@@ -642,14 +657,15 @@ void DialogInvoice::updateInvoiceItems(){
 				m_product->update();
 				if(m_product->getStock() < 0)
 					QMessageBox::warning(this, tr("Attention"),
-										 tr("Stock n\351gatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
+										 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
 
 			}
 		}
 
-
-		QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
-		itemInv.name = get_name->toPlainText();
+		if(ui->tableWidget->cellWidget(j, COL_NAME)){
+			QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+			itemInv.name = get_name->toPlainText();
+		}
 		itemInv.tax = ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
@@ -690,13 +706,13 @@ void DialogInvoice::setProposal(unsigned char proc){
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
 				case 0:typeP="";break;
-				case 1:typeP=CASH;break;
-				case 2:typeP=CHECK;break;
-				case 3:typeP=CREDIT_CARD;break;
-				case 4:typeP=INTERBANK;break;
-				case 5:typeP=TRANSFER;break;
-				case 6:typeP=DEBIT;break;
-				case 7:typeP=OTHER;break;
+				case 1:typeP=MCERCLE::CASH;break;
+				case 2:typeP=MCERCLE::CHECK;break;
+				case 3:typeP=MCERCLE::CREDIT_CARD;break;
+				case 4:typeP=MCERCLE::INTERBANK;break;
+				case 5:typeP=MCERCLE::TRANSFER;break;
+				case 6:typeP=MCERCLE::DEBIT;break;
+				case 7:typeP=MCERCLE::OTHER;break;
 	}
 	m_proposal->setTypePayment(typeP);
 	m_proposal->setPrice( m_totalPrice );
@@ -733,13 +749,13 @@ void DialogInvoice::setInvoice(unsigned char proc){
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
 				case 0:typeP="";break;
-				case 1:typeP=CASH;break;
-				case 2:typeP=CHECK;break;
-				case 3:typeP=CREDIT_CARD;break;
-				case 4:typeP=INTERBANK;break;
-				case 5:typeP=TRANSFER;break;
-				case 6:typeP=DEBIT;break;
-				case 7:typeP=OTHER;break;
+				case 1:typeP=MCERCLE::CASH;break;
+				case 2:typeP=MCERCLE::CHECK;break;
+				case 3:typeP=MCERCLE::CREDIT_CARD;break;
+				case 4:typeP=MCERCLE::INTERBANK;break;
+				case 5:typeP=MCERCLE::TRANSFER;break;
+				case 6:typeP=MCERCLE::DEBIT;break;
+				case 7:typeP=MCERCLE::OTHER;break;
 	}
 	m_invoice->setTypePayment(typeP);
 	m_invoice->setPrice( m_totalPrice );
@@ -765,7 +781,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
  * @brief DialogInvoice::createSuccess
  */
 void DialogInvoice::createSuccess() {
-	QMessageBox::information(this, tr("Information"), tr("Cr\351ation r\351alis\351e"), QMessageBox::Ok);
+	QMessageBox::information(this, tr("Information"), QLatin1String("Création réalisée"), QMessageBox::Ok);
 	loadValues();
 	ui->pushButton_ok->setEnabled(false);
 }
@@ -777,7 +793,7 @@ void DialogInvoice::apply() {
 	/// Si on est en mode Edition
 	if(m_DialogState == EDIT){
 		QString mess;
-		if(m_DialogType == PROPOSAL_TYPE) mess = tr("Voulez-vous vraiment modifier la proposition commerciale ?");
+		if(m_DialogType == PROPOSAL_TYPE) mess = tr("Voulez-vous vraiment modifier le devis ?");
 		else mess = tr("Voulez-vous vraiment modifier la facture ?");
 		int ret = QMessageBox::warning(this, tr("Attention"), mess, QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 		if(ret == QMessageBox::Yes){
@@ -849,7 +865,7 @@ void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 	Sur ledition des cellules on calcule le total
 */
  void DialogInvoice::on_tableWidget_cellChanged(int row, int column) {
-   if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (column == COL_DISCOUNT)){
+if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (column == COL_DISCOUNT)){
 		//SECURITE LORS DES DEPLACEMENTS
 		//Car cela vide la cellule de sont objet "ItemOfTable" donc -> SIGFAULT
 		
@@ -859,7 +875,7 @@ void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 			(ui->tableWidget->item(row, COL_DISCOUNT) == NULL))return;
 
 		qreal priceU = ui->tableWidget->item(row, COL_PRICE)->text().toFloat();
-	   // qreal Tax = ui->tableWidget->item(row, COL_TAX)->text().toFloat();
+		//qreal Tax = ui->tableWidget->item(row, COL_TAX)->text().toFloat();
 		int quantity = ui->tableWidget->item(row, COL_QUANTITY)->text().toInt();
 		int discount = ui->tableWidget->item(row, COL_DISCOUNT)->text().toInt();
 		//Calcul du total
@@ -879,8 +895,8 @@ void DialogInvoice::on_doubleSpinBox_partPAYMENT_valueChanged() {
 /**
   Calcul et Affiche le total
 */
-void DialogInvoice::calcul_Total()
-{
+void DialogInvoice::calcul_Total() {
+	/*
 	m_totalPrice = m_totalTaxPrice = 0.00;
 	//On parcour le tableau pour savoir si l ID et present
 	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
@@ -905,6 +921,7 @@ void DialogInvoice::calcul_Total()
 		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
 	}
 	ui->label_Total->setText( val );
+	*/
 }
 
 /**
@@ -912,6 +929,7 @@ void DialogInvoice::calcul_Total()
   */
 void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal price) {
 	int cRow = ui->tableWidget->rowCount();
+	
 	//Si pas de ligne on cree les colonnes
 	if(cRow<=0){
 		//Style de la table de proposition
@@ -924,12 +942,12 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	#endif
 
 		QStringList titles;
-		titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << tr("Quantite");
+		titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 		if(!m_isTax){
 				titles << tr("Total");
 				ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
 		}
-		else    titles << tr("Total HT");
+		else	titles << tr("Total HT");
 		ui->tableWidget->setHorizontalHeaderLabels( titles );
 
 		if(!m_isTax) ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
@@ -937,18 +955,22 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	// on increment la quantite si article deja present
 	else{
 		for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
-			if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
-				(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
-				ItemOfTable *item_QUANT  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-				item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
-				ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
-				return;
+			if(ui->tableWidget->cellWidget(j, COL_NAME)) {
+				if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
+					(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
+					ItemOfTable *item_QUANT  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+					item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
+					ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
+					return; //<<-- on sort
+				}
 			}
 		}
 	}
+	// Sinon on creer une nouvelle ligne
 	ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_Name        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -966,12 +988,13 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	// Ne pas rendre editable si c est un produit! + Ajout d'image
 	// Car il il y a une liaison pour la gestion du stock
 	if(idProduct > 0){
+		item_Name -> setIcon( QIcon(":/app/products") );
 		edit_name -> setReadOnly(true);
 	}
-	item_PRICE->setData(Qt::DisplayRole, price);
-	item_TAX->setData(Qt::DisplayRole, mtax);
-	item_QUANTITY->setData(Qt::DisplayRole, 1);
-	item_DISCOUNT->setData(Qt::DisplayRole, 0);
+	item_PRICE->setData		(Qt::DisplayRole, price);
+	item_TAX->setData		(Qt::DisplayRole, mtax);
+	item_QUANTITY->setData	(Qt::DisplayRole, 1);
+	item_DISCOUNT->setData	(Qt::DisplayRole, 0);
 
 	//definir le tableau
 	ui->tableWidget->setRowCount(cRow+1);
@@ -980,11 +1003,13 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	ui->tableWidget->setItem(cRow, COL_ID, item_ID);
 	ui->tableWidget->setItem(cRow, COL_ID_PRODUCT, item_ID_PRODUCT);
 	ui->tableWidget->setItem(cRow, COL_ORDER, item_ORDER);
+	ui->tableWidget->setItem(cRow, COL_NAME, item_Name);
 	ui->tableWidget->setCellWidget(cRow, COL_NAME, edit_name);
 	ui->tableWidget->setItem(cRow, COL_TAX, item_TAX);
 	ui->tableWidget->setItem(cRow, COL_DISCOUNT, item_DISCOUNT);
 	ui->tableWidget->setItem(cRow, COL_PRICE, item_PRICE);
 	ui->tableWidget->setItem(cRow, COL_QUANTITY, item_QUANTITY);
+	
 }
 
 
@@ -1000,10 +1025,10 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		int m_index_tabService = ui->tableWidget_selectService->currentRow();
 		//Si index < 0 on sort
 		if(m_index_tabService<0)return;
-		QString text = ui->tableWidget_selectService->item(m_index_tabService, 1)->text() + "\n";
-		text += ui->tableWidget_selectService->item(m_index_tabService, 3)->text();
-		add_to_Table( 0, text,
-					  0.0, ui->tableWidget_selectService->item(m_index_tabService, 2)->text().toFloat() );
+		QString text = ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_NAME)->text() + "\n";
+		text += ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_DETAIL)->text();
+		add_to_Table( 0, text, ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_TAX)->text().toDouble(),
+					ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_PRICE)->text().toDouble() );
 	}
 	//ou un produit
 	else{
@@ -1011,16 +1036,16 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		if(m_productView->getRowCount()<=0)return;
 		//Ajoute a la table, mais ne pas rendre editable car le produit est lier pour le stock automatique
 		add_to_Table( m_productView->getSelectedProductID(), m_productView->getSelectedProductName(),
-					  0.0, m_productView->getSelectedProductPrice() );
+					  m_productView->getSelectedProductTax(), m_productView->getSelectedProductPrice() );
 	}
 }
 
 
 /**
-  Ajoute une ligne dedition libre
+  Ajoute une ligne dedition libre comptabilisee en service
   */
 void DialogInvoice::on_toolButton_addFreeline_clicked() {
-	add_to_Table( 0, "", 0.0,0 );
+	add_to_Table( 0, "Service", 0.0,0 );
 }
 
 
@@ -1029,7 +1054,7 @@ void DialogInvoice::on_toolButton_addFreeline_clicked() {
   */
 void DialogInvoice::on_pushButton_createInv_clicked()
 {
-	int ret = QMessageBox::warning(this, tr("Attention"),tr("Voulez-vous vraiment cr\351er une facture depuis la proposition commerciale ?") , QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+	int ret = QMessageBox::warning(this, tr("Attention"), QLatin1String("Voulez-vous vraiment créer une facture depuis le devis ?") , QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 	if(ret == QMessageBox::Yes){
 		createInvoiceFromProposal();
 		this->close();
@@ -1084,7 +1109,7 @@ void DialogInvoice::createInvoiceFromProposal() {
 				m_product->update();
 				if(m_product->getStock() < 0)
 					QMessageBox::warning(this, tr("Attention"),
-										 tr("Stock n\351gatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
+										 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
 
 			}
 		}
@@ -1143,7 +1168,7 @@ void DialogInvoice::on_toolButton_up_clicked(){
 			
 			if( colu == COL_NAME){
 				
-				ui->tableWidget->setCellWidget(index-1, colu, rowEditToUp.at(widg));				
+				ui->tableWidget->setCellWidget(index-1, colu, rowEditToUp.at(widg));
 				
 				ui->tableWidget->setCellWidget(index, colu, rowEditToDn.at(widg++));
 			}

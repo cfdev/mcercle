@@ -18,14 +18,14 @@
 */
 
 #include "settings.h"
-#include <QDesktopServices>
-
+#include <QStandardPaths>
+#include <QDate>
 
 Settings::Settings(QObject *parent) :
 	QObject(parent)
 {
 	m_fileName = "/.mcercle";
-	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
+	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::DataLocation );
 	QString path = path_DataLocation+m_fileName;
 	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
@@ -184,4 +184,26 @@ void Settings::setPrintFont(const QString& printFont){
 	m_settings->beginGroup("print");
 	m_settings->setValue("font", printFont);
 	m_settings->endGroup();
+}
+
+/**
+ * @brief setDatebddSave
+ * @param date
+ */
+void Settings::setDatebddSave(const QDate &date) {
+	m_settings -> beginGroup("date");
+	m_settings -> setValue("bddSave", date.toString(tr("dd-MM-yyyy")) );
+	m_settings -> endGroup();
+}
+
+/**
+ * @brief Settings::getDatebddSave
+ * @return 
+ */
+QDate Settings::getDatebddSave(){
+	m_settings->beginGroup("date");
+	QDate date;
+	date = QDate::fromString( m_settings->value("bddSave").toString(), tr("dd-MM-yyyy") );
+	m_settings->endGroup();
+	return date;
 }

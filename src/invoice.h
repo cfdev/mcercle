@@ -11,15 +11,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-// Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre
-#define CASH "CA"
-#define CHECK "CH"
-#define CREDIT_CARD "CC"
-#define INTERBANK "IB"
-#define TRANSFER "TR"
-#define DEBIT "DE"
-#define OTHER "OT"
-
 class invoice : public QObject {
 
 private:

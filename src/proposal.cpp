@@ -58,9 +58,9 @@ QIcon proposal::getIconState(int state)
 QString proposal::getTextState(int state)
 {
 	switch(state){
-		case WRITING:return tr("En \351criture");break;
-		case PROPOSED:return tr("Propos\351e");break;
-		case VALIDATED:return tr("Sign\351e");break;
+		case WRITING:return tr("En ecriture");break;
+		case PROPOSED:return tr("Propose");break;
+		case VALIDATED:return tr("Signe");break;
 		default: break;
 	}
 	return "";

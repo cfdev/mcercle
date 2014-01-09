@@ -64,16 +64,8 @@ private slots:
 	invoice::InvoiceListItems m_ilist;
 	productView *m_productView;
 
-#define COL_COUNT 9
-#define COL_ID 0
-#define COL_ID_PRODUCT 1
-#define COL_ORDER 2
-#define COL_NAME 3
-#define COL_TAX 4
-#define COL_DISCOUNT 5
-#define COL_PRICE 6
-#define COL_QUANTITY 7
-#define COL_TOTAL 8
+enum{COL_ID=0,COL_ID_PRODUCT,COL_ORDER,COL_NAME,COL_TAX,COL_DISCOUNT,COL_PRICE,COL_QUANTITY,COL_TOTAL,COL_COUNT };
+enum{SERV_COL_ID=0, SERV_COL_NAME,SERV_COL_PRICE, SERV_COL_TAX, SERV_COL_DETAIL,SERV_COL_COUNT};
 
 	void setUI();
 	void apply();

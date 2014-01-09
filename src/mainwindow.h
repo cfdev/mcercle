@@ -52,11 +52,8 @@ private slots:
 	void on_actionDebug_Add_triggered();
 
 	void on_actionDebug_prod_triggered();
-
 	void on_actionLivres_des_Recettes_triggered();
-
 	void on_actionSauvegarder_la_base_de_donn_es_sous_triggered();
-
 	void on_actionServices_common_triggered();
 	
 	public slots:

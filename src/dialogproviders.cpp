@@ -30,7 +30,7 @@ DialogProviders::DialogProviders(product *prod, QWidget *parent) :
 	ui(new Ui::DialogProviders)
 {
 	ui->setupUi(this);
-
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_product = prod;
 	//list les fournisseurs
 	listProvidersToTable("NAME", "", "");

@@ -18,6 +18,7 @@ public:
 
 	void setTitle(QString val);
 	void loadServiceCommList();
+	void loadTaxList();
 	void loadValuesFromService();
 	void loadValuesFromServiceComm();
 	void loadEmptyValues();
@@ -26,11 +27,13 @@ private:
 	Ui::DialogServices *ui;
 	database* m_data;
 	service* m_serv;
+	tax* m_taxTable;
 	service_common* m_servComm;
 	service_common::serviceCommList m_servCommlist;
 
+	QLocale m_lang;
 	int m_idServ, m_idCustomer;
-	bool m_tax;
+	bool Istax_;
 
 
 private slots:

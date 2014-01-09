@@ -169,7 +169,8 @@ bool service::getServiceList(serviceList& list, int id_customer, QString order, 
 		while (query.next()){
 			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.name << query.value(query.record().indexOf("NAME")).toString();
-			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.price.push_back( query.value(query.record().indexOf("PRICE")).toDouble() );
+			list.tax.push_back( query.value(query.record().indexOf("TAX")).toDouble() );
 			list.date.push_back(  query.value(query.record().indexOf("THEDATE")).toDateTime());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 		}

@@ -10,6 +10,7 @@ DialogProvidersEdit::DialogProvidersEdit(product *prod, unsigned char type, QWid
 	ui(new Ui::DialogProvidersEdit)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_product = prod;
 	m_type = type;
 	if(m_type == PROVIDER_ADD){

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
+    <width>426</width>
     <height>337</height>
    </rect>
   </property>
@@ -145,7 +145,7 @@ général :</string>
             <item row="2" column="0">
              <widget class="QLabel" name="label_titletax">
               <property name="text">
-               <string>Tax:</string>
+               <string>Tva (%) :</string>
               </property>
              </widget>
             </item>

@@ -17,11 +17,13 @@
 
 */
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QTextCodec>
 #include <QMessageBox>
+#include <QTextCodec>
+
 #include "mainwindow.h"
 
 
@@ -29,7 +31,12 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	MainWindow m_win;
-
+/*
+#if QT_VERSION < 0x050000
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("LATIN-1"));
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("LATIN-1"));
+#endif
+	*/
 	//Traduction des chaines de la lib Qt
 	QString locale = QLocale::system().name();
 	QTranslator translator;

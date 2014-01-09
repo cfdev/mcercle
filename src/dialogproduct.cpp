@@ -34,6 +34,7 @@ DialogProduct::DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsign
 	ui(new Ui::DialogProduct)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_type = type;
 	m_product = p;
 	m_tax = t;
@@ -141,11 +142,6 @@ void DialogProduct::loadValuesFormProduct(){
 	//Prix Achat/Vente
 	ui->doubleSpinBox_buyingPrice->setValue( m_product->getBuyingPrice() );
 	ui->doubleSpinBox_price->setValue( m_product->getSellingPrice() );
-
-	// Tax
-   /* qreal val = m_product->getTax();
-	if(val == 5.5)ui->comboBox_tax->setCurrentIndex(0);
-	else ui->comboBox_tax->setCurrentIndex(1);*/
 
 	//Stock
 	ui->lineEdit_stock->setText( QString::number(m_product->getStock()) );
@@ -300,7 +296,7 @@ void DialogProduct::on_pushButton_add_edit_clicked()
 	m_product->m_category->loadFromName( ui->comboBox_categories->currentText() );
 	m_product->setCategoryId(m_product->m_category->getId());
 
-	m_product->setTax( ui->comboBox_tax->currentText().toDouble() );
+	m_product->setTax( m_lang.toDouble(ui->comboBox_tax->currentText()) );
 
 	m_product->setStock( ui->lineEdit_stock->text().toInt() );
 	m_product->setStockWarning( ui->lineEdit_stockAlert->text().toInt() );

@@ -29,6 +29,7 @@ DialogCustomer::DialogCustomer(customer* c, QWidget *parent) :
 	ui(new Ui::DialogCustomer)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_customer = c;
 	ui->comboBoxGender->addItem(tr("M."));
 	ui->comboBoxGender->addItem(tr("Mme"));

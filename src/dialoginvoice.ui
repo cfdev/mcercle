@@ -343,7 +343,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_invoice">
          <property name="title">
-          <string>Facture</string>
+          <string/>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>

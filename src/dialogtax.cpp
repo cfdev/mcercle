@@ -1,15 +1,20 @@
 #include "dialogtax.h"
 #include "ui_dialogtax.h"
-
+#include "mcercle.h"
 #include <QMessageBox>
 
-DialogTax::DialogTax(tax *t, QWidget *parent) :
+DialogTax::DialogTax(tax *t, int typeUI, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogTax)
 {
-	m_tax = t;
 	ui->setupUi(this);
-
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	
+	if(typeUI == MCERCLE::Widget) {
+		ui -> buttonBox -> setVisible(false);
+	}
+	
+	m_tax = t;
 	listTaxToTable("TAX","","");
 }
 

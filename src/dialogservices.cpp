@@ -28,17 +28,24 @@ DialogServices::DialogServices(database *pdata, QWidget *parent) :
 	ui(new Ui::DialogServices)
 {
 	ui->setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_data = pdata;
-	m_serv = m_data->m_customer->m_service;
-	m_servComm = m_data->m_customer->m_serviceComm;
-	m_tax = m_data->getIsTax();
+	m_serv = m_data -> m_customer -> m_service;
+	m_servComm = m_data -> m_customer -> m_serviceComm;
+	Istax_ = m_data -> getIsTax();
+	m_taxTable = pdata -> m_tax;
+	m_lang = pdata -> lang();
 
 	//Affiche ou pas les taxes
-	ui->comboBox_tax->setVisible(m_tax);
-	if(m_tax) ui->label_tax->setText( tr("HT") );
-	else     ui->label_tax->setText( tr("TTC") );
-	ui->label_titletax->setVisible(m_tax);
-
+	ui->comboBox_tax -> setVisible(Istax_);
+	ui->label_titletax -> setVisible(Istax_);
+	if(Istax_)
+		ui->label_tax -> setText( tr("HT") );
+	else
+		ui->label_tax -> setText( tr("TTC") );
+	// Charge la liste des taxes dans la combo box
+	loadTaxList();
+	
 	ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime());
   //  ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
@@ -51,6 +58,21 @@ DialogServices::DialogServices(database *pdata, QWidget *parent) :
 DialogServices::~DialogServices()
 {
 	delete ui;
+}
+
+/**
+	 Charge la liste des tax
+*/
+void DialogServices::loadTaxList() {
+	//categories
+	tax::taxList list;
+	//Recuperation des donnees presentent dans la bdd
+	m_taxTable->getTaxList(list, "TAX", "", "");
+	ui->comboBox_tax->clear();
+	
+	for(unsigned int i=0; i<list.value.size(); i++){
+		ui->comboBox_tax->addItem( m_lang.toString(list.value.at(i),'f',2) );
+	}
 }
 
 /**
@@ -87,10 +109,11 @@ void DialogServices::on_buttonBox_accepted()
 	//resize
 	QString desc = ui->textEdit_Desc->toPlainText();
 	if(desc.size() > 1000) desc.resize(1000);
-	m_serv->setName( ui->lineEdit_Name->text() );
-	m_serv->setDate( ui->dateTimeEdit->dateTime() );
-	m_serv->setPrice( ui->doubleSpinBox->value() );
-	m_serv->setDescription( desc );
+	m_serv -> setName( ui->lineEdit_Name->text() );
+	m_serv -> setDate( ui->dateTimeEdit->dateTime() );
+	m_serv -> setPrice( ui->doubleSpinBox->value() );
+	m_serv -> setTax( m_lang.toDouble(ui->comboBox_tax->currentText()) );
+	m_serv -> setDescription( desc );
 }
 
 
@@ -102,6 +125,13 @@ void DialogServices::loadValuesFromService() {
 	ui->dateTimeEdit->setDateTime( m_serv->getDate() );
 	ui->doubleSpinBox->setValue( m_serv->getPrice() );
 	ui->textEdit_Desc->setPlainText( m_serv->getDescription() );
+	
+	for(int i=0; i<ui->comboBox_tax->count(); i++){
+		if(ui->comboBox_tax->itemText(i) == m_lang.toString(m_serv->getTax(),'f',2) ) {
+			ui->comboBox_tax->setCurrentIndex(i);
+			break;
+		}
+	}
 }
 
 /**
@@ -112,6 +142,13 @@ void DialogServices::loadValuesFromServiceComm() {
 	ui->dateTimeEdit->setDateTime( m_servComm->getDate() );
 	ui->doubleSpinBox->setValue( m_servComm->getPrice() );
 	ui->textEdit_Desc->setPlainText( m_servComm->getDescription() );
+	
+	for(int i=0; i<ui->comboBox_tax->count(); i++){
+		if(ui->comboBox_tax->itemText(i) == m_lang.toString(m_servComm->getTax(),'f',2) ) {
+			ui->comboBox_tax->setCurrentIndex(i);
+			break;
+		}
+	}
 }
 
 /**
@@ -136,6 +173,7 @@ void DialogServices::loadServiceCommList(){
 	m_servCommlist.id.clear();
 	m_servCommlist.name.clear();
 	m_servCommlist.price.clear();
+	m_servCommlist.tax.clear();
 	//Recuperation des donnees presentent dans la bdd
 	m_servComm->getServiceCommList(m_servCommlist, "NAME", "", "");
 	ui->comboBox_servComm->clear();

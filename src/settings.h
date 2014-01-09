@@ -27,7 +27,9 @@ public:
 	void setDatabase_default();
 	void setPositionListSearchProduct(int pos);
 	void setPositionListSearchCustomer(int pos);
-	//Impression	
+	//Save date
+	void setDatebddSave(const QDate &date);
+	//Impression
 	void setPrintFont(const QString& printFont);
 
 	QString getDatabase_bdd();
@@ -38,6 +40,8 @@ public:
 	QString getDatabase_userPassword();
 	int getPositionListSearchProduct();
 	int getPositionListSearchCustomer();
+	QDate getDatebddSave();
+	
 	//Impression
 	QFont getPrintFont();
 

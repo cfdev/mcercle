@@ -19,6 +19,7 @@
 
 #include "about.h"
 #include "ui_about.h"
+#include "mcercle.h"
 #include "dbase.h"
 
 #include <QDesktopServices>
@@ -38,9 +39,9 @@ about::about(database *pdata, QWidget *parent) :
 	QImage ico = QImage(":/app/logo_small");
 	ui->label_ico->setPixmap(QPixmap::fromImage( ico ));
 
-	QString msg = tr("<b>mcercle</b> version ") + MCERCLE_VERSION; 
-	msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Auto-entrepreneur/PME.");
-	msg +="<br><a href=\"https://github.com/cfdev/mcercle\">https://github.com/cfdev/mcercle</a>";
+	QString msg = tr("<b>mcercle</b> version ") + MCERCLE::Version;
+	msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Artisans et TPE.");
+	msg +="<br>Source libre: <a href=\"https://github.com/cfdev/mcercle\">https://github.com/cfdev/mcercle</a>";
 
 	msg += "<br><br>"+ tr("Compilation: ");
 	msg +=  __DATE__ ;
@@ -79,10 +80,9 @@ about::about(database *pdata, QWidget *parent) :
 	msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
 	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2013";
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
+	msg += "<br>- Site internet: <a href=\"http://cyril.frausti.fr/\">http://cyril.frausti.fr/</a>";
 	
-	msg += "<br><br>Ce programme est fourni « EN L'ETAT », SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT,<br> DE QUALITE MARCHANDE, D'ADEQUATION A UN USAGE PARTICULIER.";
-	
-	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("mcercle vous aide dans votre activit\351, aidez son concepteur") + "</p>";
+	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("MCERCLE vous aide dans votre activit&#233;, aidez son concepteur") + "</p>";
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );

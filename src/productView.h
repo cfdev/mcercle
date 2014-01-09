@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTableWidgetItem>
 #include <QLocale>
+#include <Qprinter>
 
 #include "dbase.h"
 
@@ -21,6 +22,7 @@ public:
 	int getRowCount();
 	QString getSelectedProductName();
 	qreal getSelectedProductPrice();
+	qreal getSelectedProductTax();
 	int getSelectedProductID();
 
 	void setIndexSearchProduct(int index);
@@ -43,7 +45,10 @@ private:
 	#define ID_ROW 0
 	#define CODE_ROW 1
 	#define NAME_ROW 2
+	#define CATEGORY_ROW 3
 	#define PRICE_ROW 4
+	#define TAX_ROW 5
+	#define STOCK_ROW 6
 	
 	//info produit
 	void listProductsFilter(int page, QString val);

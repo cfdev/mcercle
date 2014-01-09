@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QLocale>
 #include <QStringList>
-#include <vector>
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -37,16 +36,17 @@ public:
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau
-		std::vector<int> id;
+		QList<int> id;
 		QStringList code;
 		QStringList name;
-		std::vector<float> selling_price;
+		QList<qreal> selling_price;
+		QList<qreal> tax;
 		QStringList category;
-		std::vector<QColor> categoryColor;
+		QList<QColor> categoryColor;
 		QStringList provider;
-		std::vector<int> stock;
-		std::vector<int> stockWarning;
-		std::vector<int> state;
+		QList<int> stock;
+		QList<int> stockWarning;
+		QList<int> state;
 	}ProductList;
 
 
@@ -65,8 +65,8 @@ public:
 
 	//Liste des fournisseurs
 	bool providerIsHere(provider* prv);
-	bool addProvider(provider* prv, const QString& ref, const float& price, const float& tax);
-	bool updateProvider(provider* prv, const QString& ref, const float& price, const float& tax);
+	bool addProvider(provider* prv, const QString& ref, const qreal& price, const qreal& tax);
+	bool updateProvider(provider* prv, const QString& ref, const qreal& price, const qreal& tax);
 	bool removeProvider(provider* prv);
 	bool removeProviderForAllProducts(provider* prv);
 
@@ -74,9 +74,9 @@ public:
 	void setId(const int& ident){m_id = ident;}
 	void setStock(const int& stock){m_stock = stock;}
 	void setStockWarning(const int& stock_warning){m_stock_warning = stock_warning;}
-	void setSellingPrice(const float& price){m_selling_price = price;}
-	void setBuyingPrice(const float& price){m_buying_price = price;}
-	void setTax(const float& tax){m_tax = tax;}
+	void setSellingPrice(const qreal& price){m_selling_price = price;}
+	void setBuyingPrice(const qreal& price){m_buying_price = price;}
+	void setTax(const qreal& tax){m_tax = tax;}
 	void setState(const int& state){m_state = state;}
 	void setCode(const  QString& code){m_code = code;}
 	void setName(const  QString& name){m_name = name;}

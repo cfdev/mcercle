@@ -1,5 +1,6 @@
 #include "dialoginvoicelist.h"
 #include "ui_dialoginvoicelist.h"
+#include "mcercle.h"
 #include "dialogwaiting.h"
 #include "dialogprintchoice.h"
 #include "printc.h"
@@ -18,6 +19,7 @@ DialogInvoiceList::DialogInvoiceList(QLocale &lang, database *pdata, QWidget *pa
 	ui(new Ui::DialogInvoiceList)
 {
 	ui -> setupUi(this);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_data		= pdata;
 	m_invoice	= pdata -> m_customer->m_invoice;
 	m_isTax		= pdata -> getIsTax();
@@ -88,13 +90,13 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 
 		typeP="";
-		if( ilist.typePayment.at(i) == CASH)         typeP = tr("Espece");
-		if( ilist.typePayment.at(i) == CHECK)        typeP = tr("Cheque");
-		if( ilist.typePayment.at(i) == CREDIT_CARD)  typeP = tr("CB");
-		if( ilist.typePayment.at(i) == INTERBANK)    typeP = tr("TIP");
-		if( ilist.typePayment.at(i) == TRANSFER)     typeP = tr("Virement");
-		if( ilist.typePayment.at(i) == DEBIT)        typeP = tr("Prelevement");
-		if( ilist.typePayment.at(i) == OTHER)        typeP = tr("Autre");
+		if( ilist.typePayment.at(i) == MCERCLE::CASH)         typeP = tr("Espece");
+		if( ilist.typePayment.at(i) == MCERCLE::CHECK)        typeP = tr("Cheque");
+		if( ilist.typePayment.at(i) == MCERCLE::CREDIT_CARD)  typeP = tr("CB");
+		if( ilist.typePayment.at(i) == MCERCLE::INTERBANK)    typeP = tr("TIP");
+		if( ilist.typePayment.at(i) == MCERCLE::TRANSFER)     typeP = tr("Virement");
+		if( ilist.typePayment.at(i) == MCERCLE::DEBIT)        typeP = tr("Prelevement");
+		if( ilist.typePayment.at(i) == MCERCLE::OTHER)        typeP = tr("Autre");
 
 		item_TYPE_PAYMENT->setData(Qt::DisplayRole, typeP);
 
@@ -220,11 +222,11 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 	footerTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty()) footerTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())     footerTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispens\351 d'immatriculation au registre du commerce et des soci\351t\351 (RCS) et au r\351pertoire des m\351tiers (RM)");
+	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
 	QString pageText;
 
 	//defini la date de limpression
-	QString sDateTime = tr("(Imprim\351 le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	QString sDateTime = tr("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
 	
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){

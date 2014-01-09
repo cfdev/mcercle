@@ -23,11 +23,10 @@
 #include <QPrintDialog>
 #include <QFileDialog>
 #include <QDesktopServices>
+#include <QLabel>
 
 #include <QStyle>
-#include <QGtkStyle>
-#include <QGtkStyle>
-#include <QPlastiqueStyle>
+#include <QStyleFactory>
 
 #include "dialogsettings.h"
 #include "dialogproviders.h"
@@ -56,7 +55,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_Settings = new Settings(this);
 	
 	//QApplication::setStyle( new QCleanlooksStyle);
-	QApplication::setStyle(new QPlastiqueStyle);
+	QApplication::setStyle(QStyleFactory::create("Fusion"));
+	
+/*QPalette p;
+      p = qApp->palette();
+      p.setColor(QPalette::Window, QColor(53,53,53));
+      p.setColor(QPalette::Button, QColor(53,53,53));
+      p.setColor(QPalette::Highlight, QColor(142,45,197));
+      p.setColor(QPalette::ButtonText, QColor(255,255,255));
+      qApp->setPalette(p);*/
 }
 
 
@@ -91,10 +98,10 @@ void MainWindow::changeEvent(QEvent *e) {
   */
 void MainWindow::init(){
 	// Charge le fichier de configurations
-	if(!m_Settings->settingIsOk()) {
+	if(!m_Settings -> settingIsOk()) {
 		///TODO: QWizard pour la config du soft
-		m_Settings->setDatabase_default();
-		m_Settings->setSettingState(true);
+		m_Settings -> setDatabase_default();
+		m_Settings -> setSettingState(true);
 	}
 
 	//Base de donnees
@@ -117,12 +124,26 @@ void MainWindow::init(){
 	//board
 	m_board = new board( m_database, m_lang );
 
+	//Attention au sauvegardes
+	QLabel *label_warningBdd = new QLabel();
+	label_warningBdd -> setAlignment( Qt::AlignCenter );
+	if( m_Settings -> getDatebddSave().addMonths(3) < QDate::currentDate()){
+		QString txt = "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#D65600; \">";
+		txt += tr("La base de donn&eacute;es doit &ecirc;tre sauvegarder! Derniere sauvegarde r&eacute;alis&eacute;e le: ") + m_Settings -> getDatebddSave().toString(tr("dd-MM-yyyy")) + "</p>";
+		label_warningBdd -> setText(txt);
+		label_warningBdd -> setVisible(true);
+	}
+	else{
+		label_warningBdd -> setVisible(false);
+	}
+	
 	//Mis en layout
+	ui->verticalLayout->addWidget( label_warningBdd );
 	ui->verticalLayout->addWidget( m_board );
 	ui->verticalLayout->addWidget( m_customerView );
 	ui->verticalLayout->addWidget( m_productView );
 	ui->verticalLayout->update();
-
+	
 	//Menu visible uniquement en mode debug!
 #ifdef QT_NO_DEBUG
 	ui->actionDebug_Add->setVisible(false);
@@ -340,23 +361,25 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
 									 tr("Impossible de remplacer le fichier!\n\n")+
 									 "Destination: "+name+"\n");
 				// Reouverture de la base de donnees
-				m_database->connect();	
+				m_database -> connect();
 				return;
 			}	
 		}
-		if( QFile::copy(source, filename) )
+		if( QFile::copy(source, filename) ) {
 			QMessageBox::information(this, tr("Information"),
-									 tr("Sauvegarde Termin\351e!\n\n")+
+									 tr("Sauvegarde Terminée!\n\n")+
 									 "Source: "+source+"\n"+
-									 "Destination: "+name+"\n");
+									 "Destination: "+filename+"\n");
+			m_Settings -> setDatebddSave( QDate::currentDate() );
+		}
 		else
 			QMessageBox::critical(this, tr("Erreur"),
 									tr("Sauvegarde impossible!\n\n")+
 										"Source: "+source+"\n"+
-										"Destination: "+name+"\n");
+										"Destination: "+filename+"\n");
 	}
 	// Reouverture de la base de donnees
-	m_database->connect();
+	m_database -> connect();
 }
 
 
@@ -365,11 +388,11 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
  */
 void MainWindow::on_actionServices_common_triggered() {
 	// Si on est pas connecte on sort
-	if(!m_database->isConnected())return;
+	if(!m_database -> isConnected())return;
 	
 	DialogServicesEdit *m_DServComm = new DialogServicesEdit(m_database);
-	m_DServComm->setModal(true);
-	m_DServComm->exec();
+	m_DServComm -> setModal(true);
+	m_DServComm -> exec();
 
 	delete m_DServComm;
 }

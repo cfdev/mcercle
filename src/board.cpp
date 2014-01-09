@@ -172,7 +172,7 @@ void board::listInvoiceAlertToTable()
 		}
 		else{
 			item_STATE->setIcon( QIcon(":/app/quit") );
-			item_STATE->setText( tr("Ech\351ance d\351pass\351e") );
+			item_STATE->setText( tr("Echéance dépassée") );
 		}
 		
 		//definir le tableau
@@ -335,7 +335,11 @@ void board::calculYear(){
 	if(!m_data->isConnected())return;
 
 	qreal tt = m_data->m_customer->m_invoice->getYearRevenue( ui->comboBox_yearsList->currentText() );
-	ui->label_totalYear->setText( tr("<b>Total : ") + m_lang.toString(tt,'f',2) + tr(" &euro;</b>"));
+	QString txt = tr("<b>Total : ") + m_lang.toString(tt,'f',2) + tr(" &euro;</b>");
+	if( m_data->getIsTax() ){
+		txt += " HT";
+	}
+	ui -> label_totalYear -> setText(txt);
 }
 
 /**

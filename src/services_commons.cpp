@@ -24,6 +24,7 @@
 #include <QStringList>
 #include <QWidget>
 #include <QVariant>
+#include <QDebug>
 
 service_common::service_common(QSqlDatabase db, QWidget *parent): m_parent(parent) {
 	m_db = db;

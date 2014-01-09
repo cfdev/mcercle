@@ -18,8 +18,6 @@
 class customer;
 class product;
 
-#define MCERCLE_VERSION "13.10"
-
 class database : public QObject
 {
 private:
@@ -32,9 +30,6 @@ private:
 	bool addSample;
 	QString m_FDBversion;
 	QLocale m_lang;
-
-	/* Version max supporter par mcercle */
-    #define DBASE_SUPPORTED 3
 
 
 	/* Creation des tables */
@@ -58,9 +53,9 @@ private:
 	int databaseVersion();
 	bool isTax();
 	
-    /* fonctions de mise a jour */
-	bool upgradeToV2();
-    bool upgradeToV3();
+	/* fonctions de mise a jour */
+	bool upgradeToV2(QString *log);
+	bool upgradeToV3(QString *log);
 	
 public:
 
@@ -96,6 +91,7 @@ public:
 	void close(){db.close();m_connected = false;}
 	bool create();
 	bool isConnected(){return m_connected;}
+	QLocale lang(){return m_lang;}
 
 	QString getBdd(){return m_bdd;}
 	QString getHostName(){return m_hostName;}
