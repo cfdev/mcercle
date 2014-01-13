@@ -94,8 +94,8 @@ char database::connect(){
 	if((!tList.contains("TAB_INFORMATIONS"))||(tList.count()< 14)){
 		 // Demande si on creer une nouvelle base de donnees
 		QString mess;
-		if(db.driverName() == "QSQLITE")mess = tr("Voulez-vous créer une nouvelle base de données ?\n\n")+ db.databaseName();
-		else mess = tr("Voulez-vous créer de nouvelles tables dans la base de données ?\n\n") + db.databaseName();
+		if(db.driverName() == "QSQLITE")mess = QLatin1String("Voulez-vous créer une nouvelle base de données ?\n\n")+ db.databaseName();
+		else mess = QLatin1String("Voulez-vous créer de nouvelles tables dans la base de données ?\n\n") + db.databaseName();
 		QMessageBox mBox(QMessageBox::Question, tr("Question"), mess ,QMessageBox::Yes | QMessageBox::No);
 		mBox.setDefaultButton(QMessageBox::No);
 		int ret = mBox.exec();
