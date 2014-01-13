@@ -2,6 +2,11 @@
 # mcercle - Logiciel de gestion libre
 # -------------------------------------------------
 
+# Test la version de Qt
+lessThan(QT_VERSION, 5.2) {
+    error("mcercle fonctionne avec Qt 5.2 ou superieur!")
+}
+
 QT += sql widgets printsupport
 TARGET = mcercle
 TEMPLATE = app
