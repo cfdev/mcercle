@@ -37,7 +37,11 @@ DialogWaiting::~DialogWaiting()
 
 void DialogWaiting::setProgressBar(int val){
 	ui->progressBar->setValue(val);
-	if(val >= ui->progressBar->maximum())ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	if(val >= ui->progressBar->maximum()) {
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	}
+	// Rafraichit l'affichage
+	qApp->processEvents();
 }
 
 void DialogWaiting::setProgressBarRange(int min, int max){
