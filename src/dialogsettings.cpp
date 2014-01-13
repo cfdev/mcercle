@@ -149,7 +149,7 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 	QImage logo;
 	int ret = logo.load(fileName);
 	if(!ret){
-		QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image...Désoler :("));
+		QMessageBox::critical(this, tr("Erreur"), QLatin1String("Impossible de charger l'image...Désoler :("));
 		return;
 	}
 	if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
@@ -206,13 +206,13 @@ void DialogSettings::on_pushButton_connect_clicked() {
 
 		if(m_data->connect() == database::DB_NOTEXIST_ERR){
 			// Demande si on creer une nouvelle base de donnees
-			QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous créer une nouvelle base de données ?\n"),QMessageBox::Yes | QMessageBox::No);
+			QMessageBox mBox(QMessageBox::Question, tr("Question"), QLatin1String("Voulez-vous créer une nouvelle base de données ?"),QMessageBox::Yes | QMessageBox::No);
 			mBox.setDefaultButton(QMessageBox::No);
 			int ret = mBox.exec();
-			if(ret == QMessageBox::Yes)m_data->create();
+			if(ret == QMessageBox::Yes) m_data -> create();
 		}
 	}
-	else m_data->close();
+	else m_data -> close();
 
 	//Active ou desactive selon letat de la connexion
 	setDbaseEditState(!m_data->isConnected());
@@ -231,7 +231,7 @@ void DialogSettings::loadInfoDatabase() {
 	//Etat de la connexion
 	 if(m_data->isConnected()){
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/On").scaled(24,24)));
-		 ui->pushButton_connect->setText( tr("Se déconnecter") );
+		 ui->pushButton_connect->setText( QLatin1String("Se déconnecter") );
 		 //TAX
 		 DialogTax *m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
 		 ui->verticalLayout_tax->addWidget(m_DialogTax);
