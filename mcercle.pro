@@ -3,11 +3,12 @@
 # -------------------------------------------------
 
 # Test la version de Qt
-lessThan(QT_VERSION, 5.2) {
-    error("mcercle fonctionne avec Qt 5.2 ou superieur!")
-}
+#lessThan(QT_VERSION, 5.2) {
+#    error("mcercle fonctionne avec Qt 5.2 ou superieur!")
+#}
 
-QT += sql widgets printsupport
+QT += sql
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = mcercle
 TEMPLATE = app
 CONFIG += ordered
@@ -37,7 +38,6 @@ macx {
 INSTALLS += target desktop copyright 
 
 OTHER_FILES += \
-    Todo.txt \
     Changelog.txt
 
 HEADERS += \
