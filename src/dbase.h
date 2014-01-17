@@ -101,7 +101,6 @@ public:
 	QString getPassword(){return m_password;}
 	QString getFireBirdVersion(){return m_FDBversion;}
 	int getDatabaseVersion(){return m_databaseVersion;}
-	QDate getCurrentDate();
 	QString getDriverName(){return db.driverName();}
 	QStringList getDrivers(){return db.drivers();}
 

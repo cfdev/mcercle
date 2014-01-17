@@ -18,14 +18,26 @@
 */
 
 #include "settings.h"
-#include <QStandardPaths>
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
+
 #include <QDate>
 
 Settings::Settings(QObject *parent) :
 	QObject(parent)
 {
+	
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	m_fileName = "/mcercle/.mcercle";
+	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
+#else
 	m_fileName = "/.mcercle";
 	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::DataLocation );
+#endif
 	QString path = path_DataLocation+m_fileName;
 	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }

@@ -1,7 +1,12 @@
 #include "dialogprintchoice.h"
 #include "ui_dialogprintchoice.h"
-#include <QDesktopServices>
+
 #include <QFileDialog>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
 
 DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	QDialog(parent),
@@ -13,7 +18,11 @@ DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	ui->radioButton_printer->setChecked(true);
 	on_radioButton_printer_clicked();
 	
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	mpath = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+#else
 	mpath = QStandardPaths::writableLocation( QStandardPaths::HomeLocation );
+#endif	
 	if( m_printer -> outputFileName().isEmpty() )
 		mpathFile = mpath + "/FAxxx.pdf";
 	else

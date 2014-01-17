@@ -24,6 +24,15 @@ class Printc : public QObject
 	
 	private:
 	enum{T_PROPOSAL, T_INVOICE, T_SERVICE};
+
+//Largeur en %
+#define WIDTH_DES 0.52
+#define WIDTH_TAX 0.08
+#define WIDTH_DIS 0.08
+#define WIDTH_PRI 0.12
+#define WIDTH_QTE 0.08
+#define WIDTH_TOT 0.12
+	
 #define OFFSET_BOT_TOTAL 275
 		
 	QLocale m_lang;

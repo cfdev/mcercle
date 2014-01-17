@@ -24,7 +24,7 @@ public:
 	void listProposalAlertToTable();
 	void listRevenuesToTable();
 	void listYear();
-	void calculYear();
+	void calculYear(QString year);
 
 private:
 	Ui::board *ui;
@@ -34,7 +34,7 @@ private:
 
 private slots:
 
-	void on_comboBox_yearsList_currentIndexChanged();
+	void on_comboBox_yearsList_currentIndexChanged(QString);
 	void on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item);
 	void on_tableWidget_ProposalAlert_itemDoubleClicked(QTableWidgetItem *item);
 };

@@ -638,7 +638,7 @@ qreal invoice::getYearRevenue(QString year) {
 	query.prepare(req);
 	if(query.exec()){
 		query.next();
-		total = query.value(query.record().indexOf("TOTAL")).toFloat();
+		total = query.value(query.record().indexOf("TOTAL")).toDouble();
 
 	}
 	else{

@@ -58,7 +58,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("selection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("R\350glement");
+	titles  << tr("Id") << QLatin1String("sélection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << QLatin1String("Règlement");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -222,11 +222,11 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 	footerTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty()) footerTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())     footerTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
+	if(!m_data->getIsTax())     footerTextInfo += "\n" + QLatin1String("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
 	QString pageText;
 
 	//defini la date de limpression
-	QString sDateTime = tr("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	QString sDateTime = QLatin1String("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
 	
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){

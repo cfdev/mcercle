@@ -140,6 +140,6 @@ void DialogTax::on_tableWidget_itemSelectionChanged()
 	int m_index = ui->tableWidget->currentRow();
 	m_tax->loadFromID( ui->tableWidget->item(m_index, 0)->text().toInt() );
 	//Charge les champs
-	ui->lineEdit_description->setText(m_tax->getDescription() );
+	ui->lineEdit_description->setText( m_tax->getDescription() );
 	ui->doubleSpinBox_tax->setValue( m_tax->getValue() );
 }

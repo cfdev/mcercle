@@ -828,6 +828,7 @@ bool database::createTable_proposals_details(){
 			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"ID_PROPOSAL    INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
+			"TYPE           INTEGER,"
 			"NAME           VARCHAR(128) NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
@@ -981,6 +982,7 @@ bool database::createTable_invoices_details(){
 			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"ID_INVOICE     INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
+			"TYPE           INTEGER,"
 			"NAME           VARCHAR(128) NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
@@ -1392,31 +1394,6 @@ QImage database::getLogoTable_informations(){
 	return image;
 }
 
-/**
-   Retourne la date courante
-  */
-QDate database::getCurrentDate() {
-	QDate mdate;
-/*    IBPP::Date date;
-
-	if(!this->m_connected)return mdate;
-
-	try {
-		//TABLE
-		m_tr->Start();
-		m_st->Execute("SELECT CURRENT_DATE AS DATE_NOW FROM rdb$database");
-		m_st->Fetch();
-		m_st->Get("DATE_NOW", date);
-		mdate = database::fromIBPPDate(date);
-		m_tr->Commit();
-	}
-	catch ( IBPP::Exception& e )    {
-		QMessageBox::critical(this->m_parent, tr("Erreur"), e.ErrorMessage());
-		return mdate;
-	}*/
-
-	return mdate;
-}
 
 /**
    Met a jour la base de donnees en version 2
@@ -1512,3 +1489,7 @@ bool database::upgradeToV3(QString *log) {
 
 	return done;
 }
+
+
+// UPDATE V4
+//ADD 			"TYPE           INTEGER," to invoice et proposal detail!!

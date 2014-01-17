@@ -25,7 +25,11 @@
 #include <QFileDialog>
 #include <QImage>
 #include <QMessageBox>
-#include <QStandardPaths>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
 
 DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWidget *parent) :
 	QDialog(parent),
@@ -141,7 +145,11 @@ void DialogSettings::on_buttonBox_accepted() {
 	Ouverture d'un dialog pour le chargement d'un image
   */
 void DialogSettings::on_pushButton_Logo_clicked() {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+#else
 	QString pathPictures = QStandardPaths::writableLocation( QStandardPaths::PicturesLocation );
+#endif
 	QString fileName = QFileDialog::getOpenFileName(this, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
 	if(fileName.isEmpty())return;
 

@@ -41,7 +41,6 @@ board::board(database *pdata, QLocale &lang, QWidget *parent) :
 	listInvoiceAlertToTable();
 	listProposalAlertToTable();
 	listYear();
-	calculYear();
 	listRevenuesToTable();
 }
 
@@ -172,7 +171,7 @@ void board::listInvoiceAlertToTable()
 		}
 		else{
 			item_STATE->setIcon( QIcon(":/app/quit") );
-			item_STATE->setText( tr("Echéance dépassée") );
+			item_STATE->setText( QLatin1String("Echéance dépassée") );
 		}
 		
 		//definir le tableau
@@ -290,12 +289,12 @@ void board::listRevenuesToTable()
 		item_DATE->setData(Qt::DisplayRole, QDate::longMonthName ( i,QDate::DateFormat) );
 
 		monthServiceRevenue = m_data->m_customer->m_invoice->getMonthServiceRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
-		item_MonthServiceRevenue->setData(Qt::DisplayRole, monthServiceRevenue);
+		item_MonthServiceRevenue->setData(Qt::DisplayRole, m_lang.toString(monthServiceRevenue,'f',2) );
 
 		monthProductRevenue = m_data->m_customer->m_invoice->getMonthProductRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
-		item_MonthProductRevenue->setData(Qt::DisplayRole, monthProductRevenue);
+		item_MonthProductRevenue->setData(Qt::DisplayRole, m_lang.toString(monthProductRevenue,'f',2) );
 
-		item_MonthRevenue->setData(Qt::DisplayRole, monthServiceRevenue + monthProductRevenue);
+		item_MonthRevenue->setData(Qt::DisplayRole, m_lang.toString(monthServiceRevenue + monthProductRevenue,'f',2) );
 		
 		//definir le tableau
 		ui->tableWidget_revenue->setRowCount(j+1);
@@ -330,11 +329,11 @@ void board::listYear(){
 /**
 	calcul le CA de lannee selectionnee
   */
-void board::calculYear(){
+void board::calculYear(QString year){
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
 
-	qreal tt = m_data->m_customer->m_invoice->getYearRevenue( ui->comboBox_yearsList->currentText() );
+	qreal tt = m_data->m_customer->m_invoice->getYearRevenue( year );
 	QString txt = tr("<b>Total : ") + m_lang.toString(tt,'f',2) + tr(" &euro;</b>");
 	if( m_data->getIsTax() ){
 		txt += " HT";
@@ -345,8 +344,8 @@ void board::calculYear(){
 /**
 	rafraichit le calcul du CA Mois/Annee
   */
-void board::on_comboBox_yearsList_currentIndexChanged() {
-	calculYear();
+void board::on_comboBox_yearsList_currentIndexChanged(QString txt) {
+	calculYear( txt );
 	listRevenuesToTable();
 }
 

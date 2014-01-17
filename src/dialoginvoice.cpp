@@ -896,22 +896,27 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
   Calcul et Affiche le total
 */
 void DialogInvoice::calcul_Total() {
-	/*
 	m_totalPrice = m_totalTaxPrice = 0.00;
 	//On parcour le tableau pour savoir si l ID et present
 	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
-	   m_totalPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toFloat();
-	   m_totalTaxPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toFloat() + ((ui->tableWidget->item(j, COL_TOTAL)->text().toFloat()*ui->tableWidget->item(j, COL_TAX)->text().toFloat())/100.0);
+		// BUG HERE ->
+		m_totalPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble();
+		m_totalTaxPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble() + ((ui->tableWidget->item(j, COL_TOTAL)->text().toDouble()*ui->tableWidget->item(j, COL_TAX)->text().toDouble())/100.0);
 	}
 	//Cacul du reste
 	qreal diff;
-	if(!m_isTax)diff = m_totalPrice - ui->doubleSpinBox_partPAYMENT->value();
-	else        diff = m_totalTaxPrice - ui->doubleSpinBox_partPAYMENT->value();
+	if(!m_isTax){
+		diff = m_totalPrice - ui->doubleSpinBox_partPAYMENT->value();
+	}
+	else{
+		diff = m_totalTaxPrice - ui->doubleSpinBox_partPAYMENT->value();
+	}
 
 	//affiche la valeur
 	QString val;
-	if(!m_isTax)
+	if(!m_isTax){
 			val = "<strong>"+ tr("TOTAL: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
+	}
 	else{
 			val = "<strong>"+ tr("TOTAL HT: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
 			val += "<strong>"+ tr("TOTAL TTC: ") + QString::number(m_totalTaxPrice,'f',2) + tr(" &euro; </strong><br>");
@@ -921,7 +926,6 @@ void DialogInvoice::calcul_Total() {
 		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
 	}
 	ui->label_Total->setText( val );
-	*/
 }
 
 /**
@@ -970,7 +974,7 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_Name        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -1217,7 +1221,7 @@ void DialogInvoice::on_toolButton_dn_clicked()
 
 		// Change les lignes
 		for (int colu = 0, item=0, widg=0; colu < ui->tableWidget->columnCount()-1; ++colu) {
-			if( colu == COL_NAME){				
+			if( colu == COL_NAME){
 				ui->tableWidget->removeCellWidget(index, colu);
 				ui->tableWidget->setCellWidget(index, colu, rowEditToUp.at(widg));
 				ui->tableWidget->removeCellWidget(index+1, colu);
@@ -1228,7 +1232,7 @@ void DialogInvoice::on_toolButton_dn_clicked()
 				ui->tableWidget->setItem(index+1, colu, rowItemsToDn.at(item++));
 			}
 		}
-		// Reselection ligne en question		
+		// Reselection ligne en question
 		ui->tableWidget->selectRow(index+1);
 	}
 }

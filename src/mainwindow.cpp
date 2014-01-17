@@ -24,9 +24,12 @@
 #include <QFileDialog>
 #include <QDesktopServices>
 #include <QLabel>
-
 #include <QStyle>
-#include <QStyleFactory>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QPlastiqueStyle>
+#else
+	#include <QStyleFactory>
+#endif
 
 #include "dialogsettings.h"
 #include "dialogproviders.h"
@@ -54,16 +57,11 @@ MainWindow::MainWindow(QWidget *parent) :
 	m_database = new database( m_lang, this);
 	m_Settings = new Settings(this);
 	
-	//QApplication::setStyle( new QCleanlooksStyle);
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	QApplication::setStyle(new QPlastiqueStyle);
+#else
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
-	
-/*QPalette p;
-      p = qApp->palette();
-      p.setColor(QPalette::Window, QColor(53,53,53));
-      p.setColor(QPalette::Button, QColor(53,53,53));
-      p.setColor(QPalette::Highlight, QColor(142,45,197));
-      p.setColor(QPalette::ButtonText, QColor(255,255,255));
-      qApp->setPalette(p);*/
+#endif
 }
 
 
@@ -183,7 +181,6 @@ void MainWindow::on_actionTableau_de_bord_triggered() {
 	m_board->listProposalAlertToTable();
 	m_board->listYear();
 	m_board->listRevenuesToTable();
-	m_board->calculYear();
 	m_customerView->hide();
 	m_productView->hide();
 	ui->verticalLayout->update();
@@ -259,7 +256,6 @@ void MainWindow::RefreshLists() {
 	m_board->listInvoiceAlertToTable();
 	m_board->listProposalAlertToTable();
 	m_board->listYear();
-	m_board->calculYear();
 	m_board->listRevenuesToTable();
 }
 
