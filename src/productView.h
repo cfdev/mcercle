@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTableWidgetItem>
 #include <QLocale>
-#include <Qprinter>
+#include <QPrinter>
 
 #include "dbase.h"
 
