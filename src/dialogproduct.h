@@ -42,7 +42,9 @@ private slots:
 	void on_toolButton_autoCode_clicked();
 	void on_toolButton_editTax_clicked();
 
-signals:
+	void on_pushButton_image_clicked();
+	
+	signals:
 	void askRefreshList();
 };
 

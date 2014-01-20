@@ -77,10 +77,10 @@ QString product::getTextState(int state)
 bool product::create() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
-   /* QByteArray data;
+	QByteArray data;
 	QBuffer buf(&data);
-	writes image into ba in PNG format
-	m_image.save(&buf,"PNG");*/
+	//writes image into ba in PNG format
+	m_image.save(&buf,"PNG");
 
 	QString f;
 	QString req = "INSERT INTO TAB_PRODUCTS(CREATIONDATE, CODE, SELLING_PRICE, BUYING_PRICE, TAX, NAME, STOCK, STOCK_WARNING, STATE,ID_PROVIDER, ID_CATEGORY) "; //  IMAGE,
@@ -94,7 +94,7 @@ bool product::create() {
 	req += "'" + QString::number(m_stock) + "',";
 	req += "'" + QString::number(m_stock_warning) + "',";
 	req += "'" + QString::number(m_state)  + "',";
-  //  req += " :data,";
+	req += " :data,";
 	req += "'" + QString::number(m_idProvider)  + "',";
 	req += "'" + QString::number(m_idCategory)   + "');";
 
@@ -117,10 +117,10 @@ bool product::create() {
 bool product::update() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
-   /* QByteArray data;
+	QByteArray data;
 	QBuffer buf(&data);
-	 writes image into ba in PNG format
-	m_image.save(&buf,"PNG");*/
+	//writes image into ba in PNG format
+	m_image.save(&buf,"PNG");
 
 	QString f;
 	QString req = "UPDATE TAB_PRODUCTS SET ";
@@ -132,14 +132,14 @@ bool product::update() {
 	req += "STOCK='" + QString::number(m_stock) + "',";
 	req += "STOCK_WARNING='" + QString::number(m_stock_warning) + "',";
 	req += "STATE='" + QString::number(m_state) + "',";
-  //  req += "IMAGE = :data,";
+	req += "IMAGE = :data,";
 	req += "ID_PROVIDER='" + QString::number(m_idProvider) + "',";
 	req += "ID_CATEGORY='" + QString::number(m_idCategory) + "' ";
 	req += "WHERE ID="+ QString::number(m_id) +";";
 
 	QSqlQuery query;
 	query.prepare(req);
-	//query.bindValue( ":data", buf.data() );
+	query.bindValue( ":data", buf.data() );
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -229,10 +229,10 @@ bool product::loadFromID(const int& id) {
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
 		m_idProvider = query.value(query.record().indexOf("ID_PROVIDER")).toInt();
 		m_idCategory = query.value(query.record().indexOf("ID_CATEGORY")).toInt();
-	 /*   QImage img;
+		QImage img;
 		m_image = img;
 		data = query.value(query.record().indexOf("IMAGE")).toByteArray();
-		m_image.loadFromData(data,"PNG");*/
+		m_image.loadFromData(data,"PNG");
 		return true;
 	}
 	else{

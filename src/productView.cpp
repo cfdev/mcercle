@@ -376,7 +376,7 @@ void productView::on_tableWidget_products_itemSelectionChanged()
 	bool ret = m_data->m_product->loadFromID( ui->tableWidget_products->item(m_index, ID_ROW)->text().toInt());
 
 	if(ret) {
-		//ui->label_image->setPixmap(QPixmap::fromImage(m_data->m_product->getPicture()));
+		ui->label_image->setPixmap(QPixmap::fromImage(m_data->m_product->getPicture()));
 		ui->labelInfoProduct->setText( InfoProduct() );
 		int id = m_data->m_product->getProviderID();
 		ret = m_data->m_product->m_provider->loadFromID(id);

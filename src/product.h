@@ -26,7 +26,7 @@ private:
 	QDateTime m_creationDate;
 	QString m_code, m_name;
 	QLocale m_lang;
-  //  QImage m_image;
+	QImage m_image;
 
 public:
 	//Acces a la class fournisseur
@@ -82,7 +82,7 @@ public:
 	void setName(const  QString& name){m_name = name;}
 	void setProviderId(const int& ident){m_idProvider = ident;}
 	void setCategoryId(const int& ident){m_idCategory = ident;}
-  //  void setPicture(const QImage& image){m_image = image;}
+	void setPicture(const QImage& image){m_image = image;}
 
 	//recup les valeurs
 	QIcon getIconState(int state);
@@ -99,7 +99,7 @@ public:
 	QString getName(){return m_name;}
 	int getLastId();
 	int getProviderID(){return m_idProvider;}
-   // QImage getPicture(){return m_image;}
+	QImage getPicture(){return m_image;}
 
 
 	QString getProvider();

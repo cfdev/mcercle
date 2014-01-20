@@ -112,8 +112,8 @@ void DialogProduct::clearEdits(){
 	ui->lineEdit_stockAlert->setText("0");
 	ui->doubleSpinBox_buyingPrice->setValue(0);
 	ui->doubleSpinBox_price->setValue(0);
-   /* QImage img;
-	ui->label_image->setPixmap(QPixmap::fromImage(img));*/
+	QImage img;
+	ui->label_image->setPixmap(QPixmap::fromImage(img));
 }
 
 /**
@@ -148,8 +148,8 @@ void DialogProduct::loadValuesFormProduct(){
 	ui->lineEdit_stockAlert->setText( QString::number(m_product->getStockWarning()) );
 
 	//relecture de limage et affichage du logo
-	/*QImage lo = m_product->getPicture();
-	ui->label_image->setPixmap(QPixmap::fromImage(lo));*/
+	QImage lo = m_product->getPicture();
+	ui->label_image->setPixmap(QPixmap::fromImage(lo));
 
 	//State
 	if( m_product->getState() == product::OK )ui->radioButton_OK->setChecked( true );
@@ -284,11 +284,11 @@ void DialogProduct::on_pushButton_add_edit_clicked()
 	m_product->setSellingPrice( SellingPrice );
 
 	//ajout a la base de donnees
-	/*if(ui->label_image->pixmap() == NULL){
+	if(ui->label_image->pixmap() == NULL){
 		QImage img;
 		m_product->setPicture(img);
 	}
-	else m_product->setPicture( ui->label_image->pixmap()->toImage() );*/
+	else m_product->setPicture( ui->label_image->pixmap()->toImage() );
 
 	m_product->m_provider->loadFromName( ui->comboBox_providers->currentText() );
 	m_product->setProviderId(m_product->m_provider->getId());
@@ -379,9 +379,9 @@ void DialogProduct::on_pushButton_ClearImage_clicked()
 	QImage logo;
 	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }
+*/
 
-void DialogProduct::on_pushButton_image_clicked()
-{
+void DialogProduct::on_pushButton_image_clicked(){
 	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
 	QString fileName = QFileDialog::getOpenFileName(0, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
 
@@ -399,6 +399,6 @@ void DialogProduct::on_pushButton_image_clicked()
 
 	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }
-*/
+
 
 
