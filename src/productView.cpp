@@ -145,6 +145,10 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	titles << tr("Id") << tr("Codes") << tr("Noms") << QLatin1String("Catégorie") << tr("Prix de vente") << tr("Tva") << tr("Stock") ;
 	ui->tableWidget_products->setHorizontalHeaderLabels( titles );
 
+	if( !m_data->getIsTax() ){
+		ui->tableWidget_products->setColumnHidden(TAX_ROW , true); //cache la colonne TVA
+	}
+	
 	//Cacul en fonction de la page
 	int count = m_data->m_product->count(filter, field, m_ShowObsoleteProduct);
 	m_prodNbPage = count/PRODUCTSMAX_PAGE +1;

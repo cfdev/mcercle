@@ -270,7 +270,9 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
 	}
-	else    titles << tr("Total HT");
+	else{
+		titles << tr("Total HT");
+	}
 	ui->tableWidget->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -457,7 +459,7 @@ void DialogInvoice::listServiceToTable()
 	QStringList titles;
 	titles << tr("Id") << tr("Nom") << tr("Prix") << tr("Tva") << QLatin1String("Détail") ;
 	if(!m_isTax){
-			ui->tableWidget->setColumnHidden(SERV_COL_TAX , true); //cache la colonne TVA
+		ui->tableWidget_selectService->setColumnHidden(SERV_COL_TAX , true); //cache la colonne TVA
 	}
 	
 	ui->tableWidget_selectService->setHorizontalHeaderLabels( titles );
@@ -896,7 +898,7 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
   Calcul et Affiche le total
 */
 void DialogInvoice::calcul_Total() {
-	m_totalPrice = m_totalTaxPrice = 0.00;
+	/*m_totalPrice = m_totalTaxPrice = 0.00;
 	//On parcour le tableau pour savoir si l ID et present
 	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
 		// BUG HERE ->
@@ -925,7 +927,7 @@ void DialogInvoice::calcul_Total() {
 	if(m_DialogType == INVOICE_TYPE){
 		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
 	}
-	ui->label_Total->setText( val );
+	ui->label_Total->setText( val );*/
 }
 
 /**
