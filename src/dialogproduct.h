@@ -44,6 +44,8 @@ private slots:
 
 	void on_pushButton_image_clicked();
 	
+	void on_pushButton_ClearImage_clicked();
+	
 	signals:
 	void askRefreshList();
 };

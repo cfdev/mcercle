@@ -173,6 +173,7 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 
 			item_ID->setData(Qt::DisplayRole, plist.id.at(i));
 			item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
+			item_NAME->setIcon( QIcon( QPixmap::fromImage(plist.img.at(i)) ) );
 			item_NAME->setData(Qt::DisplayRole, plist.name.at(i));
 			item_STOCK->setData(Qt::DisplayRole, plist.stock.at(i));
 			item_PRICE->setData(Qt::DisplayRole, plist.selling_price.at(i));

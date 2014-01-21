@@ -47,6 +47,7 @@ public:
 		QList<int> stock;
 		QList<int> stockWarning;
 		QList<int> state;
+		QList<QImage> img;
 	}ProductList;
 
 

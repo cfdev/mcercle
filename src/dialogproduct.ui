@@ -90,7 +90,7 @@
          <item>
           <widget class="QPushButton" name="pushButton_image">
            <property name="text">
-            <string>Ajouter une image</string>
+            <string>Parcourir</string>
            </property>
           </widget>
          </item>

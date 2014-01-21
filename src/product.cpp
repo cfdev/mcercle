@@ -346,7 +346,7 @@ int product::getLastId(){
   */
 bool product::getProductList(ProductList& list, int first, int skip, QString filter, QString field) {
 
-	QString req = "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS.TAX, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE"
+	QString req = "SELECT TAB_PRODUCTS.ID, TAB_PRODUCTS.CODE, TAB_PRODUCTS.NAME, TAB_PRODUCTS.SELLING_PRICE, TAB_PRODUCTS.TAX, TAB_PRODUCTS_CATEGORIES.NAME AS CATEGORY, TAB_PRODUCTS_CATEGORIES.COLOR AS CATEGORYCOLOR, TAB_PROVIDERS.NAME AS PROVIDER, TAB_PRODUCTS.STOCK, TAB_PRODUCTS.STOCK_WARNING, TAB_PRODUCTS.STATE, TAB_PRODUCTS.IMAGE"
 				  " FROM TAB_PRODUCTS"
 				  " LEFT OUTER JOIN TAB_PRODUCTS_CATEGORIES"
 				  "  ON TAB_PRODUCTS.ID_CATEGORY = TAB_PRODUCTS_CATEGORIES.ID"
@@ -363,6 +363,8 @@ bool product::getProductList(ProductList& list, int first, int skip, QString fil
 	// ATTENTION PEUT FAIRE RALENTIR LE TRAITEMENT
 	req += " ORDER BY UPPER(TAB_PRODUCTS.NAME) ASC LIMIT "+QString::number(skip)+","+QString::number(first)+"; ";
 
+	QImage img;
+	QByteArray data;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -378,6 +380,15 @@ bool product::getProductList(ProductList& list, int first, int skip, QString fil
 			list.stock.push_back( query.value(query.record().indexOf("STOCK")).toInt() );
 			list.stockWarning.push_back( query.value(query.record().indexOf("STOCK_WARNING")).toInt() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
+			
+			data = query.value(query.record().indexOf("IMAGE")).toByteArray();
+			if(!data.isEmpty()){
+				img.loadFromData(data,"PNG");
+				list.img.push_back( img );
+			}
+			else{
+				list.img.push_back( QImage() );
+			}
 		}
 		return true;
 	}

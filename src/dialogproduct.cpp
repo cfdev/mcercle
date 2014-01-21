@@ -373,14 +373,15 @@ void DialogProduct::on_toolButton_autoCode_clicked(){
 /**
 	Image du produit
   */
-/*
-void DialogProduct::on_pushButton_ClearImage_clicked()
-{
+
+void DialogProduct::on_pushButton_ClearImage_clicked() {
 	QImage logo;
 	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }
-*/
 
+/**
+ * @brief Ajoute une image
+ */
 void DialogProduct::on_pushButton_image_clicked(){
 	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
 	QString fileName = QFileDialog::getOpenFileName(0, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
@@ -399,6 +400,4 @@ void DialogProduct::on_pushButton_image_clicked(){
 
 	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }
-
-
 
