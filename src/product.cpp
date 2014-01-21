@@ -83,7 +83,7 @@ bool product::create() {
 	m_image.save(&buf,"PNG");
 
 	QString f;
-	QString req = "INSERT INTO TAB_PRODUCTS(CREATIONDATE, CODE, SELLING_PRICE, BUYING_PRICE, TAX, NAME, STOCK, STOCK_WARNING, STATE,ID_PROVIDER, ID_CATEGORY) "; //  IMAGE,
+	QString req = "INSERT INTO TAB_PRODUCTS(CREATIONDATE, CODE, SELLING_PRICE, BUYING_PRICE, TAX, NAME, STOCK, STOCK_WARNING, STATE, ID_PROVIDER, ID_CATEGORY, IMAGE) "; 
 	req += "VALUES(";
 	req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
 	req += "'" + m_code.replace("\'","''") + "',";
@@ -94,13 +94,13 @@ bool product::create() {
 	req += "'" + QString::number(m_stock) + "',";
 	req += "'" + QString::number(m_stock_warning) + "',";
 	req += "'" + QString::number(m_state)  + "',";
-	req += " :data,";
 	req += "'" + QString::number(m_idProvider)  + "',";
-	req += "'" + QString::number(m_idCategory)   + "');";
-
+	req += "'" + QString::number(m_idCategory)   + ",";
+	req += " :data);";
+	
 	QSqlQuery query;
 	query.prepare(req);
-	//query.bindValue( ":data", buf.data() );
+	query.bindValue( ":data", buf.data() );
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
