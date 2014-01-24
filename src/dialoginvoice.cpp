@@ -37,18 +37,18 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
 
-	m_data = pdata;
-	m_customer = pdata->m_customer;
-	m_proposal = pdata->m_customer->m_proposal;
-	m_invoice = pdata->m_customer->m_invoice;
-	m_service = pdata->m_customer->m_service;
-	m_serviceComm = pdata->m_customer->m_serviceComm;
-	m_product = pdata->m_product;
-	m_isTax = pdata->getIsTax();
-	m_lang = lang;
+	m_data			= pdata;
+	m_customer		= pdata -> m_customer;
+	m_proposal		= pdata -> m_customer -> m_proposal;
+	m_invoice		= pdata -> m_customer -> m_invoice;
+	m_service		= pdata -> m_customer -> m_service;
+	m_serviceComm	= pdata -> m_customer -> m_serviceComm;
+	m_product		= pdata -> m_product;
+	m_isTax			= pdata -> getIsTax();
+	m_lang			= lang;
 
-	m_DialogType = type;
-	m_DialogState = state;
+	m_DialogType	= type;
+	m_DialogState	= state;
 	//Configuration de l'UI
 	setUI();
 
@@ -165,22 +165,6 @@ void DialogInvoice::setUI() {
 	ui->productLayout->addWidget( m_productView );
 
 	checkConditions();
-	//DRAG AND DROP
-	//TODO : DRAG AND DROP
-	//http://www.siteduzero.com/forum-83-540738-p1-qt-qtablewidget-drag-drop.html
-   /* ui->tableWidget_selectService->setAcceptDrops(true);
-	ui->tableWidget_selectService->setDragDropMode(QAbstractItemView::InternalMove);
-	ui->tableWidget_selectService->setDropIndicatorShown(true);
-	ui->tableWidget_selectService->setSelectionBehavior(QAbstractItemView::SelectRows);
-	ui->tableWidget_selectService->setSelectionMode(QAbstractItemView::SingsleSelection);
-	ui->tableWidget_selectService->setDragDropOverwriteMode(false);
-
-	ui->tableWidget->setAcceptDrops(true);
-	ui->tableWidget->setDragDropMode(QAbstractItemView::InternalMove);
-	ui->tableWidget->setDropIndicatorShown(true);
-	ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-	ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
-	ui->tableWidget->setDragDropOverwriteMode(false);*/
 }
 /**
   Renseigne les informations
@@ -337,8 +321,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 	@param filter, filtre a appliquer
 	@param field, champ ou appliquer le filtre
 */
-void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field)
-{
+void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 	m_ilist.id.clear();
 	m_ilist.idProduct.clear();
 	m_ilist.discount.clear();
