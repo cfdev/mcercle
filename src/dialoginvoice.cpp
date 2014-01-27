@@ -881,14 +881,17 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
   Calcul et Affiche le total
 */
 void DialogInvoice::calcul_Total() {
-	/*m_totalPrice = m_totalTaxPrice = 0.00;
+	m_totalPrice = m_totalTaxPrice = 0.00;
 	//On parcour le tableau pour savoir si l ID et present
 	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
 		// BUG HERE ->
-		m_totalPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble();
-		m_totalTaxPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble() + ((ui->tableWidget->item(j, COL_TOTAL)->text().toDouble()*ui->tableWidget->item(j, COL_TAX)->text().toDouble())/100.0);
+		if( (ui->tableWidget->item(j, COL_TOTAL)	!= NULL) &&
+			 (ui->tableWidget->item(j, COL_TAX)		!= NULL)){
+			m_totalPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble();
+			m_totalTaxPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble() + ((ui->tableWidget->item(j, COL_TOTAL)->text().toDouble()*ui->tableWidget->item(j, COL_TAX)->text().toDouble())/100.0);
+		}
 	}
-	//Cacul du reste
+	//Cacul du reste*/
 	qreal diff;
 	if(!m_isTax){
 		diff = m_totalPrice - ui->doubleSpinBox_partPAYMENT->value();
@@ -910,7 +913,7 @@ void DialogInvoice::calcul_Total() {
 	if(m_DialogType == INVOICE_TYPE){
 		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
 	}
-	ui->label_Total->setText( val );*/
+	ui->label_Total->setText( val );
 }
 
 /**
