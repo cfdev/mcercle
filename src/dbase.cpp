@@ -166,7 +166,11 @@ char database::connect(){
 				if(!upgradeToV3(&log)) upgradeOk = false;
 			}
 			logAll += log;
-			
+			if(m_databaseVersion <= 3 ) {
+				if(!upgradeToV4(&log)) upgradeOk = false;
+			}
+			logAll += log;
+
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), mess, QMessageBox::Ok);
 			if(upgradeOk){
 				mess += tr("La mise à jour de la base de données a réussi !\n");
@@ -313,6 +317,7 @@ bool database::createTable_informations(){
 			"TAX            INTEGER,"
 			"NAME           VARCHAR(64) NOT NULL,"
 			"NUM            VARCHAR(64),"
+			"NUM_TAX        VARCHAR(64),"
 			"CAPITAL        VARCHAR(64),"
 			"ADDRESS1       VARCHAR(128),"
 			"ADDRESS2       VARCHAR(128),"
@@ -341,8 +346,8 @@ bool database::createTable_informations(){
 	}
 
 	//INSERT
-    query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-                  "VALUES('3', '0', '','1');");
+	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
+					"VALUES('3', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -829,7 +834,7 @@ bool database::createTable_proposals_details(){
 			"ID_PROPOSAL    INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
 			"TYPE           INTEGER,"
-			"NAME           VARCHAR(128) NOT NULL,"
+			"NAME           TEXT NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
 			"TAX            NUMERIC(5,2),"
@@ -983,7 +988,7 @@ bool database::createTable_invoices_details(){
 			"ID_INVOICE     INTEGER NOT NULL,"
 			"ID_PRODUCT     INTEGER,"
 			"TYPE           INTEGER,"
-			"NAME           VARCHAR(128) NOT NULL,"
+			"NAME           TEXT NOT NULL,"
 			"DISCOUNT       INTEGER NOT NULL,"
 			"QUANTITY       INTEGER NOT NULL,"
 			"TAX            NUMERIC(5,2),"
@@ -1185,8 +1190,8 @@ bool database::updateInfo(Informations &info) {
 	}
 	//Si pas d enregistrement on en creer un
 	if(count<=0){
-        query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME,CA_TYPE)"
-                      "VALUES('1', '0', '', '1');");
+		query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME,CA_TYPE)"
+						"VALUES('1', '0', '', '1');");
 		if(!query.exec()) {
 			QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 			return false;
@@ -1199,6 +1204,7 @@ bool database::updateInfo(Informations &info) {
 	req = "UPDATE TAB_INFORMATIONS SET ";
 	req += "NAME='" + info.name.replace("\'","''") + "',";
 	req += "NUM='" + info.num.replace("\'","''") + "',";
+	req += "NUM_TAX='" + info.numTax.replace("\'","''") + "',";
 	req += "CAPITAL='" + info.capital.replace("\'","''") + "',";
 	req += "ADDRESS1='" + info.address1.replace("\'","''") + "',";
 	req += "ADDRESS2='" + info.address2.replace("\'","''") + "',";
@@ -1237,6 +1243,7 @@ bool database::getInfo(Informations &info) {
 		query.next();
 		info.name = query.value(query.record().indexOf("NAME")).toString();
 		info.num = query.value(query.record().indexOf("NUM")).toString();
+		info.numTax = query.value(query.record().indexOf("NUM_TAX")).toString();
 		info.capital = query.value(query.record().indexOf("CAPITAL")).toString();
 		info.address1 = query.value(query.record().indexOf("ADDRESS1")).toString();
 		info.address2 = query.value(query.record().indexOf("ADDRESS2")).toString();
@@ -1248,7 +1255,7 @@ bool database::getInfo(Informations &info) {
 		info.email = query.value(query.record().indexOf("EMAIL")).toString();
 		info.webSite = query.value(query.record().indexOf("WEBSITE")).toString();
 		info.tax = query.value(query.record().indexOf("TAX")).toInt();
-        info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
+		info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -1408,7 +1415,7 @@ bool database::upgradeToV2(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1418,7 +1425,7 @@ bool database::upgradeToV2(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1428,7 +1435,7 @@ bool database::upgradeToV2(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1444,13 +1451,13 @@ bool database::upgradeToV3(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = "Mise a jour de la base de données en version 2:";
+	*log = "Mise a jour de la base de données en version 3:";
 	
 	req =	"ALTER TABLE TAB_INVOICES ADD PAYMENTDATE;";
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1461,7 +1468,7 @@ bool database::upgradeToV3(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1471,7 +1478,7 @@ bool database::upgradeToV3(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1481,7 +1488,7 @@ bool database::upgradeToV3(QString *log) {
 	*log += "\n\n"+ req;
 	query.prepare( req );
 	if(!query.exec()) {
-		*log += "'\n->" + query.lastError().text();
+		*log += "\n->" + query.lastError().text();
 		done = false;
 	}
 	else
@@ -1490,6 +1497,195 @@ bool database::upgradeToV3(QString *log) {
 	return done;
 }
 
+/**
+   Met a jour la base de donnees en version 4
+  */
+bool database::upgradeToV4(QString *log) {
+	QString req;
+	bool done=true;
+	QSqlQuery query;
+	*log = "Mise a jour de la base de données en version 4:";
+	
+	// ajout dune colonne
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD NUM_TAX VARCHAR(64);";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Creation dune table temporaire DEVIS
+	req =	"ALTER TABLE 'TAB_PROPOSALS_DETAILS' RENAME TO 'TAB_PROPOSALS_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//creation de la table modifiee
+	req = "CREATE TABLE IF NOT EXISTS TAB_PROPOSALS_DETAILS ("
+			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"ID_PROPOSAL    INTEGER NOT NULL,"
+			"ID_PRODUCT     INTEGER,"
+			"NAME           TEXT NOT NULL,"
+			"DISCOUNT       INTEGER NOT NULL,"
+			"QUANTITY       INTEGER NOT NULL,"
+			"TAX            NUMERIC(5,2),"
+			"PRICE          NUMERIC(8,2) NOT NULL,"
+			"ITEM_ORDER     INTEGER,"
+			"FOREIGN KEY(ID_PROPOSAL) REFERENCES TAB_PROPOSALS(ID) ON DELETE CASCADE"
+			"); ";
+	if(db.driverName() == "QMYSQL")
+		req.replace("AUTOINCREMENT","AUTO_INCREMENT");
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Copie des valeurs dans la nouvelle table !
+	req =  "INSERT INTO 'TAB_PROPOSALS_DETAILS' SELECT * FROM 'TAB_PROPOSALS_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Suppression de la table temporaire
+	req =  "DROP TABLE 'TAB_PROPOSALS_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	// ajout dune colonne
+	req =	"ALTER TABLE TAB_PROPOSALS_DETAILS ADD TYPE INTEGER;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	// Modification du type d item
+	req =	"UPDATE TAB_PROPOSALS_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Creation dune table temporaire FACTURE
+	req =	"ALTER TABLE 'TAB_INVOICES_DETAILS' RENAME TO 'TAB_INVOICES_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	req = "CREATE TABLE IF NOT EXISTS TAB_INVOICES_DETAILS ("
+			"ID             INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"ID_INVOICE     INTEGER NOT NULL,"
+			"ID_PRODUCT     INTEGER,"
+			"NAME           TEXT NOT NULL,"
+			"DISCOUNT       INTEGER NOT NULL,"
+			"QUANTITY       INTEGER NOT NULL,"
+			"TAX            NUMERIC(5,2),"
+			"PRICE          NUMERIC(8,2) NOT NULL,"
+			"ITEM_ORDER     INTEGER,"
+			"FOREIGN KEY(ID_INVOICE) REFERENCES TAB_INVOICES(ID) ON DELETE CASCADE"
+			");";
+	if(db.driverName() == "QMYSQL")
+		req.replace("AUTOINCREMENT","AUTO_INCREMENT");
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Copie des valeurs dans la nouvelle table !
+	req =  "INSERT INTO 'TAB_INVOICES_DETAILS' SELECT * FROM 'TAB_INVOICES_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Suppression de la table temporaire
+	req =  "DROP TABLE 'TAB_INVOICES_DETAILS_TEMP';";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
 
-// UPDATE V4
-//ADD 			"TYPE           INTEGER," to invoice et proposal detail!!
+	// ajout dune colonne
+	req =	"ALTER TABLE TAB_INVOICES_DETAILS ADD TYPE INTEGER;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	// Modification du type d item
+	req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=4;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	return done;
+}
+
+/// TODO -> creer une class update.cpp
+

@@ -56,19 +56,20 @@ private:
 	/* fonctions de mise a jour */
 	bool upgradeToV2(QString *log);
 	bool upgradeToV3(QString *log);
+	bool upgradeToV4(QString *log);
 	
 public:
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau
 		QString name;
-		QString num;
+		QString num,numTax;
 		QString capital;
-		QString phoneNumber;QString faxNumber;
-		QString email; QString webSite;
+		QString phoneNumber, faxNumber;
+		QString email, webSite;
 		QString zipCode;
 		QString city;
-		QString address1;QString address2;QString address3;
+		QString address1, address2, address3;
 	int tax; int ca_type;
 	}Informations;
 
