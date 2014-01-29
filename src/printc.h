@@ -61,11 +61,13 @@ class Printc : public QObject
 	int mBlockHeight;
 	int mlinePerPage, mlinePerLastPage;
 	
+	qreal mtotalPrice, mtotalTaxPrice;
+	
 	void load_parameters(QPrinter *printer, QPainter &painter);
 	void print_header(QPainter &painter, QRectF &rect, int type);
 	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int page, int NbOfpage);
-	void print_total(QPainter &painter, QRectF &rect, itemList Ilist, qreal &totalPrice, int type);
-	void print_reglement(QPainter &painter, QRectF &rect, qreal &totalPrice);
+	void print_total(QPainter &painter, QRectF &rect, itemList Ilist, int type);
+	void print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type);
 	QRectF get_RecFooter(QPainter &painter);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
 	
