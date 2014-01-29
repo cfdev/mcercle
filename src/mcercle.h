@@ -22,7 +22,7 @@
 namespace MCERCLE {
 // Version et version de bdd supporte
 	const QString Version = "14.02 BETA";
-	const int Dbase_support = 3;
+	const int Dbase_support = 4;
 
 // Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre
 	const QString CASH ="CA";
@@ -33,6 +33,10 @@ namespace MCERCLE {
 	const QString DEBIT ="DE";
 	const QString OTHER ="OT";
 	
+	//TYPE PRODUIT SERVICE
+	const int SERVICE = 0;
+	const int PRODUCT = 1;
+			
 	/*const QColor TABLE_BG_COLOR QColor(69,69,69,255);
 	const QColor TABLE_TXT_COLOR QColor(219,219,219,255);*/
 	

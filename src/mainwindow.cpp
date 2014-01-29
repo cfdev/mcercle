@@ -174,7 +174,7 @@ void MainWindow::on_actionQuitter_triggered() {
 	Affiche le tableau de bord
 */
 void MainWindow::on_actionTableau_de_bord_triggered() {
-	setWindowTitle("mcerle");
+	setWindowTitle("mcercle");
 	m_board->show();
 	m_board->listStockAlertToTable();
 	m_board->listInvoiceAlertToTable();
@@ -190,7 +190,7 @@ void MainWindow::on_actionTableau_de_bord_triggered() {
 	Affiche la gestion clients
 */
 void MainWindow::on_actionClients_triggered() {
-	setWindowTitle("mcerle -" + tr(" Client"));
+	setWindowTitle("mcercle -" + tr(" Client"));
 	m_board->hide();
 	m_customerView->refreshCustomersList();
 	m_customerView->show();
@@ -202,7 +202,7 @@ void MainWindow::on_actionClients_triggered() {
 	Affiche la gestion produits
 */
 void MainWindow::on_actionProduits_triggered() {
-	setWindowTitle("mcerle -" + tr(" Produit"));
+	setWindowTitle("mcercle -" + tr(" Produit"));
 	m_board->hide();
 	m_customerView->hide();
 	m_productView->refreshProductsList();
