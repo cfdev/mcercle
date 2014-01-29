@@ -82,6 +82,8 @@ about::about(database *pdata, QWidget *parent) :
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
 	msg += "<br>- Site internet: <a href=\"http://cyril.frausti.fr/\">http://cyril.frausti.fr/</a>";
 	
+	msg += "<br><br>Ce programme est fourni « EN L'ETAT », SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
+	
 	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("MCERCLE vous aide dans votre activit&#233;, aidez son concepteur") + "</p>";
 
 	ui->label_apropos->setText( msg );
