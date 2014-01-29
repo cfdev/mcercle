@@ -98,6 +98,7 @@ void DialogSettings::on_buttonBox_accepted() {
 	database::Informations inf;
 	inf.name = ui->lineEdit_sName->text();
 	inf.num = ui->lineEdit_sNum->text();
+	inf.numTax = ui->lineEdit_numTVA->text();
 	inf.capital = ui->lineEdit_sCapital->text();
 	inf.phoneNumber = ui->lineEdit_sPhone->text();
 	inf.faxNumber = ui->lineEdit_sFax->text();
@@ -261,6 +262,7 @@ void DialogSettings::loadInfoDatabase() {
 	 m_data->getInfo( inf );
 	 ui->lineEdit_sName->setText(inf.name);
 	 ui->lineEdit_sNum->setText(inf.num);
+	 ui->lineEdit_numTVA->setText(inf.numTax);
 	 ui->lineEdit_sCapital->setText(inf.capital);
 	 ui->lineEdit_sPhone->setText(inf.phoneNumber);
 	 ui->lineEdit_sFax->setText(inf.faxNumber);

@@ -26,21 +26,41 @@
 #endif
 
 #include <QDate>
+#include <QDir>
+#include <QFile>
+#include <QMessageBox>
 
 Settings::Settings(QObject *parent) :
 	QObject(parent)
 {
+	m_fileName = "/.mcercle";
 	
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	m_fileName = "/mcercle/.mcercle";
 	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
+	QString path = path_DataLocation+"/mcercle"+m_fileName;
+	// Changement de repertoire
+	if(( QFile::exists ( path_DataLocation+"/.mcercle" ) )||
+		( QFile::exists ( path_DataLocation+"/.mcercle" ))){
+		if( QDir().mkdir(path_DataLocation+"/mcercle/") ){
+		// Si le fichier existe deja on le copy
+			if( QFile::copy(path_DataLocation+"/.mcercle", path) ) {
+				QFile::remove(path_DataLocation+"/.mcercle");
+			}
+			else{
+				QMessageBox::critical(0, tr("Erreur"),
+									tr("Transfert de fichier impossible!\n\n")+
+										"Source: "+path_DataLocation+"/.mcercle\n"+
+										"Destination: "+path+"\n");
+			}
+		}
+	}
 #else
-	m_fileName = "/.mcercle";
+	// Qt5 gere un dosssier du nom de lapplication
 	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::DataLocation );
 #endif
-	QString path = path_DataLocation+m_fileName;
 	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
+
 
 /**
 	Recuperation des parametres de connexion pour la bdd
