@@ -708,7 +708,7 @@ void DialogInvoice::setProposal(unsigned char proc){
 		int lastID = m_proposal->getLastId();
 		//Generation du code
 		// TYPE + DATE + ID
-		QString typp = tr("PR");
+		QString typp = tr("DE");
 		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
 		if( m_proposal -> create() ) {
