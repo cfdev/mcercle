@@ -733,7 +733,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	print_reglement(painter, rect, m_pro -> getTypePayment(), T_PROPOSAL);
 
 	/// Signature Client
-	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n\n";
+	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n";
 	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, /*rect.top()*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL + 100, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
 	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36 +15, rect.height()), 5, 5 );
