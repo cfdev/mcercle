@@ -127,7 +127,7 @@ void MainWindow::init(){
 	label_warningBdd -> setAlignment( Qt::AlignCenter );
 	if( m_Settings -> getDatebddSave().addMonths(3) < QDate::currentDate()){
 		QString txt = "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#D65600; \">";
-		txt += tr("La base de donn&eacute;es doit &ecirc;tre sauvegarder! Derniere sauvegarde r&eacute;alis&eacute;e le: ") + m_Settings -> getDatebddSave().toString(tr("dd-MM-yyyy")) + "</p>";
+		txt += tr("La base de donn&eacute;es doit &ecirc;tre sauvegard&eacute;e! Derniere sauvegarde r&eacute;alis&eacute;e le: ") + m_Settings -> getDatebddSave().toString(tr("dd-MM-yyyy")) + "</p>";
 		label_warningBdd -> setText(txt);
 		label_warningBdd -> setVisible(true);
 	}
