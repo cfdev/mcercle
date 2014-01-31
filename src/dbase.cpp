@@ -298,19 +298,6 @@ bool database::create(){
 	Creation de la table informations
   */
 bool database::createTable_informations(){
-  /*  QString path = QDir::currentPath() +"/scripts/"+db.driverName()+"/create_table_informations.sql";
-	QFile sqlFile( path );
-	if (!sqlFile.open(QIODevice::ReadOnly | QIODevice::Text)){
-		QMessageBox::critical(this->m_parent, tr("Erreur"), tr("Impossible d ouvrir le fichier SQL\n")+path);
-	  return false;
-	}
-	QSqlQuery query;
-	query.prepare( sqlFile.readAll() );
-	if(!query.exec()) {
-		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-		return false;
-	}
-*/
 	QString req ="CREATE TABLE TAB_INFORMATIONS("
 			"ID             INTEGER NOT NULL ,"
 			"DBASE_VERSION  INTEGER NOT NULL ,"
@@ -347,14 +334,11 @@ bool database::createTable_informations(){
 
 	//INSERT
 	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-					"VALUES('3', '0', '','1');");
+					"VALUES('4', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	/* TODO UPDATE POUR LE SAMPLE
-	 if(addSample){
-	 */
 
 	return true;
 }
