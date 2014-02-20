@@ -61,7 +61,9 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	if(!info.capital.isEmpty())	mfooterTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())		mfooterTextInfo += " - " + tr("Siret ") + info.num;
 	if(!m_data->getIsTax())		mfooterTextInfo += "\n" + QLatin1String("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
-	else						mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
+	else if(!info.numTax.isEmpty())mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
+	if(!info.line1.isEmpty())mfooterTextInfo += "\n" + info.line1;
+	if(!info.line2.isEmpty())mfooterTextInfo += "\n" + info.line2;
 }
 
 Printc::~Printc(){
@@ -513,7 +515,11 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 		total = tr("TOTAL HT: ");
 	}
 	else {
-		total = tr("TOTAL : ");
+		//Autoentrepreneur
+		if(m_data->m_customer->getType() == customer::COMPAGNY_TYPE)
+			total = tr("TOTAL HT : ");
+		else
+			total = tr("TOTAL : ");
 	}
 	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62), mpageRect.height() - mBottom - OFFSET_BOT_TOTAL, mwUtil*0.36,0, Qt::AlignLeft, total );
 	painter.drawText( rect, total);

@@ -47,6 +47,8 @@ QIcon invoice::getIconState(int state)
 	switch(state){
 		case UNPAID:return QIcon(":/app/warning");break;
 		case PAID:return QIcon(":/app/ok");break;
+		case OVERDUE:return  QIcon(":/app/Off");break;
+		case CANCEL:return  QIcon(":/app/quit");break;
 		default: break;
 	}
 	return QIcon("");
@@ -60,6 +62,8 @@ QString invoice::getTextState(int state)
 	switch(state){
 		case UNPAID:return QLatin1String("Non Réglée");break;
 		case PAID:return QLatin1String("Réglée");break;
+		case OVERDUE:return QLatin1String("Impayée");break;
+		case CANCEL:return QLatin1String("Annulée");break;
 		default: break;
 	}
 	return "";
@@ -385,7 +389,7 @@ bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
-					"WHERE TAB_INVOICES.STATE != '1' "
+					"WHERE TAB_INVOICES.STATE = '0' "
 					"ORDER BY UPPER(TAB_INVOICES.DATE) ASC; ";
 	//Liste les factures en alert avec les plus vielles en premier
 	QSqlQuery query;

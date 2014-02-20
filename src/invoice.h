@@ -94,7 +94,7 @@ public:
 	}InvoiceItem;
 
 	//State
-	enum{UNPAID , PAID};
+	enum{UNPAID , PAID, OVERDUE, CANCEL};
 	
 	invoice(QSqlDatabase db, QWidget *parent = 0);
 	~invoice();
@@ -136,7 +136,7 @@ public:
 	QString getCode(){return m_code;}
 	QString getProposalCode(){return m_proposalCode;}
 	QString getDescription(){return m_description;}
-
+	
 	bool getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field);
 	bool getInvoices(InvoicesBook& list, QString year, QString month);
 	bool getInvoiceListAlert(InvoiceListAlert& list);

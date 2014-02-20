@@ -318,6 +318,8 @@ bool database::createTable_informations(){
 			"LOGO           BLOB,"
 			"CG             TEXT,"
 			"CA_TYPE        INTEGER NOT NULL ,"
+			"PRINT_LINE1    VARCHAR(64),"
+			"PRINT_LINE2    VARCHAR(64),"
 			"PRIMARY KEY (ID)"
 			");";
 
@@ -1199,8 +1201,10 @@ bool database::updateInfo(Informations &info) {
 	req += "FAXNUMBER='" + info.faxNumber.replace("\'","''") + "',";
 	req += "EMAIL='" + info.email.replace("\'","''") + "',";
 	req += "WEBSITE='" + info.webSite.replace("\'","''") + "', ";
-    req += "TAX='" + QString::number(info.tax) + "', ";
-    req += "CA_TYPE='" + QString::number(info.ca_type) + "' ";
+	req += "TAX='" + QString::number(info.tax) + "', ";
+	req += "CA_TYPE='" + QString::number(info.ca_type) + "', ";
+	req += "PRINT_LINE1='" + info.line1 + "', ";
+	req += "PRINT_LINE2='" + info.line2 + "' ";
 	req += "WHERE ID='1';";
 
 	query.prepare(req);
@@ -1240,6 +1244,8 @@ bool database::getInfo(Informations &info) {
 		info.webSite = query.value(query.record().indexOf("WEBSITE")).toString();
 		info.tax = query.value(query.record().indexOf("TAX")).toInt();
 		info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
+		info.line1 = query.value(query.record().indexOf("PRINT_LINE1")).toString();
+		info.line2 = query.value(query.record().indexOf("PRINT_LINE2")).toString();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -1636,7 +1642,7 @@ bool database::upgradeToV4(QString *log) {
 	else
 		*log += "\n-> FAIT";
 
-	// ajout dune colonne
+	// Ajout dune colonne
 	req =	"ALTER TABLE TAB_INVOICES_DETAILS ADD TYPE INTEGER;";
 	*log += "\n\n"+ req;
 	query.prepare( req );
@@ -1658,6 +1664,28 @@ bool database::upgradeToV4(QString *log) {
 	else
 		*log += "\n-> FAIT";
 	
+	//Ajout champ pour impression dans bdd
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD PRINT_LINE1 VARCHAR(64)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD PRINT_LINE2 VARCHAR(64)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	
+	//Update numero version bdd
 	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=4;";
 	*log += "\n\n"+ req;
 	query.prepare( req );

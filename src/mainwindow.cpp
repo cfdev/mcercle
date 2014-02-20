@@ -392,3 +392,10 @@ void MainWindow::on_actionServices_common_triggered() {
 
 	delete m_DServComm;
 }
+
+/**
+ * @brief Ouvrir le dossier ou se trouve la base de donnees
+ */
+void MainWindow::on_actionOuvrir_BddDir_triggered() {
+	//
+}

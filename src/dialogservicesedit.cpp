@@ -13,7 +13,7 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 	ui(new Ui::DialogServicesEdit)
 {
 	ui->setupUi(this);
-	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::WindowMaximizeButtonHint);
 	m_servComm = pdata->m_customer->m_serviceComm;
 	Istax_ = pdata->getIsTax();
 	m_taxTable = pdata -> m_tax;
@@ -146,15 +146,15 @@ void DialogServicesEdit::listInterCommToTable()
 
 	ui->tableWidget_Inter->setSortingEnabled(false);
 	//Style de la table de l intervention
-	ui->tableWidget_Inter->setColumnCount(2);
-	ui->tableWidget_Inter->setColumnWidth(1,225);
+	ui->tableWidget_Inter->setColumnCount(3);
+	ui->tableWidget_Inter->setColumnWidth(1,350);
 	ui->tableWidget_Inter->setColumnWidth(2,100);
 	ui->tableWidget_Inter->setColumnHidden(0, true); //On cache la colonne des ID
 	ui->tableWidget_Inter->setSelectionBehavior(QAbstractItemView::SelectRows);
 	ui->tableWidget_Inter->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Inter->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Nom");
+	titles << tr("Id") << tr("Nom") << tr("Prix");
 	ui->tableWidget_Inter->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des services commun avec ID = 0
@@ -163,16 +163,12 @@ void DialogServicesEdit::listInterCommToTable()
 	// list all customers
 	for(int i=0; i<ilist.id.size(); i++){
 		QTableWidgetItem *item_ID      = new QTableWidgetItem();
-		QTableWidgetItem *item_NAME     = new QTableWidgetItem();
-
+		QTableWidgetItem *item_NAME    = new QTableWidgetItem();
+		QTableWidgetItem *item_PRICE   = new QTableWidgetItem();
+		
 		item_ID->setData(Qt::DisplayRole, QString::number(ilist.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, ilist.name.at(i));
-
-		// Mettre un fond/text en couleur
-		item_ID->setBackgroundColor(TABLE_BG_COLOR);
-		item_ID->setTextColor(TABLE_TXT_COLOR);
-		item_NAME->setBackgroundColor(TABLE_BG_COLOR);
-		item_NAME->setTextColor(TABLE_TXT_COLOR);
+		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		
 		//definir le tableau
 		ui->tableWidget_Inter->setRowCount(i+1);
@@ -180,6 +176,7 @@ void DialogServicesEdit::listInterCommToTable()
 		//remplir les champs
 		ui->tableWidget_Inter->setItem(i, 0, item_ID);
 		ui->tableWidget_Inter->setItem(i, 1, item_NAME);
+		ui->tableWidget_Inter->setItem(i, 2, item_PRICE);
 	}
 	ui->tableWidget_Inter->setSortingEnabled(true);
 

@@ -12,7 +12,7 @@
 ;General
 	; General Product Description Definitions
 	!define SOFT_NAME 		"mcercle"
-	!define SOFT_VERSION 	"13.10"
+	!define SOFT_VERSION 	"14.02"
 	!define SOFT_WEB_SITE 	"http://cyril.frausti.fr"
 	!define SOFT_BUILD 		"1cf"
 	!define ARCH       		"win32"
@@ -83,10 +83,12 @@ Section "Logiciel"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtCore4.dll"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtGui4.dll"
 	File /nonfatal /r "C:\Qt\4.8.5\bin\QtSql4.dll"
-	File /nonfatal /r "C:\mingw\bin\mingwm10.dll"
-	File /nonfatal /r "C:\mingw\bin\libgcc_s_dw2-1.dll"	
+	File /nonfatal /r "C:\mingw\4.4\bin\mingwm10.dll"
+	File /nonfatal /r "C:\mingw\4.4\bin\libgcc_s_dw2-1.dll"	
 	SetOutPath "$INSTDIR\sqldrivers"	
 	File /nonfatal /r "C:\Qt\4.8.5\plugins\sqldrivers\qsqlite4.dll"	
+	SetOutPath "$INSTDIR\imageformats"	
+	File /nonfatal /r "C:\Qt\4.8.5\plugins\imageformats\qjpeg4.dll"	
 	SetOutPath "$INSTDIR\lang"
 	File /nonfatal /r "C:\Qt\4.8.5\translations\qt_fr.qm"
 	

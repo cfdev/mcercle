@@ -44,7 +44,7 @@ private slots:
 	
 	void on_pushButton_print_clicked();
 	void on_pushButton_close_clicked();
-	
+
 	private:
 	Ui::DialogInvoice *ui;
 	database *m_data;
@@ -80,6 +80,8 @@ enum{SERV_COL_ID=0, SERV_COL_NAME,SERV_COL_PRICE, SERV_COL_TAX, SERV_COL_DETAIL,
 	void loadValues();
 	void add_to_Table(int idProduct, QString name,  qreal mtax, qreal price);
 	int getDiffQuantityOfItem(const int& id, int qteNew);
+	void update_OrderValue();
+	void update_widgetSize();
 
 	void listProposalDetailsToTable(QString filter, QString field);
 	void listInvoiceDetailsToTable(QString filter, QString field);

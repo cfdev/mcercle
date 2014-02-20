@@ -20,7 +20,7 @@
         <file alias="wait">art/user-away.png</file>
         <file alias="print">art/printer.png</file>
         <file alias="pdf">art/pdf.png</file>
-        <file alias="venteComptoire">art/view-pim-tasks.png</file>
+        <file alias="check">art/view-pim-tasks.png</file>
         <file alias="preference">art/preferences-system.png</file>
         <file alias="providers">art/resource-group.png</file>
         <file alias="database">art/network_server_database.png</file>

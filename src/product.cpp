@@ -95,14 +95,14 @@ bool product::create() {
 	req += "'" + QString::number(m_stock_warning) + "',";
 	req += "'" + QString::number(m_state)  + "',";
 	req += "'" + QString::number(m_idProvider)  + "',";
-	req += "'" + QString::number(m_idCategory)   + ",";
+	req += "'" + QString::number(m_idCategory)   + "',";
 	req += " :data);";
 	
 	QSqlQuery query;
 	query.prepare(req);
 	query.bindValue( ":data", buf.data() );
 	if(!query.exec()) {
-		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+		QMessageBox::critical(this->m_parent, tr("Erreur"), req+"\n\n"+query.lastError().text());
 		return false;
 	}
 	else return true;

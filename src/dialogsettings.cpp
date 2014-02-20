@@ -30,6 +30,7 @@
 #else
 	#include <QStandardPaths>
 #endif
+#include <qdebug.h>
 
 DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWidget *parent) :
 	QDialog(parent),
@@ -111,6 +112,8 @@ void DialogSettings::on_buttonBox_accepted() {
 	inf.address3 = ui->lineEdit_sAdd3->text();
 	inf.tax = ui->checkBox_TAX->checkState();
 	inf.ca_type = ui->comboBox_CA->currentIndex();
+	inf.line1 = ui->lineEdit_print1->text();
+	inf.line2 = ui->lineEdit_print2->text();
 	m_data -> updateInfo(inf);
 
 	//sauvegarde les donnees de la banque dans la bdd
@@ -161,9 +164,16 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 		QMessageBox::critical(this, tr("Erreur"), QLatin1String("Impossible de charger l'image...Désoler :("));
 		return;
 	}
+	qreal ratio = qreal(logo.size().width()) / qreal(logo.size().height());
+	qDebug() << "height: " << logo.size().height() << " width: " << logo.size().width();
+	qDebug() << "ratio image: " << ratio;
 	if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
-	if(logo.size().width() > 128)  logo = logo.scaled(QSize(128,logo.height()));
-
+	if(logo.size().width() > 128){
+		logo = logo.scaled(QSize(logo.height() * ratio,logo.height()));
+		// Bornage max
+		if(logo.size().width() > 384)
+			logo = logo.scaled(QSize(384,logo.height()));
+	}
 
 	//ajout a la base de donnees
 	m_data->updateLogoTable_informations(logo);
@@ -276,7 +286,9 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->checkBox_TAX->setCheckState( Qt::CheckState(inf.tax) );
 	 ui->lineEdit_numTVA->setEnabled( Qt::CheckState(inf.tax) );
 	 ui->comboBox_CA->setCurrentIndex(inf.ca_type);
-
+	 ui->lineEdit_print1->setText(inf.line1);
+	 ui->lineEdit_print2->setText(inf.line2);
+	 
 	 database::Bank b;
 	 m_data->getBank( b );
 	 ui->lineEdit_codeBanque->setText( b.codeBanque );

@@ -70,7 +70,8 @@ public:
 		QString zipCode;
 		QString city;
 		QString address1, address2, address3;
-	int tax; int ca_type;
+		QString line1, line2;
+		int tax; int ca_type;
 	}Informations;
 
 	typedef struct{

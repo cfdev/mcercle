@@ -26,7 +26,11 @@
 #include <QPushButton>
 #include <QValidator>
 #include <QMessageBox>
-#include <QDesktopServices>
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
 #include <QFileDialog>
 
 DialogProduct::DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsigned char type, QWidget *parent) :
@@ -367,7 +371,7 @@ void DialogProduct::on_toolButton_autoCode_clicked(){
 	else ID = m_product->getId();
 	//Generation du code
 	// DATE + ID
-	ui->lineEdit_code->setText(QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(ID) );
+	ui->lineEdit_code->setText(QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(ID) );
 }
 
 /**
@@ -383,7 +387,11 @@ void DialogProduct::on_pushButton_ClearImage_clicked() {
  * @brief Ajoute une image
  */
 void DialogProduct::on_pushButton_image_clicked(){
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QString pathPictures = QDesktopServices::storageLocation ( QDesktopServices::PicturesLocation );
+#else
+	QString pathPictures = QStandardPaths::writableLocation( QStandardPaths::PicturesLocation );
+#endif
 	QString fileName = QFileDialog::getOpenFileName(0, tr("Selectionner une image..."), pathPictures.toStdString().c_str(), tr("Image Files (*.png *.jpg *.bmp)"));
 
 	if(fileName.isEmpty())return;

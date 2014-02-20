@@ -281,6 +281,11 @@
     <string>Services</string>
    </property>
   </action>
+  <action name="actionOuvrir_BddDir">
+   <property name="text">
+    <string>Ouvrir le dossier où se trouve la base de données</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

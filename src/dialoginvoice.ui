@@ -92,18 +92,18 @@
        </item>
        <item row="1" column="3">
         <widget class="QDateEdit" name="dateEdit_DATE">
+         <property name="displayFormat">
+          <string>dd/MM/yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
          <property name="date">
           <date>
            <year>2000</year>
            <month>1</month>
            <day>1</day>
           </date>
-         </property>
-         <property name="displayFormat">
-          <string>dd/MM/yyyy</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -184,21 +184,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="2">
-        <widget class="QLabel" name="label_delay">
-         <property name="text">
-          <string>Durée de livraison
-(en jours) :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="3">
-        <widget class="QSpinBox" name="spinBox_delayDelivery">
-         <property name="maximum">
-          <number>9999</number>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0">
         <widget class="QLabel" name="label_link">
          <property name="text">
@@ -259,7 +244,7 @@
             </property>
             <widget class="QWidget" name="tabService">
              <attribute name="icon">
-              <iconset resource="../ressources.qrc">
+              <iconset>
                <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
              </attribute>
              <attribute name="title">

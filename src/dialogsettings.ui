@@ -29,7 +29,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>4</number>
        </property>
        <property name="iconSize">
         <size>
@@ -43,7 +43,7 @@
           <normaloff>:/app/compagny</normaloff>:/app/compagny</iconset>
         </attribute>
         <attribute name="title">
-         <string>Société</string>
+         <string>Informations</string>
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -743,7 +743,7 @@ p, li { white-space: pre-wrap; }
           <normaloff>:/app/print</normaloff>:/app/print</iconset>
         </attribute>
         <attribute name="title">
-         <string>Impression</string>
+         <string>Impression/Factures</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_9">
          <item>
@@ -767,6 +767,27 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_LineFree">
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lignes Libres du pied de page:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_print1">
+             <property name="maxLength">
+              <number>64</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_print2">
+             <property name="maxLength">
+              <number>64</number>
+             </property>
+            </widget>
            </item>
            <item>
             <spacer name="verticalSpacer_3">

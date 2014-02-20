@@ -33,11 +33,12 @@
 Settings::Settings(QObject *parent) :
 	QObject(parent)
 {
+	QString path;
 	m_fileName = "/.mcercle";
 	
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
-	QString path = path_DataLocation+"/mcercle"+m_fileName;
+	path = path_DataLocation+"/mcercle"+m_fileName;
 	// Changement de repertoire
 	if(( QFile::exists ( path_DataLocation+"/.mcercle" ) )||
 		( QFile::exists ( path_DataLocation+"/.mcercle" ))){

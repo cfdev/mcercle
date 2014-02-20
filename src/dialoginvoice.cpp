@@ -112,12 +112,14 @@ void DialogInvoice::setUI() {
 								m_invoice->getTextState( invoice::UNPAID ));
 		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::PAID ),
 								m_invoice->getTextState( invoice::PAID ));
-
+		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::OVERDUE ),
+								m_invoice->getTextState( invoice::OVERDUE ));
+		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::CANCEL ),
+								m_invoice->getTextState( invoice::CANCEL ));
+		
 		ui->label_delivery->setText(QLatin1String("Date Echéance :"));
 		ui->label_link->setText(QLatin1String("Devis associée : "));
 		ui->label_datevalid->setText(QLatin1String("Date Réglement :"));
-		ui->label_delay->setVisible(false);
-		ui->spinBox_delayDelivery->setVisible(false);
 		ui->pushButton_createInv->setVisible(false);
 	}
 	ui->pushButton_ok->setEnabled(false);
@@ -178,8 +180,6 @@ void DialogInvoice::loadValues(){
 		ui->dateEdit_DATE->setDate( m_proposal->getUserDate() );
 		ui->dateEdit_delivery->setDate( m_proposal->getDeliveryDate() );
 		ui->dateEdit_valid->setDate(m_proposal->getValidDate());
-		ui->spinBox_delayDelivery->setValue( m_proposal->getDelayDeliveryDate() ); // in Days
-
 
 		ui->comboBox_State->setCurrentIndex( m_proposal->getState());
 		//Si deja signee et pas associee deja a une facture on autorise la creation dune facture
@@ -308,7 +308,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
 		
 		// Applique la hauteur de la ligne en fonction des new lines
-		ui->tableWidget->setRowHeight(i, (ilist.name.at(i).count("\n")+1) * 30); 
+		ui->tableWidget->setRowHeight(i, (ilist.name.at(i).count("\n")+1) * 35); 
 
 	}
 	ui->tableWidget->setSortingEnabled(true);
@@ -404,7 +404,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 		ui->tableWidget->setItem(i, COL_QUANTITY, item_QUANTITY);
 		
 		// Applique la hauteur de la ligne en fonction des new lines
-		ui->tableWidget->setRowHeight(i, (m_ilist.name.at(i).count("\n")+1) * 30); 
+		ui->tableWidget->setRowHeight(i, (m_ilist.name.at(i).count("\n")+1) * 35); 
 	}
 
 	ui->tableWidget->setSortingEnabled(true);
@@ -512,8 +512,7 @@ void DialogInvoice::listServiceToTable()
 	pour charger son ID
 
   */
-void DialogInvoice::on_tableWidget_itemSelectionChanged()
-{
+void DialogInvoice::on_tableWidget_itemSelectionChanged() {
 	//Si plus d article on sort
 	if(ui->tableWidget->rowCount()<=0)return;
 
@@ -523,13 +522,42 @@ void DialogInvoice::on_tableWidget_itemSelectionChanged()
 	m_articleInv_Id = ui->tableWidget->item(m_index_tabInvoice, 0)->text().toInt();
 }
 
+/**
+ * @brief met a jour la taille des widget Edit BUG QT!
+ */
+void DialogInvoice::update_widgetSize() {
+	//Si plus d article on sort
+	if(ui->tableWidget->rowCount()<=0)return;
+	
+	QString name;
+	for(int j=0; j <ui->tableWidget->rowCount(); j++) {
+		// Applique la hauteur de la ligne en fonction des new lines
+		if(ui->tableWidget->cellWidget(j, COL_NAME)){
+			QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
+			name = get_name->toPlainText();
+		}
+		ui->tableWidget->setRowHeight(j, (name.count("\n")+1) * 35); 
+	}
+}
+
+/**
+ * @brief met a jour le champ ordre
+ */
+void DialogInvoice::update_OrderValue() {
+	//Si plus d article on sort
+	if(ui->tableWidget->rowCount()<=0)return;
+	for(int i=0; i <ui->tableWidget->rowCount(); i++) {
+		ui->tableWidget->item(i, COL_ORDER)->setData(Qt::DisplayRole, i);
+	}
+}
 
 /**
 	Elever l article selectionnee de la proposition
   */
 void DialogInvoice::on_toolButton_rm_clicked() {
 	//Si plus d article on sort
-	if(ui->tableWidget->rowCount()<=0)return;	
+	if(ui->tableWidget->rowCount()<=0)
+		return;
 	QString mess = tr("Voulez-vous vraiment supprimer cet article<br><b>");
 	if(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME)){
 		mess += qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(m_index_tabInvoice, COL_NAME))->toPlainText();
@@ -542,7 +570,10 @@ void DialogInvoice::on_toolButton_rm_clicked() {
 	if(ret == QMessageBox::Yes){
 		ui -> tableWidget -> removeRow(m_index_tabInvoice);
 		//Important selection litem 0 pour eviter des erreurs d index
-		ui -> tableWidget -> selectRow(0);
+		if(m_index_tabInvoice>=1) m_index_tabInvoice--;
+		update_OrderValue();
+		update_widgetSize();
+		ui -> tableWidget -> selectRow(m_index_tabInvoice+1);
 		emit(calcul_Total());
 	}
 }
@@ -574,7 +605,7 @@ void DialogInvoice::removeProposalItems(){
 void DialogInvoice::updateProposalItems(){
 	proposal::ProposalItem itemInv;
 	//On parcour le tableau pour mettre a jour les valeurs
-	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
+	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j) {
 		int id = ui->tableWidget->item(j, COL_ID)->text().toInt();
 		itemInv.id = id;
 		id = ui->tableWidget->item(j, COL_ID_PRODUCT)->text().toInt();
@@ -588,7 +619,7 @@ void DialogInvoice::updateProposalItems(){
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
 		itemInv.quantity = ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
-		itemInv.order = j;		
+		itemInv.order = j;
 
 		// si article present dans la bdd on modifi
 		if(itemInv.id>-1) m_proposal->updateProposalItem( itemInv );
@@ -681,11 +712,11 @@ int DialogInvoice::getDiffQuantityOfItem(const int& id, int qteNew){
 	Procedure pour mettre a jour les articles, ajoute et met a jour.
   */
 void DialogInvoice::setProposal(unsigned char proc){
+	//m_proposal->setCode( ui->lineEdit_code->text() );
 	m_proposal->setDescription( ui->lineEdit_description->text() );
 	m_proposal->setUserDate( ui->dateEdit_DATE->date() );
 	m_proposal->setState(ui->comboBox_State->currentIndex());
 	m_proposal->setDeliveryDate(ui->dateEdit_delivery->date());
-	m_proposal->setDelayDeliveryDate(ui->spinBox_delayDelivery->value());
 	m_proposal->setValidDate(ui->dateEdit_valid->date());
 
 	QString typeP;
@@ -709,7 +740,7 @@ void DialogInvoice::setProposal(unsigned char proc){
 		//Generation du code
 		// TYPE + DATE + ID
 		QString typp = tr("DE");
-		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
+		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
 		if( m_proposal -> create() ) {
 			createSuccess();
@@ -723,7 +754,7 @@ void DialogInvoice::setProposal(unsigned char proc){
 	Procedure pour mettre a jour les articles, ajoute et met a jour.
   */
 void DialogInvoice::setInvoice(unsigned char proc){
-
+	//m_invoice->setCode( ui->lineEdit_code->text() );
 	m_invoice->setDescription( ui->lineEdit_description->text() );
 	m_invoice->setUserDate( ui->dateEdit_DATE->date() );
 	m_invoice->setLimitPayment( ui->dateEdit_delivery->date() );
@@ -752,7 +783,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
 		//Generation du code facture
 		// TYPE + DATE + ID
 		QString typp = tr("FA");
-		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
+		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
 		//cree lobjet
 		if( m_invoice -> create() ) {
 			createSuccess();
@@ -946,7 +977,7 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	}
 	// on increment la quantite si article deja present
 	else{
-		for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
+		for (int j=cRow-1; j >= 0; --j){
 			if(ui->tableWidget->cellWidget(j, COL_NAME)) {
 				if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
 					(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
@@ -972,7 +1003,7 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 	item_ID_PRODUCT->setData(Qt::DisplayRole, idProduct);
 	item_ID_PRODUCT->setFlags(item_ID_PRODUCT->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
-	item_ORDER->setData(Qt::DisplayRole, ui->tableWidget->rowCount());
+	item_ORDER->setData(Qt::DisplayRole, cRow);
 	item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 
 	QTextEdit *edit_name = new QTextEdit();
@@ -1002,6 +1033,9 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 	ui->tableWidget->setItem(cRow, COL_PRICE, item_PRICE);
 	ui->tableWidget->setItem(cRow, COL_QUANTITY, item_QUANTITY);
 	
+	// Applique la hauteur de la ligne en fonction des new lines
+	ui->tableWidget->setRowHeight(cRow, (edit_name->toPlainText().count("\n")+1) * 30);
+	ui->tableWidget->selectRow(cRow+1);
 }
 
 
@@ -1068,6 +1102,12 @@ void DialogInvoice::createInvoiceFromProposal() {
 
 	m_invoice->setTypePayment( m_proposal->getTypePayment() );
 	m_invoice->setPrice( m_proposal->getPrice() );
+	if(!m_isTax){
+		m_invoice->setPartPayment( m_totalPrice *30/100.0 );
+	}
+	else{
+		m_invoice->setPartPayment( m_totalTaxPrice *30/100.0 );
+	}
 	//Recupere le dernier ID
 	int lastID = m_invoice->getLastId();
 	//Generation du code facture
@@ -1240,4 +1280,5 @@ void DialogInvoice::on_pushButton_print_clicked() {
 		print.print_Invoice( m_invoice -> getId() );
 	}
 }
+
 
