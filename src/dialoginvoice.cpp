@@ -345,6 +345,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 #ifdef QT_NO_DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID , true); //cache la colonne ID ou DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID_PRODUCT , true); //cache la colonne ID ou DEBUG
+	ui->tableWidget->setColumnHidden(COL_ORDER , true); //cache la order ou DEBUG
 #endif
 
 	QStringList titles;
