@@ -60,10 +60,9 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	mfooterTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty())	mfooterTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())		mfooterTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())		mfooterTextInfo += "\n" + QLatin1String("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
-	else if(!info.numTax.isEmpty())mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
-	if(!info.line1.isEmpty())mfooterTextInfo += "\n" + info.line1;
-	if(!info.line2.isEmpty())mfooterTextInfo += "\n" + info.line2;
+	if((m_data->getIsTax()) &&(!info.numTax.isEmpty()) )	mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
+	if(!info.line1.isEmpty())	mfooterTextInfo += "\n" + info.line1;
+	if(!info.line2.isEmpty())	mfooterTextInfo += "\n" + info.line2;
 }
 
 Printc::~Printc(){
