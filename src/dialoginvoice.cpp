@@ -86,16 +86,18 @@ void DialogInvoice::setTitle(QString val){
  */
 void DialogInvoice::setUI() {
 	QStringList plist;
+	ui -> pushButton_print -> setEnabled( false );
+	
 	if(m_DialogType == PROPOSAL_TYPE){
 		this->setWindowTitle( tr("Devis") );
 		plist << "" << tr("Espece") << tr("Cheque") << tr("CB") << tr("TIP") << tr("Virement") << tr("Prelevement") << tr("Autre");
 		ui->comboBox_TYPE_PAYMENT->addItems(plist);
-		ui->comboBox_State->addItem(m_proposal->getIconState( proposal::WRITING ),
-								m_proposal->getTextState( proposal::WRITING ));
-		ui->comboBox_State->addItem(m_proposal->getIconState( proposal::PROPOSED ),
-								m_proposal->getTextState( proposal::PROPOSED ));
-		ui->comboBox_State->addItem(m_proposal->getIconState( proposal::VALIDATED ),
-								m_proposal->getTextState( proposal::VALIDATED ));
+		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_WRITING ),
+								m_proposal->getTextState( MCERCLE::PROPOSAL_WRITING ));
+		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_PROPOSED ),
+								m_proposal->getTextState( MCERCLE::PROPOSAL_PROPOSED ));
+		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_VALIDATED ),
+								m_proposal->getTextState( MCERCLE::PROPOSAL_VALIDATED ));
 
 		ui->label_delivery->setText(tr("Date de livraison :"));
 		ui->label_link->setText(QLatin1String("Facture associée : "));
@@ -125,6 +127,7 @@ void DialogInvoice::setUI() {
 	ui->pushButton_ok->setEnabled(false);
 	/// chargement de la Proposition commerciale apres init de l UI !
 	if(m_DialogState == EDIT){
+		ui -> pushButton_print -> setEnabled( true );
 		ui->pushButton_ok->setText(tr("Modifier"));
 		ui->pushButton_ok->setIcon(QIcon(":/app/Edit"));
 		loadValues();
@@ -183,7 +186,7 @@ void DialogInvoice::loadValues(){
 
 		ui->comboBox_State->setCurrentIndex( m_proposal->getState());
 		//Si deja signee et pas associee deja a une facture on autorise la creation dune facture
-		if( (m_proposal->getState() ==  proposal::VALIDATED) && (m_proposal->getInvoiceCode().isEmpty()) )
+		if( (m_proposal->getState() ==  MCERCLE::PROPOSAL_VALIDATED) && (m_proposal->getInvoiceCode().isEmpty()) )
 				ui->pushButton_createInv->setEnabled(true);
 		else	ui->pushButton_createInv->setEnabled(false);
 
@@ -800,7 +803,8 @@ void DialogInvoice::setInvoice(unsigned char proc){
 void DialogInvoice::createSuccess() {
 	QMessageBox::information(this, tr("Information"), QLatin1String("Création réalisée"), QMessageBox::Ok);
 	loadValues();
-	ui->pushButton_ok->setEnabled(false);
+	ui -> pushButton_print -> setEnabled( true );
+	ui -> pushButton_ok -> setEnabled( false );
 }
 
 /**
@@ -816,6 +820,13 @@ void DialogInvoice::apply() {
 		if(ret == QMessageBox::Yes){
 			// modification des articles
 			if(m_DialogType == PROPOSAL_TYPE){
+				// Active ou desactive le bouton de creation de facture depuis devis
+				if(ui->comboBox_State->currentIndex() == MCERCLE::PROPOSAL_VALIDATED){
+					ui->pushButton_createInv->setEnabled( true );
+				}
+				else{
+					ui->pushButton_createInv->setEnabled( false );
+				}
 				removeProposalItems();
 				updateProposalItems();
 				setProposal(m_DialogState);
