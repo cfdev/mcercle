@@ -77,9 +77,6 @@ public:
 		int order;
 	}ProposalItem;
 
-	//State
-	enum{WRITING, PROPOSED, VALIDATED};
-
 	proposal(QSqlDatabase db, QWidget *parent = 0);
 	~proposal();
 

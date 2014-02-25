@@ -19,6 +19,7 @@
 
 #include "proposal.h"
 #include "dbase.h"
+#include "mcercle.h"
 
 #include <QMessageBox>
 #include <QStringList>
@@ -44,9 +45,9 @@ proposal::~proposal() {
 QIcon proposal::getIconState(int state)
 {
 	switch(state){
-		case WRITING:return QIcon(":/app/process");break;
-		case PROPOSED:return QIcon(":/app/wait");break;
-		case VALIDATED:return QIcon(":/app/ok");break;
+		case MCERCLE::PROPOSAL_WRITING:return QIcon(":/app/process");break;
+		case MCERCLE::PROPOSAL_PROPOSED:return QIcon(":/app/wait");break;
+		case MCERCLE::PROPOSAL_VALIDATED:return QIcon(":/app/ok");break;
 		default: break;
 	}
 	return QIcon("");
@@ -58,9 +59,9 @@ QIcon proposal::getIconState(int state)
 QString proposal::getTextState(int state)
 {
 	switch(state){
-		case WRITING:return tr("En ecriture");break;
-		case PROPOSED:return tr("Propose");break;
-		case VALIDATED:return tr("Signe");break;
+		case MCERCLE::PROPOSAL_WRITING:return tr("En ecriture");break;
+		case MCERCLE::PROPOSAL_PROPOSED:return tr("Propose");break;
+		case MCERCLE::PROPOSAL_VALIDATED:return tr("Signe");break;
 		default: break;
 	}
 	return "";

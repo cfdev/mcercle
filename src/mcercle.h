@@ -33,6 +33,9 @@ namespace MCERCLE {
 	const QString DEBIT ="DE";
 	const QString OTHER ="OT";
 	
+	//DEVIS
+	enum{PROPOSAL_WRITING, PROPOSAL_PROPOSED, PROPOSAL_VALIDATED};
+	
 	//TYPE PRODUIT SERVICE
 	const int SERVICE = 0;
 	const int PRODUCT = 1;
