@@ -45,6 +45,9 @@ private slots:
 	void on_pushButton_print_clicked();
 	void on_pushButton_close_clicked();
 
+	void addFreeline_Service();
+	void addFreeline_Product();
+	
 	private:
 	Ui::DialogInvoice *ui;
 	database *m_data;
@@ -64,7 +67,7 @@ private slots:
 	invoice::InvoiceListItems m_ilist;
 	productView *m_productView;
 
-enum{COL_ID=0,COL_ID_PRODUCT,COL_ORDER,COL_NAME,COL_TAX,COL_DISCOUNT,COL_PRICE,COL_QUANTITY,COL_TOTAL,COL_COUNT };
+enum{COL_ID=0,COL_ID_PRODUCT,COL_TYPE,COL_ORDER,COL_NAME,COL_TAX,COL_DISCOUNT,COL_PRICE,COL_QUANTITY,COL_TOTAL,COL_COUNT };
 enum{SERV_COL_ID=0, SERV_COL_NAME,SERV_COL_PRICE, SERV_COL_TAX, SERV_COL_DETAIL,SERV_COL_COUNT};
 
 	void setUI();
@@ -78,7 +81,7 @@ enum{SERV_COL_ID=0, SERV_COL_NAME,SERV_COL_PRICE, SERV_COL_TAX, SERV_COL_DETAIL,
 	void updateInvoiceItems();
 	void removeInvoiceItems();
 	void loadValues();
-	void add_to_Table(int idProduct, QString name,  qreal mtax, qreal price);
+	void add_to_Table(int typeITEM, int idProduct, QString name,  qreal mtax, qreal price);
 	int getDiffQuantityOfItem(const int& id, int qteNew);
 	void update_OrderValue();
 	void update_widgetSize();

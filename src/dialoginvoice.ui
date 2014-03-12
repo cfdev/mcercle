@@ -351,6 +351,12 @@
                 <height>24</height>
                </size>
               </property>
+              <property name="popupMode">
+               <enum>QToolButton::DelayedPopup</enum>
+              </property>
+              <property name="autoRaise">
+               <bool>false</bool>
+              </property>
              </widget>
             </item>
             <item>

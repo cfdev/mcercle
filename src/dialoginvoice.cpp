@@ -24,6 +24,7 @@
 #include "table.h"
 
 #include <QMessageBox>
+#include <QMenu>
 #include <QDebug>
 
 
@@ -169,6 +170,15 @@ void DialogInvoice::setUI() {
 	//Mis en layout
 	ui->productLayout->addWidget( m_productView );
 
+	//Applique un menu au bouton ajout libre
+	QMenu *menu = new QMenu(tr("My Menu"));
+	QAction *sevAct = menu -> addAction(QIcon(":/app/services"), tr("Service"));/*QKeySequence(Qt::CTRL + Qt::Key_P);*/
+	QAction *prodAct = menu -> addAction(QIcon(":/app/products"), tr("Produit"));
+	ui->toolButton_addFreeline->setMenu( menu );
+	connect(sevAct, SIGNAL(triggered()), this, SLOT(addFreeline_Service()));
+	connect(prodAct, SIGNAL(triggered()), this, SLOT(addFreeline_Product()));
+	
+	//Test les conditions
 	checkConditions();
 }
 /**
@@ -962,7 +972,7 @@ void DialogInvoice::calcul_Total() {
 /**
   Ajout dun article dans le tableau proposition
   */
-void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal price) {
+void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qreal mtax, qreal price) {
 	int cRow = ui->tableWidget->rowCount();
 	
 	//Si pas de ligne on cree les colonnes
@@ -974,10 +984,11 @@ void DialogInvoice::add_to_Table(int idProduct, QString name, qreal mtax, qreal 
 		ui->tableWidget->setColumnHidden(COL_ID, true); //cache la colonne ID ou DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID_PRODUCT, true); //cache la colonne ID ou DEBUG
 		ui->tableWidget->setColumnHidden(COL_ORDER , true); //cache la order ou DEBUG
+		ui->tableWidget->setColumnHidden(COL_TYPE , true); //cache la order ou DEBUG
 	#endif
 
 		QStringList titles;
-		titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
+		titles  << tr("Id") << tr("Id Produit") << tr("Type") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 		if(!m_isTax){
 				titles << tr("Total");
 				ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
@@ -1065,7 +1076,7 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		if(m_index_tabService<0)return;
 		QString text = ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_NAME)->text() + "\n";
 		text += ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_DETAIL)->text();
-		add_to_Table( 0, text, ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_TAX)->text().toDouble(),
+		add_to_Table(MCERCLE::SERVICE, 0, text, ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_TAX)->text().toDouble(),
 					ui->tableWidget_selectService->item(m_index_tabService, SERV_COL_PRICE)->text().toDouble() );
 	}
 	//ou un produit
@@ -1073,17 +1084,31 @@ void DialogInvoice::on_toolButton_add_clicked() {
 		//Si plus d article on sort
 		if(m_productView->getRowCount()<=0)return;
 		//Ajoute a la table, mais ne pas rendre editable car le produit est lier pour le stock automatique
-		add_to_Table( m_productView->getSelectedProductID(), m_productView->getSelectedProductName(),
+		add_to_Table(MCERCLE::PRODUCT, m_productView->getSelectedProductID(), m_productView->getSelectedProductName(),
 					  m_productView->getSelectedProductTax(), m_productView->getSelectedProductPrice() );
 	}
 }
 
 
 /**
-  Ajoute une ligne dedition libre comptabilisee en service
+	Affiche le menu pour ajouter une ligne dedition libre
   */
 void DialogInvoice::on_toolButton_addFreeline_clicked() {
-	add_to_Table( 0, "Service", 0.0,0 );
+	ui->toolButton_addFreeline->showMenu();
+}
+
+/**
+  Ajoute une ligne dedition libre comptabilisee en service
+  */
+void DialogInvoice::addFreeline_Service() {
+	add_to_Table(MCERCLE::SERVICE, 0, "Service", 0.0,0 );
+}
+
+/**
+  Ajoute une ligne dedition libre comptabilisee en produit
+  */
+void DialogInvoice::addFreeline_Product() {
+	add_to_Table(MCERCLE::PRODUCT, 0, "Produit", 0.0,0 );
 }
 
 
