@@ -63,6 +63,7 @@ public:
 		QList<qreal> tax;
 		QList<qreal> price;
 		QList<int> order;
+		QList<int> type;
 	}ProposalListItems;
 
 	//Un Item de la proposition
@@ -75,6 +76,7 @@ public:
 		qreal tax;
 		qreal price;
 		int order;
+		int type;
 	}ProposalItem;
 
 	proposal(QSqlDatabase db, QWidget *parent = 0);

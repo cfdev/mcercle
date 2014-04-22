@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QMenu>
 #include <QDebug>
+#include <QSplitter>
 
 
 DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type, unsigned char state, QWidget *parent) :
@@ -33,7 +34,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui(new Ui::DialogInvoice)
 {
 	ui->setupUi(this);
-	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::WindowMaximizeButtonHint);
 	// la fenetre est maximisee par defaut
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
@@ -100,7 +101,11 @@ void DialogInvoice::setUI() {
 		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_VALIDATED ),
 								m_proposal->getTextState( MCERCLE::PROPOSAL_VALIDATED ));
 
+        ///TODO: asupprimer la date de livraison
 		ui->label_delivery->setText(tr("Date de livraison :"));
+        ui->label_delivery->setVisible(false);
+        ui->dateEdit_delivery->setVisible(false);
+
 		ui->label_link->setText(QLatin1String("Facture associée : "));
 		ui->label_partpayment->setVisible(false);
 		ui->doubleSpinBox_partPAYMENT->setVisible(false);
@@ -111,14 +116,14 @@ void DialogInvoice::setUI() {
 		plist << "" << "Espece" << "Cheque" << "CB" << "TIP" << "Virement" << "Prelevement" << "Autre";
 		ui->comboBox_TYPE_PAYMENT->addItems(plist);
 
-		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::UNPAID ),
-								m_invoice->getTextState( invoice::UNPAID ));
-		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::PAID ),
-								m_invoice->getTextState( invoice::PAID ));
-		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::OVERDUE ),
-								m_invoice->getTextState( invoice::OVERDUE ));
-		ui->comboBox_State->addItem(m_invoice->getIconState( invoice::CANCEL ),
-								m_invoice->getTextState( invoice::CANCEL ));
+        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_UNPAID ),
+                                m_invoice->getTextState( MCERCLE::INV_UNPAID ));
+        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_PAID ),
+                                m_invoice->getTextState( MCERCLE::INV_PAID ));
+        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_OVERDUE ),
+                                m_invoice->getTextState( MCERCLE::INV_OVERDUE ));
+        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_CANCEL ),
+                                m_invoice->getTextState( MCERCLE::INV_CANCEL ));
 		
 		ui->label_delivery->setText(QLatin1String("Date Echéance :"));
 		ui->label_link->setText(QLatin1String("Devis associée : "));
@@ -161,6 +166,9 @@ void DialogInvoice::setUI() {
 	}
 	//lister les services
 	listServiceToTable();
+    //Cache le layout select base de donnee
+    ui->groupBox_select->setVisible( false );
+    ui->toolButton_add->setVisible( false );
 
 	//Selectionne la tab 0
 	ui->tabWidget_select->setCurrentIndex(0);
@@ -181,6 +189,7 @@ void DialogInvoice::setUI() {
 	//Test les conditions
 	checkConditions();
 }
+
 /**
   Renseigne les informations
   */
@@ -253,16 +262,17 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 	ui->tableWidget->setSortingEnabled(false);
 	//Style de la table de proposition
 	ui->tableWidget->setColumnCount(COL_COUNT);
-	ui->tableWidget->setColumnWidth(COL_NAME,200);
+    ui->tableWidget->setColumnWidth(COL_NAME,375);
 
 #ifdef QT_NO_DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID , true); //cache la colonne ID ou DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID_PRODUCT , true); //cache la colonne ID ou DEBUG
 	ui->tableWidget->setColumnHidden(COL_ORDER , true); //cache la order ou DEBUG
+	ui->tableWidget->setColumnHidden(COL_TYPE , true); //cache la order ou DEBUG
 #endif
 
 	QStringList titles;
-	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
+	titles  << tr("Id") << tr("Id Produit") << tr("Type") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 	if(!m_isTax){
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
@@ -278,6 +288,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 	for(int i=0; i<ilist.name.count(); i++){
 		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -290,6 +301,8 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ID_PRODUCT->setData(Qt::DisplayRole, ilist.idProduct.at(i));
 		item_ID_PRODUCT->setFlags(item_ID_PRODUCT->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
+		item_TYPE->setData(Qt::DisplayRole, ilist.type.at(i));
+		item_TYPE->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ORDER->setData(Qt::DisplayRole, ilist.order.at(i));
 		item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		
@@ -298,9 +311,14 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		// Ne pas rendre editable si c est un produit! + Ajout d'image
 		// Car il il y a une liaison pour la gestion du stock
 		if(ilist.idProduct.at(i) > 0){
-			item_Name -> setIcon( QIcon(":/app/products") );
 			edit_name -> setReadOnly(true);
 		}
+        if(m_ilist.type.at(i) == MCERCLE::PRODUCT) {
+            item_Name -> setIcon( QIcon(":/app/products") );
+        }
+        else if(m_ilist.type.at(i) == MCERCLE::SERVICE) {
+            item_Name -> setIcon( QIcon(":/app/services") );
+        }
 		item_TAX->setData(Qt::DisplayRole, ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, ilist.discount.at(i));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
@@ -312,6 +330,7 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		//remplir les champs
 		ui->tableWidget->setItem(i, COL_ID, item_ID);
 		ui->tableWidget->setItem(i, COL_ID_PRODUCT, item_ID_PRODUCT);
+		ui->tableWidget->setItem(i, COL_TYPE, item_TYPE);
 		ui->tableWidget->setItem(i, COL_ORDER, item_ORDER);
 		ui->tableWidget->setItem(i, COL_NAME, item_Name);
 		ui->tableWidget->setCellWidget(i, COL_NAME, edit_name);
@@ -354,15 +373,16 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 	ui->tableWidget->setSortingEnabled(false);
 	//Style de la table de facture
 	ui->tableWidget->setColumnCount(COL_COUNT);
-	ui->tableWidget->setColumnWidth(COL_NAME,200);
+    ui->tableWidget->setColumnWidth(COL_NAME,375);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID , true); //cache la colonne ID ou DEBUG
 	ui->tableWidget->setColumnHidden(COL_ID_PRODUCT , true); //cache la colonne ID ou DEBUG
 	ui->tableWidget->setColumnHidden(COL_ORDER , true); //cache la order ou DEBUG
+	ui->tableWidget->setColumnHidden(COL_TYPE , true); //cache la order ou DEBUG
 #endif
 
 	QStringList titles;
-	titles  << tr("Id") << tr("Id Produit") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
+	titles  << tr("Id") << tr("Id Produit") << tr("Type") << tr("Ordre") << tr("Nom") << tr("Tva") << tr("Remise(%)") << tr("Prix") << QLatin1String("Quantité");
 	if(!m_isTax){
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
@@ -376,6 +396,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 	for(int i=0; i<m_ilist.name.count(); i++){
 		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -387,6 +408,8 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 		item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ID_PRODUCT->setData(Qt::DisplayRole, m_ilist.idProduct.at(i));
 		item_ID_PRODUCT->setFlags(item_ID_PRODUCT->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
+        item_TYPE->setData(Qt::DisplayRole, m_ilist.type.at(i));
+		item_TYPE->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ORDER->setData(Qt::DisplayRole, m_ilist.order.at(i));
 		item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		
@@ -395,9 +418,14 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 		// Ne pas rendre editable si c est un produit! + Ajout d'image
 		// Car il il y a une liaison pour la gestion du stock
 		if(m_ilist.idProduct.at(i) > 0){
-			item_Name -> setIcon( QIcon(":/app/products") );
 			edit_name -> setReadOnly(true);
 		}
+        if(m_ilist.type.at(i) == MCERCLE::PRODUCT) {
+            item_Name -> setIcon( QIcon(":/app/products") );
+        }
+        else if(m_ilist.type.at(i) == MCERCLE::SERVICE) {
+            item_Name -> setIcon( QIcon(":/app/services") );
+        }
 		item_TAX->setData(Qt::DisplayRole, m_ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, m_ilist.discount.at(i));
 		item_PRICE->setData(Qt::DisplayRole, m_ilist.price.at(i));
@@ -409,6 +437,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 		//remplir les champs
 		ui->tableWidget->setItem(i, COL_ID, item_ID);
 		ui->tableWidget->setItem(i, COL_ID_PRODUCT, item_ID_PRODUCT);
+		ui->tableWidget->setItem(i, COL_TYPE, item_TYPE);
 		ui->tableWidget->setItem(i, COL_ORDER, item_ORDER);
 		ui->tableWidget->setItem(i, COL_NAME, item_Name);
 		ui->tableWidget->setCellWidget(i, COL_NAME, edit_name);
@@ -633,6 +662,7 @@ void DialogInvoice::updateProposalItems(){
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
 		itemInv.quantity = ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
+		itemInv.type = ui->tableWidget->item(j, COL_TYPE)->text().toInt();
 		itemInv.order = j;
 
 		// si article present dans la bdd on modifi
@@ -700,7 +730,12 @@ void DialogInvoice::updateInvoiceItems(){
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
 		itemInv.price = ui->tableWidget->item(j, COL_PRICE)->text().toFloat();
 		itemInv.quantity = ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
+		if(!ui->tableWidget->item(j, COL_TYPE))
+			itemInv.type = 0;
+		else
+			itemInv.type = ui->tableWidget->item(j, COL_TYPE)->text().toInt();
 		itemInv.order = j;
+		
 		// si article present dans la bdd on modifie
 		if(itemInv.id>-1) m_invoice->updateInvoiceItem( itemInv );
 		//sinon on ajoute le produit
@@ -726,7 +761,6 @@ int DialogInvoice::getDiffQuantityOfItem(const int& id, int qteNew){
 	Procedure pour mettre a jour les articles, ajoute et met a jour.
   */
 void DialogInvoice::setProposal(unsigned char proc){
-	//m_proposal->setCode( ui->lineEdit_code->text() );
 	m_proposal->setDescription( ui->lineEdit_description->text() );
 	m_proposal->setUserDate( ui->dateEdit_DATE->date() );
 	m_proposal->setState(ui->comboBox_State->currentIndex());
@@ -979,7 +1013,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	if(cRow<=0){
 		//Style de la table de proposition
 		ui->tableWidget->setColumnCount(COL_COUNT);
-		ui->tableWidget->setColumnWidth(COL_NAME, 200);
+        ui->tableWidget->setColumnWidth(COL_NAME, 375);
 	#ifdef QT_NO_DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID, true); //cache la colonne ID ou DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID_PRODUCT, true); //cache la colonne ID ou DEBUG
@@ -1015,6 +1049,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	// Sinon on creer une nouvelle ligne
 	ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
 	ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
@@ -1026,6 +1061,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 	item_ID_PRODUCT->setData(Qt::DisplayRole, idProduct);
 	item_ID_PRODUCT->setFlags(item_ID_PRODUCT->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
+	item_TYPE->setData(Qt::DisplayRole, typeITEM);
 	item_ORDER->setData(Qt::DisplayRole, cRow);
 	item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 
@@ -1033,10 +1069,15 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	edit_name ->setText( name );
 	// Ne pas rendre editable si c est un produit! + Ajout d'image
 	// Car il il y a une liaison pour la gestion du stock
-	if(idProduct > 0){
-		item_Name -> setIcon( QIcon(":/app/products") );
+    if(idProduct > 0){
 		edit_name -> setReadOnly(true);
 	}
+    if(typeITEM == MCERCLE::PRODUCT){
+        item_Name -> setIcon( QIcon(":/app/products") );
+    }
+    else if(typeITEM == MCERCLE::SERVICE){
+        item_Name -> setIcon( QIcon(":/app/services") );
+    }
 	item_PRICE->setData		(Qt::DisplayRole, price);
 	item_TAX->setData		(Qt::DisplayRole, mtax);
 	item_QUANTITY->setData	(Qt::DisplayRole, 1);
@@ -1048,6 +1089,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	//remplir les champs
 	ui->tableWidget->setItem(cRow, COL_ID, item_ID);
 	ui->tableWidget->setItem(cRow, COL_ID_PRODUCT, item_ID_PRODUCT);
+	ui->tableWidget->setItem(cRow, COL_TYPE, item_TYPE);
 	ui->tableWidget->setItem(cRow, COL_ORDER, item_ORDER);
 	ui->tableWidget->setItem(cRow, COL_NAME, item_Name);
 	ui->tableWidget->setCellWidget(cRow, COL_NAME, edit_name);
@@ -1132,7 +1174,7 @@ void DialogInvoice::createInvoiceFromProposal() {
 	m_invoice->setIdCustomer( m_proposal->getIdCustomer() );
 	m_invoice->setDescription( m_proposal->getDescription() );
 	m_invoice->setPartPayment(0);
-	m_invoice->setState( invoice::UNPAID );
+    m_invoice->setState( MCERCLE::INV_UNPAID );
 	m_invoice->setUserDate( m_proposal->getUserDate() );
 	m_invoice->setLimitPayment( QDate::currentDate() );
 	m_invoice->setPaymentDate( QDate::currentDate().addMonths(1) );
@@ -1150,7 +1192,7 @@ void DialogInvoice::createInvoiceFromProposal() {
 	//Generation du code facture
 	// TYPE + DATE + ID
 	QString typp = tr("FA");
-	m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMMdd") +"-"+ QString::number(lastID+1) );
+	m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
 	//cree lobjet
 	m_invoice->create();
 	//recharge l objet et son nouvel ID pour lajout des items par la suite
@@ -1169,6 +1211,7 @@ void DialogInvoice::createInvoiceFromProposal() {
 		itemInv.tax = itemPro.tax.at(i);
 		itemInv.quantity = itemPro.quantity.at(i);
 		itemInv.order = itemPro.order.at(i);
+        itemInv.type = itemPro.type.at(i);
 		
 		/// Si cest un produit gestion du stock automatise
 		if(itemInv.idProduct > 0) {
@@ -1319,3 +1362,10 @@ void DialogInvoice::on_pushButton_print_clicked() {
 }
 
 
+/**
+ * @brief Affiche/cache la base de donnee
+ */
+void DialogInvoice::on_toolButton_hide_clicked() {
+    ui->groupBox_select->setVisible( !ui->groupBox_select->isVisible() );
+    ui->toolButton_add->setVisible( !ui->toolButton_add->isVisible() );
+}

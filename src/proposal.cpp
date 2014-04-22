@@ -147,7 +147,18 @@ bool proposal::remove(){
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
 	}
-	else return true;
+    else{
+        // Si cest la derniere devis on rafraichit l'index
+        if(getLastId() == m_id){
+            req = "UPDATE SQLITE_SEQUENCE SET SEQ='"+QString::number(m_id-1)+"' WHERE name='TAB_PROPOSALS';";
+            query.prepare(req);
+            if(!query.exec()) {
+                QMessageBox::critical(this->m_parent, tr("Erreur"), req+'\n'+query.lastError().text());
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 /**
@@ -412,6 +423,7 @@ bool proposal::getProposalItemsList(ProposalListItems& list, QString order, QStr
 			list.tax.push_back( query.value(query.record().indexOf("TAX")).toFloat() );
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
 			list.order.push_back(  query.value(query.record().indexOf("ITEM_ORDER")).toInt() );
+			list.type.push_back(  query.value(query.record().indexOf("TYPE")).toInt() );
 		}
 		return true;
 	}
@@ -455,6 +467,7 @@ bool proposal::getProposalItem(ProposalItem& item){
 		item.tax = query.value(query.record().indexOf("TAX")).toFloat();
 		item.price = query.value(query.record().indexOf("PRICE")).toFloat();
 		item.order = query.value(query.record().indexOf("ITEM_ORDER")).toInt();
+		item.type = query.value(query.record().indexOf("TYPE")).toInt();
 		return true;
 	}
 	else{
@@ -471,10 +484,11 @@ bool proposal::getProposalItem(ProposalItem& item){
 bool proposal::addProposalItem(ProposalItem& item){
 	QString f;
 	// Construction de la requette
-	QString req = "INSERT INTO TAB_PROPOSALS_DETAILS(ID_PROPOSAL, ID_PRODUCT, NAME, QUANTITY, DISCOUNT, PRICE, TAX, ITEM_ORDER) ";
+	QString req = "INSERT INTO TAB_PROPOSALS_DETAILS(ID_PROPOSAL, ID_PRODUCT, TYPE, NAME, QUANTITY, DISCOUNT, PRICE, TAX, ITEM_ORDER) ";
 	req += "VALUES(";
 	req += "'" + QString::number(this->m_id) + "',";
 	req += "'" + QString::number(item.idProduct) + "',";
+	req += "'" + QString::number(item.type) + "',";
 	req += "'" + item.name.replace("\'","''") + "',";
 	req += "'" + QString::number(item.quantity)  + "',";
 	req += "'" + QString::number(item.discount)  + "',";
@@ -521,6 +535,7 @@ bool proposal::updateProposalItem(ProposalItem& item) {
 	QString req = "UPDATE TAB_PROPOSALS_DETAILS SET ";
 	req += "NAME='" + item.name.replace("\'","''") + "',";
 	req += "ID_PRODUCT='" + QString::number(item.idProduct)  + "',";
+	req += "TYPE='" + QString::number(item.type) + "', ";
 	req += "DISCOUNT='" + QString::number(item.discount)  + "',";
 	req += "QUANTITY='" + QString::number(item.quantity)  + "',";
 	req += "TAX='" + f.setNum(item.tax,'f',2) + "',";

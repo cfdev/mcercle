@@ -510,7 +510,6 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 	footerTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty()) footerTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())     footerTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())     footerTextInfo += "\n" + tr("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
 	QString pageText;
 
 	//defini la date de limpression

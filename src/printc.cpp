@@ -49,7 +49,7 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	if(!info.webSite.isEmpty())     mtextInfo += tr("Web: ") + info.webSite;
 	
 	/// Identite du client
-	mtextidentity = m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
+    mtextidentity =  m_cus -> getGender() +" "+ m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
 	mtextidentity += m_cus -> getAddress1()+'\n';
 	mtextidentity += m_cus -> getAddress2()+'\n';
 	mtextidentity += m_cus -> getAddress3()+'\n';
@@ -471,10 +471,13 @@ QRectF Printc::get_RecFooter(QPainter &painter) {
  * @brief Printc::print_footer
  * @param painter
  */
-void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage) {
-	// Ligne
-	painter.drawLine(QPoint(mLeft, get_RecFooter(painter).top()) , QPoint(mLeft + mwUtil, get_RecFooter(painter).top()));
+void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage) {    
+    qreal ptSize = mFont.pointSizeF();
+    mFont.setPointSizeF(ptSize-2);
+    painter.setFont(mFont);
 
+    // Ligne
+	painter.drawLine(QPoint(mLeft, get_RecFooter(painter).top()) , QPoint(mLeft + mwUtil, get_RecFooter(painter).top()));
 	// Num de page
 	if(!page.isEmpty()) {
 		QString pageText = tr("Page ") + page + " / " + NbOfpage;
@@ -486,6 +489,9 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
 	rect = get_RecFooter(painter);
 	rect.translate( 0, 10);
 	painter.drawText(rect , Qt::AlignHCenter, mfooterTextInfo);
+
+    mFont.setPointSizeF(ptSize);
+    painter.setFont(mFont);
 }
 
 /**
@@ -873,6 +879,33 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 		printList.totalPrice.push_back( totalPrice );
 	}
 	
+    // Si facture Annulee
+    if(m_inv -> getState() == MCERCLE::INV_CANCEL){
+        painter.save();
+        QPen pen;
+        pen.setColor( QColor(201,106,22,255) );
+        painter.setPen(pen);
+        mFont.setPointSize(60);
+        painter.setFont(mFont);
+        rect = painter.fontMetrics().boundingRect(mRectContent.left(), mRectContent.bottom(), 0, 0, Qt::AlignLeft, tr("ANNULEE") );
+        painter.rotate(-20);
+        painter.drawText(rect, tr("ANNULEE"));
+        painter.restore();
+
+    }
+    else if(m_inv -> getState() == MCERCLE::INV_OVERDUE){
+        painter.save();
+        QPen pen;
+        pen.setColor( QColor(184,92,92,255));
+        painter.setPen(pen);
+        mFont.setPointSize(60);
+        painter.setFont(mFont);
+        rect = painter.fontMetrics().boundingRect(mRectContent.left(), mRectContent.bottom(), 0, 0, Qt::AlignLeft, tr("IMPAYEE") );
+        painter.rotate(-20);
+        painter.drawText(rect, tr("IMPAYEE"));
+        painter.restore();
+
+    }
 	// list all products
 	for(int page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		/// Imprime l entete

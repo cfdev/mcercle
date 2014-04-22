@@ -27,7 +27,6 @@ private:
 	bool m_connected;
 	QString m_bdd, m_name, m_hostName, m_login, m_password;
 	int m_port, m_databaseVersion;
-	bool addSample;
 	QString m_FDBversion;
 	QLocale m_lang;
 
@@ -57,7 +56,8 @@ private:
 	bool upgradeToV2(QString *log);
 	bool upgradeToV3(QString *log);
 	bool upgradeToV4(QString *log);
-	
+    bool upgradeToV5(QString *log);
+
 public:
 
 	typedef struct{

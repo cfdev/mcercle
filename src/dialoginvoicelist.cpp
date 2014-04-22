@@ -19,7 +19,7 @@ DialogInvoiceList::DialogInvoiceList(QLocale &lang, database *pdata, QWidget *pa
 	ui(new Ui::DialogInvoiceList)
 {
 	ui -> setupUi(this);
-	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_data		= pdata;
 	m_invoice	= pdata -> m_customer->m_invoice;
 	m_isTax		= pdata -> getIsTax();
@@ -222,7 +222,6 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 	footerTextInfo += "\n" + info.name;
 	if(!info.capital.isEmpty()) footerTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())     footerTextInfo += " - " + tr("Siret ") + info.num;
-	if(!m_data->getIsTax())     footerTextInfo += "\n" + QLatin1String("Dispensé d'immatriculation au registre du commerce et des société (RCS) et au répertoire des métiers (RM)");
 	QString pageText;
 
 	//defini la date de limpression

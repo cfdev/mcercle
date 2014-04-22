@@ -221,13 +221,13 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout_items" stretch="35,0,65">
        <item>
         <widget class="QGroupBox" name="groupBox_select">
          <property name="title">
           <string/>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1">
           <item>
            <widget class="QTabWidget" name="tabWidget_select">
             <property name="currentIndex">
@@ -276,7 +276,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <layout class="QVBoxLayout" name="verticalLayout_center">
          <item>
           <spacer name="verticalSpacer_2">
            <property name="orientation">
@@ -289,6 +289,26 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButton_hide">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Affiche ou cache le menu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string>Hide</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../ressources.qrc">
+             <normaloff>:/app/show</normaloff>:/app/show</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>24</width>
+             <height>24</height>
+            </size>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QToolButton" name="toolButton_add">
@@ -330,7 +350,7 @@
          <property name="title">
           <string/>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_but">
             <item>

@@ -79,6 +79,7 @@ public:
 		QList<qreal> tax;
 		QList<qreal> price;
 		QList<int> order;
+		QList<int> type;
 	}InvoiceListItems;
 
 	//Un Item de la facture
@@ -91,10 +92,9 @@ public:
 		qreal tax;
 		qreal price;
 		int order;
+		int invoice;
+		int type;
 	}InvoiceItem;
-
-	//State
-	enum{UNPAID , PAID, OVERDUE, CANCEL};
 	
 	invoice(QSqlDatabase db, QWidget *parent = 0);
 	~invoice();
