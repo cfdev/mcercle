@@ -59,9 +59,9 @@ class Printc : public QObject
 	qreal mwUtil;
 	QRectF mpageRect, mRectContent;
 	int mBlockHeight;
-	int mlinePerPage, mlinePerLastPage;
-	
+	int mlinePerPage, mlinePerLastPage;	
 	qreal mtotalPrice, mtotalTaxPrice;
+    int mRoundedRect;
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
 	void print_header(QPainter &painter, QRectF &rect, int type);
@@ -70,7 +70,8 @@ class Printc : public QObject
 	void print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type);
 	QRectF get_RecFooter(QPainter &painter);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
-	
+    void setRoundedRect(bool state);
+
 	private slots:
 	// slots dimpression
 	void on_paintPrinterProposal(QPrinter *printer);

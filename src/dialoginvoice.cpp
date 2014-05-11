@@ -313,10 +313,10 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		if(ilist.idProduct.at(i) > 0){
 			edit_name -> setReadOnly(true);
 		}
-        if(m_ilist.type.at(i) == MCERCLE::PRODUCT) {
+        if(ilist.type.at(i) == MCERCLE::PRODUCT) {
             item_Name -> setIcon( QIcon(":/app/products") );
         }
-        else if(m_ilist.type.at(i) == MCERCLE::SERVICE) {
+        else if(ilist.type.at(i) == MCERCLE::SERVICE) {
             item_Name -> setIcon( QIcon(":/app/services") );
         }
 		item_TAX->setData(Qt::DisplayRole, ilist.tax.at(i));

@@ -21,7 +21,7 @@
 
 namespace MCERCLE {
 // Version et version de bdd supporte
-    const QString Version = "14.04";
+    const QString Version = "14.10 beta";
     const int Dbase_support = 5;
 
 // Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre

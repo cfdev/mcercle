@@ -1,12 +1,30 @@
 # Historique de mcercle
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
-version 14.04 : 01/04/2014
+
+version 14.10 : xx/10/2014
 -------------------------------------------------------
-Voir les commits sur github
+* PrintPreview: AutoAustement de la largeur
+* PrintPreview: Cache les boutons de l'orientation
+* Correction sur le bug icon type pour les devis
 
 
-version 13.09 : xx/09/2013
+version 14.04 : 08/04/2014
+-------------------------------------------------------
+* Correction bugs (see github)
+
+
+version 14.02 : 27/02/2014
+-------------------------------------------------------
++ mcercle supporte Qt >= 5.2
++ Gestion TVA
++ Ajout d'une image pour le produit
+
+* Style plastique par defaut (win8)
+* Correction bugs (see github)
+
+
+version 13.10 : 03/11/2013
 -------------------------------------------------------
 + Ajout de l'impression multiple pour les factures
 + création d'une class d'impression client
@@ -22,7 +40,7 @@ version 13.09 : xx/09/2013
 
 * Correction de l'ordre des items avec CAST AS int
 * Correction de l'édition d'un service commun (bug sur le test du nom)
-...
+...(see github)
 
 
 version 2.2 : 25/01/2013

@@ -25,6 +25,8 @@
 
 #include <QFileDialog>
 #include <QPrintDialog>
+#include <QPrintPreviewWidget>
+#include <QToolBar>
 #include <QDebug>
 #include <math.h>
 
@@ -38,7 +40,10 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	m_pro  = pdata -> m_customer -> m_proposal;
 	m_serv = pdata -> m_customer -> m_service;
 	mlogo  = m_data -> getLogoTable_informations();
-	
+
+    ///Coins carre par defaut
+    mRoundedRect = 0;
+
 	///Info societe
 	database::Informations info;
 	m_data -> getInfo(info);
@@ -66,6 +71,19 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 }
 
 Printc::~Printc(){
+}
+
+/**
+ * @brief setRoundedRect permet davoir les coins arrondis ou pas
+ * @param state
+ */
+void Printc::setRoundedRect(bool state){
+  if(state){
+      mRoundedRect = 5;
+  }
+  else{
+      mRoundedRect = 0;
+  }
 }
 
 /**
@@ -140,6 +158,17 @@ void Printc::print_Proposal(const int &id) {
 		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinterProposal(QPrinter *)));
 		m_PreviewDialog.setWindowState(Qt::WindowMaximized);
+        // Ajuste la taille
+        QList<QPrintPreviewWidget *> list = m_PreviewDialog.findChildren<QPrintPreviewWidget *>();
+        if(!list.isEmpty()) { // paranoiac safety check
+            list.first()->setZoomMode(QPrintPreviewWidget::FitToWidth);
+        }
+        //Cache les boutons inutile de l orientation
+        QToolBar *toolbar = m_PreviewDialog.findChild<QToolBar*>();
+        if(toolbar) { // paranoiac safety check
+            toolbar->removeAction( toolbar->actions().at(7) );
+            toolbar->removeAction( toolbar->actions().at(7) );
+        }
 		m_PreviewDialog.exec();
 	}
 }
@@ -230,7 +259,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	rect.translate(-5,-5);
 	rect.setHeight(rect.height()+10);
 	rect.setWidth(6 + mLeft + mwUtil/2);
-	painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
+    painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle avec 5 de radius
 	// Creation dun espace
 	rect.translate( 0, rect.height()+25);
 }
@@ -423,7 +452,7 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		}
 	}
 	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, heightContent);
-	painter.drawRoundedRect(mRectContent, 5, 5);
+    painter.drawRoundedRect(mRectContent, mRoundedRect, mRoundedRect);
 	
 	// LIGNE de separation des TITRES
 	painter.drawLine(QPoint(mRectContent.left(), rectTop_LineTitre),
@@ -572,7 +601,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 	//dessine le fond
 	painter.setBrush( Qt::lightGray );
 	painter.setPen(Qt::NoPen);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15,rect.height() +10), 5, 5 );
+    painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*0.36 +15,rect.height() +10),  mRoundedRect, mRoundedRect);
 	painter.setPen(Qt::black);
 	painter.drawText( rect, tr("NET A PAYER : "));
 	mFont.setBold(true);
@@ -645,7 +674,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 		
 		painter.setPen( Qt::DashLine );
 		rect = QRect(mLeft,rect.top()-5, mwUtil*0.36 +15, rect.height());
-		painter.drawRoundedRect( rect, 5, 5 );
+        painter.drawRoundedRect( rect, mRoundedRect, mRoundedRect);
 		painter.setPen( Qt::SolidLine );
 	}
 }
@@ -747,7 +776,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n";
 	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+5, /*rect.top()*/ mpageRect.height() - mBottom - OFFSET_BOT_TOTAL + 100, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36 +15, rect.height()), 5, 5 );
+    painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*0.36 +15, rect.height()), mRoundedRect, mRoundedRect);
 	
 	delete m_DialogWaiting;
 	painter.end();
@@ -778,6 +807,16 @@ void Printc::print_Invoice(const int &id) {
 		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinterInvoice(QPrinter *)));
 		m_PreviewDialog.setWindowState(Qt::WindowMaximized);
+        // Ajuste la taille
+        QList<QPrintPreviewWidget *> list = m_PreviewDialog.findChildren<QPrintPreviewWidget *>();
+        if(!list.isEmpty()) // paranoiac safety check
+            list.first()->setZoomMode(QPrintPreviewWidget::FitToWidth);
+        //Cache les boutons inutile de l orientation
+        QToolBar *toolbar = m_PreviewDialog.findChild<QToolBar*>();
+        if(toolbar) { // paranoiac safety check
+            toolbar->removeAction( toolbar->actions().at(7) );
+            toolbar->removeAction( toolbar->actions().at(7) );
+        }
 		m_PreviewDialog.exec();
 	}
 }
@@ -996,7 +1035,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	painter.drawText( rect, Qt::TextWordWrap, serv);
 
 	rect = QRect(mLeft, rect.top()-10, mwUtil, blockHeight);
-	painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
+    painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
 
 	/// Prix
    /* QString price = tr("Prix: ") + QString::number(m_cus->m_service->getPrice())+ QChar(8364);
@@ -1023,7 +1062,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	rect.translate(-5,-5);
 	rect.setHeight(rect.height()+10);
 	rect.setWidth(6 + mLeft + mwUtil/2);
-	painter.drawRoundedRect(rect, 5, 5); // dessine le rectangle avec 5 de radius
+    painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
 
 	// Imprime le pied de page
 	print_footer(painter, rect, "1","1");
