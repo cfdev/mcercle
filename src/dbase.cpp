@@ -32,13 +32,22 @@
 #include <QDir>
 #include <QDebug>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
 /**
  * @brief database::database
  * @param lang
  * @param parent
  */
 database::database(QLocale &lang, QWidget *parent): m_parent(parent) {
-	m_name = "mcercle.db";
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	m_name = QFileInfo(QDesktopServices::storageLocation ( QDesktopServices::DataLocation),"mcercle.db").absoluteFilePath();
+#else
+	m_name = QFileInfo(QStandardPaths::writableLocation ( QStandardPaths::DataLocation),"mcercle.db").absoluteFilePath();
+#endif
 	m_port = 3306;
 	m_hostName = "localhost";
 	m_login = "root";
@@ -46,12 +55,12 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent) {
 	m_connected = false;
 	m_lang = lang;
 	/* Valeur entreprise */
-    m_isTax = 0;
+	m_isTax = 0;
 }
 
 database::~database(){
-	if(m_customer) delete m_customer;
-	if(m_product) delete m_product;
+	if(m_customer)	m_customer->deleteLater();
+	if(m_product)	m_product->deleteLater();
 }
 
 
@@ -74,7 +83,7 @@ char database::connect(){
 	db.setPassword( m_password );
 
 	if (!db.open()) {
-		QMessageBox mBox(QMessageBox::Critical, tr("Erreur"), tr("<b>La connexion avec la base de donn&#233;es n&#146;a pas pu &#234;tre &#233;tablie!</b>"),QMessageBox::Ok);
+		QMessageBox mBox(QMessageBox::Critical, tr("Erreur"), tr("<b>La connexion avec la base de donnees n a pas pu etre etablie!</b>"),QMessageBox::Ok);
 		mBox.setDetailedText ( db.lastError().text() );
 		mBox.exec();
 		m_connected = false;
