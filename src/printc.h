@@ -33,7 +33,12 @@ class Printc : public QObject
 #define WIDTH_QTE 0.08
 #define WIDTH_TOT 0.12
 	
-#define OFFSET_BOT_TOTAL 275
+#define WIDTH_TOTAUX 0.375
+#define SPACE_BORDER 20
+#define OFFSET_BOT_TOTAL 1700 //275
+	//1.2 low resolution
+	//5 High resolution
+#define PEN_WIDTH 5
 		
 	QLocale m_lang;
 	database *m_data;
@@ -61,7 +66,7 @@ class Printc : public QObject
 	int mBlockHeight;
 	int mlinePerPage, mlinePerLastPage;	
 	qreal mtotalPrice, mtotalTaxPrice;
-    int mRoundedRect;
+	int mRoundedRect;
 	
 	void load_parameters(QPrinter *printer, QPainter &painter);
 	void print_header(QPainter &painter, QRectF &rect, int type);
@@ -70,7 +75,7 @@ class Printc : public QObject
 	void print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type);
 	QRectF get_RecFooter(QPainter &painter);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
-    void setRoundedRect(bool state);
+	void setRoundedRect(bool state);
 
 	private slots:
 	// slots dimpression
