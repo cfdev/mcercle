@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2013 Cyril FRAUSTI
+  Copyright (C) 2010-2014 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ about::about(database *pdata, QWidget *parent) :
 	}
 
 	msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
-	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2013";
+	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2014";
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
     msg += "<br>- Site internet: <a href=\"http://frausti.fr/\">http://frausti.fr/</a>";
 	
