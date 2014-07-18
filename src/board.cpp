@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2013 Cyril FRAUSTI
+  Copyright (C) 2010-2014 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -372,6 +372,9 @@ void board::on_tableWidget_InvoiceAlert_itemDoubleClicked(QTableWidgetItem *item
 	delete m_DialogInvoice;
 	//rafraichir la liste
 	listInvoiceAlertToTable();
+	//rafraichir le calcul du CA
+	listRevenuesToTable();
+	listYear();
 }
 
 /**
