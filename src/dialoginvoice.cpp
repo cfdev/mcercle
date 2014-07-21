@@ -788,7 +788,7 @@ void DialogInvoice::setProposal(unsigned char proc){
 		//Generation du code
 		// TYPE + DATE + ID
 		QString typp = tr("DE");
-		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
+		m_proposal->setCode( typp + QDateTime::currentDateTime().toString("yyMM")/* +"-"*/+ QString::number(lastID+1) );
 		//cree lobjet
 		if( m_proposal -> create() ) {
 			createSuccess();
@@ -831,7 +831,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
 		//Generation du code facture
 		// TYPE + DATE + ID
 		QString typp = tr("FA");
-		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
+		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMM") /*+"-"*/+ QString::number(lastID+1) );
 		//cree lobjet
 		if( m_invoice -> create() ) {
 			createSuccess();
@@ -1174,9 +1174,9 @@ void DialogInvoice::createInvoiceFromProposal() {
 	m_invoice->setIdCustomer( m_proposal->getIdCustomer() );
 	m_invoice->setDescription( m_proposal->getDescription() );
 	m_invoice->setPartPayment(0);
-    m_invoice->setState( MCERCLE::INV_UNPAID );
-	m_invoice->setUserDate( m_proposal->getUserDate() );
-	m_invoice->setLimitPayment( QDate::currentDate() );
+	m_invoice->setState( MCERCLE::INV_UNPAID );
+	m_invoice->setUserDate( QDate::currentDate() );
+	m_invoice->setLimitPayment( QDate::currentDate().addMonths(1) );
 	m_invoice->setPaymentDate( QDate::currentDate().addMonths(1) );
 
 	m_invoice->setTypePayment( m_proposal->getTypePayment() );
