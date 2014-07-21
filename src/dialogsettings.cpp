@@ -164,21 +164,15 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 		QMessageBox::critical(this, tr("Erreur"), QLatin1String("Impossible de charger l'image...Désoler :("));
 		return;
 	}
-	qreal ratio = qreal(logo.size().width()) / qreal(logo.size().height());
-	qDebug() << "height: " << logo.size().height() << " width: " << logo.size().width();
-	qDebug() << "ratio image: " << ratio;
-	if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
-	if(logo.size().width() > 128){
-		logo = logo.scaled(QSize(logo.height() * ratio,logo.height()));
-		// Bornage max
-		if(logo.size().width() > 384)
-			logo = logo.scaled(QSize(384,logo.height()));
+	if((logo.height()>1200) ||(logo.width()>1200)) {
+		logo = logo.scaled(1200,1200, Qt::KeepAspectRatio);
 	}
-
 	//ajout a la base de donnees
 	m_data->updateLogoTable_informations(logo);
+
 	//relecture de limage et affichage du logo
 	QImage lo = m_data->getLogoTable_informations();
+	lo = lo.scaled(128,128, Qt::KeepAspectRatio);
 	ui->label_logo->setPixmap(QPixmap::fromImage(lo));
 }
 
@@ -188,9 +182,9 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 void DialogSettings::on_pushButton_ClearImage_clicked() {
 	QImage logo;
 	//ajout a la base de donnees
-	m_data->updateLogoTable_informations(logo);
+	m_data -> updateLogoTable_informations(logo);
 	//relecture de limage et affichage du logo
-	QImage lo = m_data->getLogoTable_informations();
+	QImage lo = m_data -> getLogoTable_informations();
 	ui->label_logo->setPixmap(QPixmap::fromImage(lo));
 }
 
@@ -266,6 +260,7 @@ void DialogSettings::loadInfoDatabase() {
 	 
 	 //Onglet societe
 	 QImage lo = m_data->getLogoTable_informations();
+	 lo = lo.scaled(128,128, Qt::KeepAspectRatio);
 	 ui->label_logo->setPixmap(QPixmap::fromImage(lo));
 
 	 database::Informations inf;
