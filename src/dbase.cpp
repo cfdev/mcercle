@@ -342,7 +342,7 @@ bool database::createTable_informations(){
 
 	//INSERT
 	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-					"VALUES('4', '0', '','1');");
+					"VALUES('5', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -1378,45 +1378,45 @@ bool database::upgradeToV4(QString *log) {
    Met a jour la base de donnees en version 5
   */
 bool database::upgradeToV5(QString *log) {
-    QString req;
-    bool done=true;
-    QSqlQuery query;
-    *log = "Mise a jour de la base de données en version 5:";
+	QString req;
+	bool done=true;
+	QSqlQuery query;
+	*log = "Mise a jour de la base de données en version 5:";
 
-    // Modification du type d item
-    req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
-    *log += "\n\n"+ req;
-    query.prepare( req );
-    if(!query.exec()) {
-        *log += "\n->" + query.lastError().text();
-        done = false;
-    }
-    else
-        *log += "\n-> FAIT";
+	// Modification du type d item
+	req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
 
-    // Modification du type d item
-    req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=0 WHERE TYPE IS NULL;";
-    *log += "\n\n"+ req;
-    query.prepare( req );
-    if(!query.exec()) {
-        *log += "\n->" + query.lastError().text();
-        done = false;
-    }
-    else
-        *log += "\n-> FAIT";
+	// Modification du type d item
+	req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=0 WHERE TYPE IS NULL;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
 
-    //Update numero version bdd
-    req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=5;";
-    *log += "\n\n"+ req;
-    query.prepare( req );
-    if(!query.exec()) {
-        *log += "\n->" + query.lastError().text();
-        done = false;
-    }
-    else
-        *log += "\n-> FAIT";
+	//Update numero version bdd
+	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=5;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
 
-    return done;
+	return done;
 }
 /// TODO -> creer une class update.cpp
 
