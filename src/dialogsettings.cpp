@@ -42,34 +42,10 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
 	m_data = pdata;
 	m_lang = lang;
 
-	//Onglet Database
-	ui->lineEdit_hostName->setText( m_Settings->getDatabase_hostName() );
-	ui->lineEdit_port->setText( QString::number(m_Settings->getDatabase_port()) );
-	ui->lineEdit_databaseName->setText( m_Settings->getDatabase_databaseName() );
-	ui->lineEdit_login->setText( m_Settings->getDatabase_userName() );
-	ui->lineEdit_password->setText( m_Settings->getDatabase_userPassword() );
-
-	//Dbase
-	QString bdd = QString("Q")+m_Settings->getDatabase_bdd();
-	QStringList dlist = pdata->getDrivers();
-	int select=0;
-	for(int i=0; i<dlist.count(); i++){
-		if(dlist[i] == "QSQLITE"){
-			ui->comboBox_dbase->addItem( "SQLITE" );
-			if(bdd == dlist[i]) select = 0;
-		}
-		else if(dlist[i] == "QMYSQL"){
-			ui->comboBox_dbase->addItem( "MYSQL" );
-			if(bdd == dlist[i]) select = 1;
-		}
-	}
-	ui->comboBox_dbase->setCurrentIndex(select);
-
-	//Impression
-	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
+	//charge les settings
+	loadInfoSettings();
 	//Active ou desactive selon letat de la connexion
 	setDbaseEditState(!m_data->isConnected());
-	
 	//charge les info de la base de donnees
 	loadInfoDatabase();
 	//Selectionne la tab 0
@@ -114,6 +90,8 @@ void DialogSettings::on_buttonBox_accepted() {
 	inf.ca_type = ui->comboBox_CA->currentIndex();
 	inf.line1 = ui->lineEdit_print1->text();
 	inf.line2 = ui->lineEdit_print2->text();
+	inf.borderRadius = ui->checkBox_border_radius->checkState();
+	inf.manageStock = ui->checkBox_manageStock->checkState();
 	m_data -> updateInfo(inf);
 
 	//sauvegarde les donnees de la banque dans la bdd
@@ -143,6 +121,7 @@ void DialogSettings::on_buttonBox_accepted() {
 	m_Settings -> setDatabase_userName( ui->lineEdit_login->text());
 	m_Settings -> setDatabase_userPassword( ui->lineEdit_password->text() );
 	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText() );
+	m_Settings -> setCheckVersion( ui->checkBox_checkVersion->checkState() );
 }
 
 /**
@@ -238,6 +217,38 @@ void DialogSettings::on_pushButton_connect_clicked() {
 }
 
 /**
+	Gerer les infos du fichier setting
+  */
+void DialogSettings::loadInfoSettings() {
+	//Onglet Database
+	ui->lineEdit_hostName->setText( m_Settings->getDatabase_hostName() );
+	ui->lineEdit_port->setText( QString::number(m_Settings->getDatabase_port()) );
+	ui->lineEdit_databaseName->setText( m_Settings->getDatabase_databaseName() );
+	ui->lineEdit_login->setText( m_Settings->getDatabase_userName() );
+	ui->lineEdit_password->setText( m_Settings->getDatabase_userPassword() );
+
+	//Dbase
+	QString bdd = QString("Q")+m_Settings->getDatabase_bdd();
+	QStringList dlist = m_data->getDrivers();
+	int select=0;
+	for(int i=0; i<dlist.count(); i++){
+		if(dlist[i] == "QSQLITE"){
+			ui->comboBox_dbase->addItem( "SQLITE" );
+			if(bdd == dlist[i]) select = 0;
+		}
+		else if(dlist[i] == "QMYSQL"){
+			ui->comboBox_dbase->addItem( "MYSQL" );
+			if(bdd == dlist[i]) select = 1;
+		}
+	}
+	ui->comboBox_dbase->setCurrentIndex(select);
+	//Impression
+	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
+	//checkversion
+	ui->checkBox_checkVersion->setCheckState( Qt::CheckState(m_Settings->getCheckVersion()) );
+}
+
+/**
 	Gerer la connexion avec la base de donnees
   */
 void DialogSettings::loadInfoDatabase() {
@@ -283,7 +294,9 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->comboBox_CA->setCurrentIndex(inf.ca_type);
 	 ui->lineEdit_print1->setText(inf.line1);
 	 ui->lineEdit_print2->setText(inf.line2);
-	 
+	 ui->checkBox_border_radius->setCheckState( Qt::CheckState(inf.borderRadius) );
+	 ui->checkBox_manageStock->setCheckState( Qt::CheckState(inf.manageStock) );
+
 	 database::Bank b;
 	 m_data->getBank( b );
 	 ui->lineEdit_codeBanque->setText( b.codeBanque );

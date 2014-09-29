@@ -190,6 +190,28 @@ void Settings::setSettingState(bool state) {
 }
 
 /**
+ * @brief Settings::getCheckVersion
+ * @return integer because Qt::CheckState is interger!
+ */
+int Settings::getCheckVersion(){
+	m_settings->beginGroup("main");
+	int val = false;
+	val = m_settings->value("checkVersion", Qt::Checked).toInt();
+	m_settings->endGroup();
+	return val;
+}
+
+/**
+ * @brief Settings::setCheckVersion
+ * @param state integer because Qt::CheckState is interger!
+ */
+void Settings::setCheckVersion(int state) {
+	m_settings->beginGroup("main");
+	m_settings-> setValue("checkVersion", state);
+	m_settings->endGroup();
+}
+
+/**
 	Position des listebox pour les recherches
   */
 void Settings::setPositionListSearchProduct(int pos) {
@@ -218,6 +240,7 @@ void Settings::setPrintFont(const QString& printFont){
 	m_settings->setValue("font", printFont);
 	m_settings->endGroup();
 }
+
 
 /**
  * @brief setDatebddSave

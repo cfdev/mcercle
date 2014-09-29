@@ -26,6 +26,7 @@ private:
 	database *m_data;
 	QLocale m_lang;
 
+	void loadInfoSettings();
 	void loadInfoDatabase();
 	void setDbaseEditState( bool state);
 

@@ -172,10 +172,14 @@ char database::connect(){
 				if(!upgradeToV4(&log)) upgradeOk = false;
 			}
 			logAll += log;
-            if(m_databaseVersion <= 4 ) {
-                if(!upgradeToV5(&log)) upgradeOk = false;
-            }
-            logAll += log;
+			if(m_databaseVersion <= 4 ) {
+				if(!upgradeToV5(&log)) upgradeOk = false;
+			}
+			logAll += log;
+			if(m_databaseVersion <= 5 ) {
+				if(!upgradeToV6(&log)) upgradeOk = false;
+			}
+			logAll += log;
 
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), mess, QMessageBox::Ok);
 			if(upgradeOk){
@@ -326,6 +330,8 @@ bool database::createTable_informations(){
 			"CA_TYPE        INTEGER NOT NULL ,"
 			"PRINT_LINE1    VARCHAR(64),"
 			"PRINT_LINE2    VARCHAR(64),"
+			"BORDER_RADIUS  INTEGER,"
+			"MANAGE_STOCK   INTEGER,"
 			"PRIMARY KEY (ID)"
 			");";
 
@@ -878,8 +884,10 @@ bool database::updateInfo(Informations &info) {
 	req += "WEBSITE='" + info.webSite.replace("\'","''") + "', ";
 	req += "TAX='" + QString::number(info.tax) + "', ";
 	req += "CA_TYPE='" + QString::number(info.ca_type) + "', ";
-	req += "PRINT_LINE1='" + info.line1 + "', ";
-	req += "PRINT_LINE2='" + info.line2 + "' ";
+	req += "PRINT_LINE1='" + info.line1.replace("\'","''") + "', ";
+	req += "PRINT_LINE2='" + info.line2.replace("\'","''") + "', ";
+	req += "BORDER_RADIUS='" + QString::number(info.borderRadius) + "', ";
+	req += "MANAGE_STOCK='" + QString::number(info.manageStock) + "' ";
 	req += "WHERE ID='1';";
 
 	query.prepare(req);
@@ -921,6 +929,8 @@ bool database::getInfo(Informations &info) {
 		info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
 		info.line1 = query.value(query.record().indexOf("PRINT_LINE1")).toString();
 		info.line2 = query.value(query.record().indexOf("PRINT_LINE2")).toString();
+		info.borderRadius = query.value(query.record().indexOf("BORDER_RADIUS")).toInt();
+		info.manageStock = query.value(query.record().indexOf("MANAGE_STOCK")).toInt();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -1074,7 +1084,7 @@ bool database::upgradeToV2(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = "Mise a jour de la base de données en version 2:";
+	*log = QLatin1String("Mise a jour de la base de données en version 2:");
 
 	req =	"ALTER TABLE TAB_PROPOSALS_DETAILS ADD ITEM_ORDER INTEGER;";
 	*log += "\n\n"+ req;
@@ -1116,7 +1126,7 @@ bool database::upgradeToV3(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = "Mise a jour de la base de données en version 3:";
+	*log = QLatin1String("Mise a jour de la base de données en version 3:");
 	
 	req =	"ALTER TABLE TAB_INVOICES ADD PAYMENTDATE;";
 	*log += "\n\n"+ req;
@@ -1169,7 +1179,7 @@ bool database::upgradeToV4(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = "Mise a jour de la base de données en version 4:";
+	*log = QLatin1String("Mise a jour de la base de données en version 4:");
 	
 	// ajout dune colonne
 	req =	"ALTER TABLE TAB_INFORMATIONS ADD NUM_TAX VARCHAR(64);";
@@ -1381,7 +1391,7 @@ bool database::upgradeToV5(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = "Mise a jour de la base de données en version 5:";
+	*log = QLatin1String("Mise a jour de la base de données en version 5:");
 
 	// Modification du type d item
 	req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
@@ -1418,5 +1428,51 @@ bool database::upgradeToV5(QString *log) {
 
 	return done;
 }
+
+/**
+   Met a jour la base de donnees en version 6
+  */
+bool database::upgradeToV6(QString *log) {
+	QString req;
+	bool done=true;
+	QSqlQuery query;
+	*log = QLatin1String("Mise a jour de la base de données en version 6:");
+
+	//Ajout champ pour impression dans bdd
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD BORDER_RADIUS INTERGER";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout champ pour impression dans bdd
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD MANAGE_STOCK INTERGER";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Update numero version bdd
+	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=6;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	return done;
+}
+
 /// TODO -> creer une class update.cpp
 

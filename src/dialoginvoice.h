@@ -48,7 +48,7 @@ private slots:
 	void addFreeline_Service();
 	void addFreeline_Product();
 	
-    void on_toolButton_hide_clicked();
+	void on_toolButton_hide_clicked();
 
 private:
 	Ui::DialogInvoice *ui;
@@ -65,6 +65,7 @@ private:
 	int m_index_tabInvoice;
 	qreal m_totalPrice, m_totalTaxPrice;
 	bool m_isTax;
+	int m_manageStock;
 
 	invoice::InvoiceListItems m_ilist;
 	productView *m_productView;

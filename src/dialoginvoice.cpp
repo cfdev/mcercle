@@ -34,7 +34,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	ui(new Ui::DialogInvoice)
 {
 	ui->setupUi(this);
-    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::WindowMaximizeButtonHint);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint & Qt::WindowMaximizeButtonHint);
 	// la fenetre est maximisee par defaut
 	setMinimumSize(QSize(640, 580));
 	setWindowState(Qt::WindowMaximized);
@@ -48,6 +48,11 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	m_product		= pdata -> m_product;
 	m_isTax			= pdata -> getIsTax();
 	m_lang			= lang;
+
+	//Information bdd
+	database::Informations inf;
+	m_data->getInfo( inf );
+	m_manageStock = inf.manageStock;
 
 	m_DialogType	= type;
 	m_DialogState	= state;
@@ -101,10 +106,10 @@ void DialogInvoice::setUI() {
 		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_VALIDATED ),
 								m_proposal->getTextState( MCERCLE::PROPOSAL_VALIDATED ));
 
-        ///TODO: asupprimer la date de livraison
+		///TODO: asupprimer la date de livraison
 		ui->label_delivery->setText(tr("Date de livraison :"));
-        ui->label_delivery->setVisible(false);
-        ui->dateEdit_delivery->setVisible(false);
+		ui->label_delivery->setVisible(false);
+		ui->dateEdit_delivery->setVisible(false);
 
 		ui->label_link->setText(QLatin1String("Facture associée : "));
 		ui->label_partpayment->setVisible(false);
@@ -116,14 +121,14 @@ void DialogInvoice::setUI() {
 		plist << "" << "Espece" << "Cheque" << "CB" << "TIP" << "Virement" << "Prelevement" << "Autre";
 		ui->comboBox_TYPE_PAYMENT->addItems(plist);
 
-        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_UNPAID ),
-                                m_invoice->getTextState( MCERCLE::INV_UNPAID ));
-        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_PAID ),
-                                m_invoice->getTextState( MCERCLE::INV_PAID ));
-        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_OVERDUE ),
-                                m_invoice->getTextState( MCERCLE::INV_OVERDUE ));
-        ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_CANCEL ),
-                                m_invoice->getTextState( MCERCLE::INV_CANCEL ));
+		ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_UNPAID ),
+								m_invoice->getTextState( MCERCLE::INV_UNPAID ));
+		ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_PAID ),
+								m_invoice->getTextState( MCERCLE::INV_PAID ));
+		ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_OVERDUE ),
+								m_invoice->getTextState( MCERCLE::INV_OVERDUE ));
+		ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_CANCEL ),
+								m_invoice->getTextState( MCERCLE::INV_CANCEL ));
 		
 		ui->label_delivery->setText(QLatin1String("Date Echéance :"));
 		ui->label_link->setText(QLatin1String("Devis associée : "));
@@ -166,9 +171,9 @@ void DialogInvoice::setUI() {
 	}
 	//lister les services
 	listServiceToTable();
-    //Cache le layout select base de donnee
-    ui->groupBox_select->setVisible( false );
-    ui->toolButton_add->setVisible( false );
+	//Cache le layout select base de donnee
+	ui->groupBox_select->setVisible( false );
+	ui->toolButton_add->setVisible( false );
 
 	//Selectionne la tab 0
 	ui->tabWidget_select->setCurrentIndex(0);
@@ -704,21 +709,23 @@ void DialogInvoice::updateInvoiceItems(){
 		id = ui->tableWidget->item(j, COL_ID_PRODUCT)->text().toInt();
 		itemInv.idProduct = id;
 
-		/// Si cest un produit gestion du stock automatise
-		if(itemInv.idProduct > 0) {
-			//Si le produit existe
-			if(m_product->loadFromID( itemInv.idProduct )){
-				int qte =0;
-				//si cest une mise a jour on recupere la diff de quantite
-				if(itemInv.id>-1) qte = getDiffQuantityOfItem( itemInv.id, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt() );
-				//sinon on recupere la qte de la cellule
-				else qte = -ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
-				m_product->setStock(m_product->getStock() + qte );
-				m_product->update();
-				if(m_product->getStock() < 0)
-					QMessageBox::warning(this, tr("Attention"),
-										 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
+		if(m_manageStock) {
+			/// Si cest un produit gestion du stock automatise
+			if(itemInv.idProduct > 0) {
+				//Si le produit existe
+				if(m_product->loadFromID( itemInv.idProduct )){
+					int qte =0;
+					//si cest une mise a jour on recupere la diff de quantite
+					if(itemInv.id>-1) qte = getDiffQuantityOfItem( itemInv.id, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt() );
+					//sinon on recupere la qte de la cellule
+					else qte = -ui->tableWidget->item(j, COL_QUANTITY)->text().toInt();
+					m_product->setStock(m_product->getStock() + qte );
+					m_product->update();
+					if(m_product->getStock() < 0)
+						QMessageBox::warning(this, tr("Attention"),
+											 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
 
+				}
 			}
 		}
 
@@ -1211,18 +1218,20 @@ void DialogInvoice::createInvoiceFromProposal() {
 		itemInv.tax = itemPro.tax.at(i);
 		itemInv.quantity = itemPro.quantity.at(i);
 		itemInv.order = itemPro.order.at(i);
-        itemInv.type = itemPro.type.at(i);
+		itemInv.type = itemPro.type.at(i);
 		
-		/// Si cest un produit gestion du stock automatise
-		if(itemInv.idProduct > 0) {
-			//Si le produit existe
-			if(m_product->loadFromID( itemInv.idProduct )){
-				m_product->setStock(m_product->getStock() - itemInv.quantity );
-				m_product->update();
-				if(m_product->getStock() < 0)
-					QMessageBox::warning(this, tr("Attention"),
-										 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
+		if(m_manageStock){
+			/// Si cest un produit gestion du stock automatise
+			if(itemInv.idProduct > 0) {
+				//Si le produit existe
+				if(m_product->loadFromID( itemInv.idProduct )){
+					m_product->setStock(m_product->getStock() - itemInv.quantity );
+					m_product->update();
+					if(m_product->getStock() < 0)
+						QMessageBox::warning(this, tr("Attention"),
+											 QLatin1String("Stock négatif pour le produit:\n") + m_product->getName() +" : "+QString::number( m_product->getStock() ) , QMessageBox::Ok);
 
+				}
 			}
 		}
 		m_invoice->addInvoiceItem(itemInv);

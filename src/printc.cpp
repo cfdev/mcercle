@@ -41,9 +41,6 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	m_serv = pdata -> m_customer -> m_service;
 	mlogo  = m_data -> getLogoTable_informations();
 
-	///Coins carre par defaut
-	mRoundedRect = 0;
-
 	///Info societe
 	database::Informations info;
 	m_data -> getInfo(info);
@@ -55,6 +52,7 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	
 	/// Identite du client
 	mtextidentity =  m_cus -> getGender() +" "+ m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
+	mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ " - " + m_cus ->getPhoneNumber()+'\n';
 	mtextidentity += m_cus -> getAddress1()+'\n';
 	mtextidentity += m_cus -> getAddress2()+'\n';
 	mtextidentity += m_cus -> getAddress3()+'\n';
@@ -68,6 +66,9 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	if((m_data->getIsTax()) &&(!info.numTax.isEmpty()) )	mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
 	if(!info.line1.isEmpty())	mfooterTextInfo += "\n" + info.line1;
 	if(!info.line2.isEmpty())	mfooterTextInfo += "\n" + info.line2;
+
+	///Coins carre ou rond
+	setRoundedRect(info.borderRadius);
 }
 
 Printc::~Printc(){
@@ -79,7 +80,7 @@ Printc::~Printc(){
  */
 void Printc::setRoundedRect(bool state){
 	if(state){
-		mRoundedRect = 5;
+		mRoundedRect = 25;
 	}
 	else{
 		mRoundedRect = 0;

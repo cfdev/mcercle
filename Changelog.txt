@@ -4,8 +4,13 @@
 
 version 14.10 : xx/10/2014
 -------------------------------------------------------
++ Setting: Vérification si une nouvelle version est disponible
++ Setting: Bords arrondis ou carres pour l'impression
++ Setting: Possibilité de gérer le décompte du stock ou pas
+
 * PrintPreview: AutoAustement de la largeur
 * PrintPreview: Cache les boutons de l'orientation
+* Print: QPrinter::HighResolution
 * Correction sur le bug icon type pour les devis
 
 

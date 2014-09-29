@@ -56,7 +56,8 @@ private:
 	bool upgradeToV2(QString *log);
 	bool upgradeToV3(QString *log);
 	bool upgradeToV4(QString *log);
-    bool upgradeToV5(QString *log);
+	bool upgradeToV5(QString *log);
+	bool upgradeToV6(QString *log);
 
 public:
 
@@ -72,6 +73,8 @@ public:
 		QString address1, address2, address3;
 		QString line1, line2;
 		int tax; int ca_type;
+		int borderRadius;
+		int manageStock;
 	}Informations;
 
 	typedef struct{

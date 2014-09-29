@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2013 Cyril FRAUSTI
+  Copyright (C) 2010-2014 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <QDesktopServices>
 #include <QLabel>
 #include <QStyle>
+#include <QDebug>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	#include <QPlastiqueStyle>
 #else
@@ -38,7 +39,11 @@
 #include "dialogwaiting.h"
 #include "dialoginvoicelist.h"
 #include "dialogservicesedit.h"
+#include "update.h"
 
+
+#include "pluginInterface.h"
+#include "pluginManager.h"
 /**
 	Constructeur de la class MainWindow
 */
@@ -62,6 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 #else
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
 #endif
+	qDebug() << "ApplicationDirPath: " << qApp->applicationDirPath();
 }
 
 
@@ -148,11 +154,25 @@ void MainWindow::init(){
 	ui->actionDebug_prod->setVisible(false);
 #endif
 
-   /* qDebug() << "MCERCLE_DEBUG :" <<QString(m_database->m_customer->m_invoice->getYearsList().at(0)+' '+
-				QString::number(m_database->m_customer->m_invoice->getYearRevenue("2011"))+' '+
-				QString::number(m_database->m_customer->m_invoice->getMonthRevenue("2011","8")) );*/
+	/* Checkupdate */
+	if( m_Settings->getCheckVersion() ){
+		Update *up = new Update(this);
+		up -> checkVersion();
+	}
 
-	//QApplication::setStyle("plastique");
+	/* load PLUGINS*/
+	ui->menuOutils->addSeparator();
+
+	QStringList listplug = pluginManager::instance()->pluginList();
+	qDebug() << tr("#Liste des plugins:\n")<< listplug;
+	qDebug() << tr("#END_PLUGIN");
+
+	foreach (pluginInterface* plug,pluginManager::instance()->plugins()){
+		QAction* actionPlug = new QAction( plug->name(), ui->menuOutils );
+		ui->menuOutils->addAction( actionPlug );
+//		QObject::connect(actionPlug, SIGNAL(triggered()), plug, SLOT(info()));
+		//plug->informations();
+	}
 }
 
 

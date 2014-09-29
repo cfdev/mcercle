@@ -27,10 +27,13 @@ public:
 	void setDatabase_default();
 	void setPositionListSearchProduct(int pos);
 	void setPositionListSearchCustomer(int pos);
+	void setCheckVersion(int state);
+
 	//Save date
 	void setDatebddSave(const QDate &date);
 	//Impression
 	void setPrintFont(const QString& printFont);
+
 
 	QString getDatabase_bdd();
 	QString getDatabase_hostName();
@@ -41,7 +44,8 @@ public:
 	int getPositionListSearchProduct();
 	int getPositionListSearchCustomer();
 	QDate getDatebddSave();
-	
+	int getCheckVersion();
+
 	//Impression
 	QFont getPrintFont();
 

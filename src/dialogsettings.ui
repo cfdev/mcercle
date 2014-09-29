@@ -29,7 +29,7 @@
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="iconSize">
         <size>
@@ -303,6 +303,63 @@ p, li { white-space: pre-wrap; }
               <number>128</number>
              </property>
             </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_Application">
+        <attribute name="icon">
+         <iconset resource="../ressources.qrc">
+          <normaloff>:/app/config</normaloff>:/app/config</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Application</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="0" column="0">
+              <widget class="QCheckBox" name="checkBox_checkVersion">
+               <property name="text">
+                <string>Verifie si une nouvelle version est disponible.</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../ressources.qrc">
+                 <normaloff>:/app/ok</normaloff>:/app/ok</iconset>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QCheckBox" name="checkBox_manageStock">
+               <property name="text">
+                <string>Gere le decompte automatique du stock</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../ressources.qrc">
+                 <normaloff>:/app/products</normaloff>:/app/products</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </item>
@@ -763,6 +820,32 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="scaledContents">
                 <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QCheckBox" name="checkBox_border_radius">
+               <property name="text">
+                <string>Bords arrondis</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+               <property name="autoRepeat">
+                <bool>false</bool>
+               </property>
+               <property name="autoExclusive">
+                <bool>false</bool>
+               </property>
+               <property name="tristate">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>Cadres :</string>
                </property>
               </widget>
              </item>
