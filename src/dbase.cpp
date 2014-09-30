@@ -56,11 +56,20 @@ database::database(QLocale &lang, QWidget *parent): m_parent(parent) {
 	m_lang = lang;
 	/* Valeur entreprise */
 	m_isTax = 0;
+
+	// Initialization ptr to null
+	m_customer = NULL;
+	m_product = NULL;
+	m_tax = NULL;
 }
 
 database::~database(){
-	if(m_customer)	m_customer->deleteLater();
-	if(m_product)	m_product->deleteLater();
+	if(m_customer){
+		m_customer->deleteLater();
+	}
+	if(m_product){
+		m_product->deleteLater();
+	}
 }
 
 
