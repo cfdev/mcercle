@@ -264,9 +264,9 @@ void customerView::listCustomersToTable(int page, QString filter, QString field)
 
 	// list all customers
 	for(unsigned int i=0; i<clist.id.size(); i++){
-		ItemOfTable *item_ID			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_LASTNAME	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_FIRSTNAME	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID			= new ItemOfTable();
+		ItemOfTable *item_LASTNAME	= new ItemOfTable();
+		ItemOfTable *item_FIRSTNAME	= new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, clist.id.at(i));
 		item_LASTNAME->setData(Qt::DisplayRole, clist.lastName.at(i));
@@ -463,16 +463,16 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 
 	// list tous les devis
 	for(int i=0; i<ilist.code.count(); i++){
-		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_STATE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID           = new ItemOfTable();
+		ItemOfTable *item_CODE         = new ItemOfTable();
+		ItemOfTable *item_DATE         = new ItemOfTable();
+		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
+		ItemOfTable *item_STATE        = new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
-		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/ );
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_proposal->getIconState(ilist.state.at(i)) );
@@ -551,10 +551,10 @@ void customerView::listServicesToTable(QString filter, QString field)
 
 	// list all customers
 	for(int i=0; i<ilist.id.size(); i++){
-		ItemOfTable *item_ID		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_NAME		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID		= new ItemOfTable();
+		ItemOfTable *item_DATE		= new ItemOfTable();
+		ItemOfTable *item_PRICE		= new ItemOfTable();
+		ItemOfTable *item_NAME		= new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(ilist.id.at(i)));
 		item_DATE->setData(Qt::DisplayRole, ilist.date.at(i).toString("dd/MM/yyyy hh:mm:ss"));
@@ -633,18 +633,18 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 
 	// list all customers
 	for(int i=0; i<ilist.code.count(); i++){
-		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATEPAYEMENT = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_STATE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID           = new ItemOfTable();
+		ItemOfTable *item_CODE         = new ItemOfTable();
+		ItemOfTable *item_DATE         = new ItemOfTable();
+		ItemOfTable *item_DATEPAYEMENT = new ItemOfTable();
+		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
+		ItemOfTable *item_STATE        = new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
-		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
-		item_DATEPAYEMENT->setData(Qt::DisplayRole, ilist.paymentDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
+		item_DATEPAYEMENT->setData(Qt::DisplayRole, ilist.paymentDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_invoice->getIconState(ilist.state.at(i)) );

@@ -19,7 +19,7 @@ DialogInvoiceList::DialogInvoiceList(QLocale &lang, database *pdata, QWidget *pa
 	ui(new Ui::DialogInvoiceList)
 {
 	ui -> setupUi(this);
-    setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_data		= pdata;
 	m_invoice	= pdata -> m_customer->m_invoice;
 	m_isTax		= pdata -> getIsTax();
@@ -68,18 +68,18 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	QString typeP;
 	for(int i=0; i<ilist.code.count(); i++){
 
-		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_State        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CODE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CUSTOMER     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DESCRIPTION  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TYPE_PAYMENT = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID           = new ItemOfTable();
+		ItemOfTable *item_State        = new ItemOfTable();
+		ItemOfTable *item_DATE         = new ItemOfTable();
+		ItemOfTable *item_CODE         = new ItemOfTable();
+		ItemOfTable *item_CUSTOMER     = new ItemOfTable();
+		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
+		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_TYPE_PAYMENT = new ItemOfTable();
 		
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_State -> setData(Qt::CheckStateRole, Qt::Checked);
-		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
 		if(ilist.customerFirstName.at(i).isEmpty())
 			item_CUSTOMER->setData(Qt::DisplayRole, ilist.customerLastName.at(i));

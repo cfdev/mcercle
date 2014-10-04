@@ -85,10 +85,10 @@ void board::listStockAlertToTable() {
 
 	// list all products
 	for(int i=0,j=0; i<plist.code.count();i++){
-		ItemOfTable *item_CODE      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_NAME      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_STOCK     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_STATE     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE      = new ItemOfTable();
+		ItemOfTable *item_NAME      = new ItemOfTable();
+		ItemOfTable *item_STOCK     = new ItemOfTable();
+		ItemOfTable *item_STATE     = new ItemOfTable();
 
 		item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
 		item_NAME->setData(Qt::DisplayRole, plist.name.at(i));
@@ -152,16 +152,16 @@ void board::listInvoiceAlertToTable()
 	
 	// list all products
 	for(int i=0,j=0; i<ilist.code.count();i++){
-		ItemOfTable *item_CODE	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_C_Id	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DESCRIPTION	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CUSTOMER		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_STATE			= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE	= new ItemOfTable();
+		ItemOfTable *item_C_Id	= new ItemOfTable();
+		ItemOfTable *item_DATE	= new ItemOfTable();
+		ItemOfTable *item_DESCRIPTION	= new ItemOfTable();
+		ItemOfTable *item_CUSTOMER		= new ItemOfTable();
+		ItemOfTable *item_STATE			= new ItemOfTable();
 
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i) );
 		item_C_Id->setData(Qt::DisplayRole, ilist.customerId.at(i) );
-		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, ilist.customerFirstName.at(i)+" "+ilist.customerLastName.at(i));
 		// Si limite de paiment depasse alors on change licon
@@ -227,15 +227,15 @@ void board::listProposalAlertToTable()
 
 	// list all products
 	for(int i=0,j=0; i<list.code.count();i++){
-		ItemOfTable *item_CODE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_C_Id		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DATE		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DESCRIPTION	= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_CUSTOMER		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_CODE		= new ItemOfTable();
+		ItemOfTable *item_C_Id		= new ItemOfTable();
+		ItemOfTable *item_DATE		= new ItemOfTable();
+		ItemOfTable *item_DESCRIPTION	= new ItemOfTable();
+		ItemOfTable *item_CUSTOMER		= new ItemOfTable();
 
 		item_CODE->setData(Qt::DisplayRole, list.code.at(i) );
 		item_C_Id->setData(Qt::DisplayRole, list.customerId.at(i) );
-		item_DATE->setData(Qt::DisplayRole, list.userDate.at(i).toString(tr("dd/MM/yyyy")));
+		item_DATE->setData(Qt::DisplayRole, list.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_DESCRIPTION->setData(Qt::DisplayRole, list.description.at(i));
 		item_CUSTOMER->setData(Qt::DisplayRole, list.customerFirstName.at(i)+" "+list.customerLastName.at(i));
 
@@ -281,10 +281,10 @@ void board::listRevenuesToTable()
 	ui->tableWidget_revenue->setHorizontalHeaderLabels( titles );
 
 	for(int i=1,j=0; i<13;i++){
-		ItemOfTable *item_DATE				= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_MonthRevenue		= new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_MonthServiceRevenue  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_MonthProductRevenue  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_DATE				= new ItemOfTable();
+		ItemOfTable *item_MonthRevenue		= new ItemOfTable();
+		ItemOfTable *item_MonthServiceRevenue  = new ItemOfTable();
+		ItemOfTable *item_MonthProductRevenue  = new ItemOfTable();
 
 		item_DATE->setData(Qt::DisplayRole, QDate::longMonthName ( i,QDate::DateFormat) );
 
