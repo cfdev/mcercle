@@ -28,7 +28,7 @@
 #include <QPrintPreviewWidget>
 #include <QToolBar>
 #include <QDebug>
-#include <math.h>
+#include <QtCore/qmath.h>
 
 Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	QObject(parent)
@@ -95,6 +95,7 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	printer -> getPageMargins(&mLeft, &mTop, &mRight, &mBottom, QPrinter::DevicePixel);
 	mpageRect = printer -> pageRect();
 	
+	qDebug() << "marges px: left(" << mLeft << ") top(" << mTop << ") right(" << mRight << ") bot(" << mBottom << ")";
 	qDebug() << "mpageRect.height: " << mpageRect.height();
 	if(printer -> orientation() == QPrinter::Landscape){
 		mlinePerLastPage = 8;
@@ -149,14 +150,16 @@ void Printc::print_Proposal(const int &id) {
 	printer.setOutputFileName( name + ".pdf");
 	printer.setDocName( name );
 	printer.setCreator("mcercle");
-
+	///TODO:Definition des marges en dur pour le moment
+	printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
+	
 	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
 	m_DialogPrintChoice -> setModal(true);
 	m_DialogPrintChoice -> exec();
 
 	if(m_DialogPrintChoice -> result() == QDialog::Accepted) {
 		//TEST:
-		printer.setPageMargins(2, 2, 2, 5, QPrinter::Millimeter);
+		printer.setPageMargins(5, 5, 5, 10, QPrinter::Millimeter);
 
 		QWidget fenetre;
 		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
@@ -259,14 +262,14 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+15, 0, 0, Qt::AlignLeft, tr("Client: ") );
 	painter.drawText(rect, tr("Client: "));
 
-	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+5, 0, 0, Qt::AlignLeft, mtextidentity );
+	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+SPACE_BORDER, 0, 0, Qt::AlignLeft, mtextidentity );
 	painter.drawText(rect, mtextidentity);
-	rect.translate(-5,-5);
-	rect.setHeight(rect.height()+10);
+	rect.translate(-SPACE_BORDER,-SPACE_BORDER);
+	rect.setHeight(rect.height()+SPACE_BORDER);
 	rect.setWidth(6 + mLeft + mwUtil/2);
-	painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle avec 5 de radius
+	painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
 	// Creation dun espace
-	rect.translate( 0, rect.height()+250);
+	rect.translate( 0, rect.height()+SPACE_BORDER*10);
 }
 
 /**
@@ -363,6 +366,16 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		// redef de la position 50%
 		pos=WIDTH_DES;
 		//DESIGNATION 40%
+		/// TODO: TEST IMAGE PRINT DE PODUIT LIEES
+		/*QSize sizeImage;
+		if( !Ilist.picture.at(itemPrinted).isNull() ) {
+			sizeImage = Ilist.picture.at(itemPrinted).size();
+			Ilist.designation.replace(itemPrinted, Ilist.designation.at(itemPrinted)+"\n");
+			painter.drawImage(mLeft+SPACE_BORDER,rect.top(), Ilist.picture.at(itemPrinted));
+			rect.setHeight(sizeImage.height());
+			rect.setWidth(sizeImage.width());
+		}*/
+		//TEXTE
 		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER,rect.top(), mwUtil*WIDTH_DES,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
 		rect.setWidth(mwUtil*WIDTH_DES); //fixe la largeur
 		painter.drawText( rect,  Qt::AlignLeft , Ilist.designation.at(itemPrinted));
@@ -496,7 +509,7 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
  */
 QRectF Printc::get_RecFooter(QPainter &painter) {
 	QRectF rect;
-	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
+	rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom/2, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignHCenter, mfooterTextInfo );
 	rect.translate( 0, -rect.height());
 	return rect;
 }
@@ -542,6 +555,7 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
  * @param totalPrice
  */
 void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int type) {
+	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.22);
 	qreal ptSize = mFont.pointSizeF();
 	qreal reste;
 	mFont.setPointSizeF(ptSize-2);
@@ -558,19 +572,20 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 	
 	QString total;
 	if(m_data -> getIsTax()) {
+		//Assujetti A TVA
 		total = tr("TOTAL HT: ");
 	}
 	else {
-		//Autoentrepreneur
+		//Non assujetti A TVA
 		if(m_data->m_customer->getType() == customer::COMPAGNY_TYPE)
 			total = tr("TOTAL HT : ");
 		else
 			total = tr("TOTAL : ");
 	}
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62), mpageRect.height() - mBottom - mpageRect.height()*0.25, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, total );
+	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62), topRect, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, total );
 	painter.drawText( rect, total);
 
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),mpageRect.height() - mBottom - mpageRect.height()*0.25, mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(mtotalPrice, 'f', 2) );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62), topRect, mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(mtotalPrice, 'f', 2) );
 	rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
 	painter.drawText( rect,  Qt::AlignRight , m_lang.toString(mtotalPrice, 'f', 2) );
 	painter.setBrush( Qt::NoBrush );
@@ -609,11 +624,11 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 	painter.setFont(mFont);
 	
 	//RESTE
-	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("NET A PAYER : ") );
+	rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+SPACE_BORDER, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("NET A PAYER : ") );
 	//dessine le fond
 	painter.setBrush( Qt::lightGray );
 	painter.setPen(Qt::NoPen);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top()-5, mwUtil*WIDTH_TOTAUX +15,rect.height() +10),  mRoundedRect, mRoundedRect);
+	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62)-SPACE_BORDER,rect.top()-SPACE_BORDER, mwUtil*WIDTH_TOTAUX +SPACE_BORDER*2,rect.height()+SPACE_BORDER*2),  mRoundedRect, mRoundedRect);
 	painter.setPen(Qt::black);
 	painter.drawText( rect, tr("NET A PAYER : "));
 	mFont.setBold(true);
@@ -642,7 +657,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
  * @param rect
  */
 void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type) {
-	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.23);
+	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.22);
 	//Mode de reglement
 	QString typePayment;
 	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
@@ -675,7 +690,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	/// RIB
 	if(typeP == MCERCLE::TRANSFER){
 		text = QLatin1String("Relevé d'Itentité Bancaire");
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 15, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 25, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
 		painter.drawText(rect, text);
 		
 
@@ -726,7 +741,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	}
 	int numberOfPage = 0;
 	if(lineToPrint > mlinePerLastPage) {
-		numberOfPage = ceil((qreal)lineToPrint/mlinePerPage);
+		numberOfPage = qCeil((qreal)lineToPrint/mlinePerPage);
 		int nbLines = ((numberOfPage-1)*mlinePerPage)+mlinePerLastPage;
 		if((lineToPrint - nbLines) >0) numberOfPage++;
 	}
@@ -791,7 +806,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 	/// Signature Client
 	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n";
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, /*rect.top()*/ mpageRect.height() - mBottom - mpageRect.height()*0.2 + 100, 0, 0, Qt::AlignLeft, text );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, /*rect.top()*/ mpageRect.height() - mBottom - mpageRect.height()*0.2 + SPACE_BORDER*16, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
 	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX +15, rect.height()), mRoundedRect, mRoundedRect);
 	
@@ -814,7 +829,9 @@ void Printc::print_Invoice(const int &id) {
 	printer.setOutputFileName( name + ".pdf");
 	printer.setDocName( name );
 	printer.setCreator("mcercle");
-
+	///TODO:Definition des marges en dur pour le moment
+	printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
+	
 	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
 	m_DialogPrintChoice->setModal(true);
 	m_DialogPrintChoice->exec();
@@ -859,7 +876,7 @@ void Printc::print_InvoicesList(QList<int> listofId) {
 			}
 
 		///TODO:Definition des marges en dur pour le moment
-		printer.setPageMargins(5.0,5.0,5.0,10.0, QPrinter::Millimeter);
+		printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
 		// Boucle pour l impression multiple
 		foreach(int id, listofId) {
 			m_inv -> loadFromID(id);
@@ -906,7 +923,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	for(int i=0; i<plist.name.count(); i++){
 		lineToPrint += plist.name.at(i).count("\n");
 	}
-	int numberOfPage = ceil((qreal)lineToPrint/mlinePerLastPage);
+	int numberOfPage = qCeil((qreal)lineToPrint/mlinePerLastPage);
 	if(numberOfPage > 1) {
 		int nbLines = ((numberOfPage-1)*mlinePerPage)+mlinePerLastPage;
 		if((lineToPrint - nbLines) >0) numberOfPage++;
@@ -934,6 +951,18 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 		totalPrice = plist.price.at(i)*plist.quantity.at(i);
 		if(plist.discount.at(i)>0) totalPrice -= totalPrice*(plist.discount.at(i)/100.0);
 		printList.totalPrice.push_back( totalPrice );
+		/// TODO: TEST IMAGE PRINT si produit liee on charge son image
+		/*if(plist.idProduct.at(i)>0) {
+			QImage pictureProd;
+			m_data->m_product->loadFromID(plist.idProduct.at(i));
+			if(m_data->m_product->getPicture().height() < 500){
+				pictureProd = m_data->m_product->getPicture().scaled(500,500, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+			}
+			printList.picture.push_back( pictureProd );
+		}
+		else{
+			printList.picture.push_back(QImage());
+		}*/
 	}
 	
 	// Si facture Annulee

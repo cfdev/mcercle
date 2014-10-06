@@ -56,6 +56,7 @@ class Printc : public QObject
 		QList<qreal> price;
 		QList<int> quantity;
 		QList<qreal> totalPrice;
+		QList<QImage> picture;
 	}itemList;
 	
 	// print
@@ -64,7 +65,7 @@ class Printc : public QObject
 	qreal mwUtil;
 	QRectF mpageRect, mRectContent;
 	int mBlockHeight;
-	int mlinePerPage, mlinePerLastPage;	
+	int mlinePerPage, mlinePerLastPage;
 	qreal mtotalPrice, mtotalTaxPrice;
 	int mRoundedRect;
 	
