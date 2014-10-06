@@ -163,13 +163,13 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	// list all products
 	for(int i=0,j=0; i<plist.id.size();i++){
 		if((m_ShowObsoleteProduct)||(plist.state.at(i) == 1)){
-			ItemOfTable *item_ID       = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_CODE     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_NAME     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_STOCK    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_PRICE    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_TAX    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-			ItemOfTable *item_CATEGORY = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+			ItemOfTable *item_ID       = new ItemOfTable();
+			ItemOfTable *item_CODE     = new ItemOfTable();
+			ItemOfTable *item_NAME     = new ItemOfTable();
+			ItemOfTable *item_STOCK    = new ItemOfTable();
+			ItemOfTable *item_PRICE    = new ItemOfTable();
+			ItemOfTable *item_TAX    = new ItemOfTable();
+			ItemOfTable *item_CATEGORY = new ItemOfTable();
 
 			item_ID->setData(Qt::DisplayRole, plist.id.at(i));
 			item_CODE->setData(Qt::DisplayRole, plist.code.at(i) );
@@ -377,7 +377,11 @@ void productView::on_tableWidget_products_itemSelectionChanged()
 	bool ret = m_data->m_product->loadFromID( ui->tableWidget_products->item(m_index, ID_ROW)->text().toInt());
 
 	if(ret) {
-		ui->label_image->setPixmap(QPixmap::fromImage(m_data->m_product->getPicture()));
+		QImage logo = m_data->m_product->getPicture();
+		if((logo.size().height() > 256)||(logo.size().width() > 256)){
+			logo = logo.scaled(QSize(256,256), Qt::KeepAspectRatio);
+		}
+		ui->label_image->setPixmap(QPixmap::fromImage(logo));
 		ui->labelInfoProduct->setText( InfoProduct() );
 		int id = m_data->m_product->getProviderID();
 		ret = m_data->m_product->m_provider->loadFromID(id);
@@ -863,18 +867,19 @@ void productView::on_comboBoxFiltre_currentIndexChanged(int index) {
 /**
 	Autocompletion pour la recherche produit
   */
-void productView::on_lineEdit_searchProduct_textChanged(const QString &arg1)
-{
-	product::ProductList plist;
-	//Recuperation des donnees presentent dans la bdd
-	m_data->m_product->getProductList(plist, 25, 0, arg1, m_prodfield);
-	QStringList wordList;
-	if(m_prodfield == "TAB_PRODUCTS.CODE ")wordList = plist.code;
-	if(m_prodfield == "TAB_PRODUCTS.NAME ")wordList = plist.name;
-	if(m_prodfield == "TAB_PRODUCTS_CATEGORIES.NAME ")wordList = plist.category;
-	//Supprimer les doublons
-	wordList.removeDuplicates();
-	QCompleter *completer = new QCompleter(wordList, this);
-	completer->setCaseSensitivity(Qt::CaseInsensitive);
-	ui->lineEdit_searchProduct->setCompleter(completer);
+void productView::on_lineEdit_searchProduct_textChanged(const QString &arg1) {
+	if(m_data->isConnected()) {
+		product::ProductList plist;
+		//Recuperation des donnees presentent dans la bdd
+		m_data->m_product->getProductList(plist, 25, 0, arg1, m_prodfield);
+		QStringList wordList;
+		if(m_prodfield == "TAB_PRODUCTS.CODE ")wordList = plist.code;
+		if(m_prodfield == "TAB_PRODUCTS.NAME ")wordList = plist.name;
+		if(m_prodfield == "TAB_PRODUCTS_CATEGORIES.NAME ")wordList = plist.category;
+		//Supprimer les doublons
+		wordList.removeDuplicates();
+		QCompleter *completer = new QCompleter(wordList, this);
+		completer->setCaseSensitivity(Qt::CaseInsensitive);
+		ui->lineEdit_searchProduct->setCompleter(completer);
+	}
 }

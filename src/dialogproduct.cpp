@@ -152,8 +152,12 @@ void DialogProduct::loadValuesFormProduct(){
 	ui->lineEdit_stockAlert->setText( QString::number(m_product->getStockWarning()) );
 
 	//relecture de limage et affichage du logo
-	QImage lo = m_product->getPicture();
-	ui->label_image->setPixmap(QPixmap::fromImage(lo));
+	QImage logo = m_product->getPicture();
+	//Redimensionnement pour l'affichage
+	if((logo.size().height() > 128)||(logo.size().width() > 128)){
+		logo = logo.scaled(QSize(128,128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+	}
+	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 
 	//State
 	if( m_product->getState() == product::OK )ui->radioButton_OK->setChecked( true );
@@ -289,10 +293,9 @@ void DialogProduct::on_pushButton_add_edit_clicked()
 
 	//ajout a la base de donnees
 	if(ui->label_image->pixmap() == NULL){
-		QImage img;
-		m_product->setPicture(img);
+		m_product->setPicture(QImage());
 	}
-	else m_product->setPicture( ui->label_image->pixmap()->toImage() );
+	else m_product->setPicture( imgProduct );
 
 	m_product->m_provider->loadFromName( ui->comboBox_providers->currentText() );
 	m_product->setProviderId(m_product->m_provider->getId());
@@ -403,8 +406,17 @@ void DialogProduct::on_pushButton_image_clicked(){
 		QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image..."));
 		return;
 	}
-	if(logo.size().height() > 128) logo = logo.scaled(QSize(logo.width(),128));
-	if(logo.size().width() > 128)  logo = logo.scaled(QSize(128,logo.height()));
+	else{
+		//Redimensionnement pour l'enregistrement dans la BDD
+		if((logo.size().height() > 256)||(logo.size().width() > 256)) {
+			logo = logo.scaled(QSize(256,256), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		}
+		imgProduct = logo;
+		//Redimensionnement pour l'affichage
+		if((logo.size().height() > 128)||(logo.size().width() > 128)){
+			logo = logo.scaled(QSize(128,128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+		}
+	}
 
 	ui->label_image->setPixmap(QPixmap::fromImage(logo));
 }

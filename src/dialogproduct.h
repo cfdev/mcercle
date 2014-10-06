@@ -27,6 +27,7 @@ private:
 	tax *m_tax;
 	QLocale m_lang;
 	unsigned char m_type;
+	QImage imgProduct;
 
 	void loadProviderList();
 	void loadCategoryList();
