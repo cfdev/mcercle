@@ -122,6 +122,8 @@ void DialogSettings::on_buttonBox_accepted() {
 	m_Settings -> setDatabase_userPassword( ui->lineEdit_password->text() );
 	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText() );
 	m_Settings -> setCheckVersion( ui->checkBox_checkVersion->checkState() );
+	m_Settings -> setTheme ( ui->comboBox_theme->currentText() );
+	m_Settings -> setSettingState(true);
 }
 
 /**
@@ -246,6 +248,12 @@ void DialogSettings::loadInfoSettings() {
 	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
 	//checkversion
 	ui->checkBox_checkVersion->setCheckState( Qt::CheckState(m_Settings->getCheckVersion()) );
+	//theme	
+	for(int i=0; i<ui->comboBox_theme->count(); i++){
+		if(m_Settings->getTheme() == ui->comboBox_theme->itemText(i)){
+			ui->comboBox_theme->setCurrentIndex(i);
+		}
+	}
 }
 
 /**

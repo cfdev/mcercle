@@ -39,25 +39,10 @@ Settings::Settings(QObject *parent) :
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
 	path = path_DataLocation+"/mcercle"+m_fileName;
-	// Changement de repertoire
-	if(( QFile::exists ( path_DataLocation+"/.mcercle" ) )||
-		( QFile::exists ( path_DataLocation+"/.mcercle" ))){
-		if( QDir().mkdir(path_DataLocation+"/mcercle/") ){
-		// Si le fichier existe deja on le copy
-			if( QFile::copy(path_DataLocation+"/.mcercle", path) ) {
-				QFile::remove(path_DataLocation+"/.mcercle");
-			}
-			else{
-				QMessageBox::critical(0, tr("Erreur"),
-									tr("Transfert de fichier impossible!\n\n")+
-										"Source: "+path_DataLocation+"/.mcercle\n"+
-										"Destination: "+path+"\n");
-			}
-		}
-	}
 #else
 	// Qt5 gere un dosssier du nom de lapplication
 	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::DataLocation );
+	path = path_DataLocation+m_fileName;
 #endif
 	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
@@ -119,6 +104,30 @@ QFont Settings::getPrintFont(){
 	return val;
 }
 
+/**
+ * @brief Settings::getCheckVersion
+ * @return integer because Qt::CheckState is interger!
+ */
+int Settings::getCheckVersion(){
+	m_settings->beginGroup("main");
+	int val = false;
+	val = m_settings->value("checkVersion", Qt::Checked).toInt();
+	m_settings->endGroup();
+	return val;
+}
+
+/**
+ * @brief Settings::getTheme
+ * @return 
+ */
+QString Settings::getTheme(){
+	m_settings->beginGroup("main");
+	QString val = m_settings->value("theme").toString();
+	m_settings->endGroup();
+	return val;
+}
+
+//*******************************************************************************//
 
 /**
 	Sauvegarde dans le fichier les donnees relatif a la base de donnees
@@ -189,16 +198,15 @@ void Settings::setSettingState(bool state) {
 	m_settings->endGroup();
 }
 
+
 /**
- * @brief Settings::getCheckVersion
- * @return integer because Qt::CheckState is interger!
+ * @brief Settings::setTheme
+ * @param theme
  */
-int Settings::getCheckVersion(){
+void Settings::setTheme(const QString& theme){
 	m_settings->beginGroup("main");
-	int val = false;
-	val = m_settings->value("checkVersion", Qt::Checked).toInt();
+	m_settings->setValue("theme", theme);
 	m_settings->endGroup();
-	return val;
 }
 
 /**

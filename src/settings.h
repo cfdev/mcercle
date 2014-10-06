@@ -28,6 +28,7 @@ public:
 	void setPositionListSearchProduct(int pos);
 	void setPositionListSearchCustomer(int pos);
 	void setCheckVersion(int state);
+	void setTheme(const QString& theme);
 
 	//Save date
 	void setDatebddSave(const QDate &date);
@@ -45,13 +46,13 @@ public:
 	int getPositionListSearchCustomer();
 	QDate getDatebddSave();
 	int getCheckVersion();
-
+	QString getTheme();
+	
 	//Impression
 	QFont getPrintFont();
 
 	bool settingIsOk();
 	void setSettingState(bool state);
-
 	QString getDataLocation(){return path_DataLocation;}
 
 signals:

@@ -28,8 +28,11 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="tabPosition">
+        <enum>QTabWidget::North</enum>
+       </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="iconSize">
         <size>
@@ -37,6 +40,90 @@
          <height>24</height>
         </size>
        </property>
+       <property name="documentMode">
+        <bool>false</bool>
+       </property>
+       <property name="tabsClosable">
+        <bool>false</bool>
+       </property>
+       <widget class="QWidget" name="tab_Application">
+        <attribute name="icon">
+         <iconset resource="../ressources.qrc">
+          <normaloff>:/app/config</normaloff>:/app/config</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>Application</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_12">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_11">
+           <item>
+            <layout class="QGridLayout" name="gridLayout_6">
+             <item row="1" column="0">
+              <widget class="QCheckBox" name="checkBox_checkVersion">
+               <property name="text">
+                <string>Vérifie si une nouvelle version est disponible.</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../ressources.qrc">
+                 <normaloff>:/app/ok</normaloff>:/app/ok</iconset>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="comboBox_theme">
+               <item>
+                <property name="text">
+                 <string>Normale</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Sombre</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_30">
+               <property name="text">
+                <string>Apparence : (Après redémarrage de mcercle)</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="checkBox_manageStock">
+               <property name="text">
+                <string>Gère le décompte automatique du stock</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../ressources.qrc">
+                 <normaloff>:/app/products</normaloff>:/app/products</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
        <widget class="QWidget" name="tab_compagny">
         <attribute name="icon">
          <iconset resource="../ressources.qrc">
@@ -303,63 +390,6 @@ p, li { white-space: pre-wrap; }
               <number>128</number>
              </property>
             </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_Application">
-        <attribute name="icon">
-         <iconset resource="../ressources.qrc">
-          <normaloff>:/app/config</normaloff>:/app/config</iconset>
-        </attribute>
-        <attribute name="title">
-         <string>Application</string>
-        </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_12">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_11">
-           <item>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <item row="0" column="0">
-              <widget class="QCheckBox" name="checkBox_checkVersion">
-               <property name="text">
-                <string>Verifie si une nouvelle version est disponible.</string>
-               </property>
-               <property name="icon">
-                <iconset resource="../ressources.qrc">
-                 <normaloff>:/app/ok</normaloff>:/app/ok</iconset>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QCheckBox" name="checkBox_manageStock">
-               <property name="text">
-                <string>Gere le decompte automatique du stock</string>
-               </property>
-               <property name="icon">
-                <iconset resource="../ressources.qrc">
-                 <normaloff>:/app/products</normaloff>:/app/products</iconset>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="verticalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </item>
