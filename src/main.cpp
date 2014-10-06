@@ -31,12 +31,7 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 	MainWindow m_win;
-/*
-#if QT_VERSION < 0x050000
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("LATIN-1"));
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("LATIN-1"));
-#endif
-	*/
+
 	//Traduction des chaines de la lib Qt
 	QString locale = QLocale::system().name();
 	QTranslator translator;
@@ -44,12 +39,6 @@ int main(int argc, char *argv[])
 		translator.load("qt_" + locale, QCoreApplication::applicationDirPath() + "/lang/");
 	}
 	app.installTranslator(&translator);
-	
-	// Style dark
-/*	app.setStyleSheet(	"QMainWindow {background: rgb(100,100,100,255);} "
-						"QTableWidget {background: rgb(100,100,100,255);}  "
-					);
-*/
 	
 	m_win.init();
 	m_win.show();

@@ -108,6 +108,18 @@ void MainWindow::init(){
 		m_Settings -> setSettingState(true);
 	}
 
+	// Style dark
+	if(m_Settings ->getTheme() == tr("Sombre")) {
+		qApp->setStyleSheet( "QTableWidget {background: rgb(170,170,170,255);}  ");
+		QPalette p;
+		p = qApp->palette();
+		p.setColor(QPalette::Window, QColor(100,100,100));
+		p.setColor(QPalette::Button, QColor(100,100,100));
+		//p.setColor(QPalette::Highlight, QColor(45,142,90));
+		p.setColor(QPalette::ButtonText, QColor(255,255,255));
+		qApp->setPalette(p);
+	}
+	
 	//Base de donnees
 	m_database->setBdd( m_Settings->getDatabase_bdd() );
 	m_database->setHostName( m_Settings->getDatabase_hostName() );

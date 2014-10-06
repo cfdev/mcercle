@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
-    <height>331</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -15,6 +15,12 @@
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>mcercle</string>
@@ -41,8 +47,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>703</width>
-     <height>27</height>
+     <width>1024</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -89,6 +95,9 @@
    </property>
    <property name="movable">
     <bool>true</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::AllToolBarAreas</set>
    </property>
    <property name="iconSize">
     <size>
@@ -269,7 +278,10 @@
      <normaloff>:/app/save_as</normaloff>:/app/save_as</iconset>
    </property>
    <property name="text">
-    <string>Sauvegarder la base de données sous...</string>
+    <string>Sauvegarder</string>
+   </property>
+   <property name="toolTip">
+    <string>Sauvegarder la base de donnees sous</string>
    </property>
   </action>
   <action name="actionServices_common">
