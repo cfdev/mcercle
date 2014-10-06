@@ -22,11 +22,15 @@
 #include "mcercle.h"
 #include "printc.h"
 #include "table.h"
+#include "mctextedit.h"
 
 #include <QMessageBox>
 #include <QMenu>
 #include <QDebug>
 #include <QSplitter>
+#include <QUrl>
+#include <QFileDialog>
+#include <QImageReader>
 
 
 DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type, unsigned char state, QWidget *parent) :
@@ -291,15 +295,15 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 	m_proposal->getProposalItemsList(ilist, "ITEM_ORDER", filter, field);
 	// list all
 	for(int i=0; i<ilist.name.count(); i++){
-		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID           = new ItemOfTable();
+		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable();
+		ItemOfTable *item_TYPE         = new ItemOfTable();
+		ItemOfTable *item_ORDER        = new ItemOfTable();
+		ItemOfTable *item_Name         = new ItemOfTable();
+		ItemOfTable *item_TAX          = new ItemOfTable();
+		ItemOfTable *item_DISCOUNT     = new ItemOfTable();
+		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_QUANTITY     = new ItemOfTable();
 
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
@@ -317,13 +321,14 @@ void DialogInvoice::listProposalDetailsToTable(QString filter, QString field)
 		// Car il il y a une liaison pour la gestion du stock
 		if(ilist.idProduct.at(i) > 0){
 			edit_name -> setReadOnly(true);
+			item_Name -> setIcon( QIcon(":/app/database") );
 		}
-        if(ilist.type.at(i) == MCERCLE::PRODUCT) {
-            item_Name -> setIcon( QIcon(":/app/products") );
-        }
-        else if(ilist.type.at(i) == MCERCLE::SERVICE) {
-            item_Name -> setIcon( QIcon(":/app/services") );
-        }
+		else if(ilist.type.at(i) == MCERCLE::PRODUCT) {
+			item_Name -> setIcon( QIcon(":/app/products") );
+		}
+		else if(ilist.type.at(i) == MCERCLE::SERVICE) {
+			item_Name -> setIcon( QIcon(":/app/services") );
+		}
 		item_TAX->setData(Qt::DisplayRole, ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, ilist.discount.at(i));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
@@ -399,38 +404,40 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 	m_invoice->getInvoiceItemsList(m_ilist, "ITEM_ORDER", filter, field);
 	// list all
 	for(int i=0; i<m_ilist.name.count(); i++){
-		ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID           = new ItemOfTable();
+		ItemOfTable *item_ID_PRODUCT   = new ItemOfTable();
+		ItemOfTable *item_TYPE         = new ItemOfTable();
+		ItemOfTable *item_ORDER        = new ItemOfTable();
+		ItemOfTable *item_Name         = new ItemOfTable();
+		ItemOfTable *item_TAX          = new ItemOfTable();
+		ItemOfTable *item_DISCOUNT     = new ItemOfTable();
+		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_QUANTITY     = new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, m_ilist.id.at(i));
 		item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ID_PRODUCT->setData(Qt::DisplayRole, m_ilist.idProduct.at(i));
 		item_ID_PRODUCT->setFlags(item_ID_PRODUCT->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
-        item_TYPE->setData(Qt::DisplayRole, m_ilist.type.at(i));
+		item_TYPE->setData(Qt::DisplayRole, m_ilist.type.at(i));
 		item_TYPE->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		item_ORDER->setData(Qt::DisplayRole, m_ilist.order.at(i));
 		item_ORDER->setFlags(item_ORDER->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		
-		QTextEdit *edit_name = new QTextEdit();
+		MCTextEdit *edit_name = new MCTextEdit();
 		edit_name ->setText( m_ilist.name.at(i) );
+
 		// Ne pas rendre editable si c est un produit! + Ajout d'image
 		// Car il il y a une liaison pour la gestion du stock
 		if(m_ilist.idProduct.at(i) > 0){
 			edit_name -> setReadOnly(true);
+			item_Name -> setIcon( QIcon(":/app/database") );
 		}
-        if(m_ilist.type.at(i) == MCERCLE::PRODUCT) {
-            item_Name -> setIcon( QIcon(":/app/products") );
-        }
-        else if(m_ilist.type.at(i) == MCERCLE::SERVICE) {
-            item_Name -> setIcon( QIcon(":/app/services") );
-        }
+		else if(m_ilist.type.at(i) == MCERCLE::PRODUCT) {
+			item_Name -> setIcon( QIcon(":/app/products") );
+		}
+		else if(m_ilist.type.at(i) == MCERCLE::SERVICE) {
+			item_Name -> setIcon( QIcon(":/app/services") );
+		}
 		item_TAX->setData(Qt::DisplayRole, m_ilist.tax.at(i));
 		item_DISCOUNT->setData(Qt::DisplayRole, m_ilist.discount.at(i));
 		item_PRICE->setData(Qt::DisplayRole, m_ilist.price.at(i));
@@ -502,11 +509,11 @@ void DialogInvoice::listServiceToTable()
 
 	// list des services communs
 	for(int i=0; i<servicesListCommon.id.size(); i++){
-		ItemOfTable *item_ID_COM      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_NAME_COM    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE_COM   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TAX_COM     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_Detail_COM  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID_COM      = new ItemOfTable();
+		ItemOfTable *item_NAME_COM    = new ItemOfTable();
+		ItemOfTable *item_PRICE_COM   = new ItemOfTable();
+		ItemOfTable *item_TAX_COM     = new ItemOfTable();
+		ItemOfTable *item_Detail_COM  = new ItemOfTable();
 
 		item_ID_COM ->		setData(Qt::DisplayRole, QString::number(servicesListCommon.id.at(i)));
 		item_NAME_COM ->	setIcon( QIcon(":/app/services") );
@@ -529,11 +536,11 @@ void DialogInvoice::listServiceToTable()
 	// list des services utilisateur
 	
 	for(int i=0, j=ui->tableWidget_selectService->rowCount(); i<userServicesList.id.size(); i++){
-		ItemOfTable *item_ID      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_NAME    = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PRICE   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_TAX   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_Detail  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_ID      = new ItemOfTable();
+		ItemOfTable *item_NAME    = new ItemOfTable();
+		ItemOfTable *item_PRICE   = new ItemOfTable();
+		ItemOfTable *item_TAX   = new ItemOfTable();
+		ItemOfTable *item_Detail  = new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(userServicesList.id.at(i)));
 		item_NAME->setData(Qt::DisplayRole, userServicesList.name.at(i));
@@ -961,7 +968,7 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
 		qreal price = priceU * quantity;
 		price -= price * (discount/100.0);
 		//Item du total
-		ItemOfTable *item_Total  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_Total  = new ItemOfTable();
 		item_Total->setData(Qt::DisplayRole, price);
 		item_Total->setFlags(item_Total->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
 		ui->tableWidget->setItem(row, COL_TOTAL, item_Total);
@@ -1045,7 +1052,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 			if(ui->tableWidget->cellWidget(j, COL_NAME)) {
 				if( (name  == qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME))->toPlainText()) &&
 					(price == ui->tableWidget->item(j, COL_PRICE)->text().toFloat()) ) {
-					ItemOfTable *item_QUANT  = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+					ItemOfTable *item_QUANT  = new ItemOfTable();
 					item_QUANT->setData(Qt::DisplayRole, ui->tableWidget->item(j, COL_QUANTITY)->text().toInt()+1);
 					ui->tableWidget->setItem(j,COL_QUANTITY, item_QUANT);
 					return; //<<-- on sort
@@ -1054,15 +1061,15 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 		}
 	}
 	// Sinon on creer une nouvelle ligne
-	ItemOfTable *item_ID           = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_TYPE         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_ORDER        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_Name         = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_TAX          = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_DISCOUNT     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_PRICE        = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-	ItemOfTable *item_QUANTITY     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+	ItemOfTable *item_ID           = new ItemOfTable();
+	ItemOfTable *item_ID_PRODUCT   = new ItemOfTable();
+	ItemOfTable *item_TYPE         = new ItemOfTable();
+	ItemOfTable *item_ORDER        = new ItemOfTable();
+	ItemOfTable *item_Name         = new ItemOfTable();
+	ItemOfTable *item_TAX          = new ItemOfTable();
+	ItemOfTable *item_DISCOUNT     = new ItemOfTable();
+	ItemOfTable *item_PRICE        = new ItemOfTable();
+	ItemOfTable *item_QUANTITY     = new ItemOfTable();
 
 	item_ID->setData(Qt::DisplayRole, -1);
 	item_ID->setFlags(item_ID->flags() & (~Qt::ItemIsEditable)); // Ne pas rendre editable
@@ -1076,15 +1083,16 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	edit_name ->setText( name );
 	// Ne pas rendre editable si c est un produit! + Ajout d'image
 	// Car il il y a une liaison pour la gestion du stock
-    if(idProduct > 0){
+	if(idProduct > 0){
 		edit_name -> setReadOnly(true);
+		item_Name -> setIcon( QIcon(":/app/database") );
 	}
-    if(typeITEM == MCERCLE::PRODUCT){
-        item_Name -> setIcon( QIcon(":/app/products") );
-    }
-    else if(typeITEM == MCERCLE::SERVICE){
-        item_Name -> setIcon( QIcon(":/app/services") );
-    }
+	else if(typeITEM == MCERCLE::PRODUCT){
+		item_Name -> setIcon( QIcon(":/app/products") );
+	}
+	else if(typeITEM == MCERCLE::SERVICE){
+		item_Name -> setIcon( QIcon(":/app/services") );
+	}
 	item_PRICE->setData		(Qt::DisplayRole, price);
 	item_TAX->setData		(Qt::DisplayRole, mtax);
 	item_QUANTITY->setData	(Qt::DisplayRole, 1);
