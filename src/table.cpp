@@ -24,9 +24,17 @@
  * @param colorBG
  * @param colorTXT
  */
+ItemOfTable::ItemOfTable() {
+}
+
+/**
+ * @brief ItemOfTable::ItemOfTable
+ * @param colorBG
+ * @param colorTXT
+ */
 ItemOfTable::ItemOfTable(const QColor& colorBG, const QColor& colorTXT) {
-	/*this -> setBackgroundColor( colorBG );
-	this -> setTextColor( colorTXT );*/
+	this -> setBackgroundColor( colorBG );
+	this -> setTextColor( colorTXT );
 }
 
 /**
