@@ -36,6 +36,7 @@
 #include <QFileDialog>
 #include <QClipboard>
 #include <QChar>
+#include <QCompleter>
 
 /**
 	Constructeur de la class customerView
@@ -48,9 +49,13 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	m_lang = lang;
 	ui->comboBoxFiltre->addItem(tr("Noms"));
 	ui->comboBoxFiltre->addItem(QLatin1String("Prénoms"));
-
+	ui->comboBoxFiltre->addItem(QLatin1String("Tel Fixe"));
+	ui->comboBoxFiltre->addItem(QLatin1String("Mobile"));
+	ui->comboBoxFiltre->addItem(QLatin1String("Ville"));
+	
 	m_custPage=1;
-	m_custfilter = m_custfield = "";
+	m_custfilter = "";
+	m_custfield = "LASTNAME ";
 	ui->lineEdit_page->setText(QString::number(m_custPage));
 
 	//afficher la liste des clients
@@ -209,9 +214,45 @@ void customerView::listCustomersFilter(int page, QString val)
 	if(!m_data->isConnected())return;
 	//show with filter
 	m_custfilter = val;
-	if(ui->comboBoxFiltre->currentIndex() == 0 )        m_custfield = "LASTNAME ";
-	else if(ui->comboBoxFiltre->currentIndex() == 1 )   m_custfield = "FIRSTNAME ";
+
 	listCustomersToTable(page, m_custfilter, m_custfield);
+}
+
+/**
+ * @brief customerView::on_comboBoxFiltre_currentIndexChanged
+ * @param index
+ */
+void customerView::on_comboBoxFiltre_currentIndexChanged(int index) {
+	if(index == 0 ) m_custfield = "LASTNAME ";
+	if(index == 1 ) m_custfield = "FIRSTNAME ";
+	if(index == 2 ) m_custfield = "PHONENUMBER ";
+	if(index == 3 ) m_custfield = "MOBILENUMBER ";
+	if(index == 4 ) m_custfield = "CITY ";
+}
+
+/**
+ * @brief customerView::on_lineEdit_Search_textChanged
+ * @param arg1
+ */
+void customerView::on_lineEdit_Search_textChanged(const QString &arg1)
+{
+	if(m_data->isConnected()) {
+		customer::CustomerList clist;
+		//Recuperation des donnees presentent dans la bdd
+		m_data->m_customer->getCustomerList(clist, 25, 0, arg1, m_custfield);
+		QStringList wordList;
+		if(m_custfield == "LASTNAME ")wordList = clist.lastName;
+		if(m_custfield == "FIRSTNAME ")wordList = clist.firstName;
+		if(m_custfield == "PHONENUMBER ")wordList = clist.phoneNumber;
+		if(m_custfield == "MOBILENUMBER ")wordList = clist.mobileNumber;
+		if(m_custfield == "CITY ")wordList = clist.city;
+		
+		//Supprimer les doublons
+		wordList.removeDuplicates();
+		QCompleter *completer = new QCompleter(wordList, this);
+		completer->setCaseSensitivity(Qt::CaseInsensitive);
+		ui->lineEdit_Search->setCompleter(completer);
+	}
 }
 
 /**
@@ -263,7 +304,7 @@ void customerView::listCustomersToTable(int page, QString filter, QString field)
 	m_data->m_customer->getCustomerList(clist, first, skip, filter, field);
 
 	// list all customers
-	for(unsigned int i=0; i<clist.id.size(); i++){
+	for(int i=0; i<clist.id.size(); i++){
 		ItemOfTable *item_ID			= new ItemOfTable();
 		ItemOfTable *item_LASTNAME	= new ItemOfTable();
 		ItemOfTable *item_FIRSTNAME	= new ItemOfTable();
@@ -954,3 +995,7 @@ void customerView::on_tableWidget_Proposals_itemDoubleClicked(){
 void customerView::on_tableWidget_Invoices_itemDoubleClicked(){
 	on_toolButton_editInvoice_clicked();
 }
+
+
+
+

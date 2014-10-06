@@ -88,7 +88,11 @@ private slots:
 	void on_tableWidget_Proposals_itemDoubleClicked();
 	void on_tableWidget_Invoices_itemDoubleClicked();
 
-public slots:
+	void on_lineEdit_Search_textChanged(const QString &arg1);
+	
+	void on_comboBoxFiltre_currentIndexChanged(int index);
+	
+	public slots:
 	void refreshCustomersList();
 	void listCustomers(int page);
 	void listServices();

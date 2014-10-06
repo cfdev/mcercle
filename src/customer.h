@@ -5,7 +5,6 @@
 #include <QStringList>
 #include <QDateTime>
 #include <QString>
-#include <vector>
 
 #include <QSqlDatabase>
 #include <QSqlQuery>
@@ -45,9 +44,12 @@ private:
 public:
 	typedef struct{
 		//Valeur pour le placement dans un tableau
-		std::vector<int> id;
-		 QStringList lastName;
+		QList<int> id;
+		QStringList lastName;
 		QStringList firstName;
+		QStringList phoneNumber;
+		QStringList mobileNumber;
+		QStringList city;
 	}CustomerList;
 
 	enum{PEOPLE_TYPE, COMPAGNY_TYPE};

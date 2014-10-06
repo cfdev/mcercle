@@ -215,6 +215,9 @@ bool customer::getCustomerList(CustomerList& list, int first, int skip, QString 
 			list.id.push_back( query.value(query.record().indexOf("ID")).toInt() );
 			list.firstName << query.value(query.record().indexOf("FIRSTNAME")).toString();
 			list.lastName << query.value(query.record().indexOf("LASTNAME")).toString();
+			list.phoneNumber << query.value(query.record().indexOf("PHONENUMBER")).toString();
+			list.mobileNumber << query.value(query.record().indexOf("MOBILENUMBER")).toString();
+			list.city << query.value(query.record().indexOf("CITY")).toString();
 		}
 		return true;
 	}
