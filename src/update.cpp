@@ -24,7 +24,7 @@ Update::Update(QObject *parent) :
 	mtemp_location = QDesktopServices::storageLocation ( QDesktopServices::TempLocation );
 
 #else
-	mtemp_location = QStandardPaths::storageLocation ( QStandardPaths::TempLocation );
+	mtemp_location = QStandardPaths::writableLocation( QStandardPaths::TempLocation );
 #endif
 
 }

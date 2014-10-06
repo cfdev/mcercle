@@ -9,6 +9,7 @@
 class ItemOfTable : public QObject, public QTableWidgetItem {
 	Q_OBJECT
 	public:
+	ItemOfTable();
 	ItemOfTable(const QColor& colorBG, const QColor& colorTXT);
 	
 };
