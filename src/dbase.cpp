@@ -147,9 +147,9 @@ char database::connect(){
 	//Test de la version de la base de donnees... !!
 	if(m_databaseVersion > MCERCLE::Dbase_support){
 		QString mess = tr("Version de mcercle: ") + MCERCLE::Version;
-		mess += tr("\nVersion de la base de données: ") + QString::number(m_databaseVersion);
-		mess += tr("\n\nVersions des bases de données compatibles: <= ") + QString::number(MCERCLE::Dbase_support);
-		QMessageBox mBox(QMessageBox::Warning, tr("Attention"), tr("mcercle ne support pas cette version de base de données...\nMerci de faire évoluer mcercle."),QMessageBox::Ok);
+		mess += QLatin1String("\nVersion de la base de données: ") + QString::number(m_databaseVersion);
+		mess += QLatin1String("\n\nVersions des bases de données compatibles: <= ") + QString::number(MCERCLE::Dbase_support);
+		QMessageBox mBox(QMessageBox::Warning, tr("Attention"), QLatin1String("mcercle ne support pas cette version de base de données...\nMerci de faire évoluer mcercle."),QMessageBox::Ok);
 		mBox.setDetailedText ( mess );
 		mBox.exec();
 		this->close();
@@ -162,7 +162,7 @@ char database::connect(){
 		int ret = QMessageBox::warning(
 								this->m_parent,
 								tr("Attention"),
-								tr("Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.\n\nVoulez-vous mettre à jour la base de donnée"),
+								QLatin1String("Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.\n\nVoulez-vous mettre à jour la base de donnée"),
 								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
 								);
 	
@@ -192,11 +192,11 @@ char database::connect(){
 
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), mess, QMessageBox::Ok);
 			if(upgradeOk){
-				mess += tr("La mise à jour de la base de données a réussi !\n");
+				mess += QLatin1String("La mise à jour de la base de données a réussi !\n");
 				mBox.setIcon( QMessageBox::Information );
 			}
 			else{
-				mess += tr("La mise à jour contient des erreurs :-(\nAfficher les détails pour voir ce qui ne va pas.");
+				mess += QLatin1String("La mise à jour contient des erreurs :-(\nAfficher les détails pour voir ce qui ne va pas.");
 				mBox.setIcon( QMessageBox::Critical );
 			}
 			mBox.setText( mess );
