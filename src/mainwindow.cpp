@@ -173,7 +173,7 @@ void MainWindow::init(){
 	}
 
 	/* load PLUGINS*/
-	ui->menuOutils->addSeparator();
+	/*ui->menuOutils->addSeparator();
 
 	QStringList listplug = pluginManager::instance()->pluginList();
 	qDebug() << tr("#Liste des plugins:\n")<< listplug;
@@ -184,7 +184,7 @@ void MainWindow::init(){
 		ui->menuOutils->addAction( actionPlug );
 //		QObject::connect(actionPlug, SIGNAL(triggered()), plug, SLOT(info()));
 		//plug->informations();
-	}
+	}*/
 }
 
 
