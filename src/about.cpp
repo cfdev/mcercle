@@ -39,7 +39,7 @@ about::about(database *pdata, QWidget *parent) :
 	QImage ico = QImage(":/app/logo_small");
 	ui->label_ico->setPixmap(QPixmap::fromImage( ico ));
 
-    QString msg = tr("<b>mcercle</b> version ") + MCERCLE::Version;
+    QString msg = tr("<b>mcercle</b> version ") + MCERCLE::Version +" - Maggy";
 	msg += "<br>"+ tr("Ce programme est un logiciel de gestion pour Artisans et TPE.");
     msg +="<br>Source libre: <a href=\"https://github.com/cfdev/mcercle\">https://github.com/cfdev/mcercle</a>";
 
