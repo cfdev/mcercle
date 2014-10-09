@@ -72,10 +72,10 @@ void DialogProviders::listProvidersToTable(QString order, QString filter, QStrin
 
 	// list all products
 	for(int i=0,j=0; i<plist.name.count();i++){
-		ItemOfTable *item_NAME      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_PHONENUMBER      = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_FAXNUMBER     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
-		ItemOfTable *item_EMAIL     = new ItemOfTable(TABLE_BG_COLOR, TABLE_TXT_COLOR);
+		ItemOfTable *item_NAME      = new ItemOfTable();
+		ItemOfTable *item_PHONENUMBER      = new ItemOfTable();
+		ItemOfTable *item_FAXNUMBER     = new ItemOfTable();
+		ItemOfTable *item_EMAIL     = new ItemOfTable();
 
 		item_NAME->setText(         plist.name.at(i));
 		item_PHONENUMBER->setText(  plist.phoneNumber.at(i));
