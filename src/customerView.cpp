@@ -776,11 +776,12 @@ void customerView::on_toolButton_delProposal_clicked()
 	m_data->m_customer->m_proposal->loadFromID(m_InvId);
 
 	int ret = QMessageBox::critical(this, tr("Attention"),
-								   tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
-									  "Voulez-vous vraiment supprimer le devis<br><br><b>")+
-								   m_data->m_customer->m_proposal->getCode() +" - "+
-								   m_data->m_customer->m_proposal->getDescription()+"</b>",
-								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+									tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
+									"Cela cr&eacute;era un trou dans <b>la num&eacute;rotation</b>.<br>"
+									"<br>Voulez-vous vraiment supprimer le devis?<br><b>")+
+									m_data->m_customer->m_proposal->getCode() +" - "+
+									m_data->m_customer->m_proposal->getDescription()+"</b>",
+									QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
 		m_data->m_customer->m_proposal->remove();
@@ -923,11 +924,12 @@ void customerView::on_toolButton_delInvoice_clicked()
 	m_data->m_customer->m_invoice->loadFromID(m_InvId);
 
 	int ret = QMessageBox::critical(this, tr("Attention"),
-								   tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
-									  "Voulez-vous vraiment supprimer la facture<br><br><b>")+
-								   m_data->m_customer->m_invoice->getCode() +" - "+
-								   m_data->m_customer->m_invoice->getDescription()+"</b>",
-								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+									tr("Ceci est fortement d&eacute;conseill&eacute; !<br>"
+									"Cela cr&eacute;era un trou dans <b>la num&eacute;rotation</b>.<br>"
+									"<br>Voulez-vous vraiment supprimer la facture<br><b>")+
+									m_data->m_customer->m_invoice->getCode() +" - "+
+									m_data->m_customer->m_invoice->getDescription()+"</b>",
+									QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
 		m_data->m_customer->m_invoice->remove();
