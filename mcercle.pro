@@ -7,7 +7,7 @@
 #    error("mcercle fonctionne avec Qt 5.2 ou superieur!")
 #}
 
-QT += sql
+QT += sql network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = mcercle
 TEMPLATE = app
@@ -72,7 +72,8 @@ HEADERS += \
     src/customer.h \
     src/board.h \
     src/about.h \
-    src/mcercle.h
+    src/mcercle.h \
+    src/update.h
 
 SOURCES += \
     src/tax.cpp \
@@ -106,7 +107,8 @@ SOURCES += \
     src/customerView.cpp \
     src/customer.cpp \
     src/board.cpp \
-    src/about.cpp
+    src/about.cpp \
+    src/update.cpp
 
 FORMS += \
     src/productView.ui \
