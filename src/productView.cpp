@@ -61,6 +61,9 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 
 		delete ui->horizontalLayout_buttons; // ajuste la hauteur sinon perte de place
 	}
+	//champ recherche
+	ui -> lineEdit_searchProduct -> setToolTip(
+	QLatin1String("Le caractère « % » est un caractère joker qui remplace tous les autres caractères.\nExemple: %Poêle% - cherche le mot <Poêle>") );
 }
 
 productView::~productView() {
@@ -495,6 +498,7 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 
 	//Logo
 	QImage logo = m_data->getLogoTable_informations();
+	logo = logo.scaled(128,128,Qt::KeepAspectRatio);
 	/// Info societe
 	database::Informations info;
 	m_data->getInfo(info);
@@ -701,6 +705,7 @@ void productView::on_paintPrinterInfoProduct(QPrinter *printer) {
 
 	//Logo
 	QImage logo = m_data->getLogoTable_informations();
+	logo = logo.scaled(128,128,Qt::KeepAspectRatio);
 	rect = QRect(mLeft+5, mTop, logo.width(), logo.height() );
 	painter.drawImage(rect, logo);
 
