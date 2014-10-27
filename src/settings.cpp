@@ -38,12 +38,12 @@ Settings::Settings(QObject *parent) :
 	
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::DataLocation );
-	path = path_DataLocation+"/mcercle"+m_fileName;
+
 #else
 	// Qt5 gere un dosssier du nom de lapplication
 	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::DataLocation );
-	path = path_DataLocation+m_fileName;
 #endif
+	path = path_DataLocation+m_fileName;
 	m_settings = new QSettings(path,QSettings::IniFormat,this);
 }
 
