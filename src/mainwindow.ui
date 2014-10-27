@@ -123,6 +123,7 @@
    <addaction name="separator"/>
    <addaction name="actionConfiguration"/>
    <addaction name="actionA_propos"/>
+   <addaction name="action"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuitter">
@@ -296,6 +297,21 @@
   <action name="actionOuvrir_BddDir">
    <property name="text">
     <string>Ouvrir le dossier où se trouve la base de données</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/don1</normaloff>:/app/don1</iconset>
+   </property>
+   <property name="text">
+    <string>Faire un don</string>
+   </property>
+   <property name="iconText">
+    <string>Faire un don</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;mcercle vous aide dans votre activit&amp;eacute;.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#815a0c;&quot;&gt;Aidez moi &amp;agrave; continuer en faisant un don.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#815a0c;&quot;&gt;MERCI&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </action>
  </widget>

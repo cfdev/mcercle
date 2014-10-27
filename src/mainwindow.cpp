@@ -431,3 +431,10 @@ void MainWindow::on_actionServices_common_triggered() {
 void MainWindow::on_actionOuvrir_BddDir_triggered() {
 	//
 }
+
+/**
+ * @brief Lien pour faire un don...jen ai besoin malheureusement :(
+ */
+void MainWindow::on_action_triggered() {
+	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W"));
+}

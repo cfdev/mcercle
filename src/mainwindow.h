@@ -58,6 +58,8 @@ private slots:
 	
 	void on_actionOuvrir_BddDir_triggered();
 	
+	void on_action_triggered();
+
 	public slots:
 	void RefreshLists();
 };
