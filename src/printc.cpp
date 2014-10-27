@@ -50,14 +50,6 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	if(!info.email.isEmpty())       mtextInfo += tr("Email: ") + info.email + "\n";
 	if(!info.webSite.isEmpty())     mtextInfo += tr("Web: ") + info.webSite;
 	
-	/// Identite du client
-	mtextidentity =  m_cus -> getGender() +" "+ m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
-	mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ " - " + m_cus ->getPhoneNumber()+'\n';
-	mtextidentity += m_cus -> getAddress1()+'\n';
-	mtextidentity += m_cus -> getAddress2()+'\n';
-	mtextidentity += m_cus -> getAddress3()+'\n';
-	mtextidentity += m_cus -> getZipCode()+" "+ m_cus -> getCity();
-	
 	/// Pied de page
 	mfooterTextInfo = info.address1 + " " + info.address2 + " " +  info.address3 + " - " + info.zipCode + " " + info.city;
 	mfooterTextInfo += "\n" + info.name;
@@ -135,6 +127,22 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	mwUtil = mpageRect.width() - (mLeft+mRight); // Largeur utile. pour la repartition des cases
 }
 
+/**
+ * @brief Charge les informations client
+ */
+void Printc::load_customerInfos() {
+	/// Identite du client
+	mtextidentity = "";
+	if(!m_cus ->getGender().isEmpty())mtextidentity +=  m_cus -> getGender() +" ";
+	mtextidentity += m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
+	if((!m_cus ->getMobileNumber().isEmpty())||(!m_cus ->getPhoneNumber().isEmpty())){
+		mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ "  " + m_cus ->getPhoneNumber()+'\n';
+	}
+	mtextidentity += m_cus -> getAddress1()+'\n';
+	mtextidentity += m_cus -> getAddress2()+'\n';
+	mtextidentity += m_cus -> getAddress3()+'\n';
+	mtextidentity += m_cus -> getZipCode()+" "+ m_cus -> getCity();
+}
 
 /**
  * @brief Printc::print_Proposal
@@ -523,20 +531,20 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
 	mFont.setPointSizeF(ptSize-2);
 	painter.setFont(mFont);
 
-	QPen pen;// cree un pinceau
+	/*QPen pen;// cree un pinceau
 	pen.setWidthF(2.5);
 	pen.setColor( Qt::darkGreen );
-	painter.setPen(pen);
+	painter.setPen(pen);*/
 	// Ligne
 	painter.drawLine(QPoint(mLeft, get_RecFooter(painter).top()) , QPoint(mLeft + mwUtil, get_RecFooter(painter).top()));
-	pen.setWidthF(PEN_WIDTH);
-	pen.setColor( Qt::black );
-	painter.setPen(pen);
+//	pen.setWidthF(PEN_WIDTH);
+//	pen.setColor( Qt::black );
+//	painter.setPen(pen);
 
 	// Num de page
 	if(!page.isEmpty()) {
 		QString pageText = tr("Page ") + page + " / " + NbOfpage;
-		rect = painter.fontMetrics().boundingRect(mLeft, get_RecFooter(painter).top(), mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
+		rect = painter.fontMetrics().boundingRect(mLeft, get_RecFooter(painter).bottom()-SPACE_BORDER, mpageRect.width() - (mLeft+mRight), 0, Qt::AlignVCenter |Qt::AlignRight, pageText );
 		rect.translate( 0, +rect.height());
 		painter.drawText( rect, Qt::AlignVCenter |Qt::AlignRight, pageText);
 	}
@@ -720,7 +728,8 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	painter.begin(printer);
 	// charge les parametres d impression
 	load_parameters(printer, painter);
-	
+	load_customerInfos();
+
 	// Recuperation des donnees presentent dans la bdd
 	proposal::ProposalListItems plist;
 	m_pro -> getProposalItemsList(plist, "ITEM_ORDER", "", "");
@@ -821,7 +830,7 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
  */
 void Printc::print_Invoice(const int &id) {
 	//On charge l objet en fonction de la selection
-	m_inv->loadFromID(id);
+	m_inv -> loadFromID(id);
 
 	QPrinter printer( QPrinter::HighResolution );
 	printer.setPageSize(QPrinter::A4);
@@ -880,6 +889,7 @@ void Printc::print_InvoicesList(QList<int> listofId) {
 		// Boucle pour l impression multiple
 		foreach(int id, listofId) {
 			m_inv -> loadFromID(id);
+			m_cus -> loadFromID( m_inv->getIdCustomer() );
 			name = m_inv -> getCode();
 			// Si impression en fichier ou normale
 			if(m_DialogPrintChoice->typePrint() == DialogPrintChoice::PRINT_FILE){
@@ -907,6 +917,7 @@ void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	painter.begin(printer);
 	// charge les parametres d impression
 	load_parameters(printer, painter);
+	load_customerInfos();
 
 	invoice::InvoiceListItems plist;
 	//Recuperation des donnees presentent dans la bdd
@@ -1056,7 +1067,8 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	painter.begin(printer);
 	// charge les parametres d impression
 	load_parameters(printer, painter);
-	
+	load_customerInfos();
+
 	/// Header
 	QRectF rect;
 	print_header(painter, rect, T_SERVICE);

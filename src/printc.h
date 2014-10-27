@@ -69,6 +69,7 @@ class Printc : public QObject
 	qreal mtotalPrice, mtotalTaxPrice;
 	int mRoundedRect;
 	
+	void load_customerInfos();
 	void load_parameters(QPrinter *printer, QPainter &painter);
 	void print_header(QPainter &painter, QRectF &rect, int type);
 	void print_content(QPainter &painter, QRectF &rect, itemList Ilist, int &itemPrinted, int page, int NbOfpage);
