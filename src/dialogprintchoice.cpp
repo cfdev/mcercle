@@ -8,6 +8,11 @@
 	#include <QStandardPaths>
 #endif
 
+/**
+ * @brief DialogPrintChoice::DialogPrintChoice
+ * @param printer
+ * @param parent
+ */
 DialogPrintChoice::DialogPrintChoice(QPrinter * printer, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogPrintChoice)
@@ -60,17 +65,20 @@ void DialogPrintChoice::on_buttonBox_accepted() {
 	QFileInfo file( mpathFile );
 	mpath = file.dir().absolutePath()+ '/';
 	
+	// Qt5 https://bugreports.qt-project.org/browse/qtbug-22330
+	// The output file name must be set first, then the format as:
 	if( ui->radioButton_printer->isChecked() ){
 		m_typePrint = PRINT_FILE;
 		mpathFile = "";
+		m_printer -> setOutputFileName(0);
 		m_printer -> setOutputFormat(QPrinter::NativeFormat);
 	}
 	//impression PDF
 	else{
 		m_typePrint = PRINT_PDF;
+		m_printer -> setOutputFileName(mpathFile);
 		m_printer -> setOutputFormat(QPrinter::PdfFormat);
 	}
-	m_printer -> setOutputFileName(mpathFile);
 }
 
 /**
