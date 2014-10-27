@@ -25,7 +25,6 @@
         <file alias="providers">art/resource-group.png</file>
         <file alias="database">art/network_server_database.png</file>
         <file alias="warning">art/dialog-warning.png</file>
-        <file alias="don">art/btn_donate_LG.png</file>
         <file alias="color">art/color_fill.png</file>
         <file alias="Off">art/user-busy.png</file>
         <file alias="prev">art/go-previous-view.png</file>
@@ -40,5 +39,8 @@
         <file alias="save_as">art/document_save_as.png</file>
         <file alias="services">art/services.png</file>
         <file alias="show">art/show_menu.png</file>
+		<file alias="don">art/btn_donate_LG.png</file>
+		<file alias="don1">art/paypal-icon.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
