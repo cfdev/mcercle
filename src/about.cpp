@@ -80,11 +80,11 @@ about::about(database *pdata, QWidget *parent) :
 	msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
 	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2014";
 	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
-    msg += "<br>- Site internet: <a href=\"http://frausti.fr/\">http://frausti.fr/</a>";
+	msg += "<br>- Site internet: <a href=\"http://cyril.frausti.fr/\">http://cyril.frausti.fr/</a>";
 	
 	msg += "<br><br>Ce programme est fourni &laquo; EN L'ETAT &raquo;, SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
 	
-	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr("MCERCLE vous aide dans votre activit&#233;, aidez son concepteur") + "</p>";
+	msg += "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#555; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don. MERCI") + "</p>";
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );
