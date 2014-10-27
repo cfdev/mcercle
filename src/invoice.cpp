@@ -324,6 +324,8 @@ bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, 
 	}
 	req += " ORDER BY UPPER("+order+") DESC;";
 
+	qDebug() << "invoice::getInvoiceList\n" << req;
+
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
