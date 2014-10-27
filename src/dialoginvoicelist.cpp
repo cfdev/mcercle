@@ -203,6 +203,7 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 
 	//Logo
 	QImage logo = m_data->getLogoTable_informations();
+	logo = logo.scaled(128,128,Qt::KeepAspectRatio);
 	//Info societe
 	database::Informations info;
 	m_data->getInfo(info);
@@ -282,8 +283,8 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 		painter.drawText( rect, tr("Montant") );
 		rect.setWidth(wUtil/8 -5); //fixe la largeur
 		//REGLEMENT
-		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, tr("R\350glement") );
-		painter.drawText( rect, tr("R\350glement") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, QLatin1String("Règlement") );
+		painter.drawText( rect, QLatin1String("Règlement") );
 		rect.setWidth(wUtil/10 -5); //fixe la largeur
 
 		for(int itemOnpage=0; itemOnpage<itemPerPage;){
