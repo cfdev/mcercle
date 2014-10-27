@@ -64,6 +64,11 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 
 	//Selectionne la tab fiche
 	ui->tabWidget_Customer->setCurrentIndex(0);
+
+	//Cache la suppression pour le moment trop de user supprime sans savoir
+	ui->toolButton_Del->setVisible(false);
+	ui->toolButton_delProposal->setVisible(false);
+	ui->toolButton_delInvoice->setVisible(false);
 }
 
 /**
