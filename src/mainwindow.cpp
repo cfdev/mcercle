@@ -42,8 +42,8 @@
 #include "update.h"
 
 
-#include "pluginInterface.h"
-#include "pluginManager.h"
+//#include "pluginInterface.h"
+//#include "pluginManager.h"
 /**
 	Constructeur de la class MainWindow
 */
@@ -395,7 +395,7 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
 		}
 		if( QFile::copy(source, filename) ) {
 			QMessageBox::information(this, tr("Information"),
-									 tr("Sauvegarde Terminée!\n\n")+
+									 tr("Sauvegarde TerminÃ©e!\n\n")+
 									 "Source: "+source+"\n"+
 									 "Destination: "+filename+"\n");
 			m_Settings -> setDatebddSave( QDate::currentDate() );
