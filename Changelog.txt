@@ -2,21 +2,33 @@
 # Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
 
 
-version 14.10 : xx/10/2014
+version 14.10 : 31/10/2014
 -------------------------------------------------------
++ Theme sombre (bon pour les oeils)
++ Client: Ajouts de champs de recherche (mobile,phone,ville)
 + Setting: Vérification si une nouvelle version est disponible
 + Setting: Bords arrondis ou carres pour l'impression
 + Setting: Possibilité de gérer le décompte du stock ou pas
++ DialogInvoice: Icon différent pour un produit lié à la base de données
++ Print: Ajout des numéros de contact client
 
+* Dbase en version 6
 * PrintPreview: AutoAustement de la largeur
 * PrintPreview: Cache les boutons de l'orientation
 * Print: QPrinter::HighResolution
 * Correction sur le bug icon type pour les devis
+* Correction sur l'impression multiple du livre des recettes
+* Correction pour le chemin des settings 
+
+- Cacher la fonction supprimer client/devis/facture (trop d'inconscients)
+
+Voir plus sur github : https://github.com/cfdev/mcercle/commits/master
 
 
 version 14.04 : 08/04/2014
 -------------------------------------------------------
 * Correction bugs (see github)
+https://github.com/cfdev/mcercle/commits/master
 
 
 version 14.02 : 27/02/2014
