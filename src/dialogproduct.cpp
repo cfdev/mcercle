@@ -152,12 +152,12 @@ void DialogProduct::loadValuesFormProduct(){
 	ui->lineEdit_stockAlert->setText( QString::number(m_product->getStockWarning()) );
 
 	//relecture de limage et affichage du logo
-	QImage logo = m_product->getPicture();
+	imgProduct = m_product->getPicture();
 	//Redimensionnement pour l'affichage
-	if((logo.size().height() > 128)||(logo.size().width() > 128)){
-		logo = logo.scaled(QSize(128,128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+	if((imgProduct.size().height() > 128)||(imgProduct.size().width() > 128)){
+		imgProduct = imgProduct.scaled(QSize(128,128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	}
-	ui->label_image->setPixmap(QPixmap::fromImage(logo));
+	ui->label_image->setPixmap(QPixmap::fromImage(imgProduct));
 
 	//State
 	if( m_product->getState() == product::OK )ui->radioButton_OK->setChecked( true );
@@ -383,7 +383,8 @@ void DialogProduct::on_toolButton_autoCode_clicked(){
 
 void DialogProduct::on_pushButton_ClearImage_clicked() {
 	QImage logo;
-	ui->label_image->setPixmap(QPixmap::fromImage(logo));
+	imgProduct = logo;
+	ui->label_image->setPixmap(QPixmap::fromImage(imgProduct));
 }
 
 /**
@@ -416,8 +417,9 @@ void DialogProduct::on_pushButton_image_clicked(){
 		if((logo.size().height() > 128)||(logo.size().width() > 128)){
 			logo = logo.scaled(QSize(128,128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 		}
+		imgProduct = logo;
 	}
 
-	ui->label_image->setPixmap(QPixmap::fromImage(logo));
+	ui->label_image->setPixmap(QPixmap::fromImage(imgProduct));
 }
 
