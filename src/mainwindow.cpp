@@ -41,9 +41,6 @@
 #include "dialogservicesedit.h"
 #include "update.h"
 
-
-#include "pluginInterface.h"
-#include "pluginManager.h"
 /**
 	Constructeur de la class MainWindow
 */
@@ -171,20 +168,6 @@ void MainWindow::init(){
 		Update *up = new Update(this);
 		up -> checkVersion();
 	}
-
-	/* load PLUGINS*/
-	/*ui->menuOutils->addSeparator();
-
-	QStringList listplug = pluginManager::instance()->pluginList();
-	qDebug() << tr("#Liste des plugins:\n")<< listplug;
-	qDebug() << tr("#END_PLUGIN");
-
-	foreach (pluginInterface* plug,pluginManager::instance()->plugins()){
-		QAction* actionPlug = new QAction( plug->name(), ui->menuOutils );
-		ui->menuOutils->addAction( actionPlug );
-//		QObject::connect(actionPlug, SIGNAL(triggered()), plug, SLOT(info()));
-		//plug->informations();
-	}*/
 }
 
 
