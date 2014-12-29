@@ -84,7 +84,7 @@ about::about(database *pdata, QWidget *parent) :
 	
 	msg += "<br><br>Ce programme est fourni &laquo; EN L'ETAT &raquo;, SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
 	
-	msg += "<p align=\"center\" style=\"font-size:12px;font-weight:bold;color:white;background:#555; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don.<br>Ou en achetant <a href=\"http://boutique.frausti.fr\">l'installeur MSWindows</a> MERCI") + "</p>";
+	msg += "<p align=\"center\" style=\"font-size:12px;font-weight:bold;color:white;background:#555; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don. MERCI") + "</p>";
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );
