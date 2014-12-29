@@ -39,7 +39,7 @@ void Update::checkVersion(){
 	connect(manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(replyFinished(QNetworkReply*)));
 
-	manager->get(QNetworkRequest(QUrl("http://download.frausti.fr/mcercle/version.txt")));
+	manager->get(QNetworkRequest(QUrl("http://github.com/cfdev/mcercle/blob/master/version.txt")));
 }
 
 /**
