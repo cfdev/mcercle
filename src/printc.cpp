@@ -697,7 +697,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	
 	/// RIB
 	if(typeP == MCERCLE::TRANSFER){
-		text = QLatin1String("Relevé d'Itentité Bancaire");
+		text = QLatin1String("Relevé d'Identité Bancaire");
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 25, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
 		painter.drawText(rect, text);
 		
