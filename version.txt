@@ -1,0 +1,5 @@
+[version]
+num=14.10
+link=http://github.com/cfdev/mcercle
+linkChangeLog=http://github.com/cfdev/mcercle/blob/master/Changelog.txt
+
