@@ -14,7 +14,7 @@ class Update : public QObject
 	Q_OBJECT
 	public:
 	explicit Update(QObject *parent = 0);
-	void checkVersion();
+	void checkVersion(const QString& url);
 
 	private:
 	QString mtemp_location;

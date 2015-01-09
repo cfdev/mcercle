@@ -33,13 +33,13 @@ Update::Update(QObject *parent) :
  * @brief update::checkVersion
  * @return true si nouvelle version
  */
-void Update::checkVersion(){
+void Update::checkVersion(const QString& url){
 	manager = new QNetworkAccessManager(this);
 
 	connect(manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(replyFinished(QNetworkReply*)));
 
-	manager->get(QNetworkRequest(QUrl("http://github.com/cfdev/mcercle/blob/master/version.txt")));
+	manager->get(QNetworkRequest(QUrl(url)));
 }
 
 /**

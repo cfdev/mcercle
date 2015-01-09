@@ -123,6 +123,7 @@ void DialogSettings::on_buttonBox_accepted() {
 	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText() );
 	m_Settings -> setCheckVersion( ui->checkBox_checkVersion->checkState() );
 	m_Settings -> setTheme ( ui->comboBox_theme->currentText() );
+	m_Settings -> setUrl( ui->lineEdit_url->text() );
 	m_Settings -> setSettingState(true);
 }
 
@@ -254,6 +255,8 @@ void DialogSettings::loadInfoSettings() {
 			ui->comboBox_theme->setCurrentIndex(i);
 		}
 	}
+	//Url
+	ui->lineEdit_url->setText( m_Settings->getUrl() );
 }
 
 /**

@@ -127,6 +127,17 @@ QString Settings::getTheme(){
 	return val;
 }
 
+/**
+ * @brief Settings::getUrl
+ * @return
+ */
+QString Settings::getUrl(){
+	m_settings->beginGroup("main");
+	QString val = m_settings->value("url","http://cfdev.fr/download/mcercle/version.txt").toString();
+	m_settings->endGroup();
+	return val;
+}
+
 //*******************************************************************************//
 
 /**
@@ -220,6 +231,16 @@ void Settings::setCheckVersion(int state) {
 }
 
 /**
+ * @brief setUrl
+ * @param url (http://cfdev.fr/download/
+ */
+void Settings::setUrl(const QString &url) {
+	m_settings -> beginGroup("main");
+	m_settings -> setValue("url", url );
+	m_settings -> endGroup();
+}
+
+/**
 	Position des listebox pour les recherches
   */
 void Settings::setPositionListSearchProduct(int pos) {
@@ -271,3 +292,5 @@ QDate Settings::getDatebddSave(){
 	m_settings->endGroup();
 	return date;
 }
+
+

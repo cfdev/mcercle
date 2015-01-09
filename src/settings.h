@@ -29,6 +29,7 @@ public:
 	void setPositionListSearchCustomer(int pos);
 	void setCheckVersion(int state);
 	void setTheme(const QString& theme);
+	void setUrl(const QString& url);
 
 	//Save date
 	void setDatebddSave(const QDate &date);
@@ -47,7 +48,8 @@ public:
 	QDate getDatebddSave();
 	int getCheckVersion();
 	QString getTheme();
-	
+	QString getUrl();
+
 	//Impression
 	QFont getPrintFont();
 
