@@ -60,6 +60,14 @@ private slots:
 	
 	void on_action_triggered();
 
+	void on_actionClients_ex_triggered();
+
+	void on_actionProduits_ex_triggered();
+
+	void on_actionServices_ex_triggered();
+
+	void on_actionFournisseur_ex_triggered();
+
 	public slots:
 	void RefreshLists();
 };

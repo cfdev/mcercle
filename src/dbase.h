@@ -97,6 +97,7 @@ public:
 	bool create();
 	bool isConnected(){return m_connected;}
 	QLocale lang(){return m_lang;}
+	QSqlDatabase getDb(){return db;}
 
 	QString getBdd(){return m_bdd;}
 	QString getHostName(){return m_hostName;}
@@ -124,7 +125,6 @@ public:
 	bool updateBank(Bank &b);
 	bool getBank(Bank &b);
 	bool getIsTax(){return m_isTax;}
-
 
 	enum{DB_CON_OK, DB_CONNECT, DB_CREATE, DB_CON_ERR, DB_NOTEXIST_ERR};
 

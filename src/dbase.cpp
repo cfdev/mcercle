@@ -32,6 +32,7 @@
 #include <QDir>
 #include <QDebug>
 
+
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	#include <QDesktopServices>
 #else
@@ -357,7 +358,7 @@ bool database::createTable_informations(){
 
 	//INSERT
 	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-					"VALUES('5', '0', '','1');");
+					"VALUES('6', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -1084,7 +1085,6 @@ QImage database::getLogoTable_informations(){
 	}
 	return image;
 }
-
 
 /**
    Met a jour la base de donnees en version 2

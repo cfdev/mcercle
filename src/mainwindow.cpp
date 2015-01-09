@@ -40,6 +40,7 @@
 #include "dialoginvoicelist.h"
 #include "dialogservicesedit.h"
 #include "update.h"
+#include "inout.h"
 
 /**
 	Constructeur de la class MainWindow
@@ -166,7 +167,7 @@ void MainWindow::init(){
 	/* Checkupdate */
 	if( m_Settings->getCheckVersion() ){
 		Update *up = new Update(this);
-		up -> checkVersion();
+		up -> checkVersion( m_Settings->getUrl() );
 	}
 }
 
@@ -420,4 +421,33 @@ void MainWindow::on_actionOuvrir_BddDir_triggered() {
  */
 void MainWindow::on_action_triggered() {
 	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W"));
+}
+
+/**
+ * @brief exporter les clients
+ */
+void MainWindow::on_actionClients_ex_triggered() {
+	inout exp(m_database);
+	exp.exportAllCustomers();
+}
+
+/**
+ * @brief expoter les produits
+ */
+void MainWindow::on_actionProduits_ex_triggered() {
+	inout exp(m_database);
+	exp.exportAllProducts();
+}
+
+/**
+ * @brief exporter les services
+ */
+void MainWindow::on_actionServices_ex_triggered() {
+	inout exp(m_database);
+	exp.exportAllServices();
+}
+
+void MainWindow::on_actionFournisseur_ex_triggered() {
+	inout exp(m_database);
+	exp.exportAllProviders();
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -48,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -80,7 +80,24 @@
     <property name="title">
      <string>Outils</string>
     </property>
+    <widget class="QMenu" name="menuExporter">
+     <property name="title">
+      <string>Exporter</string>
+     </property>
+     <addaction name="actionClients_ex"/>
+     <addaction name="actionProduits_ex"/>
+     <addaction name="actionServices_ex"/>
+     <addaction name="actionFournisseur_ex"/>
+    </widget>
+    <widget class="QMenu" name="menuImporter">
+     <property name="title">
+      <string>Importer</string>
+     </property>
+     <addaction name="actionClients_imp"/>
+    </widget>
     <addaction name="actionLivres_des_Recettes"/>
+    <addaction name="menuExporter"/>
+    <addaction name="menuImporter"/>
     <addaction name="separator"/>
     <addaction name="actionConfiguration"/>
    </widget>
@@ -312,6 +329,31 @@
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;mcercle vous aide dans votre activit&amp;eacute;.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#815a0c;&quot;&gt;Aidez moi &amp;agrave; continuer en faisant un don.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#815a0c;&quot;&gt;MERCI&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionClients_ex">
+   <property name="text">
+    <string>Clients</string>
+   </property>
+  </action>
+  <action name="actionClients_imp">
+   <property name="text">
+    <string>Clients</string>
+   </property>
+  </action>
+  <action name="actionProduits_ex">
+   <property name="text">
+    <string>Produits</string>
+   </property>
+  </action>
+  <action name="actionServices_ex">
+   <property name="text">
+    <string>Services</string>
+   </property>
+  </action>
+  <action name="actionFournisseur_ex">
+   <property name="text">
+    <string>Fournisseur</string>
    </property>
   </action>
  </widget>
