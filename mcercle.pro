@@ -73,7 +73,8 @@ HEADERS += \
     src/board.h \
     src/about.h \
     src/mcercle.h \
-    src/update.h
+    src/update.h \
+    src/inout.h
 
 SOURCES += \
     src/tax.cpp \
@@ -108,7 +109,8 @@ SOURCES += \
     src/customer.cpp \
     src/board.cpp \
     src/about.cpp \
-    src/update.cpp
+    src/update.cpp \
+    src/inout.cpp
 
 FORMS += \
     src/productView.ui \
