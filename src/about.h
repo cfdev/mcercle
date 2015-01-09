@@ -24,6 +24,7 @@ private slots:
 	void on_pushButton_don_clicked();
 	void on_pushBut_Close_clicked();
 	void on_pushButton_donFree_clicked();
+	void on_pushButton_donmonthly_clicked();
 };
 
 #endif // ABOUT_H

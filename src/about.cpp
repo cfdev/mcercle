@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2014 Cyril FRAUSTI
+  Copyright (C) 2010-2015 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -78,9 +78,9 @@ about::about(database *pdata, QWidget *parent) :
 	}
 
 	msg += tr("- Icons Oxygen du bureau kde. <a href=\"http://www.oxygen-icons.org\">http://www.oxygen-icons.org</a>");
-	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2014";
-	msg += "<br>- Cyril Frausti &lt;<a href=\"mailto:cyril.frausti@gmail.com\">cyril.frausti@gmail.com</a>&gt; D&#233;veloppeur";
-	msg += "<br>- Site internet: <a href=\"http://cyril.frausti.fr/\">http://cyril.frausti.fr/</a>";
+	msg += "<br><br>"+ tr("Auteur:") + "&#169; 2010-2015";
+	msg += "<br>- Cyril Frausti - D&#233;veloppeur";
+	msg += "<br>- Site internet: <a href=\"http://cfdev.fr/\">http://cfdev.fr/</a>";
 	
 	msg += "<br><br>Ce programme est fourni &laquo; EN L'ETAT &raquo;, SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
 	
@@ -128,6 +128,7 @@ void about::on_pushBut_Close_clicked() {
 
 //don libre https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W
 //don 19.99 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=75YN3QWER2V9S
+//don mensuel 5? min https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AEA5HJ6JSBEHS
 /**
  * @brief about::on_pushButton_don_clicked
  */
@@ -140,4 +141,12 @@ void about::on_pushButton_don_clicked() {
  */
 void about::on_pushButton_donFree_clicked() {
 	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W"));
+}
+
+/**
+ * @brief about::on_pushButton_donmonthly_clicked
+ */
+void about::on_pushButton_donmonthly_clicked() {
+	QDesktopServices::openUrl(QUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AEA5HJ6JSBEHS"));
+
 }
