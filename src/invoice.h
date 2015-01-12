@@ -38,6 +38,7 @@ public:
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
 		QList<qreal> price;
+		QList<qreal> part_payment;
 		QList<int> state;
 	}InvoiceList;
 

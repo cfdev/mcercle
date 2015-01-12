@@ -307,7 +307,7 @@ int invoice::getLastId(){
 bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field) {
 
 	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, "
-			"TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+			"TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.PRICE, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -338,6 +338,7 @@ bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, 
 			list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.part_payment.push_back( query.value(query.record().indexOf("PART_PAYMENT")).toFloat() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
 		}
 		return true;
