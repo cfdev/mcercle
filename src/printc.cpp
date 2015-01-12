@@ -613,11 +613,21 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 		rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
 		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(mtotalTaxPrice, 'f', 2) );
 		//CALCUL DU RESTE
-		reste = mtotalTaxPrice-m_inv->getPartPayment();
+		if(type == T_INVOICE) {
+			reste = mtotalTaxPrice-m_inv->getPartPayment();
+		}
+		else{
+			reste = mtotalTaxPrice;
+		}
 	}
 	else{
 		//CALCUL DU RESTE
-		reste = mtotalPrice-m_inv->getPartPayment();
+		if(type == T_INVOICE) {
+			reste = mtotalPrice-m_inv->getPartPayment();
+		}
+		else{
+			reste = mtotalPrice;
+		}
 	}
 	
 	if(type == T_INVOICE){

@@ -994,7 +994,7 @@ void DialogInvoice::calcul_Total() {
 	}
 	//Cacul du reste*/
 	qreal diff;
-	if(!m_isTax){
+	if((!m_isTax)&&(m_DialogType == INVOICE_TYPE)){
 		diff = m_totalPrice - ui->doubleSpinBox_partPAYMENT->value();
 	}
 	else{
