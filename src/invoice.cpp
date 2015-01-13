@@ -650,14 +650,15 @@ qreal invoice::getYearRevenue(QString year) {
 		effective_date = "DATE";
 	
 	if(m_db.driverName() == "QSQLITE")
-		req =	"SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
+		req =	"SELECT SUM( round(price,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
 	else
-		req =	"SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
+		req =	"SELECT SUM( round(price,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
 
+	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -688,13 +689,13 @@ qreal invoice::getMonthRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
+		req =	"SELECT round(SUM( price ), 2) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'and "
 				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
 	}
 	else
-		req =	"SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
+		req =	"SELECT round(SUM( price ), 2) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
 				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
@@ -728,19 +729,19 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT SUM((TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 2)-(round(TAB_INVOICES_DETAILS.PRICE, 2)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
-                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0;";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0;";
 	}
 	//TODO: MYSQL_REQ
   /*  else
 		req = "SELECT SUM( price ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-                "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
-                "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
+			"extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
+			"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
-	//qDebug() << req;
+	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -769,7 +770,7 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT SUM((TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 2)-(round(TAB_INVOICES_DETAILS.PRICE, 2)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
                 "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE > 0;";
