@@ -451,3 +451,10 @@ void MainWindow::on_actionFournisseur_ex_triggered() {
 	inout exp(m_database);
 	exp.exportAllProviders();
 }
+
+/**
+ * @brief Signaler_un_bug -> sur github
+ */
+void MainWindow::on_actionSignaler_un_bug_triggered() {
+	QDesktopServices::openUrl(QUrl("https://github.com/cfdev/mcercle/issues"));
+}

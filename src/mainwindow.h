@@ -68,6 +68,8 @@ private slots:
 
 	void on_actionFournisseur_ex_triggered();
 
+	void on_actionSignaler_un_bug_triggered();
+
 	public slots:
 	void RefreshLists();
 };
