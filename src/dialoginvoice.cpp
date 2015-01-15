@@ -985,7 +985,6 @@ void DialogInvoice::calcul_Total() {
 	m_totalPrice = m_totalTaxPrice = 0.00;
 	//On parcour le tableau pour savoir si l ID et present
 	for (int j=ui->tableWidget->rowCount()-1; j >= 0; --j){
-		// BUG HERE ->
 		if( (ui->tableWidget->item(j, COL_TOTAL)	!= NULL) &&
 			 (ui->tableWidget->item(j, COL_TAX)		!= NULL)){
 			m_totalPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble();
@@ -1027,7 +1026,7 @@ void DialogInvoice::add_to_Table(int typeITEM, int idProduct, QString name, qrea
 	if(cRow<=0){
 		//Style de la table de proposition
 		ui->tableWidget->setColumnCount(COL_COUNT);
-        ui->tableWidget->setColumnWidth(COL_NAME, 375);
+		ui->tableWidget->setColumnWidth(COL_NAME, 375);
 	#ifdef QT_NO_DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID, true); //cache la colonne ID ou DEBUG
 		ui->tableWidget->setColumnHidden(COL_ID_PRODUCT, true); //cache la colonne ID ou DEBUG
@@ -1191,8 +1190,8 @@ void DialogInvoice::createInvoiceFromProposal() {
 	m_invoice->setPartPayment(0);
 	m_invoice->setState( MCERCLE::INV_UNPAID );
 	m_invoice->setUserDate( QDate::currentDate() );
-	m_invoice->setLimitPayment( QDate::currentDate().addMonths(1) );
-	m_invoice->setPaymentDate( QDate::currentDate().addMonths(1) );
+	m_invoice->setPaymentDate( QDate::currentDate() );
+	m_invoice->setLimitPayment( QDate::currentDate() );
 
 	m_invoice->setTypePayment( m_proposal->getTypePayment() );
 	m_invoice->setPrice( m_proposal->getPrice() );
