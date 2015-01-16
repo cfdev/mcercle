@@ -19,7 +19,7 @@ private:
 
 	QWidget *m_parent;
 	int m_id, m_idCustomer, m_state ;
-	qreal m_price, m_partPayment;
+	qreal m_price, m_priceTax, m_partPayment;
 	QDateTime m_creationDate;
 	QDate m_userDate, m_limitPayment, m_paymentDate;
 	QString m_code, m_proposalCode, m_description, m_typePayment;
@@ -38,6 +38,7 @@ public:
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
 		QList<qreal> price;
+		QList<qreal> priceTax;
 		QList<qreal> part_payment;
 		QList<int> state;
 	}InvoiceList;
@@ -51,6 +52,8 @@ public:
 		QStringList customerLastName;
 		QStringList description;
 		QList<qreal> price;
+		QList<qreal> priceTax;
+		QList<qreal> part_payment;
 		QStringList typePayment;
 	}InvoicesBook;
 
@@ -66,6 +69,8 @@ public:
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
 		QList<qreal> price;
+		QList<qreal> priceTax;
+		QList<qreal> part_payment;
 		QList<int> state;
 	}InvoiceListAlert;
 
@@ -107,11 +112,14 @@ public:
 	bool loadFromCode(const QString& code);
 	bool isHere(const QString& code);
 	int getLastId();
+	int count(int id_customer);
+	qreal calcul_priceTax(int id_invoice);
 
 	//Appliquer les valeurs
 	void setId(const int& ident){m_id = ident;}
 	void setIdCustomer(const int& cIdent){m_idCustomer = cIdent;}
 	void setPrice(const qreal& price){m_price = price;}
+	void setPriceTax(const qreal& priceTax){m_priceTax = priceTax;}
 	void setPartPayment(const qreal& partPayment){m_partPayment = partPayment;}
 	void setTypePayment(const QString& type){m_typePayment = type;}
 	void setState(const int& state){m_state = state;}

@@ -80,7 +80,7 @@ bool invoice::create() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
-	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, STATE, DESCRIPTION) ";
+	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, PRICE_TAX, STATE, DESCRIPTION) ";
 	req += "VALUES(";
 	req += "'" + QDateTime::currentDateTime().toString(tr("yyyy-MM-dd HH:mm:ss")) + "',";
 	req += "'" + QString::number(m_idCustomer) + "',";
@@ -91,6 +91,7 @@ bool invoice::create() {
 	req += "'" + m_typePayment + "',";
 	req += "'" + f.setNum(m_partPayment,'f',2) + "',";
 	req += "'" + f.setNum(m_price,'f',2) + "',";
+	req += "'" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "'" + QString::number(m_state)  + "',";
 	req += "'" + m_description.replace("\'","''") + "');";
 
@@ -121,6 +122,7 @@ bool invoice::update() {
 	req += "TYPE_PAYMENT='" + m_typePayment + "',";
 	req += "PART_PAYMENT='" + f.setNum(m_partPayment,'f',2) + "',";
 	req += "PRICE='" + f.setNum(m_price,'f',2) + "',";
+	req += "PRICE_TAX='" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "STATE='" + QString::number(m_state)  + "',";
 	req += "DESCRIPTION='" + m_description.replace("\'","''") + "' ";
 	req += "WHERE ID='"+ QString::number(m_id) +"';";
@@ -172,7 +174,7 @@ bool invoice::remove(){
   */
 bool invoice::loadFromID(const int& id)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -195,6 +197,7 @@ bool invoice::loadFromID(const int& id)
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_partPayment = query.value(query.record().indexOf("PART_PAYMENT")).toFloat();
 		m_price = query.value(query.record().indexOf("PRICE")).toFloat();
+		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
 		return true;
@@ -213,7 +216,7 @@ bool invoice::loadFromID(const int& id)
   */
 bool invoice::loadFromCode(const QString& code)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -236,6 +239,7 @@ bool invoice::loadFromCode(const QString& code)
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_partPayment = query.value(query.record().indexOf("PART_PAYMENT")).toFloat();
 		m_price = query.value(query.record().indexOf("PRICE")).toFloat();
+		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
 		return true;
@@ -307,7 +311,7 @@ int invoice::getLastId(){
 bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field) {
 
 	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, "
-			"TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.PRICE, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.STATE "
+			"TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.PRICE,TAB_INVOICES.PRICE_TAX, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.STATE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -338,6 +342,7 @@ bool invoice::getInvoiceList(InvoiceList& list, int id_customer, QString order, 
 			list.paymentDate.push_back( query.value(query.record().indexOf("PAYMENTDATE")).toDate());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.priceTax.push_back( query.value(query.record().indexOf("PRICE_TAX")).toFloat() );
 			list.part_payment.push_back( query.value(query.record().indexOf("PART_PAYMENT")).toFloat() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
 		}
@@ -363,7 +368,7 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
 		effective_date = "DATE";
 
 	if(month.size()<2)month = '0'+month;
-	QString req =   "SELECT TAB_INVOICES.ID, TAB_INVOICES.CODE, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.DATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.TYPE_PAYMENT "
+	QString req =   "SELECT TAB_INVOICES.ID, TAB_INVOICES.CODE, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.DATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE,TAB_INVOICES.PRICE_TAX, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.TYPE_PAYMENT "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -383,6 +388,8 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
 			list.userDate.push_back( query.value(query.record().indexOf("DATE")).toDate() );
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.priceTax.push_back( query.value(query.record().indexOf("PRICE_TAX")).toFloat() );
+			list.part_payment.push_back( query.value(query.record().indexOf("PART_PAYMENT")).toFloat() );
 			list.typePayment << query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		}
 		return true;
@@ -401,7 +408,7 @@ bool invoice::getInvoices(InvoicesBook& list, QString year, QString month) {
   */
 bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE, TAB_INVOICES.STATE "
+	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_INVOICES.ID, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, PAYMENTDATE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.CODE, TAB_INVOICES.PRICE,TAB_INVOICES.PRICE_TAX, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.STATE "
 					"FROM TAB_INVOICES "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_INVOICES.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -422,6 +429,8 @@ bool invoice::getInvoiceListAlert(InvoiceListAlert& list) {
 			list.code.push_back( query.value(query.record().indexOf("CODE")).toString());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.priceTax.push_back( query.value(query.record().indexOf("PRICE_TAX")).toFloat() );
+			list.part_payment.push_back( query.value(query.record().indexOf("PART_PAYMENT")).toFloat() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
 
 		}
@@ -729,7 +738,7 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 2)-(round(TAB_INVOICES_DETAILS.PRICE, 2)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 4)-(round(TAB_INVOICES_DETAILS.PRICE, 4)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
 				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0;";
@@ -770,7 +779,7 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 2)-(round(TAB_INVOICES_DETAILS.PRICE, 2)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 4)-(round(TAB_INVOICES_DETAILS.PRICE, 4)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
                 "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE > 0;";
@@ -815,3 +824,59 @@ int invoice::getCaType() {
 	return ret;
 }
 
+/**
+	 Permet de savoir combien de facture il y a dans la bdd
+	 @param id du clients
+	 @return le nombre de facture client
+  */
+int invoice::count(int id_customer) {
+	int count;
+	//Requete 1 nombre de valeur
+	QString req = "SELECT COUNT(*) FROM (SELECT * FROM TAB_INVOICES";
+				"WHERE TAB_INVOICES.ID_CUSTOMER = '" + QString::number(id_customer)+"' ";
+
+	QSqlQuery query;
+	query.prepare(req);
+
+	if(query.exec()){
+		query.next();
+		count = query.value(query.record().indexOf("COUNT(*)")).toInt();
+		return count;
+	}
+	else{
+		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+		return 0;
+	}
+}
+
+/**
+ * @brief invoice::calcul_priceTax
+ * @param id_invoice
+ * @return calcul la valeur de la facture en TTC en fonction des artilces, tax, remises, qte
+ */
+qreal invoice::calcul_priceTax(int id_invoice){
+	//On realise un double arrondi un interne sur 4 decimales pour etre plus precis
+	//Puis on arrondi le resultat sur 2 decimales
+	QString req =	"select SUM("
+			" round("
+			" tab_invoices_details.quantity*round(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100),4)-"
+			" tab_invoices_details.quantity*round(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100),4)*tab_invoices_details.discount/100"
+			" ,2)"
+			" )"
+			" AS TTC"
+			" from tab_invoices_details"
+			" where tab_invoices_details.id_invoice="+QString::number(id_invoice);
+
+	QSqlQuery query;
+	query.prepare(req);
+
+	qreal price_ttc=0;
+	if(query.exec()){
+		query.next();
+		price_ttc = query.value(query.record().indexOf("TTC")).toDouble();
+		return price_ttc;
+	}
+	else{
+		return 0;
+	}
+}
