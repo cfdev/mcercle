@@ -661,9 +661,9 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 
 	ui->tableWidget_Invoices->setSortingEnabled(false);
 	//Style de la table de facture
-	ui->tableWidget_Invoices->setColumnCount(7);
-	ui->tableWidget_Invoices->setColumnWidth(3,125);
-	ui->tableWidget_Invoices->setColumnWidth(5,250);
+	ui->tableWidget_Invoices->setColumnCount(8);
+	//ui->tableWidget_Invoices->setColumnWidth(3,125);
+	ui->tableWidget_Invoices->setColumnWidth(6,250);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_Invoices->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
 #endif
@@ -671,8 +671,13 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("Codes") << tr("Date") << QLatin1String("Date Réglement") << tr("Prix") << tr("Description")  << tr("Etat");
+	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Prix") << tr("PrixTTC") << tr("Acompte") << tr("Description")  << tr("Etat");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
+
+	//Si pas de tva on cache la colonne
+	if(!m_data->getIsTax()) {
+		ui->tableWidget_Invoices->setColumnHidden(4 , true);
+	}
 
 	//Recuperation des donnees presentent dans la bdd
 	m_data->m_customer->m_invoice->getInvoiceList(ilist,m_data->m_customer->getId(), "TAB_INVOICES.DATE", filter, field);
@@ -682,16 +687,18 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ItemOfTable *item_ID           = new ItemOfTable();
 		ItemOfTable *item_CODE         = new ItemOfTable();
 		ItemOfTable *item_DATE         = new ItemOfTable();
-		ItemOfTable *item_DATEPAYEMENT = new ItemOfTable();
 		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_PRICE_TAX    = new ItemOfTable();
+		ItemOfTable *item_PARTPAYMENT  = new ItemOfTable();
 		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
 		ItemOfTable *item_STATE        = new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
-		item_DATEPAYEMENT->setData(Qt::DisplayRole, ilist.paymentDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
+		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
+		item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_payment.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_invoice->getIconState(ilist.state.at(i)) );
 		item_STATE->setText( m_data->m_customer->m_invoice->getTextState(ilist.state.at(i)) );
@@ -703,10 +710,11 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ui->tableWidget_Invoices->setItem(i, 0, item_ID);
 		ui->tableWidget_Invoices->setItem(i, 1, item_CODE);
 		ui->tableWidget_Invoices->setItem(i, 2, item_DATE);
-		ui->tableWidget_Invoices->setItem(i, 3, item_DATEPAYEMENT);
-		ui->tableWidget_Invoices->setItem(i, 4, item_PRICE);
-		ui->tableWidget_Invoices->setItem(i, 5, item_DESCRIPTION);
-		ui->tableWidget_Invoices->setItem(i, 6, item_STATE);
+		ui->tableWidget_Invoices->setItem(i, 3, item_PRICE);
+		ui->tableWidget_Invoices->setItem(i, 4, item_PRICE_TAX);
+		ui->tableWidget_Invoices->setItem(i, 5, item_PARTPAYMENT);
+		ui->tableWidget_Invoices->setItem(i, 6, item_DESCRIPTION);
+		ui->tableWidget_Invoices->setItem(i, 7, item_STATE);
 	}
 	ui->tableWidget_Invoices->setSortingEnabled(true);
 	ui->tableWidget_Invoices->selectRow(0);
