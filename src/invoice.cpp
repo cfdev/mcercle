@@ -684,6 +684,45 @@ qreal invoice::getYearRevenue(QString year) {
 }
 
 /**
+	 Retourne le CA d une annee en TTC
+	 @return CA de l annee desiree en TTC
+  */
+qreal invoice::getYearRevenueTAX(QString year) {
+	qreal total=0;
+	if(year.isEmpty())return 0;
+	QString req;
+	QString effective_date;
+	if(getCaType() == 1)
+		effective_date = "PAYMENTDATE";
+	else
+		effective_date = "DATE";
+
+	if(m_db.driverName() == "QSQLITE")
+		req =	"SELECT SUM( round(price_tax,2) ) AS TOTAL FROM TAB_INVOICES "
+				"WHERE TAB_INVOICES.STATE = '1' and "
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
+	else
+		req =	"SELECT SUM( round(price_tax,2) ) AS TOTAL FROM TAB_INVOICES "
+				"WHERE TAB_INVOICES.STATE = '1' and "
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
+
+	qDebug() << req;
+	QSqlQuery query;
+	query.prepare(req);
+	if(query.exec()){
+		query.next();
+		total = query.value(query.record().indexOf("TOTAL")).toDouble();
+
+	}
+	else{
+		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+	}
+
+	if(total < 0)total = 0;
+	return total;
+}
+
+/**
 	 Retourne le CA d un mois
 	 @return CA du mois desiree
   */
@@ -738,7 +777,8 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 4)-(round(TAB_INVOICES_DETAILS.PRICE, 4)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100.0)) * TAB_INVOICES_DETAILS.QUANTITY), 2) "
+				"AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
 				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0;";
@@ -779,7 +819,8 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 		effective_date = "DATE";
 	if(m_db.driverName() == "QSQLITE"){
 		if(month.size()<2)month = '0'+month;
-		req =	"SELECT round( SUM(( round(TAB_INVOICES_DETAILS.PRICE, 4)-(round(TAB_INVOICES_DETAILS.PRICE, 4)*TAB_INVOICES_DETAILS.DISCOUNT/100)) * TAB_INVOICES_DETAILS.QUANTITY), 2) AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
+		req =	"SELECT round( SUM(( TAB_INVOICES_DETAILS.PRICE-(TAB_INVOICES_DETAILS.PRICE*TAB_INVOICES_DETAILS.DISCOUNT/100.0)) * TAB_INVOICES_DETAILS.QUANTITY), 2) "
+				"AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
                 "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE > 0;";
@@ -849,6 +890,40 @@ int invoice::count(int id_customer) {
 	}
 }
 
+
+/**
+ * @brief invoice::calcul_price
+ * @param id_invoice
+ * @return calcul la valeur de la facture en HT en fonction des artilces, tax, remises, qte
+ */
+qreal invoice::calcul_price(int id_invoice){
+	//On realise un double arrondi un interne sur 4 decimales pour etre plus precis
+	//Puis on arrondi le resultat sur 2 decimales
+	QString req =	"select SUM("
+			" round("
+			" (tab_invoices_details.quantity*tab_invoices_details.price)-"
+			" (tab_invoices_details.quantity*tab_invoices_details.price*tab_invoices_details.discount/100.0)"
+			" ,2)"
+			" )"
+			" AS TTC"
+			" from tab_invoices_details"
+			" where tab_invoices_details.id_invoice="+QString::number(id_invoice);
+
+	QSqlQuery query;
+	query.prepare(req);
+
+	qreal price_ttc=0;
+	if(query.exec()){
+		query.next();
+		price_ttc = query.value(query.record().indexOf("TTC")).toDouble();
+		return price_ttc;
+	}
+	else{
+		return 0;
+	}
+}
+
+
 /**
  * @brief invoice::calcul_priceTax
  * @param id_invoice
@@ -859,8 +934,8 @@ qreal invoice::calcul_priceTax(int id_invoice){
 	//Puis on arrondi le resultat sur 2 decimales
 	QString req =	"select SUM("
 			" round("
-			" tab_invoices_details.quantity*round(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100),4)-"
-			" tab_invoices_details.quantity*round(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100),4)*tab_invoices_details.discount/100"
+			" tab_invoices_details.quantity*(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100.0))-"
+			" tab_invoices_details.quantity*(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100.0))*tab_invoices_details.discount/100.0"
 			" ,2)"
 			" )"
 			" AS TTC"

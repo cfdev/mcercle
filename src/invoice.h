@@ -113,6 +113,7 @@ public:
 	bool isHere(const QString& code);
 	int getLastId();
 	int count(int id_customer);
+	qreal calcul_price(int id_invoice);
 	qreal calcul_priceTax(int id_invoice);
 
 	//Appliquer les valeurs
@@ -154,6 +155,7 @@ public:
 	qreal getMonthServiceRevenue(QString year, QString month);
 	qreal getMonthProductRevenue(QString year, QString month);
 	qreal getYearRevenue(QString year);
+	qreal getYearRevenueTAX(QString year);
 
 
 	//recup des articles de la facture

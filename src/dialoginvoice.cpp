@@ -31,6 +31,7 @@
 #include <QUrl>
 #include <QFileDialog>
 #include <QImageReader>
+#include <tgmath.h>
 
 
 DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type, unsigned char state, QWidget *parent) :
@@ -837,6 +838,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
 	}
 	m_invoice->setTypePayment(typeP);
 	m_invoice->setPrice( m_totalPrice );
+	m_invoice->setPriceTax( m_totalTaxPrice );
 	// suivant le process on modifi ou on ajoute la facture/devis
 	if(proc == EDIT) m_invoice->update();
 	else{
@@ -967,6 +969,8 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
 		//Calcul du total
 		qreal price = priceU * quantity;
 		price -= price * (discount/100.0);
+		//Tronc a 2 decimal
+		price = QString::number(price,'f',2).toFloat();
 		//Item du total
 		ItemOfTable *item_Total  = new ItemOfTable();
 		item_Total->setData(Qt::DisplayRole, price);
@@ -991,6 +995,9 @@ void DialogInvoice::calcul_Total() {
 			m_totalTaxPrice += ui->tableWidget->item(j, COL_TOTAL)->text().toDouble() + ((ui->tableWidget->item(j, COL_TOTAL)->text().toDouble()*ui->tableWidget->item(j, COL_TAX)->text().toDouble())/100.0);
 		}
 	}
+	qDebug() << "m_totalPrice=" << m_totalPrice;
+	qDebug() << "m_totalTaxPrice=" << m_totalTaxPrice;
+
 	//Cacul du reste*/
 	qreal diff;
 	if((!m_isTax)&&(m_DialogType == INVOICE_TYPE)){
