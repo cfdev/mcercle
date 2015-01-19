@@ -38,11 +38,11 @@ private slots:
 	QLocale m_lang;
 	QDate m_date;
 
-#define COL_COUNT 8
+#define COL_COUNT 9
 
 enum{COL_ID=0, COL_STATE, COL_DATE,
 	 COL_CODE, COL_CUSTOMER, COL_DESCRIPTION,
-	 COL_PRICE, COL_TYPE_PAYMENT};
+	 COL_PRICE,COL_PRICE_TAX, COL_TYPE_PAYMENT};
 
 	void listInvoicesToTable(QDate mdate);
 	QList<int> list_of_InvoiceSelected();

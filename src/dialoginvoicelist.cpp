@@ -58,9 +58,11 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << QLatin1String("sélection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << QLatin1String("Règlement");
+	titles  << tr("Id") << QLatin1String("sélection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("TTC") << QLatin1String("Règlement");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
-
+	if(!m_data->getIsTax()) {
+		ui->tableWidget_Invoices->setColumnHidden(COL_PRICE_TAX , true);
+	}
 	//Recuperation des donnees presentent dans la bdd
 	m_invoice->getInvoices(ilist, QString::number(mdate.year()), QString::number(mdate.month()));
 
@@ -75,6 +77,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 		ItemOfTable *item_CUSTOMER     = new ItemOfTable();
 		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
 		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_PRICE_TAX    = new ItemOfTable();
 		ItemOfTable *item_TYPE_PAYMENT = new ItemOfTable();
 		
 		item_ID->setData(Qt::DisplayRole, ilist.id.at(i));
@@ -88,6 +91,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
+		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
 
 		typeP="";
 		if( ilist.typePayment.at(i) == MCERCLE::CASH)         typeP = tr("Espece");
@@ -111,6 +115,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 		ui->tableWidget_Invoices->setItem(i, COL_CUSTOMER, item_CUSTOMER);
 		ui->tableWidget_Invoices->setItem(i, COL_DESCRIPTION, item_DESCRIPTION);
 		ui->tableWidget_Invoices->setItem(i, COL_PRICE, item_PRICE);
+		ui->tableWidget_Invoices->setItem(i, COL_PRICE_TAX, item_PRICE_TAX);
 		ui->tableWidget_Invoices->setItem(i, COL_TYPE_PAYMENT, item_TYPE_PAYMENT);
 	}
 	ui->tableWidget_Invoices->setSortingEnabled(true);
@@ -263,25 +268,31 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 
 		/// Header
 		//DATE
-		rect = fm.boundingRect(mLeft+5,rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Date") );
+		rect = fm.boundingRect(mLeft+5,rect.top(), wUtil/10,0, Qt::AlignLeft, tr("Date") );
 		painter.drawText( rect, tr("Date"));
-		rect.setWidth(wUtil/8 -5); //fixe la largeur
+		rect.setWidth(wUtil/10 -5); //fixe la largeur
 		//CODE
-		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, tr("Code")  );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/9,0, Qt::AlignLeft, tr("Code")  );
 		painter.drawText( rect, tr("Code") );
-		rect.setWidth(wUtil/6 -5); //fixe la largeur
+		rect.setWidth(wUtil/9 -5); //fixe la largeur
 		//CLIENT
-		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, tr("Client") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, tr("Client") );
 		painter.drawText( rect, tr("Client"));
-		rect.setWidth(wUtil/5 -5); //fixe la largeur
+		rect.setWidth(wUtil/6 -5); //fixe la largeur
 		//DESCIPTION
-		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/4,0, Qt::AlignLeft, tr("Description") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, tr("Description") );
 		painter.drawText( rect, tr("Description") );
-		rect.setWidth(wUtil/4 -5); //fixe la largeur
+		rect.setWidth(wUtil/5 -5); //fixe la largeur
 		//MONTANT
 		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Montant") );
-		painter.drawText( rect, tr("Montant") );
+		painter.drawText( rect, tr("HT") );
 		rect.setWidth(wUtil/8 -5); //fixe la largeur
+		if(m_data->getIsTax()) {
+			//MONTANT TTC
+			rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, tr("Montant") );
+			painter.drawText( rect, tr("TTC") );
+			rect.setWidth(wUtil/8 -5); //fixe la largeur
+		}
 		//REGLEMENT
 		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, QLatin1String("Règlement") );
 		painter.drawText( rect, QLatin1String("Règlement") );
@@ -293,35 +304,41 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 
 				rect.translate( 0, rect.height()+5);
 				//DATE
-				rect = fm.boundingRect(mLeft+5,rect.top(), wUtil/8,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_DATE)->text() );
-				rect.setWidth(wUtil/8 -5); //fixe la largeur
+				rect = fm.boundingRect(mLeft+5,rect.top(), wUtil/10,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_DATE)->text() );
+				rect.setWidth(wUtil/10 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex, COL_DATE)->text());
-				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/8,rect.height()+5) );
+				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/10,rect.height()+5) );
 
 				//CODE
-				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text() );
-				rect.setWidth(wUtil/6 -5); //fixe la largeur
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/9,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text() );
+				rect.setWidth(wUtil/9 -5); //fixe la largeur
 				painter.drawText( rect , Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex, COL_CODE)->text());
-				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/6,rect.height()+5) );
+				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/9,rect.height()+5) );
 
 				//CLIENT
-				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text() );
-				rect.setWidth(wUtil/5 -5); //fixe la largeur
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/6,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text() );
+				rect.setWidth(wUtil/6 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex, COL_CUSTOMER)->text());
-				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/5,rect.height()+5) );
+				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/6,rect.height()+5) );
 
 				//DESCIPTION
-				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/4,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
-				rect.setWidth(wUtil/4 -5); //fixe la largeur
+				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/5,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
+				rect.setWidth(wUtil/5 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , ui->tableWidget_Invoices->item(pIndex,COL_DESCRIPTION)->text() );
-				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/4,rect.height()+5) );
+				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/5,rect.height()+5) );
 
 				//MONTANT
 				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text().toFloat(),'f',2) );
 				rect.setWidth(wUtil/8 -5); //fixe la largeur
 				painter.drawText( rect,  Qt::AlignLeft , m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE)->text().toFloat(),'f',2) );
 				painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/8,rect.height()+5) );
-
+				if(m_data->getIsTax()) {
+					//MONTANT TTC
+					rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/8,0, Qt::AlignLeft, m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE_TAX)->text().toFloat(),'f',2) );
+					rect.setWidth(wUtil/8 -5); //fixe la largeur
+					painter.drawText( rect,  Qt::AlignLeft , m_lang.toString(ui->tableWidget_Invoices->item(pIndex,COL_PRICE_TAX)->text().toFloat(),'f',2) );
+					painter.drawRect( QRect(rect.left()-5,rect.top()-5, wUtil/8,rect.height()+5) );
+				}
 				//REGLEMENT
 				rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, ui->tableWidget_Invoices->item(pIndex,COL_TYPE_PAYMENT)->text() );
 				rect.setWidth(wUtil/10 -5); //fixe la largeur
