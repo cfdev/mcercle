@@ -39,8 +39,13 @@
         <file alias="save_as">art/document_save_as.png</file>
         <file alias="services">art/services.png</file>
         <file alias="show">art/show_menu.png</file>
-		<file alias="don">art/btn_donate_LG.png</file>
-		<file alias="don1">art/paypal-icon.png</file>
+        <file alias="don">art/btn_donate_LG.png</file>
+        <file alias="don1">art/paypal-icon.png</file>
+        <file alias="bug">art/tools_report_bug.png</file>
+        <file alias="addFile">art/archive_insert.png</file>
+        <file alias="undo">art/edit_undo.png</file>
+        <file alias="export">art/file_export.png</file>
+        <file alias="import">art/fileimport.png</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
