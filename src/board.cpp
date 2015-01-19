@@ -333,10 +333,12 @@ void board::calculYear(QString year){
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
 
-	qreal tt = m_data->m_customer->m_invoice->getYearRevenue( year );
-	QString txt = tr("<b>Total : ") + m_lang.toString(tt,'f',2) + tr(" &euro;</b>");
+	qreal price = m_data->m_customer->m_invoice->getYearRevenue( year );
+	qreal ttc = m_data->m_customer->m_invoice->getYearRevenueTAX( year );
+	QString txt = tr("<b>Total : ") + m_lang.toString(price,'f',2) + tr(" &euro;</b>");
 	if( m_data->getIsTax() ){
 		txt += " HT";
+		txt += " ( "+m_lang.toString(ttc,'f',2)+" TTC) ";
 	}
 	ui -> label_totalYear -> setText(txt);
 }
