@@ -170,7 +170,7 @@
        <item row="2" column="2">
         <widget class="QLabel" name="label_delivery">
          <property name="text">
-          <string>Date de livraison :</string>
+          <string>Date de Echeance :</string>
          </property>
         </widget>
        </item>
@@ -201,7 +201,7 @@
        <item row="3" column="4">
         <widget class="QLabel" name="label_partpayment">
          <property name="text">
-          <string>Accompte :</string>
+          <string>Acompte :</string>
          </property>
         </widget>
        </item>
@@ -515,6 +515,28 @@
        <property name="icon">
         <iconset resource="../ressources.qrc">
          <normaloff>:/app/insert</normaloff>:/app/insert</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_partInvoice">
+       <property name="text">
+        <string>Acompte</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../ressources.qrc">
+         <normaloff>:/app/addFile</normaloff>:/app/addFile</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_creditInvoice">
+       <property name="text">
+        <string>Avoir</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../ressources.qrc">
+         <normaloff>:/app/undo</normaloff>:/app/undo</iconset>
        </property>
       </widget>
      </item>

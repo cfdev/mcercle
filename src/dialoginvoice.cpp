@@ -23,6 +23,7 @@
 #include "printc.h"
 #include "table.h"
 #include "mctextedit.h"
+#include "dialogtax.h"
 
 #include <QMessageBox>
 #include <QMenu>
@@ -67,6 +68,7 @@ DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type,
 	//Event
 	connect(ui->lineEdit_code, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
 	connect(ui->lineEdit_description, SIGNAL(textChanged(const QString &)), this, SLOT(checkConditions()));
+	connect(ui->doubleSpinBox_partPAYMENT,SIGNAL(valueChanged(const double &)), this, SLOT(checkConditions()));
 }
 
 DialogInvoice::~DialogInvoice() {
@@ -83,6 +85,13 @@ void DialogInvoice::checkConditions() {
 		ui->pushButton_ok->setEnabled(true);
 	else
 		ui->pushButton_ok->setEnabled(false);
+	//Test pour activer le bouton acompte ou pas
+	if(ui->doubleSpinBox_partPAYMENT->value()>0.0) {
+		ui->pushButton_partInvoice->setEnabled( true );
+	}
+	else{
+		ui->pushButton_partInvoice->setEnabled( false );
+	}
 }
 
 /**
@@ -119,6 +128,8 @@ void DialogInvoice::setUI() {
 		ui->label_link->setText(QLatin1String("Facture associée : "));
 		ui->label_partpayment->setVisible(false);
 		ui->doubleSpinBox_partPAYMENT->setVisible(false);
+		ui->pushButton_partInvoice->setVisible(false);
+		ui->pushButton_creditInvoice->setVisible(false);
 
 	}
 	else{
@@ -196,6 +207,15 @@ void DialogInvoice::setUI() {
 	connect(sevAct, SIGNAL(triggered()), this, SLOT(addFreeline_Service()));
 	connect(prodAct, SIGNAL(triggered()), this, SLOT(addFreeline_Product()));
 	
+	//Test si facture acompte ou avoir
+	if( m_invoice->getType() != MCERCLE::TYPE_INV) {
+		ui->label_link ->setText( QLatin1String("Sur Facture :") );
+		ui->lineEdit_linkCode->setText( QString::number(m_invoice->getIdRef()) );
+
+		ui->doubleSpinBox_partPAYMENT->setVisible(false);
+		ui->label_partpayment->setVisible(false);
+	}
+
 	//Test les conditions
 	checkConditions();
 }
@@ -1389,6 +1409,73 @@ void DialogInvoice::on_pushButton_print_clicked() {
  * @brief Affiche/cache la base de donnee
  */
 void DialogInvoice::on_toolButton_hide_clicked() {
-    ui->groupBox_select->setVisible( !ui->groupBox_select->isVisible() );
-    ui->toolButton_add->setVisible( !ui->toolButton_add->isVisible() );
+	ui->groupBox_select->setVisible( !ui->groupBox_select->isVisible() );
+	ui->toolButton_add->setVisible( !ui->toolButton_add->isVisible() );
+}
+
+/**
+ * @brief creer une facture dacompte
+ */
+void DialogInvoice::on_pushButton_partInvoice_clicked() {
+
+	int ret = QMessageBox::warning(this, tr("Attention"),
+				QLatin1String("Voulez-vous créer une facture d'acompte? "),
+				QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+
+	if(ret == QMessageBox::Yes){
+		//Choix de la tax
+		qreal mtax;
+		if(m_data->getIsTax()) {
+			DialogTax *m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Choice, &mtax);
+			m_DialogTax->setModal(true);
+			m_DialogTax->exec();
+		}
+		m_invoice->setType( MCERCLE::TYPE_PART );
+		m_invoice->setIdRef( m_invoice->getId() );
+		m_invoice->setDescription( tr("Acompte sur ")+ m_invoice->getCode() );
+		m_invoice->setPartPayment(0);
+		m_invoice->setState( MCERCLE::INV_UNPAID );
+		m_invoice->setUserDate( QDate::currentDate() );
+		m_invoice->setPaymentDate( QDate::currentDate() );
+		m_invoice->setLimitPayment( QDate::currentDate() );
+		m_invoice->setTypePayment( m_invoice->getTypePayment() );
+		m_invoice->setPrice( ui->doubleSpinBox_partPAYMENT->value() / (1+mtax/100.0) );
+		m_invoice->setPriceTax( ui->doubleSpinBox_partPAYMENT->value() );
+
+		//Recupere le dernier ID
+		int lastID = m_invoice->getLastId();
+		//Generation du code facture
+		// TYPE + DATE + ID
+		QString typp = tr("FA");
+		m_invoice->setCode( typp + QDateTime::currentDateTime().toString("yyMM") +"-"+ QString::number(lastID+1) );
+		//cree lobjet
+		m_invoice->create();
+		//recharge l objet et son nouvel ID pour lajout des items par la suite
+		m_invoice->loadFromID(lastID+1);
+
+		//Creation dun item !
+		invoice::InvoiceItem itemInv;
+		itemInv.name = m_invoice->getDescription();
+		itemInv.idProduct = 0;
+		itemInv.price = m_invoice->getPrice();
+		itemInv.discount = 0;
+		itemInv.tax = mtax;
+		itemInv.quantity = 1;
+		itemInv.order = 0;
+		itemInv.type = 0;
+
+		m_invoice->addInvoiceItem(itemInv);
+
+		//Configuration de l'UI
+		setUI();
+		//Demande le rafraichissement de la liste des factures
+		emit askRefreshInvoiceList();
+	}
+}
+
+/**
+ * @brief Creer une facture davoir
+ */
+void DialogInvoice::on_pushButton_creditInvoice_clicked() {
+
 }

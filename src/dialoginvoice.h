@@ -49,8 +49,10 @@ private slots:
 	void addFreeline_Product();
 	
 	void on_toolButton_hide_clicked();
+	void on_pushButton_partInvoice_clicked();
+	void on_pushButton_creditInvoice_clicked();
 
-private:
+	private:
 	Ui::DialogInvoice *ui;
 	database *m_data;
 	customer *m_customer;
