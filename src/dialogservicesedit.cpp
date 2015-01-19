@@ -52,7 +52,6 @@ void DialogServicesEdit::loadTaxList() {
 	//Recuperation des donnees presentent dans la bdd
 	m_taxTable->getTaxList(list, "TAX", "", "");
 	ui->comboBox_tax->clear();
-	QLocale m_lang = QLocale::system().name().section('_', 0, 0);
 
 	for(unsigned int i=0; i<list.value.size(); i++){
 		ui->comboBox_tax->addItem( m_lang.toString(list.value.at(i),'f',2) );
