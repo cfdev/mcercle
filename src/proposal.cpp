@@ -42,8 +42,7 @@ proposal::~proposal() {
 /**
 	Recevoir les icons des differents etats
 */
-QIcon proposal::getIconState(int state)
-{
+QIcon proposal::getIconState(int state) {
 	switch(state){
 		case MCERCLE::PROPOSAL_WRITING:return QIcon(":/app/process");break;
 		case MCERCLE::PROPOSAL_PROPOSED:return QIcon(":/app/wait");break;
@@ -56,8 +55,7 @@ QIcon proposal::getIconState(int state)
 /**
 	Recevoir les text des differents etats
 */
-QString proposal::getTextState(int state)
-{
+QString proposal::getTextState(int state) {
 	switch(state){
 		case MCERCLE::PROPOSAL_WRITING:return tr("En ecriture");break;
 		case MCERCLE::PROPOSAL_PROPOSED:return tr("Propose");break;
@@ -76,7 +74,7 @@ bool proposal::create() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
-	QString req = "INSERT INTO TAB_PROPOSALS(CREATIONDATE, ID_CUSTOMER, CODE, DATE, VALIDDATE, DELIVERYDATE, DELAY_DELIVERYDATE, TYPE_PAYMENT, PRICE, STATE, DESCRIPTION) ";
+	QString req = "INSERT INTO TAB_PROPOSALS(CREATIONDATE, ID_CUSTOMER, CODE, DATE, VALIDDATE, DELIVERYDATE, DELAY_DELIVERYDATE, TYPE_PAYMENT, PRICE, PRICE_TAX, STATE, DESCRIPTION) ";
 	req += "VALUES(";
 	req += "'" + QDateTime::currentDateTime().toString(tr("yyyy/MM/dd-HH:mm:ss")) + "',";
 	req += "'" + QString::number(m_idCustomer) + "',";
@@ -87,6 +85,7 @@ bool proposal::create() {
 	req += "'" + QString::number(m_delayDeliveryDate)  + "',";
 	req += "'" + m_typePayment + "',";
 	req += "'" + f.setNum(m_price,'f',2) + "',";
+	req += "'" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "'" + QString::number(m_state)  + "',";
 	req += "'" + m_description.replace("\'","''") + "');";
 
@@ -117,6 +116,7 @@ bool proposal::update() {
 	req += "DELAY_DELIVERYDATE='" + QString::number(m_delayDeliveryDate)  + "',";
 	req += "TYPE_PAYMENT='" + m_typePayment + "',";
 	req += "PRICE='" + f.setNum(m_price,'f',2) + "',";
+	req += "PRICE_TAX='" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "STATE='" + QString::number(m_state)  + "',";
 	req += "DESCRIPTION='" + m_description.replace("\'","''") + "' ";
 	req += "WHERE ID='"+ QString::number(m_id) +"';";
@@ -307,7 +307,7 @@ int proposal::getLastId(){
   */
 bool proposal::getProposalList(ProposalList& list, int id_customer, QString order, QString filter, QString field) {
 	QString req = "select TAB_PROPOSALS.ID, TAB_PROPOSALS.DATE, TAB_PROPOSALS.VALIDDATE, TAB_PROPOSALS.DELIVERYDATE, TAB_PROPOSALS.DELAY_DELIVERYDATE, "
-			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.STATE "
+			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.PRICE_TAX, TAB_PROPOSALS.STATE "
 			"FROM TAB_PROPOSALS "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_PROPOSALS.ID = TAB_LINK_PROPOSALS_INVOICES.ID_PROPOSAL "
@@ -337,6 +337,7 @@ bool proposal::getProposalList(ProposalList& list, int id_customer, QString orde
 			list.delayDeliveryDate.push_back( query.value(query.record().indexOf("DELAY_DELIVERYDATE")).toInt() );
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
+			list.priceTax.push_back( query.value(query.record().indexOf("PRICE_TAX")).toFloat() );
 			list.state.push_back( query.value(query.record().indexOf("STATE")).toInt() );
 		}
 		return true;
@@ -355,7 +356,7 @@ bool proposal::getProposalList(ProposalList& list, int id_customer, QString orde
   */
 bool proposal::getProposalListAlert(ProposalListAlert& list) {
 
-	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_PROPOSALS.ID, TAB_PROPOSALS.DATE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.CODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE "
+	QString req =   "SELECT TAB_CUSTOMERS.ID AS C_ID, TAB_CUSTOMERS.FIRSTNAME, TAB_CUSTOMERS.LASTNAME, TAB_PROPOSALS.ID, TAB_PROPOSALS.DATE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.CODE, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.PRICE_TAX "
 					"FROM TAB_PROPOSALS "
 					"LEFT OUTER JOIN TAB_CUSTOMERS "
 					"ON TAB_PROPOSALS.ID_CUSTOMER = TAB_CUSTOMERS.ID "
@@ -374,7 +375,7 @@ bool proposal::getProposalListAlert(ProposalListAlert& list) {
 			list.code.push_back( query.value(query.record().indexOf("CODE")).toString());
 			list.description << query.value(query.record().indexOf("DESCRIPTION")).toString();
 			list.price.push_back( query.value(query.record().indexOf("PRICE")).toFloat() );
-
+			list.priceTax.push_back( query.value(query.record().indexOf("PRICE_TAX")).toFloat() );
 		}
 		return true;
 	}
@@ -571,5 +572,68 @@ bool proposal::setLink( const int& idProposal, const int& idInvoice ){
 		return false;
 	}
 	else return true;
+}
+
+/**
+ * @brief proposal::calcul_price
+ * @param id
+ * @return calcul la valeur dun devis en HT en fonction des artilces, tax, remises, qte
+ */
+qreal proposal::calcul_price(int id){
+
+	QString req =	"select SUM("
+			" round("
+			" (tab_proposals_details.quantity*tab_proposals_details.price)-"
+			" (tab_proposals_details.quantity*tab_proposals_details.price*tab_proposals_details.discount/100.0)"
+			" ,2)"
+			" )"
+			" AS TTC"
+			" from tab_proposals_details"
+			" where tab_proposals_details.id_proposal="+QString::number(id);
+
+	QSqlQuery query;
+	query.prepare(req);
+
+	qreal price_ttc=0;
+	if(query.exec()){
+		query.next();
+		price_ttc = query.value(query.record().indexOf("TTC")).toDouble();
+		return price_ttc;
+	}
+	else{
+		return 0;
+	}
+}
+
+
+/**
+ * @brief proposal::calcul_priceTax
+ * @param id
+ * @return calcul la valeur du devis en TTC en fonction des artilces, tax, remises, qte
+ */
+qreal proposal::calcul_priceTax(int id){
+
+	QString req =	"select SUM("
+			" round("
+			" tab_proposals_details.quantity*(tab_proposals_details.price+(tab_proposals_details.price*tab_proposals_details.tax/100.0))-"
+			" tab_proposals_details.quantity*(tab_proposals_details.price+(tab_proposals_details.price*tab_proposals_details.tax/100.0))*tab_proposals_details.discount/100.0"
+			" ,2)"
+			" )"
+			" AS TTC"
+			" from tab_proposals_details"
+			" where tab_proposals_details.id_proposal="+QString::number(id);
+
+	QSqlQuery query;
+	query.prepare(req);
+
+	qreal price_ttc=0;
+	if(query.exec()){
+		query.next();
+		price_ttc = query.value(query.record().indexOf("TTC")).toDouble();
+		return price_ttc;
+	}
+	else{
+		return 0;
+	}
 }
 
