@@ -18,7 +18,7 @@ private:
 	QSqlQuery m_query;
 
 	QWidget *m_parent;
-	int m_id, m_idCustomer, m_state ;
+	int m_id, m_idCustomer, m_state , m_type, m_idRef;
 	qreal m_price, m_priceTax, m_partPayment;
 	QDateTime m_creationDate;
 	QDate m_userDate, m_limitPayment, m_paymentDate;
@@ -113,8 +113,8 @@ public:
 	bool isHere(const QString& code);
 	int getLastId();
 	int count(int id_customer);
-	qreal calcul_price(int id_invoice);
-	qreal calcul_priceTax(int id_invoice);
+	qreal calcul_price(int id);
+	qreal calcul_priceTax(int id);
 
 	//Appliquer les valeurs
 	void setId(const int& ident){m_id = ident;}
@@ -129,6 +129,8 @@ public:
 	void setUserDate(const QDate& date){m_userDate = date;}
 	void setLimitPayment(const QDate& date){m_limitPayment = date;}
 	void setPaymentDate(const QDate& date){m_paymentDate = date;}
+	void setType(const int& type){m_idRef = type;}
+	void setIdRef(const int& idref){m_idRef = idref;}
 
 	//recup les valeurs de la facture
 	QIcon getIconState(int state);
@@ -146,7 +148,9 @@ public:
 	QString getCode(){return m_code;}
 	QString getProposalCode(){return m_proposalCode;}
 	QString getDescription(){return m_description;}
-	
+	int getType(){return m_type;}
+	int getIdRef(){return m_idRef;}
+
 	bool getInvoiceList(InvoiceList& list, int id_customer, QString order, QString filter, QString field);
 	bool getInvoices(InvoicesBook& list, QString year, QString month);
 	bool getInvoiceListAlert(InvoiceListAlert& list);

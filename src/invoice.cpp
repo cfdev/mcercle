@@ -44,13 +44,12 @@ invoice::~invoice() {
 /**
 	Recevoir les icons des differents etats
 */
-QIcon invoice::getIconState(int state)
-{
+QIcon invoice::getIconState(int state) {
 	switch(state){
-        case MCERCLE::INV_UNPAID:return QIcon(":/app/warning");break;
-        case MCERCLE::INV_PAID:return QIcon(":/app/ok");break;
-        case MCERCLE::INV_OVERDUE:return  QIcon(":/app/Off");break;
-        case MCERCLE::INV_CANCEL:return  QIcon(":/app/quit");break;
+		case MCERCLE::INV_UNPAID:return QIcon(":/app/warning");break;
+		case MCERCLE::INV_PAID:return QIcon(":/app/ok");break;
+		case MCERCLE::INV_OVERDUE:return  QIcon(":/app/Off");break;
+		case MCERCLE::INV_CANCEL:return  QIcon(":/app/quit");break;
 		default: break;
 	}
 	return QIcon("");
@@ -59,13 +58,12 @@ QIcon invoice::getIconState(int state)
 /**
 	Recevoir les text des differents etats
 */
-QString invoice::getTextState(int state)
-{
+QString invoice::getTextState(int state) {
 	switch(state){
-        case MCERCLE::INV_UNPAID:return QLatin1String("Non Réglée");break;
-        case MCERCLE::INV_PAID:return QLatin1String("Réglée");break;
-        case MCERCLE::INV_OVERDUE:return QLatin1String("Impayée");break;
-        case MCERCLE::INV_CANCEL:return QLatin1String("Annulée");break;
+		case MCERCLE::INV_UNPAID:return QLatin1String("Non Réglée");break;
+		case MCERCLE::INV_PAID:return QLatin1String("Réglée");break;
+		case MCERCLE::INV_OVERDUE:return QLatin1String("Impayée");break;
+		case MCERCLE::INV_CANCEL:return QLatin1String("Annulée");break;
 		default: break;
 	}
 	return "";
@@ -80,7 +78,7 @@ bool invoice::create() {
 	// Construction de la requette
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
-	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, PRICE_TAX, STATE, DESCRIPTION) ";
+	QString req = "INSERT INTO TAB_INVOICES(CREATIONDATE, ID_CUSTOMER, CODE, DATE, LIMIT_PAYMENTDATE, PAYMENTDATE, TYPE_PAYMENT, PART_PAYMENT, PRICE, PRICE_TAX, STATE, TYPE, ID_REFERENCE, DESCRIPTION) ";
 	req += "VALUES(";
 	req += "'" + QDateTime::currentDateTime().toString(tr("yyyy-MM-dd HH:mm:ss")) + "',";
 	req += "'" + QString::number(m_idCustomer) + "',";
@@ -93,6 +91,8 @@ bool invoice::create() {
 	req += "'" + f.setNum(m_price,'f',2) + "',";
 	req += "'" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "'" + QString::number(m_state)  + "',";
+	req += "'" + QString::number(m_type)  + "',";
+	req += "'" + QString::number(m_idRef)  + "',";
 	req += "'" + m_description.replace("\'","''") + "');";
 
 	QSqlQuery query;
@@ -124,9 +124,12 @@ bool invoice::update() {
 	req += "PRICE='" + f.setNum(m_price,'f',2) + "',";
 	req += "PRICE_TAX='" + f.setNum(m_priceTax,'f',2) + "',";
 	req += "STATE='" + QString::number(m_state)  + "',";
-	req += "DESCRIPTION='" + m_description.replace("\'","''") + "' ";
+	req += "DESCRIPTION='" + m_description.replace("\'","''") + "', ";
+	req += "TYPE='" + QString::number(m_type)  + "',";
+	req += "ID_REFERENCE='" + QString::number(m_idRef)  + "' ";
 	req += "WHERE ID='"+ QString::number(m_id) +"';";
 
+	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(!query.exec()) {
@@ -150,21 +153,21 @@ bool invoice::remove(){
 	QSqlQuery query;
 	query.prepare(req);
 	if(!query.exec()) {
-        QMessageBox::critical(this->m_parent, tr("Erreur"), req+'\n'+query.lastError().text());
+		QMessageBox::critical(this->m_parent, tr("Erreur"), req+'\n'+query.lastError().text());
 		return false;
 	}
-    else{
-        // Si cest la derniere facture on rafraichit l'index
-        if(getLastId() == m_id){
-            req = "UPDATE SQLITE_SEQUENCE SET SEQ='"+QString::number(m_id-1)+"' WHERE name='TAB_INVOICES';";
-            query.prepare(req);
-            if(!query.exec()) {
-                QMessageBox::critical(this->m_parent, tr("Erreur"), req+'\n'+query.lastError().text());
-                return false;
-            }
-        }
-        return true;
-    }
+	else{
+		// Si cest la derniere facture on rafraichit l'index
+		if(getLastId() == m_id){
+			req = "UPDATE SQLITE_SEQUENCE SET SEQ='"+QString::number(m_id-1)+"' WHERE name='TAB_INVOICES';";
+			query.prepare(req);
+			if(!query.exec()) {
+				QMessageBox::critical(this->m_parent, tr("Erreur"), req+'\n'+query.lastError().text());
+				return false;
+			}
+		}
+		return true;
+	}
 }
 
 /**
@@ -174,7 +177,7 @@ bool invoice::remove(){
   */
 bool invoice::loadFromID(const int& id)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE "
+	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE,TAB_INVOICES.TYPE,TAB_INVOICES.ID_REFERENCE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -200,6 +203,8 @@ bool invoice::loadFromID(const int& id)
 		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
+		m_type = query.value(query.record().indexOf("TYPE")).toInt();
+		m_idRef = query.value(query.record().indexOf("ID_REFERENCE")).toInt();
 		return true;
 	}
 	else{
@@ -216,7 +221,7 @@ bool invoice::loadFromID(const int& id)
   */
 bool invoice::loadFromCode(const QString& code)
 {
-	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE "
+	QString req = "SELECT TAB_INVOICES.ID, TAB_INVOICES.ID_CUSTOMER, TAB_INVOICES.CREATIONDATE, TAB_INVOICES.TYPE_PAYMENT, TAB_INVOICES.PART_PAYMENT, TAB_INVOICES.DATE, TAB_INVOICES.LIMIT_PAYMENTDATE, TAB_INVOICES.PAYMENTDATE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.DESCRIPTION, TAB_INVOICES.PRICE, TAB_INVOICES.PRICE_TAX, TAB_INVOICES.STATE, TAB_INVOICES.TYPE,TAB_INVOICES.ID_REFERENCE "
 			"FROM TAB_INVOICES "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_INVOICES.ID = TAB_LINK_PROPOSALS_INVOICES.ID_INVOICE "
@@ -242,6 +247,8 @@ bool invoice::loadFromCode(const QString& code)
 		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
+		m_type = query.value(query.record().indexOf("TYPE")).toInt();
+		m_idRef = query.value(query.record().indexOf("ID_REFERENCE")).toInt();
 		return true;
 	}
 	else{
@@ -661,13 +668,14 @@ qreal invoice::getYearRevenue(QString year) {
 	if(m_db.driverName() == "QSQLITE")
 		req =	"SELECT SUM( round(price,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"'and "
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 	else
 		req =	"SELECT SUM( round(price,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"'and;"
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 
-	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -700,13 +708,14 @@ qreal invoice::getYearRevenueTAX(QString year) {
 	if(m_db.driverName() == "QSQLITE")
 		req =	"SELECT SUM( round(price_tax,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"'and "
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 	else
 		req =	"SELECT SUM( round(price_tax,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"'and "
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 
-	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -740,13 +749,16 @@ qreal invoice::getMonthRevenue(QString year, QString month) {
 		req =	"SELECT round(SUM( price ), 2) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'and "
-				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"'and "
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 	}
 	else
 		req =	"SELECT round(SUM( price ), 2) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
 				"extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
-				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"'and "
+				"(TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
+
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -781,7 +793,8 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 				"AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
-				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0;";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE <= 0 "
+				"AND (TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 	}
 	//TODO: MYSQL_REQ
   /*  else
@@ -790,7 +803,7 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 			"extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
 			"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
-	qDebug() << req;
+	//qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -823,7 +836,8 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 				"AS TOTAL FROM TAB_INVOICES LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE "
 				"WHERE TAB_INVOICES.STATE = '1' AND "
 				"strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"'AND "
-                "strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE > 0;";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"' AND TAB_INVOICES_DETAILS.TYPE > 0 "
+				"AND (TAB_INVOICES.TYPE is null or TAB_INVOICES.TYPE = '0');";
 	}
 	//TODO: MYSQL_REQ
   /*  else
@@ -896,9 +910,8 @@ int invoice::count(int id_customer) {
  * @param id_invoice
  * @return calcul la valeur de la facture en HT en fonction des artilces, tax, remises, qte
  */
-qreal invoice::calcul_price(int id_invoice){
-	//On realise un double arrondi un interne sur 4 decimales pour etre plus precis
-	//Puis on arrondi le resultat sur 2 decimales
+qreal invoice::calcul_price(int id){
+
 	QString req =	"select SUM("
 			" round("
 			" (tab_invoices_details.quantity*tab_invoices_details.price)-"
@@ -907,7 +920,7 @@ qreal invoice::calcul_price(int id_invoice){
 			" )"
 			" AS TTC"
 			" from tab_invoices_details"
-			" where tab_invoices_details.id_invoice="+QString::number(id_invoice);
+			" where tab_invoices_details.id_invoice="+QString::number(id);
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -929,9 +942,8 @@ qreal invoice::calcul_price(int id_invoice){
  * @param id_invoice
  * @return calcul la valeur de la facture en TTC en fonction des artilces, tax, remises, qte
  */
-qreal invoice::calcul_priceTax(int id_invoice){
-	//On realise un double arrondi un interne sur 4 decimales pour etre plus precis
-	//Puis on arrondi le resultat sur 2 decimales
+qreal invoice::calcul_priceTax(int id){
+
 	QString req =	"select SUM("
 			" round("
 			" tab_invoices_details.quantity*(tab_invoices_details.price+(tab_invoices_details.price*tab_invoices_details.tax/100.0))-"
@@ -940,7 +952,7 @@ qreal invoice::calcul_priceTax(int id_invoice){
 			" )"
 			" AS TTC"
 			" from tab_invoices_details"
-			" where tab_invoices_details.id_invoice="+QString::number(id_invoice);
+			" where tab_invoices_details.id_invoice="+QString::number(id);
 
 	QSqlQuery query;
 	query.prepare(req);
