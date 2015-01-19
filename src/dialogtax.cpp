@@ -3,7 +3,7 @@
 #include "mcercle.h"
 #include <QMessageBox>
 
-DialogTax::DialogTax(tax *t, int typeUI, QWidget *parent) :
+DialogTax::DialogTax(tax *t, int typeUI, qreal *result, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogTax)
 {
@@ -13,8 +13,19 @@ DialogTax::DialogTax(tax *t, int typeUI, QWidget *parent) :
 	if(typeUI == MCERCLE::Widget) {
 		ui -> buttonBox -> setVisible(false);
 	}
-	
+	if(typeUI == MCERCLE::Choice) {
+		setWindowTitle(QLatin1String("Sélection de la tax..."));
+		ui -> buttonBox -> setVisible(true);
+		ui ->label->setVisible(false);
+		ui ->label_2->setVisible(false);
+		ui ->lineEdit_description->setVisible(false);
+		ui ->doubleSpinBox_tax->setVisible(false);
+		ui ->pushButton_add->setVisible(false);
+		ui ->pushButton_del->setVisible(false);
+		ui ->pushButton_edit->setVisible(false);
+	}
 	m_tax = t;
+	mresult = result;
 	listTaxToTable("TAX","","");
 }
 
@@ -142,4 +153,7 @@ void DialogTax::on_tableWidget_itemSelectionChanged()
 	//Charge les champs
 	ui->lineEdit_description->setText( m_tax->getDescription() );
 	ui->doubleSpinBox_tax->setValue( m_tax->getValue() );
+	if(mresult){
+		*mresult = m_tax->getValue();
+	}
 }
