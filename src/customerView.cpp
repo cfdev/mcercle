@@ -492,8 +492,8 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 
 	ui->tableWidget_Proposals->setSortingEnabled(false);
 	//Style de la table de facture
-	ui->tableWidget_Proposals->setColumnCount(6);
-	ui->tableWidget_Proposals->setColumnWidth(4,250);
+	ui->tableWidget_Proposals->setColumnCount(7);
+	ui->tableWidget_Proposals->setColumnWidth(5,250);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_Proposals->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
 #endif
@@ -501,8 +501,13 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 	ui->tableWidget_Proposals->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Proposals->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Prix") << tr("Description")  << tr("Etat");
+	titles  << tr("Id") << tr("Codes") << tr("Date") << tr("Prix") << tr("Prix TTC") << tr("Description")  << tr("Etat");
 	ui->tableWidget_Proposals->setHorizontalHeaderLabels( titles );
+
+	//Si pas de tva on cache la colonne
+	if(!m_data->getIsTax()) {
+		ui->tableWidget_Invoices->setColumnHidden(4 , true);
+	}
 
 	//Recuperation des donnees presentent dans la bdd
 	m_data->m_customer->m_proposal->getProposalList(ilist, m_data->m_customer->getId(), "TAB_PROPOSALS.DATE", filter, field);
@@ -513,6 +518,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 		ItemOfTable *item_CODE         = new ItemOfTable();
 		ItemOfTable *item_DATE         = new ItemOfTable();
 		ItemOfTable *item_PRICE        = new ItemOfTable();
+		ItemOfTable *item_PRICE_TAX    = new ItemOfTable();
 		ItemOfTable *item_DESCRIPTION  = new ItemOfTable();
 		ItemOfTable *item_STATE        = new ItemOfTable();
 
@@ -520,6 +526,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 		item_CODE->setData(Qt::DisplayRole, ilist.code.at(i));
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/ );
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
+		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_proposal->getIconState(ilist.state.at(i)) );
 		item_STATE->setText( m_data->m_customer->m_proposal->getTextState(ilist.state.at(i)) );
@@ -532,8 +539,9 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 		ui->tableWidget_Proposals->setItem(i, 1, item_CODE);
 		ui->tableWidget_Proposals->setItem(i, 2, item_DATE);
 		ui->tableWidget_Proposals->setItem(i, 3, item_PRICE);
-		ui->tableWidget_Proposals->setItem(i, 4, item_DESCRIPTION);
-		ui->tableWidget_Proposals->setItem(i, 5, item_STATE);
+		ui->tableWidget_Proposals->setItem(i, 4, item_PRICE_TAX);
+		ui->tableWidget_Proposals->setItem(i, 5, item_DESCRIPTION);
+		ui->tableWidget_Proposals->setItem(i, 6, item_STATE);
 	}
 	ui->tableWidget_Proposals->setSortingEnabled(true);
 	ui->tableWidget_Proposals->selectRow(0);
