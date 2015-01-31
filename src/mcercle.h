@@ -21,8 +21,9 @@
 
 namespace MCERCLE {
 // Version et version de bdd supporte
-	const QString Version = "14.10";
-	const int Dbase_support = 6;
+	const QString Version = "15.01";
+	const QString CodeName = "Snow";
+	const int Dbase_support = 7;
 
 // Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre
 	const QString CASH ="CA";
@@ -37,7 +38,7 @@ namespace MCERCLE {
 	enum{PROPOSAL_WRITING, PROPOSAL_PROPOSED, PROPOSAL_VALIDATED};
 	//FACTURE
 	enum{INV_UNPAID , INV_PAID, INV_OVERDUE, INV_CANCEL};
-	
+	enum{TYPE_INV=0 , TYPE_PART, TYPE_CREDIT};
 	//TYPE PRODUIT SERVICE
 	const int SERVICE = 0;
 	const int PRODUCT = 1;
@@ -47,7 +48,8 @@ namespace MCERCLE {
 	
 	enum UI {
 		Dialog,
-		Widget
+		Widget,
+		Choice
 	};
 	
 }
