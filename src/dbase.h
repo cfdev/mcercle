@@ -58,6 +58,7 @@ private:
 	bool upgradeToV4(QString *log);
 	bool upgradeToV5(QString *log);
 	bool upgradeToV6(QString *log);
+	bool upgradeToV7(QString *log);
 
 public:
 
@@ -71,9 +72,9 @@ public:
 		QString zipCode;
 		QString city;
 		QString address1, address2, address3;
-		QString line1, line2;
+		QString line1, line2, line3;
 		int tax; int ca_type;
-		int borderRadius;
+		int borderRadius, drawLine;
 		int manageStock;
 	}Informations;
 

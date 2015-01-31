@@ -163,7 +163,7 @@ char database::connect(){
 		int ret = QMessageBox::warning(
 								this->m_parent,
 								tr("Attention"),
-								QLatin1String("Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.\n\nVoulez-vous mettre à jour la base de donnée"),
+								QLatin1String("Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.\n\nVoulez-vous mettre à jour la base de donnée ?\n(Ceci peut prendre quelques minutes...)"),
 								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
 								);
 	
@@ -188,6 +188,10 @@ char database::connect(){
 			logAll += log;
 			if(m_databaseVersion <= 5 ) {
 				if(!upgradeToV6(&log)) upgradeOk = false;
+			}
+			logAll += log;
+			if(m_databaseVersion <= 6 ) {
+				if(!upgradeToV7(&log)) upgradeOk = false;
 			}
 			logAll += log;
 
@@ -338,9 +342,11 @@ bool database::createTable_informations(){
 			"LOGO           BLOB,"
 			"CG             TEXT,"
 			"CA_TYPE        INTEGER NOT NULL ,"
-			"PRINT_LINE1    VARCHAR(64),"
-			"PRINT_LINE2    VARCHAR(64),"
+			"PRINT_LINE1    VARCHAR(256),"
+			"PRINT_LINE2    VARCHAR(256),"
+			"PRINT_LINE3    VARCHAR(256),"
 			"BORDER_RADIUS  INTEGER,"
+			"DRAW_LINE      INTEGER,"
 			"MANAGE_STOCK   INTEGER,"
 			"PRIMARY KEY (ID)"
 			");";
@@ -358,7 +364,7 @@ bool database::createTable_informations(){
 
 	//INSERT
 	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-					"VALUES('6', '0', '','1');");
+					"VALUES('7', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
@@ -651,6 +657,7 @@ bool database::createTable_proposals(){
 			"CODE           VARCHAR(64) NOT NULL,"
 			"TYPE_PAYMENT   VARCHAR(2),"
 			"PRICE          NUMERIC(8,2) NOT NULL,"
+			"PRICE_TAX      NUMERIC(8,2) NOT NULL,"
 			"STATE          INTEGER NOT NULL,"
 			"DESCRIPTION    VARCHAR(256),"
 			"FOREIGN KEY(ID_CUSTOMER) REFERENCES TAB_CUSTOMERS(ID) ON DELETE CASCADE"
@@ -721,8 +728,12 @@ bool database::createTable_invoices(){
 			"CODE           VARCHAR(64) NOT NULL,"
 			"TYPE_PAYMENT   VARCHAR(2) ,"
 			"PART_PAYMENT   NUMERIC(8,2) NOT NULL,"
+			"PART_PAYMENT_TAX   NUMERIC(8,2) NOT NULL,"
 			"PRICE          NUMERIC(8,2) NOT NULL,"
+			"PRICE_TAX      NUMERIC(8,2) NOT NULL,"
 			"STATE          INTEGER NOT NULL,"
+			"TYPE           INTEGER NOT NULL,"
+			"ID_REFERENCE   INTEGER NOT NULL,"
 			"DESCRIPTION    VARCHAR(256),"
 			"FOREIGN KEY(ID_CUSTOMER) REFERENCES TAB_CUSTOMERS(ID) ON DELETE CASCADE"
 			");  ";
@@ -896,7 +907,9 @@ bool database::updateInfo(Informations &info) {
 	req += "CA_TYPE='" + QString::number(info.ca_type) + "', ";
 	req += "PRINT_LINE1='" + info.line1.replace("\'","''") + "', ";
 	req += "PRINT_LINE2='" + info.line2.replace("\'","''") + "', ";
+	req += "PRINT_LINE3='" + info.line3.replace("\'","''") + "', ";
 	req += "BORDER_RADIUS='" + QString::number(info.borderRadius) + "', ";
+	req += "DRAW_LINE='" + QString::number(info.drawLine) + "', ";
 	req += "MANAGE_STOCK='" + QString::number(info.manageStock) + "' ";
 	req += "WHERE ID='1';";
 
@@ -939,7 +952,9 @@ bool database::getInfo(Informations &info) {
 		info.ca_type = query.value(query.record().indexOf("CA_TYPE")).toInt();
 		info.line1 = query.value(query.record().indexOf("PRINT_LINE1")).toString();
 		info.line2 = query.value(query.record().indexOf("PRINT_LINE2")).toString();
+		info.line3 = query.value(query.record().indexOf("PRINT_LINE3")).toString();
 		info.borderRadius = query.value(query.record().indexOf("BORDER_RADIUS")).toInt();
+		info.drawLine = query.value(query.record().indexOf("DRAW_LINE")).toInt();
 		info.manageStock = query.value(query.record().indexOf("MANAGE_STOCK")).toInt();
 	}
 	else{
@@ -1480,6 +1495,164 @@ bool database::upgradeToV6(QString *log) {
 	else
 		*log += "\n-> FAIT";
 
+	return done;
+}
+
+/**
+   Met a jour la base de donnees en version 6
+  */
+bool database::upgradeToV7(QString *log) {
+	QString req;
+	bool done=true;
+	QSqlQuery query;
+	*log = QLatin1String("Mise à jour de la base de données en version 7:");
+
+	//Affichage de la fenetre d attente
+	char bar=0;
+	DialogWaiting* m_DialogWaiting = new DialogWaiting();
+	m_DialogWaiting->setTitle( QLatin1String("Mise à jour de la base de données en version 7:") );
+	m_DialogWaiting->setProgressBarRange(0,2);
+	m_DialogWaiting->setModal(true);
+	m_DialogWaiting->show();
+
+	//Ajoute une colonne pour limpression
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD PRINT_LINE3 VARCHAR(256)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajoute une colonne pour limpression
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD DRAW_LINE INTEGER";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout une colonne prix ttc dans la table devis
+	req =	"ALTER TABLE TAB_PROPOSALS ADD PRICE_TAX NUMERIC(8.2)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout une colonne acompte ttc dans la table facture
+	req =	"ALTER TABLE TAB_INVOICES ADD PART_PAYMENT_TAX NUMERIC(8.2)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout une colonne prix ttc dans la table facture
+	req =	"ALTER TABLE TAB_INVOICES ADD PRICE_TAX NUMERIC(8.2)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout une colonne type de facture
+	req =	"ALTER TABLE TAB_INVOICES ADD TYPE INTERGER";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajout une colonne reference ID
+	req =	"ALTER TABLE TAB_INVOICES ADD ID_REFERENCE INTERGER";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Update le type de facture si on trouve un titre avec acompte
+	m_DialogWaiting->setProgressBar(bar++);
+	req =	"UPDATE tab_invoices SET type=1 WHERE (tab_invoices.description LIKE '%acompt%') or (tab_invoices.description LIKE '%accompt%');";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Mise a jour des prix de la table proposals
+	m_DialogWaiting->setDetail( QLatin1String("Mise à jour des prix de la table des devis") );
+	m_DialogWaiting->setProgressBar(bar++);
+	int iLastId = m_customer -> m_proposal-> getLastId();
+	qreal price, priceTTc, partpayment;
+	for(int id=1; id<=iLastId; id++) {
+		if( m_customer -> m_proposal->loadFromID(id) ) {
+			//recupere les prix dun devis
+			price = m_customer -> m_proposal -> calcul_price(id);
+			priceTTc = m_customer -> m_proposal -> calcul_priceTax(id);
+			//modifi dans le devis
+			m_customer -> m_proposal -> setPrice(price);
+			m_customer -> m_proposal -> setPriceTax( priceTTc );
+			m_customer -> m_proposal -> update();
+		}
+	}
+
+	//Mise a jour des prix de la table invoice
+	m_DialogWaiting->setDetail( QLatin1String("Mise à jour des prix de la table des factures") );
+	m_DialogWaiting->setProgressBar(bar++);
+	iLastId = m_customer -> m_invoice-> getLastId();
+	price = priceTTc = 0;
+	for(int id=1; id<=iLastId; id++) {
+		if( m_customer -> m_invoice->loadFromID(id) ) {
+			//recupere les prix dune facture
+			price = m_customer -> m_invoice -> calcul_price(id);
+			priceTTc = m_customer -> m_invoice -> calcul_priceTax(id);
+			//modifi dans la facture
+			m_customer -> m_invoice -> setPrice(price);
+			m_customer -> m_invoice -> setPriceTax( priceTTc );
+			//recupere acompte
+			partpayment = m_customer -> m_invoice ->getPartPayment();
+			m_customer -> m_invoice -> setPartPaymentTax(partpayment);
+			//On met a jour
+			m_customer -> m_invoice -> update();
+		}
+	}
+
+	//Update numero version bdd
+	m_DialogWaiting->setProgressBar(bar++);
+	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=7;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
 	return done;
 }
 
