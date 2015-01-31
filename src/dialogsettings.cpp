@@ -19,7 +19,6 @@
 
 #include "dialogsettings.h"
 #include "ui_dialogsettings.h"
-#include "dialogtax.h"
 #include "mcercle.h"
 
 #include <QFileDialog>
@@ -41,6 +40,7 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
 	m_Settings = s;
 	m_data = pdata;
 	m_lang = lang;
+	m_DialogTax = NULL;
 
 	//charge les settings
 	loadInfoSettings();
@@ -90,7 +90,9 @@ void DialogSettings::on_buttonBox_accepted() {
 	inf.ca_type = ui->comboBox_CA->currentIndex();
 	inf.line1 = ui->lineEdit_print1->text();
 	inf.line2 = ui->lineEdit_print2->text();
+	inf.line3 = ui->lineEdit_print3->text();
 	inf.borderRadius = ui->checkBox_border_radius->checkState();
+	inf.drawLine = ui->checkBox_drawLine->checkState();
 	inf.manageStock = ui->checkBox_manageStock->checkState();
 	m_data -> updateInfo(inf);
 
@@ -268,7 +270,10 @@ void DialogSettings::loadInfoDatabase() {
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/On").scaled(24,24)));
 		 ui->pushButton_connect->setText( QLatin1String("Se déconnecter") );
 		 //TAX
-		 DialogTax *m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
+		 if(m_DialogTax){
+			delete m_DialogTax;
+		 }
+		 m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
 		 ui->verticalLayout_tax->addWidget(m_DialogTax);
 	 }
 	 else{
@@ -305,6 +310,8 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->comboBox_CA->setCurrentIndex(inf.ca_type);
 	 ui->lineEdit_print1->setText(inf.line1);
 	 ui->lineEdit_print2->setText(inf.line2);
+	 ui->lineEdit_print3->setText(inf.line3);
+	 ui->checkBox_drawLine->setCheckState( Qt::CheckState(inf.drawLine) );
 	 ui->checkBox_border_radius->setCheckState( Qt::CheckState(inf.borderRadius) );
 	 ui->checkBox_manageStock->setCheckState( Qt::CheckState(inf.manageStock) );
 

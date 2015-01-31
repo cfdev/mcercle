@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>621</width>
-    <height>494</height>
+    <height>498</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -32,7 +32,7 @@
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>5</number>
        </property>
        <property name="iconSize">
         <size>
@@ -863,7 +863,21 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_29">
+               <property name="text">
+                <string>Cadres :</string>
+               </property>
+              </widget>
+             </item>
              <item row="1" column="1">
+              <widget class="QCheckBox" name="checkBox_drawLine">
+               <property name="text">
+                <string>Dessiner les cadres</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
               <widget class="QCheckBox" name="checkBox_border_radius">
                <property name="text">
                 <string>Bords arrondis</string>
@@ -882,13 +896,6 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_29">
-               <property name="text">
-                <string>Cadres :</string>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item>
@@ -901,14 +908,21 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QLineEdit" name="lineEdit_print1">
              <property name="maxLength">
-              <number>64</number>
+              <number>256</number>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QLineEdit" name="lineEdit_print2">
              <property name="maxLength">
-              <number>64</number>
+              <number>256</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_print3">
+             <property name="maxLength">
+              <number>256</number>
              </property>
             </widget>
            </item>

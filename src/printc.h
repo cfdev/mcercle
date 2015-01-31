@@ -68,6 +68,7 @@ class Printc : public QObject
 	int mlinePerPage, mlinePerLastPage;
 	qreal mtotalPrice, mtotalTaxPrice;
 	int mRoundedRect;
+	bool mDrawLine;
 	
 	void load_customerInfos();
 	void load_parameters(QPrinter *printer, QPainter &painter);
@@ -78,6 +79,7 @@ class Printc : public QObject
 	QRectF get_RecFooter(QPainter &painter);
 	void print_footer(QPainter &painter, QRectF &rect, QString page, QString NbOfpage);
 	void setRoundedRect(bool state);
+	void setDrawLine(bool state);
 
 	private slots:
 	// slots dimpression

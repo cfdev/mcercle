@@ -51,16 +51,20 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	if(!info.webSite.isEmpty())     mtextInfo += tr("Web: ") + info.webSite;
 	
 	/// Pied de page
-	mfooterTextInfo = info.address1 + " " + info.address2 + " " +  info.address3 + " - " + info.zipCode + " " + info.city;
-	mfooterTextInfo += "\n" + info.name;
+	mfooterTextInfo = info.name;
 	if(!info.capital.isEmpty())	mfooterTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())		mfooterTextInfo += " - " + tr("Siret ") + info.num;
 	if((m_data->getIsTax()) &&(!info.numTax.isEmpty()) )	mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
+
+	mfooterTextInfo += "\n" + info.address1 + " " + info.address2 + " " +  info.address3 + " - " + info.zipCode + " " + info.city;
+
 	if(!info.line1.isEmpty())	mfooterTextInfo += "\n" + info.line1;
 	if(!info.line2.isEmpty())	mfooterTextInfo += "\n" + info.line2;
+	if(!info.line3.isEmpty())	mfooterTextInfo += "\n" + info.line3;
 
 	///Coins carre ou rond
 	setRoundedRect(info.borderRadius);
+	setDrawLine(info.drawLine);
 }
 
 Printc::~Printc(){
@@ -77,6 +81,13 @@ void Printc::setRoundedRect(bool state){
 	else{
 		mRoundedRect = 0;
 	}
+}
+/**
+ * @brief setRoundedRect dessine les lignes ou pas
+ * @param state
+ */
+void Printc::setDrawLine(bool state){
+	mDrawLine = state;
 }
 
 /**
@@ -138,9 +149,9 @@ void Printc::load_customerInfos() {
 	if((!m_cus ->getMobileNumber().isEmpty())||(!m_cus ->getPhoneNumber().isEmpty())){
 		mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ "  " + m_cus ->getPhoneNumber()+'\n';
 	}
-	mtextidentity += m_cus -> getAddress1()+'\n';
-	mtextidentity += m_cus -> getAddress2()+'\n';
-	mtextidentity += m_cus -> getAddress3()+'\n';
+	if(!m_cus -> getAddress1().isEmpty()) mtextidentity += m_cus -> getAddress1()+'\n';
+	if(!m_cus -> getAddress2().isEmpty()) mtextidentity += m_cus -> getAddress2()+'\n';
+	if(!m_cus -> getAddress3().isEmpty()) mtextidentity += m_cus -> getAddress3()+'\n';
 	mtextidentity += m_cus -> getZipCode()+" "+ m_cus -> getCity();
 }
 
@@ -209,7 +220,11 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	///Titre
 	QString title;
 	if(type == T_PROPOSAL) title = tr("Devis");
-	else if(type == T_INVOICE) title = tr("Facture");
+	else if(type == T_INVOICE){
+		title = tr("Facture");
+		if(m_inv ->getType() == MCERCLE::TYPE_PART) title = QLatin1String("Facture d'acompte");
+		if(m_inv ->getType() == MCERCLE::TYPE_CREDIT) title = QLatin1String("Facture d'avoir");
+	}
 	else if(type == T_SERVICE) title = tr("Service");
 	mFont.setPointSize(24);
 	painter.setFont(mFont);
@@ -234,6 +249,12 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 			rect.translate( 0, rect.height());
 			rect.setHeight( painter.fontMetrics().boundingRect( tr("Ref: ") + m_inv -> getProposalCode() ).height() );
 			painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Ref: ") + m_inv -> getProposalCode());
+		}
+		else if(m_inv ->getType() == MCERCLE::TYPE_PART){
+			rect.translate( 0, rect.height());
+			rect.setHeight( painter.fontMetrics().boundingRect( tr("Ref: ") + m_inv -> getCodeInvoice_Ref() ).height() );
+			painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, tr("Ref: ") + m_inv -> getCodeInvoice_Ref());
+
 		}
 	}
 	
@@ -275,7 +296,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	rect.translate(-SPACE_BORDER,-SPACE_BORDER);
 	rect.setHeight(rect.height()+SPACE_BORDER);
 	rect.setWidth(6 + mLeft + mwUtil/2);
-	painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
+	if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
 	// Creation dun espace
 	rect.translate( 0, rect.height()+SPACE_BORDER*10);
 }
@@ -478,37 +499,40 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 		}
 	}
 	mRectContent.adjust(mLeft, rectTop_content, mLeft+mwUtil, heightContent);
-	painter.drawRoundedRect(mRectContent, mRoundedRect, mRoundedRect);
-	
+
 	// LIGNE de separation des TITRES
 	painter.drawLine(QPoint(mRectContent.left(), rectTop_LineTitre),
 					 QPoint(mRectContent.right(),rectTop_LineTitre));
-	// LIGNE de separation DISCOUNT
-	if(discount){
-		// LIGNE de separation TVA 12%
-		if(m_data -> getIsTax()){
-			painter.drawLine(QPoint(mLeft+mwUtil*WIDTH_DES, mRectContent.top()),
-							 QPoint(mLeft+mwUtil*WIDTH_DES, mRectContent.bottom()) );
-		}
-		painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.top()),
-						 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.bottom()) );
-	}
-	else{
-		// LIGNE de separation TVA 12%
-		if(m_data -> getIsTax()){
+	if(mDrawLine) {
+		// RECTANGLE GENERAL
+		painter.drawRoundedRect(mRectContent, mRoundedRect, mRoundedRect);
+		// LIGNE de separation DISCOUNT
+		if(discount){
+			// LIGNE de separation TVA 12%
+			if(m_data -> getIsTax()){
+				painter.drawLine(QPoint(mLeft+mwUtil*WIDTH_DES, mRectContent.top()),
+								 QPoint(mLeft+mwUtil*WIDTH_DES, mRectContent.bottom()) );
+			}
 			painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.top()),
 							 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.bottom()) );
 		}
+		else{
+			// LIGNE de separation TVA 12%
+			if(m_data -> getIsTax()){
+				painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.top()),
+								 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX), mRectContent.bottom()) );
+			}
+		}
+		// LIGNE de separation PRIX UNITAIRE 12%
+		painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS), mRectContent.top()),
+						 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS), mRectContent.bottom()) );
+		// LIGNE de separation QUANTITE 12%
+		painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI), mRectContent.top()),
+						 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI), mRectContent.bottom()) );
+		// LIGNE de separation TOTAL 12%
+		painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI+WIDTH_QTE), mRectContent.top()),
+						 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI+WIDTH_QTE), mRectContent.bottom()) );
 	}
-	// LIGNE de separation PRIX UNITAIRE 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS), mRectContent.top()),
-					 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS), mRectContent.bottom()) );
-	// LIGNE de separation QUANTITE 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI), mRectContent.top()),
-					 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI), mRectContent.bottom()) );
-	// LIGNE de separation TOTAL 12%
-	painter.drawLine(QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI+WIDTH_QTE), mRectContent.top()),
-					 QPoint(mLeft+mwUtil*(WIDTH_DES+WIDTH_TAX+WIDTH_DIS+WIDTH_PRI+WIDTH_QTE), mRectContent.bottom()) );
 }
 
 /**
@@ -632,11 +656,13 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 	
 	if(type == T_INVOICE){
 		//ACOMPTE
-		rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("ACOMPTE : ") );
-		painter.drawText( rect, tr("ACOMPTE : "));
-		rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
-		rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+		if(m_inv->getPartPaymentTax()>0.0) {
+			rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("ACOMPTE : ") );
+			painter.drawText( rect, tr("ACOMPTE : "));
+			rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPaymentTax(), 'f', 2) );
+			rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+			painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+		}
 	}
 	mFont.setPointSizeF(ptSize);
 	painter.setFont(mFont);
@@ -664,7 +690,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 	}
 	else{
 		text = tr("TVA non applicable - Article 293 B du CGI");
-		rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom - mpageRect.height()*0.25 , mwUtil*0.50,0, Qt::AlignLeft, text );
+		rect = painter.fontMetrics().boundingRect(mLeft, mpageRect.height() - mBottom - (mpageRect.height()*0.22) , mwUtil*0.50,0, Qt::AlignLeft, text );
 		painter.drawText( rect, text );
 	}
 }
@@ -675,7 +701,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
  * @param rect
  */
 void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type) {
-	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.22);
+	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.20);
 	//Mode de reglement
 	QString typePayment;
 	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
@@ -700,13 +726,13 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	//Condition de reglement
 	if(type == T_PROPOSAL){
 		text = QLatin1String("Conditions de règlement: 30% du montant total lors\nde la signature de cette proposition soit: ");
-		text += m_lang.toString(mtotalTaxPrice * 0.3, 'f', 2) +" "+ QChar(8364);
+		text += m_lang.toString(mtotalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
 		painter.drawText( rect, text);
 	}
 	
-	/// RIB
-	if(typeP == MCERCLE::TRANSFER){
+	/// TODO: RIB sur une autre page !!
+	/*if(typeP == MCERCLE::TRANSFER){
 		text = QLatin1String("Relevé d'Identité Bancaire");
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 25, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
 		painter.drawText(rect, text);
@@ -726,7 +752,21 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 		//restaure la taille du pen
 		mFont.setPointSizeF(ptSize);
 		painter.setFont(mFont);
+	}*/
+	//Liste des accomptes
+	qreal ptSize = mFont.pointSizeF();
+	mFont.setPointSizeF(ptSize-2);
+	painter.setFont(mFont);
+
+	if((m_inv->getPartPaymentTax() >0.0) && (type == T_INVOICE)) {
+		text = tr("TOTAL des acomptes");
+		text += tr("\nHT: ") + QString::number(m_inv->getPartPayment(),'f',2);
+		text += tr("\nTTC: ") + QString::number(m_inv->getPartPaymentTax(),'f',2);
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.36 +15,0, Qt::AlignLeft, text);
+		painter.drawText(rect, text);
 	}
+
+	mFont.setPointSizeF(ptSize); painter.setFont(mFont);
 }
 
 /**
@@ -825,9 +865,9 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 
 	/// Signature Client
 	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n";
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, /*rect.top()*/ mpageRect.height() - mBottom - mpageRect.height()*0.2 + SPACE_BORDER*16, 0, 0, Qt::AlignLeft, text );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, rect.bottom() /*mpageRect.height() - mBottom - mpageRect.height()*0.19 + SPACE_BORDER*16*/, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
-	painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX +15, rect.height()), mRoundedRect, mRoundedRect);
+	if(mDrawLine) painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX +15, rect.height()), mRoundedRect, mRoundedRect);
 	
 	delete m_DialogWaiting;
 	painter.end();
@@ -1104,7 +1144,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	painter.drawText( rect, Qt::TextWordWrap, serv);
 
 	rect = QRect(mLeft, rect.top()-10, mwUtil, blockHeight);
-	painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
+	if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
 
 	/// Signature Client
 	QString sign = "Signature client:\n\n\n\n\n";
@@ -1114,7 +1154,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	rect.translate(-SPACE_BORDER,-SPACE_BORDER);
 	rect.setHeight(rect.height()+10);
 	rect.setWidth(6 + mLeft + mwUtil/2);
-	painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
+	if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect);
 
 	// Imprime le pied de page
 	print_footer(painter, rect, "1","1");

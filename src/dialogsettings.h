@@ -6,6 +6,7 @@
 
 #include "settings.h"
 #include "dbase.h"
+#include "dialogtax.h"
 
 namespace Ui {
 	class DialogSettings;
@@ -22,6 +23,7 @@ public:
 private:
 	Ui::DialogSettings *ui;
 
+	DialogTax *m_DialogTax;
 	Settings *m_Settings;
 	database *m_data;
 	QLocale m_lang;
