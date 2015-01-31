@@ -85,6 +85,10 @@
      <property name="title">
       <string>Exporter</string>
      </property>
+     <property name="icon">
+      <iconset resource="../ressources.qrc">
+       <normaloff>:/app/export</normaloff>:/app/export</iconset>
+     </property>
      <addaction name="actionClients_ex"/>
      <addaction name="actionProduits_ex"/>
      <addaction name="actionServices_ex"/>
@@ -93,6 +97,10 @@
     <widget class="QMenu" name="menuImporter">
      <property name="title">
       <string>Importer</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../ressources.qrc">
+       <normaloff>:/app/import</normaloff>:/app/import</iconset>
      </property>
      <addaction name="actionClients_imp"/>
     </widget>
@@ -182,6 +190,9 @@
    <property name="text">
     <string>Tableau de bord</string>
    </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
    <property name="visible">
     <bool>true</bool>
    </property>
@@ -194,6 +205,9 @@
    <property name="text">
     <string>Clients</string>
    </property>
+   <property name="shortcut">
+    <string>C</string>
+   </property>
   </action>
   <action name="actionProduits">
    <property name="icon">
@@ -202,6 +216,9 @@
    </property>
    <property name="text">
     <string>Produits</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
    </property>
   </action>
   <action name="actionSauvegarder">
@@ -261,6 +278,9 @@
    <property name="toolTip">
     <string>Fournisseurs</string>
    </property>
+   <property name="shortcut">
+    <string>F</string>
+   </property>
   </action>
   <action name="actionDebug_Add">
    <property name="text">
@@ -290,6 +310,9 @@
    <property name="text">
     <string>Livres des Recettes</string>
    </property>
+   <property name="shortcut">
+    <string>L</string>
+   </property>
   </action>
   <action name="actionSauvegarder_la_base_de_donn_es_sous">
    <property name="icon">
@@ -302,6 +325,9 @@
    <property name="toolTip">
     <string>Sauvegarder la base de donnees sous</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionServices_common">
    <property name="icon">
@@ -310,6 +336,9 @@
    </property>
    <property name="text">
     <string>Services</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
    </property>
   </action>
   <action name="actionOuvrir_BddDir">
