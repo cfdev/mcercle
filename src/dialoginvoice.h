@@ -8,6 +8,7 @@
 
 #include "dbase.h"
 #include "productView.h"
+#include "mcercle.h"
 
 namespace Ui {
 	class DialogInvoice;
@@ -33,7 +34,6 @@ private slots:
 	void on_tableWidget_itemSelectionChanged();
 	void on_toolButton_rm_clicked();
 	void on_tableWidget_cellChanged(int row, int column);
-	void on_doubleSpinBox_partPAYMENT_valueChanged();
 	void on_pushButton_ok_clicked();
 	void on_toolButton_add_clicked();
 
@@ -49,7 +49,11 @@ private slots:
 	void addFreeline_Product();
 	
 	void on_toolButton_hide_clicked();
-	void on_pushButton_partInvoice_clicked();
+
+	void on_pushButton_partInvoice_clicked(int type);
+	void create_service_partInvoice(){on_pushButton_partInvoice_clicked(MCERCLE::SERVICE);}
+	void create_product_partInvoice(){on_pushButton_partInvoice_clicked(MCERCLE::PRODUCT);}
+
 	void on_pushButton_creditInvoice_clicked();
 
 	private:

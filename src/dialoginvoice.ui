@@ -70,6 +70,61 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="label_date">
+         <property name="text">
+          <string>Date :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="QDateEdit" name="dateEdit_valid">
+         <property name="displayFormat">
+          <string>dd/MM/yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLabel" name="label_datevalid">
+         <property name="text">
+          <string>Fin de validité :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_delivery">
+         <property name="text">
+          <string>Date de Echeance :</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QDateEdit" name="dateEdit_delivery">
+         <property name="displayFormat">
+          <string>dd/MM/yyyy</string>
+         </property>
+         <property name="calendarPopup">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_link">
+         <property name="text">
+          <string>Facture associée : </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="lineEdit_linkCode">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
@@ -142,81 +197,6 @@
        </item>
        <item row="1" column="5">
         <widget class="QComboBox" name="comboBox_TYPE_PAYMENT"/>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLabel" name="label_date">
-         <property name="text">
-          <string>Date :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="5">
-        <widget class="QDateEdit" name="dateEdit_valid">
-         <property name="displayFormat">
-          <string>dd/MM/yyyy</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QLabel" name="label_datevalid">
-         <property name="text">
-          <string>Fin de validité :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLabel" name="label_delivery">
-         <property name="text">
-          <string>Date de Echeance :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QDateEdit" name="dateEdit_delivery">
-         <property name="displayFormat">
-          <string>dd/MM/yyyy</string>
-         </property>
-         <property name="calendarPopup">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_link">
-         <property name="text">
-          <string>Facture associée : </string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLineEdit" name="lineEdit_linkCode">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="4">
-        <widget class="QLabel" name="label_partpayment">
-         <property name="text">
-          <string>Acompte :</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="5">
-        <widget class="QDoubleSpinBox" name="doubleSpinBox_partPAYMENT">
-         <property name="prefix">
-          <string/>
-         </property>
-         <property name="suffix">
-          <string> €</string>
-         </property>
-         <property name="maximum">
-          <double>999999.989999999990687</double>
-         </property>
-        </widget>
        </item>
       </layout>
      </item>
@@ -473,6 +453,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
+      <widget class="QLabel" name="label_partpayment">
+       <property name="text">
+        <string>Acompte :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -497,28 +484,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_button">
      <item>
-      <widget class="QPushButton" name="pushButton_print">
-       <property name="text">
-        <string>Imprimer</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../ressources.qrc">
-         <normaloff>:/app/print</normaloff>:/app/print</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_createInv">
-       <property name="text">
-        <string>Créer une facture</string>
-       </property>
-       <property name="icon">
-        <iconset resource="../ressources.qrc">
-         <normaloff>:/app/insert</normaloff>:/app/insert</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="pushButton_partInvoice">
        <property name="text">
         <string>Acompte</string>
@@ -541,6 +506,17 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_createInv">
+       <property name="text">
+        <string>Créer une facture</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../ressources.qrc">
+         <normaloff>:/app/insert</normaloff>:/app/insert</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -552,6 +528,17 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_print">
+       <property name="text">
+        <string>Imprimer</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../ressources.qrc">
+         <normaloff>:/app/print</normaloff>:/app/print</iconset>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_ok">
@@ -584,7 +571,6 @@
   <tabstop>dateEdit_DATE</tabstop>
   <tabstop>comboBox_State</tabstop>
   <tabstop>comboBox_TYPE_PAYMENT</tabstop>
-  <tabstop>tableWidget</tabstop>
   <tabstop>toolButton_add</tabstop>
   <tabstop>pushButton_ok</tabstop>
   <tabstop>pushButton_close</tabstop>
