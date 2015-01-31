@@ -66,9 +66,9 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	ui->tabWidget_Customer->setCurrentIndex(0);
 
 	//Cache la suppression pour le moment trop de user supprime sans savoir
-	ui->toolButton_Del->setVisible(false);
+	/*ui->toolButton_Del->setVisible(false);
 	ui->toolButton_delProposal->setVisible(false);
-	ui->toolButton_delInvoice->setVisible(false);
+	ui->toolButton_delInvoice->setVisible(false);*/
 }
 
 /**
@@ -506,7 +506,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 
 	//Si pas de tva on cache la colonne
 	if(!m_data->getIsTax()) {
-		ui->tableWidget_Invoices->setColumnHidden(4 , true);
+		ui->tableWidget_Proposals->setColumnHidden(4 , true);
 	}
 
 	//Recuperation des donnees presentent dans la bdd
@@ -706,7 +706,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
-		item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_payment.at(i));
+		item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_paymentTax.at(i));
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_invoice->getIconState(ilist.state.at(i)) );
 		item_STATE->setText( m_data->m_customer->m_invoice->getTextState(ilist.state.at(i)) );
