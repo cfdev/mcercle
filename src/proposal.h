@@ -119,12 +119,13 @@ public:
 	int getIdCustomer(){return m_idCustomer;}
 	int getState(){return m_state;}
 	qreal getPrice(){return m_price;}
+	qreal getPriceTax(){return m_priceTax;}
 	QDateTime getCreationDate(){return m_creationDate;}
 	QDate getUserDate(){return m_userDate;}
 	QDate getDeliveryDate(){return m_deliveryDate;}
 	int getDelayDeliveryDate(){return m_delayDeliveryDate;}
 	QDate getValidDate(){return m_validDate;}
-
+	QString generateNewCode();
 
 	bool getProposalList(ProposalList& list, int id_customer, QString order, QString filter, QString field);
 	bool getProposalListAlert(ProposalListAlert& list);

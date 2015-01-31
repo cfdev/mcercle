@@ -1,6 +1,6 @@
 /**
   This file is a part of mcercle
-  Copyright (C) 2010-2013 Cyril FRAUSTI
+  Copyright (C) 2010-2015 Cyril FRAUSTI
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <QStringList>
 #include <QWidget>
 #include <QVariant>
+#include <QDebug>
 
 proposal::proposal(QSqlDatabase db, QWidget *parent): m_parent(parent) {
 	m_db = db;
@@ -121,6 +122,7 @@ bool proposal::update() {
 	req += "DESCRIPTION='" + m_description.replace("\'","''") + "' ";
 	req += "WHERE ID='"+ QString::number(m_id) +"';";
 
+	qDebug() << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(!query.exec()) {
@@ -169,7 +171,7 @@ bool proposal::remove(){
 bool proposal::loadFromID(const int& id)
 {
 	QString req = "SELECT TAB_PROPOSALS.ID, TAB_PROPOSALS.ID_CUSTOMER, TAB_PROPOSALS.CREATIONDATE, TAB_PROPOSALS.DATE, TAB_PROPOSALS.VALIDDATE, TAB_PROPOSALS.DELIVERYDATE, TAB_PROPOSALS.DELAY_DELIVERYDATE, "
-			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.TYPE_PAYMENT, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.STATE "
+			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.TYPE_PAYMENT, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.PRICE_TAX, TAB_PROPOSALS.STATE "
 			"FROM TAB_PROPOSALS "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_PROPOSALS.ID = TAB_LINK_PROPOSALS_INVOICES.ID_PROPOSAL "
@@ -192,6 +194,7 @@ bool proposal::loadFromID(const int& id)
 		m_InvoiceCode = query.value(query.record().indexOf("ICODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_price = query.value(query.record().indexOf("PRICE")).toFloat();
+		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
 		return true;
@@ -214,7 +217,7 @@ bool proposal::loadFromCode(const QString& code)
 	IBPP::Timestamp dateCrea;
 	IBPP::Date udate;*/
 	QString req = "SELECT TAB_PROPOSALS.ID, TAB_PROPOSALS.ID_CUSTOMER, TAB_PROPOSALS.CREATIONDATE, TAB_PROPOSALS.DATE, TAB_PROPOSALS.VALIDDATE, TAB_PROPOSALS.DELIVERYDATE, TAB_PROPOSALS.DELAY_DELIVERYDATE, "
-			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.TYPE_PAYMENT, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.STATE "
+			"TAB_PROPOSALS.CODE AS PCODE, TAB_INVOICES.CODE AS ICODE, TAB_PROPOSALS.TYPE_PAYMENT, TAB_PROPOSALS.DESCRIPTION, TAB_PROPOSALS.PRICE, TAB_PROPOSALS.PRICE_TAX, TAB_PROPOSALS.STATE "
 			"FROM TAB_PROPOSALS "
 			"LEFT OUTER JOIN TAB_LINK_PROPOSALS_INVOICES "
 			"ON TAB_PROPOSALS.ID = TAB_LINK_PROPOSALS_INVOICES.ID_PROPOSAL "
@@ -237,6 +240,7 @@ bool proposal::loadFromCode(const QString& code)
 		m_InvoiceCode = query.value(query.record().indexOf("ICODE")).toString();
 		m_typePayment = query.value(query.record().indexOf("TYPE_PAYMENT")).toString();
 		m_price = query.value(query.record().indexOf("PRICE")).toFloat();
+		m_priceTax = query.value(query.record().indexOf("PRICE_TAX")).toFloat();
 		m_description = query.value(query.record().indexOf("DESCRIPTION")).toString();
 		m_state = query.value(query.record().indexOf("STATE")).toInt();
 		return true;
@@ -497,6 +501,7 @@ bool proposal::addProposalItem(ProposalItem& item){
 	req += "'" + f.setNum(item.tax,'f',2) + "',";
 	req += "'" + QString::number(item.order) + "');";
 
+	qDebug()<<req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(!query.exec()) {
@@ -635,5 +640,20 @@ qreal proposal::calcul_priceTax(int id){
 	else{
 		return 0;
 	}
+}
+
+
+/**
+ * @brief genere un nouveau code de devis l'applique à la class et retourn la valeur
+ * @return code
+ */
+QString proposal::generateNewCode() {
+
+	//Generation du code
+	// TYPE + DATE + ID
+	QString typp = tr("DE");
+	setCode( typp + QDateTime::currentDateTime().toString("yyMM")
+			 + QString::number(getLastId()+1) );
+	return m_code;
 }
 

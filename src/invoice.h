@@ -19,12 +19,13 @@ private:
 
 	QWidget *m_parent;
 	int m_id, m_idCustomer, m_state , m_type, m_idRef;
-	qreal m_price, m_priceTax, m_partPayment;
+	qreal m_price, m_priceTax, m_partPayment, m_partPaymentTax;
 	QDateTime m_creationDate;
 	QDate m_userDate, m_limitPayment, m_paymentDate;
 	QString m_code, m_proposalCode, m_description, m_typePayment;
 	QLocale m_lang;
 
+	void check_PartPayment();
 
 public:
 	//Valeur pour le placement dans un tableau.
@@ -37,9 +38,8 @@ public:
 		QStringList code;
 		QStringList codeProposal; //lien avec la proposition commerciale sil existe
 		QStringList description;
-		QList<qreal> price;
-		QList<qreal> priceTax;
-		QList<qreal> part_payment;
+		QList<qreal> price, priceTax;
+		QList<qreal> part_payment, part_paymentTax;
 		QList<int> state;
 	}InvoiceList;
 
@@ -51,9 +51,8 @@ public:
 		QStringList customerFirstName;
 		QStringList customerLastName;
 		QStringList description;
-		QList<qreal> price;
-		QList<qreal> priceTax;
-		QList<qreal> part_payment;
+		QList<qreal> price, priceTax;
+		QList<qreal> part_payment, part_paymentTax;
 		QStringList typePayment;
 	}InvoicesBook;
 
@@ -115,6 +114,8 @@ public:
 	int count(int id_customer);
 	qreal calcul_price(int id);
 	qreal calcul_priceTax(int id);
+	qreal calcul_partPayment(int id);
+	qreal calcul_partPaymentTax(int id);
 
 	//Appliquer les valeurs
 	void setId(const int& ident){m_id = ident;}
@@ -122,6 +123,7 @@ public:
 	void setPrice(const qreal& price){m_price = price;}
 	void setPriceTax(const qreal& priceTax){m_priceTax = priceTax;}
 	void setPartPayment(const qreal& partPayment){m_partPayment = partPayment;}
+	void setPartPaymentTax(const qreal& partPaymentTax){m_partPaymentTax = partPaymentTax;}
 	void setTypePayment(const QString& type){m_typePayment = type;}
 	void setState(const int& state){m_state = state;}
 	void setCode(const  QString& code){m_code = code;}
@@ -129,7 +131,7 @@ public:
 	void setUserDate(const QDate& date){m_userDate = date;}
 	void setLimitPayment(const QDate& date){m_limitPayment = date;}
 	void setPaymentDate(const QDate& date){m_paymentDate = date;}
-	void setType(const int& type){m_idRef = type;}
+	void setType(const int& type){m_type = type;}
 	void setIdRef(const int& idref){m_idRef = idref;}
 
 	//recup les valeurs de la facture
@@ -138,7 +140,9 @@ public:
 	int getId(){return m_id;}
 	int getIdCustomer(){return m_idCustomer;}
 	qreal getPrice(){return m_price;}
+	qreal getPriceTax(){return m_priceTax;}
 	qreal getPartPayment(){return m_partPayment;}
+	qreal getPartPaymentTax(){return m_partPaymentTax;}
 	QString getTypePayment(){return m_typePayment;}
 	int getState(){return m_state;}
 	QDateTime getCreationDate(){return m_creationDate;}
@@ -160,7 +164,9 @@ public:
 	qreal getMonthProductRevenue(QString year, QString month);
 	qreal getYearRevenue(QString year);
 	qreal getYearRevenueTAX(QString year);
-
+	bool isTypeExiste(const int& type);
+	QString getCodeInvoice_Ref();
+	QString generateNewCode();
 
 	//recup des articles de la facture
 	bool getInvoiceItemsList(InvoiceListItems& list, QString order, QString filter, QString field);
