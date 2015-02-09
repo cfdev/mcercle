@@ -36,9 +36,11 @@ class Printc : public QObject
 #define WIDTH_TOTAUX 0.375
 #define SPACE_BORDER 20
 #define OFFSET_BOT_TOTAL 1700 //275
+
+#define DPI 300
 	//1.2 low resolution
 	//5 High resolution
-#define PEN_WIDTH 5
+#define PEN_WIDTH DPI/150
 		
 	QLocale m_lang;
 	database *m_data;

@@ -95,9 +95,18 @@ void Printc::setDrawLine(bool state){
  * @param p
  */
 void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
+
+	///TODO:Definition des marges en dur pour le moment
+	printer -> setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
+	// ATTENTION: l'impression physique et PDF n'on pas le même maximum DPI
+	// Mettre 300 en max est largement suffisant
+	// ATTENTION l'appel a cette fonction doit se faire avant le "painter.begin"
+	printer -> setResolution(DPI);
+	qDebug() << "Printc::load_parameters: " << printer -> resolution();
+
 	printer -> getPageMargins(&mLeft, &mTop, &mRight, &mBottom, QPrinter::DevicePixel);
 	mpageRect = printer -> pageRect();
-	
+
 	qDebug() << "marges px: left(" << mLeft << ") top(" << mTop << ") right(" << mRight << ") bot(" << mBottom << ")";
 	qDebug() << "mpageRect.height: " << mpageRect.height();
 	if(printer -> orientation() == QPrinter::Landscape){
@@ -124,7 +133,10 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	mBankTextID += tr("IBAN: ");
 	mBankTextID += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
 	mBankTextID += tr("BIC: ") + mb.codeBIC+'\n';
-	
+
+	// Begin !
+	painter.begin(printer);
+
 	// Charge le fichier de configurations
 	/// TODO :Print Attention certaines FONTs provoquent des seugfault A voir comment tester ca!
 	Settings m_settings;
@@ -163,23 +175,18 @@ void Printc::print_Proposal(const int &id) {
 	//On charge l objet en fonction de la selection
 	m_pro -> loadFromID(id);
 	
-	QPrinter printer( QPrinter::HighResolution );
+	QPrinter printer/*( QPrinter::HighResolution )*/;
 	printer.setPageSize(QPrinter::A4);
 	QString name = m_pro -> getCode() ;
 	printer.setOutputFileName( name + ".pdf");
 	printer.setDocName( name );
 	printer.setCreator("mcercle");
-	///TODO:Definition des marges en dur pour le moment
-	printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
-	
+
 	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
 	m_DialogPrintChoice -> setModal(true);
 	m_DialogPrintChoice -> exec();
 
 	if(m_DialogPrintChoice -> result() == QDialog::Accepted) {
-		//TEST:
-		printer.setPageMargins(5, 5, 5, 10, QPrinter::Millimeter);
-
 		QWidget fenetre;
 		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
 		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinterProposal(QPrinter *)));
@@ -726,7 +733,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	//Condition de reglement
 	if(type == T_PROPOSAL){
 		text = QLatin1String("Conditions de règlement: 30% du montant total lors\nde la signature de cette proposition soit: ");
-		text += m_lang.toString(mtotalPrice * 0.3, 'f', 2) +" "+ QChar(8364);
+		text += m_lang.toString(mtotalTaxPrice * 0.3, 'f', 2) +" "+ QChar(8364);
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
 		painter.drawText( rect, text);
 	}
@@ -775,8 +782,8 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
  */
 void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	QPainter painter;
-	painter.begin(printer);
-	// charge les parametres d impression
+
+	//Charge les parametres d'impression
 	load_parameters(printer, painter);
 	load_customerInfos();
 
@@ -882,15 +889,16 @@ void Printc::print_Invoice(const int &id) {
 	//On charge l objet en fonction de la selection
 	m_inv -> loadFromID(id);
 
-	QPrinter printer( QPrinter::HighResolution );
+	QPrinter printer/*( QPrinter::HighResolution )*/;
 	printer.setPageSize(QPrinter::A4);
 	QString name = m_inv->getCode() ;
 	printer.setOutputFileName( name + ".pdf");
 	printer.setDocName( name );
 	printer.setCreator("mcercle");
 	///TODO:Definition des marges en dur pour le moment
-	printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
-	
+	//printer.setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
+	printer.setResolution(DPI);
+
 	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
 	m_DialogPrintChoice->setModal(true);
 	m_DialogPrintChoice->exec();
@@ -919,7 +927,8 @@ void Printc::print_Invoice(const int &id) {
  * @param listofId
  */
 void Printc::print_InvoicesList(QList<int> listofId) {
-	QPrinter printer( QPrinter::HighResolution );
+	QPrinter printer/*( QPrinter::HighResolution )*/;
+	printer.setResolution(DPI);
 	QString name;
 	QWidget fenetre;
 	QPrintDialog pDialog(&printer, &fenetre);
@@ -964,7 +973,7 @@ void Printc::print_InvoicesList(QList<int> listofId) {
  */
 void Printc::on_paintPrinterInvoice(QPrinter *printer) {
 	QPainter painter;
-	painter.begin(printer);
+
 	// charge les parametres d impression
 	load_parameters(printer, painter);
 	load_customerInfos();
@@ -1114,7 +1123,7 @@ void Printc::print_Service(const int &id) {
  */
 void Printc::on_paintPrinterService(QPrinter *printer) {
 	QPainter painter;
-	painter.begin(printer);
+
 	// charge les parametres d impression
 	load_parameters(printer, painter);
 	load_customerInfos();
