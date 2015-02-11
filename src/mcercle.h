@@ -21,7 +21,7 @@
 
 namespace MCERCLE {
 // Version et version de bdd supporte
-	const QString Version = "15.01";
+	const QString Version = "15.02";
 	const QString CodeName = "Snow";
 	const int Dbase_support = 7;
 
