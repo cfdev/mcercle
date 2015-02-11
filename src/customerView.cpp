@@ -706,7 +706,12 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		item_DATE->setData(Qt::DisplayRole, ilist.userDate.at(i)/*.toString(tr("dd/MM/yyyy"))*/);
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
-		item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_paymentTax.at(i));
+		if(m_data->getIsTax()){
+			item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_paymentTax.at(i));
+		}
+		else {
+			item_PARTPAYMENT->setData(Qt::DisplayRole, ilist.part_payment.at(i));
+		}
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
 		item_STATE->setIcon( m_data->m_customer->m_invoice->getIconState(ilist.state.at(i)) );
 		item_STATE->setText( m_data->m_customer->m_invoice->getTextState(ilist.state.at(i)) );

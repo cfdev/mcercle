@@ -21,9 +21,10 @@ class Printc : public QObject
 	void print_Invoice(const int &);
 	void print_InvoicesList(QList<int> listofId);
 	void print_Service(const int &);
+	void print_fileEmpty();
 	
 	private:
-	enum{T_PROPOSAL, T_INVOICE, T_SERVICE};
+	enum{T_PROPOSAL, T_INVOICE, T_SERVICE, T_FILE};
 
 //Largeur en %
 #define WIDTH_DES 0.52
@@ -88,6 +89,7 @@ class Printc : public QObject
 	void on_paintPrinterProposal(QPrinter *printer);
 	void on_paintPrinterInvoice(QPrinter *printer);
 	void on_paintPrinterService(QPrinter *printer);
+	void on_paintPrinter_fileEmpty(QPrinter *printer);
 };
 
 #endif // PRINTC_H

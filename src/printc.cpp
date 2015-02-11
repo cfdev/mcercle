@@ -292,20 +292,25 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 						  m_inv -> getLimitPayment().toString(tr("dd-MM-yyyy")) );
 	}
 
-	/// Identite du client
+	// Font 10px
 	mFont.setPointSize(10);
 	painter.setFont(mFont);
-	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+15, 0, 0, Qt::AlignLeft, tr("Client: ") );
-	painter.drawText(rect, tr("Client: "));
 
-	rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+SPACE_BORDER, 0, 0, Qt::AlignLeft, mtextidentity );
-	painter.drawText(rect, mtextidentity);
-	rect.translate(-SPACE_BORDER,-SPACE_BORDER);
-	rect.setHeight(rect.height()+SPACE_BORDER);
-	rect.setWidth(6 + mLeft + mwUtil/2);
-	if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
-	// Creation dun espace
-	rect.translate( 0, rect.height()+SPACE_BORDER*10);
+	/// Identite du client si le type n'est pas un fichier à entête
+	if(type != T_FILE) {
+		rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+15, 0, 0, Qt::AlignLeft, tr("Client: ") );
+		painter.drawText(rect, tr("Client: "));
+
+		rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+SPACE_BORDER, 0, 0, Qt::AlignLeft, mtextidentity );
+		painter.drawText(rect, mtextidentity);
+		rect.translate(-SPACE_BORDER,-SPACE_BORDER);
+		rect.setHeight(rect.height()+SPACE_BORDER);
+		rect.setWidth(6 + mLeft + mwUtil/2);
+		if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
+		// Creation dun espace
+		rect.translate( 0, rect.height()+SPACE_BORDER*10);
+	}
+
 }
 
 /**
@@ -645,7 +650,15 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 		painter.drawText( rect,  Qt::AlignRight , m_lang.toString(mtotalTaxPrice, 'f', 2) );
 		//CALCUL DU RESTE
 		if(type == T_INVOICE) {
-			reste = mtotalTaxPrice-m_inv->getPartPayment();
+			reste = mtotalTaxPrice-m_inv->getPartPaymentTax();
+			//ACOMPTE
+			if(m_inv->getPartPaymentTax()>0.0) {
+				rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("ACOMPTE : ") );
+				painter.drawText( rect, tr("ACOMPTE : "));
+				rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPaymentTax(), 'f', 2) );
+				rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+				painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPaymentTax(), 'f', 2) );
+			}
 		}
 		else{
 			reste = mtotalTaxPrice;
@@ -655,22 +668,20 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
 		//CALCUL DU RESTE
 		if(type == T_INVOICE) {
 			reste = mtotalPrice-m_inv->getPartPayment();
+			//ACOMPTE
+			if(m_inv->getPartPayment()>0.0) {
+				rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("ACOMPTE : ") );
+				painter.drawText( rect, tr("ACOMPTE : "));
+				rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+				rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
+				painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
+			}
 		}
 		else{
 			reste = mtotalPrice;
 		}
 	}
 	
-	if(type == T_INVOICE){
-		//ACOMPTE
-		if(m_inv->getPartPaymentTax()>0.0) {
-			rect = painter.fontMetrics().boundingRect(mLeft+5+(mwUtil*0.62),rect.bottom()+10, mwUtil*WIDTH_TOTAUX,0, Qt::AlignLeft, tr("ACOMPTE : ") );
-			painter.drawText( rect, tr("ACOMPTE : "));
-			rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX,0, Qt::AlignRight, m_lang.toString(m_inv->getPartPaymentTax(), 'f', 2) );
-			rect.setWidth(rect.width()+10); //Ajustement car le boundingRect ne prend pas en compte le font BOLD!!
-			painter.drawText( rect,  Qt::AlignRight , m_lang.toString(m_inv->getPartPayment(), 'f', 2) );
-		}
-	}
 	mFont.setPointSizeF(ptSize);
 	painter.setFont(mFont);
 	
@@ -765,12 +776,20 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	mFont.setPointSizeF(ptSize-2);
 	painter.setFont(mFont);
 
-	if((m_inv->getPartPaymentTax() >0.0) && (type == T_INVOICE)) {
-		text = tr("TOTAL des acomptes");
-		text += tr("\nHT: ") + QString::number(m_inv->getPartPayment(),'f',2);
-		text += tr("\nTTC: ") + QString::number(m_inv->getPartPaymentTax(),'f',2);
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.36 +15,0, Qt::AlignLeft, text);
-		painter.drawText(rect, text);
+	if(type == T_INVOICE) {
+		// Y a til un acompte ?
+		if((m_inv->getPartPayment() >0.0)||(m_inv->getPartPaymentTax() >0.0)) {
+			text = tr("TOTAL des acomptes");
+			if(m_data->getIsTax()) {
+				text += tr("\nHT: ") + m_lang.toString(m_inv->getPartPayment(),'f',2);
+				text += tr("\nTTC: ") + m_lang.toString(m_inv->getPartPaymentTax(),'f',2);
+			}
+			else {
+				text += tr(" : ") + m_lang.toString(m_inv->getPartPayment(),'f',2);
+			}
+			rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.36 +15,0, Qt::AlignLeft, text);
+			painter.drawText(rect, text);
+		}
 	}
 
 	mFont.setPointSizeF(ptSize); painter.setFont(mFont);
@@ -1170,3 +1189,63 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	// Fin du painter
 	painter.end();
 }
+
+
+
+
+/**
+ * @brief print_fileEmpty: imprime un fiche à entête
+ * @param id
+ */
+void Printc::print_fileEmpty() {
+	QPrinter printer;
+	printer.setPageSize(QPrinter::A4);
+	QString name = tr("Fiche");
+	printer.setOutputFileName( name + ".pdf");
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+
+	DialogPrintChoice *m_DialogPrintChoice = new DialogPrintChoice(&printer);
+	m_DialogPrintChoice -> setModal(true);
+	m_DialogPrintChoice -> exec();
+
+	if(m_DialogPrintChoice -> result() == QDialog::Accepted) {
+		QWidget fenetre;
+		QPrintPreviewDialog m_PreviewDialog(&printer,  &fenetre, Qt::Widget | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint);
+		connect(&m_PreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(on_paintPrinter_fileEmpty(QPrinter *)));
+		m_PreviewDialog.setWindowState(Qt::WindowMaximized);
+		// Ajuste la taille
+		QList<QPrintPreviewWidget *> list = m_PreviewDialog.findChildren<QPrintPreviewWidget *>();
+		if(!list.isEmpty()) { // paranoiac safety check
+			list.first()->setZoomMode(QPrintPreviewWidget::FitToWidth);
+		}
+		//Cache les boutons inutile de l orientation
+		QToolBar *toolbar = m_PreviewDialog.findChild<QToolBar*>();
+		if(toolbar) { // paranoiac safety check
+			toolbar->removeAction( toolbar->actions().at(7) );
+			toolbar->removeAction( toolbar->actions().at(7) );
+		}
+		m_PreviewDialog.exec();
+	}
+}
+
+
+/**
+ * @brief Printc::on_paintPrinter_fileEmpty
+ * @param printer
+ */
+void Printc::on_paintPrinter_fileEmpty(QPrinter *printer) {
+	QPainter painter;
+
+	//Charge les parametres d'impression
+	load_parameters(printer, painter);
+	/// Header
+	QRectF rect;
+	/// Imprime l entete
+	print_header(painter, rect, T_FILE);
+	/// Imprime le pied de page
+	print_footer(painter, rect, QString::number(1), QString::number(1));
+
+	painter.end();
+}
+

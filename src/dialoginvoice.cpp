@@ -257,10 +257,16 @@ void DialogInvoice::loadValues(){
 		ui->dateTimeEdit->setDateTime( m_invoice->getCreationDate() );
 		ui->dateEdit_DATE->setDate( m_invoice->getUserDate() );
 		ui->dateEdit_delivery->setDate( m_invoice->getLimitPayment() ); /* Limit de paiement*/
+		if(m_isTax) {
 		ui->label_partpayment->setText(
 					tr("Total accompte(s):")+
 					tr("\nHT : ")+m_lang.toString(m_invoice->calcul_partPayment(m_invoice->getId()),'f',2) +
 					tr("\nTTC: ")+m_lang.toString(m_invoice->calcul_partPaymentTax(m_invoice->getId()),'f',2) );
+		}
+		else{
+			ui->label_partpayment->setText(
+					tr("Total accompte(s): ")+m_lang.toString(m_invoice->calcul_partPayment(m_invoice->getId()),'f',2) );
+		}
 		ui->dateEdit_valid->setDate( m_invoice->getPaymentDate() ); /* Date de paiement*/
 
 		ui->comboBox_State->setCurrentIndex( m_invoice->getState());
@@ -423,7 +429,7 @@ void DialogInvoice::listInvoiceDetailsToTable(QString filter, QString field) {
 			titles << tr("Total");
 			ui->tableWidget->setColumnHidden(COL_TAX , true); //cache la colonne TVA
 	}
-	else    titles << tr("Total HT");
+	else	titles << tr("Total HT");
 	ui->tableWidget->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -1010,24 +1016,29 @@ void DialogInvoice::calcul_Total() {
 	//affiche la valeur
 	QString val;
 	if(!m_isTax){
-			val = "<div class=\"ac\" style=\"background: #B0E9AE;\"><strong>"+ tr("TOTAL: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong></div>");
+			val = "<div class=\"ac\" style=\"background: #B0E9AE;\"><strong>"+ tr("TOTAL: ") + m_lang.toString(m_totalPrice,'f',2) + tr(" &euro; </strong></div>");
 	}
 	else{
-			val = "<div class=\"ac\" style=\"background: #B0E9AE;\"><strong>"+ tr("TOTAL HT: ") + QString::number(m_totalPrice,'f',2) + tr(" &euro; </strong></div>");
-						val += "<strong>"+ tr("TOTAL TVA: ") + QString::number(m_totalTaxPrice-m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
-			val += "<strong>"+ tr("TOTAL TTC: ") + QString::number(m_totalTaxPrice,'f',2) + tr(" &euro; </strong><br>");
+			val = "<div class=\"ac\" style=\"background: #B0E9AE;\"><strong>"+ tr("TOTAL HT: ") + m_lang.toString(m_totalPrice,'f',2) + tr(" &euro; </strong></div>");
+						val += "<strong>"+ tr("TOTAL TVA: ") + m_lang.toString(m_totalTaxPrice-m_totalPrice,'f',2) + tr(" &euro; </strong><br>");
+			val += "<strong>"+ tr("TOTAL TTC: ") + m_lang.toString(m_totalTaxPrice,'f',2) + tr(" &euro; </strong><br>");
 	}
 
 	if(m_DialogType == INVOICE_TYPE){
 		//Cacul du reste Total HT - acompte
 		qreal diff=0;
-		diff = m_totalTaxPrice - m_invoice->getPartPaymentTax();
-		val += "<strong>"+ tr("ACOMPTE: ") + QString::number(m_invoice->getPartPaymentTax(),'f',2) + tr(" &euro; </strong><br>");
-		//}
-		val += "<strong>"+ tr("RESTE A PAYER: ") + QString::number(diff,'f',2) + tr(" &euro; </strong>");
+		if(!m_isTax){
+			diff = m_totalPrice - m_invoice->getPartPayment();
+			val += "<strong>"+ tr("ACOMPTE: ") + m_lang.toString(m_invoice->getPartPayment(),'f',2) + tr(" &euro; </strong><br>");
+		}
+		else {
+			diff = m_totalTaxPrice - m_invoice->getPartPaymentTax();
+			val += "<strong>"+ tr("ACOMPTE: ") + m_lang.toString(m_invoice->getPartPaymentTax(),'f',2) + tr(" &euro; </strong><br>");
+		}
+		val += "<strong>"+ tr("RESTE A PAYER: ") + m_lang.toString(diff,'f',2) + tr(" &euro; </strong>");
 	}
 	else {
-		val += "<strong>"+ tr("ACOMPTE DE 30%: ") + QString::number(m_totalTaxPrice*0.3,'f',2) + tr(" &euro; </strong>");
+		val += "<strong>"+ tr("ACOMPTE DE 30%: ") + m_lang.toString(m_totalTaxPrice*0.3,'f',2) + tr(" &euro; </strong>");
 	}
 	ui->label_Total->setText( val );
 }
