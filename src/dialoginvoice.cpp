@@ -850,6 +850,7 @@ void DialogInvoice::setInvoice(unsigned char proc){
 	m_invoice->setLimitPayment( ui->dateEdit_delivery->date() );
 	m_invoice->setPaymentDate( ui->dateEdit_valid->date() );
 	m_invoice->setState( ui->comboBox_State->currentIndex() );
+	m_invoice->setType(MCERCLE::TYPE_INV);
 
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
