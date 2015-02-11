@@ -48,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -105,6 +105,7 @@
      <addaction name="actionClients_imp"/>
     </widget>
     <addaction name="actionLivres_des_Recettes"/>
+    <addaction name="actionImprimer_une_fiche_Ent_te"/>
     <addaction name="menuExporter"/>
     <addaction name="menuImporter"/>
     <addaction name="separator"/>
@@ -393,6 +394,11 @@
    </property>
    <property name="text">
     <string>Signaler un bug</string>
+   </property>
+  </action>
+  <action name="actionImprimer_une_fiche_Ent_te">
+   <property name="text">
+    <string>Imprimer une fiche à Entête</string>
    </property>
   </action>
  </widget>

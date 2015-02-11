@@ -41,6 +41,7 @@
 #include "dialogservicesedit.h"
 #include "update.h"
 #include "inout.h"
+#include "printc.h"
 
 /**
 	Constructeur de la class MainWindow
@@ -457,4 +458,12 @@ void MainWindow::on_actionFournisseur_ex_triggered() {
  */
 void MainWindow::on_actionSignaler_un_bug_triggered() {
 	QDesktopServices::openUrl(QUrl("https://github.com/cfdev/mcercle/issues"));
+}
+
+/**
+ * @brief MainWindow:: imprimer un fichier à entête
+ */
+void MainWindow::on_actionImprimer_une_fiche_Ent_te_triggered() {
+	Printc mprint(m_database, m_lang, this);
+	mprint.print_fileEmpty();
 }
