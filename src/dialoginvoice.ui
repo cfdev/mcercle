@@ -496,6 +496,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_creditInvoice">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="text">
         <string>Avoir</string>
        </property>
