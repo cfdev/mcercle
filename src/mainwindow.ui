@@ -102,7 +102,6 @@
       <iconset resource="../ressources.qrc">
        <normaloff>:/app/import</normaloff>:/app/import</iconset>
      </property>
-     <addaction name="actionClients_imp"/>
     </widget>
     <addaction name="actionLivres_des_Recettes"/>
     <addaction name="actionImprimer_une_fiche_Ent_te"/>
@@ -363,11 +362,6 @@
    </property>
   </action>
   <action name="actionClients_ex">
-   <property name="text">
-    <string>Clients</string>
-   </property>
-  </action>
-  <action name="actionClients_imp">
    <property name="text">
     <string>Clients</string>
    </property>
