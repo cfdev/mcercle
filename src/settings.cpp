@@ -183,10 +183,19 @@ void Settings::setDatabase_userPassword(const QString& userPassword) {
 	Applique les valeurs par defaut de la bdd
   */
 void Settings::setDatabase_default() {
+	QString dbaseLocation;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	dbaseLocation = QDesktopServices::storageLocation ( QDesktopServices::DocumentsLocation );
+
+#else
+	// Qt5 gere un dosssier du nom de lapplication
+	dbaseLocation = QStandardPaths::writableLocation ( QStandardPaths::DocumentsLocation );
+#endif
+
 	m_settings->beginGroup("connection");
 	m_settings->setValue("bdd", "SQLITE");
 	m_settings->setValue("hostName", "localhost");
-	m_settings->setValue("databaseName", path_DataLocation + "/mcercle.db");
+	m_settings->setValue("databaseName", dbaseLocation + "/mcercle.db");
 	m_settings->endGroup();
 }
 
