@@ -428,6 +428,9 @@ void MainWindow::on_action_triggered() {
  * @brief exporter les clients
  */
 void MainWindow::on_actionClients_ex_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
 	inout exp(m_database);
 	exp.exportAllCustomers();
 }
@@ -436,6 +439,9 @@ void MainWindow::on_actionClients_ex_triggered() {
  * @brief expoter les produits
  */
 void MainWindow::on_actionProduits_ex_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
 	inout exp(m_database);
 	exp.exportAllProducts();
 }
@@ -444,11 +450,17 @@ void MainWindow::on_actionProduits_ex_triggered() {
  * @brief exporter les services
  */
 void MainWindow::on_actionServices_ex_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
 	inout exp(m_database);
 	exp.exportAllServices();
 }
 
 void MainWindow::on_actionFournisseur_ex_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
 	inout exp(m_database);
 	exp.exportAllProviders();
 }
@@ -464,6 +476,9 @@ void MainWindow::on_actionSignaler_un_bug_triggered() {
  * @brief MainWindow:: imprimer un fichier à entête
  */
 void MainWindow::on_actionImprimer_une_fiche_Ent_te_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
 	Printc mprint(m_database, m_lang, this);
 	mprint.print_fileEmpty();
 }
