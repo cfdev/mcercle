@@ -90,8 +90,8 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 			item_CUSTOMER->setData(Qt::DisplayRole, ilist.customerFirstName.at(i) +" "+ilist.customerLastName.at(i));
 
 		item_DESCRIPTION->setData(Qt::DisplayRole, ilist.description.at(i));
-		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
-		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i));
+		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i) - ilist.part_payment.at(i));
+		item_PRICE_TAX->setData(Qt::DisplayRole, ilist.priceTax.at(i) - ilist.part_paymentTax.at(i));
 
 		typeP="";
 		if( ilist.typePayment.at(i) == MCERCLE::CASH)         typeP = tr("Espece");
