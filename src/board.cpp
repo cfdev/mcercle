@@ -23,7 +23,7 @@
 #include "table.h"
 
 #include <QMessageBox>
-
+#include <QSqlQueryModel>
 
 /**
 	Constructeur de la class board
@@ -258,7 +258,36 @@ void board::listProposalAlertToTable()
 */
 void board::listRevenuesToTable()
 {
-	qreal monthServiceRevenue=0, monthProductRevenue=0;
+/*	QSqlQueryModel *mod = new QSqlQueryModel();
+	QSqlQuery query;
+
+	QString req = "SELECT DISTINCT TAB_INVOICES.CODE, TAB_INVOICES.ID, TAB_INVOICES.ID_REFERENCE, TAB_INVOICES.TYPE, TAB_INVOICES.PART_PAYMENT,"
+		" ("
+		" SELECT SUM(TAB_INVOICES_DETAILS.PRICE) FROM TAB_INVOICES_DETAILS"
+		" WHERE TAB_INVOICES_DETAILS.ID_INVOICE = TAB_INVOICES.ID "
+		" AND TAB_INVOICES_DETAILS.TYPE = 0 "
+		" ),"
+		" ("
+		" SELECT SUM(TAB_INVOICES_DETAILS.PRICE) FROM TAB_INVOICES_DETAILS"
+		" WHERE TAB_INVOICES_DETAILS.ID_INVOICE = TAB_INVOICES.ID "
+		" AND TAB_INVOICES_DETAILS.TYPE = 1 "
+		" )"
+		" FROM TAB_INVOICES"
+		" "
+		" LEFT JOIN TAB_INVOICES_DETAILS ON TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE"
+		" WHERE TAB_INVOICES.ID = TAB_INVOICES_DETAILS.ID_INVOICE"
+		" AND TAB_INVOICES.STATE = '1'"
+		" AND strftime('%m',TAB_INVOICES.PAYMENTDATE)='01'"
+		" AND strftime('%Y',TAB_INVOICES.PAYMENTDATE)='2015';";
+
+	query.prepare(req);
+
+	if(query.exec()){
+		mod -> setQuery(query);
+		ui -> tableView -> setModel( mod );
+	}*/
+
+	qreal monthServiceRevenue=0, monthProductRevenue=0, total=0;
 	//Clear les items, attention tjs utiliser la fonction clear()
 	ui->tableWidget_revenue->clear();
 	for (int i=ui->tableWidget_revenue->rowCount()-1; i >= 0; --i)
@@ -294,7 +323,8 @@ void board::listRevenuesToTable()
 		monthProductRevenue = m_data->m_customer->m_invoice->getMonthProductRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
 		item_MonthProductRevenue->setData(Qt::DisplayRole, m_lang.toString(monthProductRevenue,'f',2) );
 
-		item_MonthRevenue->setData(Qt::DisplayRole, m_lang.toString(monthServiceRevenue + monthProductRevenue,'f',2) );
+		total =  m_data->m_customer->m_invoice->getMonthRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
+		item_MonthRevenue->setData(Qt::DisplayRole, m_lang.toString(total,'f',2) );
 		
 		//definir le tableau
 		ui->tableWidget_revenue->setRowCount(j+1);
