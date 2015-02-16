@@ -146,7 +146,7 @@ void DialogInvoice::setUI() {
 		ui->pushButton_createInv->setVisible(false);
 	}
 	ui->pushButton_ok->setEnabled(false);
-	/// chargement de la Proposition commerciale apres init de l UI !
+	// Si c'est une édition
 	if(m_DialogState == EDIT){
 		ui -> pushButton_print -> setEnabled( true );
 		ui->pushButton_ok->setText(tr("Modifier"));
@@ -167,12 +167,16 @@ void DialogInvoice::setUI() {
 			}
 		}
 	}
+	// Sinon c'est une creation !
 	else{
-		//Set l ID du client pour la creation de la proposition
+		//DEVIS
 		if(m_DialogType == PROPOSAL_TYPE)
 			m_proposal->setIdCustomer( m_customer->getId() );
-		else
-			m_invoice->setIdCustomer( m_customer->getId() );
+		//FActure
+		else{
+			m_invoice -> setDefault(); // raz la class
+			m_invoice -> setIdCustomer( m_customer->getId() );
+		}
 		
 		ui->dateEdit_DATE->setDateTime( QDateTime::currentDateTime());
 		ui->dateEdit_delivery->setDateTime( QDateTime::currentDateTime());
@@ -260,8 +264,8 @@ void DialogInvoice::loadValues(){
 		if(m_isTax) {
 		ui->label_partpayment->setText(
 					tr("Total accompte(s):")+
-					tr("\nHT : ")+m_lang.toString(m_invoice->calcul_partPayment(m_invoice->getId()),'f',2) +
-					tr("\nTTC: ")+m_lang.toString(m_invoice->calcul_partPaymentTax(m_invoice->getId()),'f',2) );
+					tr("\nHT : ")+m_lang.toString(m_invoice->getPartPayment(),'f',2) +
+					tr("\nTTC: ")+m_lang.toString(m_invoice->getPartPaymentTax(),'f',2) );
 		}
 		else{
 			ui->label_partpayment->setText(
@@ -844,13 +848,11 @@ void DialogInvoice::setProposal(unsigned char proc){
 	Procedure pour mettre a jour les articles, ajoute et met a jour.
   */
 void DialogInvoice::setInvoice(unsigned char proc){
-	//m_invoice->setCode( ui->lineEdit_code->text() );
 	m_invoice->setDescription( ui->lineEdit_description->text() );
 	m_invoice->setUserDate( ui->dateEdit_DATE->date() );
-	m_invoice->setLimitPayment( ui->dateEdit_delivery->date() );
-	m_invoice->setPaymentDate( ui->dateEdit_valid->date() );
+	m_invoice->setLimitPayment( ui->dateEdit_valid->date() );
+	m_invoice->setPaymentDate( ui->dateEdit_delivery->date() );
 	m_invoice->setState( ui->comboBox_State->currentIndex() );
-	m_invoice->setType(MCERCLE::TYPE_INV);
 
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
@@ -869,6 +871,8 @@ void DialogInvoice::setInvoice(unsigned char proc){
 	// suivant le process on modifi ou on ajoute la facture/devis
 	if(proc == EDIT) m_invoice->update();
 	else{
+		//On creer une nouvelle facture
+		m_invoice->setType(MCERCLE::TYPE_INV);
 		//cree lobjet avec un nouveau code
 		m_invoice -> generateNewCode();
 		if( m_invoice -> create() ) {
@@ -1457,7 +1461,7 @@ void DialogInvoice::on_pushButton_partInvoice_clicked(int type) {
 		m_invoice -> generateNewCode();
 		m_invoice -> create();
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
-		m_invoice->loadFromID(m_invoice->getLastId());
+		m_invoice -> loadFromID(m_invoice->getLastId());
 
 		//Creation dun item !
 		invoice::InvoiceItem itemInv;
