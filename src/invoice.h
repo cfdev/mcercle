@@ -118,6 +118,7 @@ public:
 	qreal calcul_partPaymentTax(int id);
 
 	//Appliquer les valeurs
+	void setDefault();
 	void setId(const int& ident){m_id = ident;}
 	void setIdCustomer(const int& cIdent){m_idCustomer = cIdent;}
 	void setPrice(const qreal& price){m_price = price;}

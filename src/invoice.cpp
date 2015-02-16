@@ -33,9 +33,6 @@ invoice::invoice(QSqlDatabase db, QWidget *parent): m_parent(parent) {
 
 	m_id = 0;
 	m_idCustomer = 0;
-	m_state = 0;
-	m_price = 0;
-	m_partPayment = 0;
 }
 
 invoice::~invoice() {
@@ -69,6 +66,24 @@ QString invoice::getTextState(int state) {
 	return "";
 }
 
+/**
+	  Met les valeurs de defauts pour les variables de la class
+	  @return true si ok
+  */
+void invoice::setDefault() {
+	m_type = MCERCLE::TYPE_INV;
+	m_state = 0;
+	m_price = 0;
+	m_partPayment = 0;
+	m_partPaymentTax = 0;
+	m_typePayment = "";
+
+	m_state = m_type = m_idRef = 0;
+	m_price = m_priceTax = m_partPayment = m_partPaymentTax =0;
+	m_creationDate = QDateTime::currentDateTime();
+	m_userDate = m_limitPayment = m_paymentDate = QDate::currentDate();
+	m_code = m_proposalCode = m_description = m_typePayment = "";
+}
 
 /**
 	  Ajoute un facture dans la base de donnee
@@ -719,7 +734,7 @@ qreal invoice::getYearRevenue(QString year) {
 		effective_date = "PAYMENTDATE";
 	else
 		effective_date = "DATE";
-	
+
 	if(m_db.driverName() == "QSQLITE")
 		req =	"SELECT SUM( round(price,2) - round(part_payment,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
@@ -727,8 +742,7 @@ qreal invoice::getYearRevenue(QString year) {
 	else
 		req =	"SELECT SUM( round(price,2) - round(part_payment,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"'and;"
-				"TAB_INVOICES.TYPE != '1';";
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
 
 	qDebug() << "invoice::getYearRevenue: " << req;
 	QSqlQuery query;
@@ -763,14 +777,13 @@ qreal invoice::getYearRevenueTAX(QString year) {
 	if(m_db.driverName() == "QSQLITE")
 		req =	"SELECT SUM( round(price_tax,2) - round(part_payment_tax,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"'and "
-				"TAB_INVOICES.TYPE != '1';";
+				"strftime('%Y',TAB_INVOICES."+effective_date+")='"+year+"';";
 	else
 		req =	"SELECT SUM( round(price_tax,2) - round(part_payment_tax,2) ) AS TOTAL FROM TAB_INVOICES "
 				"WHERE TAB_INVOICES.STATE = '1' and "
-				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"'and "
-				"TAB_INVOICES.TYPE != '1';";
+				"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";
 
+	qDebug() << "invoice::getYearRevenueTAX: " << req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -855,7 +868,7 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 			"extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
 			"extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
-	qDebug() << "invoice::getMonthServiceRevenue: "<< req;
+/*	qDebug() << "invoice::getMonthServiceRevenue: "<< req;
 	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
@@ -864,7 +877,7 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-	}
+	}*/
 
 	return total;
 }
@@ -897,7 +910,7 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
                 "extract(MONTH FROM TAB_INVOICES."+effective_date+")='"+month+"'and "
                 "extract(YEAR FROM TAB_INVOICES."+effective_date+")='"+year+"';";*/
 
-	QSqlQuery query;
+/*	QSqlQuery query;
 	query.prepare(req);
 	if(query.exec()){
 		query.next();
@@ -906,7 +919,7 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
-	}
+	}*/
 
 	return total;
 }
