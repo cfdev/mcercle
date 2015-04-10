@@ -32,7 +32,7 @@
 #include <QUrl>
 #include <QFileDialog>
 #include <QImageReader>
-#include <tgmath.h>
+#include <QtCore/qmath.h>
 
 
 DialogInvoice::DialogInvoice(QLocale &lang, database *pdata, unsigned char type, unsigned char state, QWidget *parent) :
@@ -988,8 +988,15 @@ if((column == COL_PRICE) || (column == COL_TAX) || (column == COL_QUANTITY) || (
 		//Calcul du total
 		qreal price = priceU * quantity;
 		price -= price * (discount/100.0);
-		//Tronc a 2 decimal
-		price = QString::number(price,'f',2).toFloat();
+
+		//Immite la fonction round(x,2) du SQL
+		//Recuperation des decimales
+		qreal dec = price - qFloor(price);
+		//Arrondir à la deuxième decimales
+		dec = qRound(dec*100.0);
+		//Résultat
+		price = qFloor(price) + dec/100.0;
+
 		//Item du total
 		ItemOfTable *item_Total  = new ItemOfTable();
 		item_Total->setData(Qt::DisplayRole, price);
@@ -1486,15 +1493,14 @@ void DialogInvoice::on_pushButton_partInvoice_clicked(int type) {
 /**
  * @brief Creer une facture davoir
  */
-void DialogInvoice::on_pushButton_creditInvoice_clicked() {
-
-/*	int ret = QMessageBox::information(this, tr("Attention"),
+void DialogInvoice::on_pushButton_creditInvoice_clicked(int type) {
+	int ret = QMessageBox::information(this, tr("Attention"),
 				QLatin1String("Voulez-vous créer une facture d'avoir? "),
 				QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){
 		// Avertissement si un acompte existe déja
-		if(m_invoice->isTypeExiste( MCERCLE::TYPE_CREDIT )) {
+		if(m_invoice->isTypeExiste( MCERCLE::TYPE_PART )) {
 			ret = QMessageBox::warning(this, tr("Attention"),
 							QLatin1String("Un avoir existe déja sur cette facture\n\nVoulez-vous en créer un nouveau? "),
 							QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
@@ -1504,6 +1510,14 @@ void DialogInvoice::on_pushButton_creditInvoice_clicked() {
 			}
 		}
 
+		//Choix de la tax
+		qreal mtax;
+		if(m_data->getIsTax()) {
+			DialogTax *m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Choice, &mtax);
+			m_DialogTax->setModal(true);
+			m_DialogTax->exec();
+		}
+		QString desc = m_invoice->getDescription();
 		m_invoice->setType( MCERCLE::TYPE_CREDIT );
 		m_invoice->setIdRef( m_invoice->getId() );
 		m_invoice->setDescription( tr("Avoir sur ")+ m_invoice->getCode() );
@@ -1512,35 +1526,33 @@ void DialogInvoice::on_pushButton_creditInvoice_clicked() {
 		m_invoice->setPaymentDate( QDate::currentDate() );
 		m_invoice->setLimitPayment( QDate::currentDate() );
 		m_invoice->setTypePayment( m_invoice->getTypePayment() );
-		m_invoice->setPrice( -m_invoice->getPrice() );
-		m_invoice->setPriceTax( -m_invoice->getPriceTax() );
+		m_invoice->setPrice(- m_totalTaxPrice*0.3 / ( 1+ mtax/100.0) );
+		m_invoice->setPriceTax( m_totalTaxPrice*0.3);/* 30% acompte */
 		m_invoice->setPartPayment(0);
+		m_invoice->setPartPaymentTax(0);
 
-		//Recuperation des items presentent dans la factures
-		invoice::InvoiceListItems itemsInv;
-		m_invoice->getInvoiceItemsList(itemsInv, "ITEM_ORDER", "", "");
 		//cree lobjet avec un nouveau code
 		m_invoice -> generateNewCode();
 		m_invoice -> create();
+		//recharge l objet et son nouvel ID pour lajout des items par la suite
+		m_invoice -> loadFromID(m_invoice->getLastId());
 
-		//Creation des items !
+		//Creation dun item !
 		invoice::InvoiceItem itemInv;
-		for(int i=0; i<itemsInv.name.count(); i++){
-			itemInv.name = itemsInv.name.at(i);
-			itemInv.idProduct = itemsInv.idProduct.at(i);
-			itemInv.price = (- itemsInv.price.at(i) );
-			itemInv.discount = itemsInv.discount.at(i);
-			itemInv.tax = itemsInv.tax.at(i);
-			itemInv.quantity = itemsInv.quantity.at(i);
-			itemInv.order = itemsInv.order.at(i);
-			itemInv.type = itemsInv.type.at(i);
+		itemInv.name = tr("Avoir sur ")+ desc;
+		itemInv.idProduct = 0;
+		itemInv.price = - m_invoice->getPrice();
+		itemInv.discount = 0;
+		itemInv.tax = mtax;
+		itemInv.quantity = 1;
+		itemInv.order = 0;
+		itemInv.type = type;
 
-			m_invoice->addInvoiceItem(itemInv);
-		}
+		m_invoice->addInvoiceItem(itemInv);
 
 		//Configuration de l'UI
 		setUI();
 		//Demande le rafraichissement de la liste des factures
 		emit askRefreshInvoiceList();
-	}*/
+	}
 }
