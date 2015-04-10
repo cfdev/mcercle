@@ -270,11 +270,16 @@ void DialogSettings::loadInfoDatabase() {
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/On").scaled(24,24)));
 		 ui->pushButton_connect->setText( QLatin1String("Se déconnecter") );
 		 //TAX
-		 if(m_DialogTax){
-			delete m_DialogTax;
-		 }
-		 m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
-		 ui->verticalLayout_tax->addWidget(m_DialogTax);
+		 //Setting
+		 if(m_data->getIsTax()){
+			 if(m_DialogTax){
+				delete m_DialogTax;
+			 }
+			 m_DialogTax = new DialogTax(m_data->m_tax, MCERCLE::Widget);
+			 ui->verticalLayout_tax->addWidget(m_DialogTax);
+		}
+		else
+			 ui->tabWidget->setTabEnabled(3, false);
 	 }
 	 else{
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/Off").scaled(24,24)));
