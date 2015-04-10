@@ -112,10 +112,19 @@ public:
 	bool isHere(const QString& code);
 	int getLastId();
 	int count(int id_customer);
+
+	QList<int> listofID_Invoices(QString year, QString month);
+
+	/* Fonctions de calcul */
 	qreal calcul_price(int id);
 	qreal calcul_priceTax(int id);
+	qreal calcul_partPaymentService(int id);
+	qreal calcul_partPaymentProduct(int id);
 	qreal calcul_partPayment(int id);
 	qreal calcul_partPaymentTax(int id);
+
+	qreal calcul_services(int id);
+	qreal calcul_products(int id);
 
 	//Appliquer les valeurs
 	void setDefault();
