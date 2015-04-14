@@ -74,7 +74,8 @@ HEADERS += \
     src/about.h \
     src/mcercle.h \
     src/update.h \
-    src/inout.h
+    src/inout.h \
+    src/qcustomplot/qcustomplot.h
 
 SOURCES += \
     src/tax.cpp \
@@ -110,7 +111,8 @@ SOURCES += \
     src/board.cpp \
     src/about.cpp \
     src/update.cpp \
-    src/inout.cpp
+    src/inout.cpp \
+    src/qcustomplot/qcustomplot.cpp
 
 FORMS += \
     src/productView.ui \
