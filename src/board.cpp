@@ -22,8 +22,11 @@
 #include "dialoginvoice.h"
 #include "table.h"
 
+
+
 #include <QMessageBox>
 #include <QSqlQueryModel>
+#include <QDebug>
 
 /**
 	Constructeur de la class board
@@ -35,6 +38,12 @@ board::board(database *pdata, QLocale &lang, QWidget *parent) :
 	ui->setupUi(this);
 	m_data = pdata;
 	m_lang = lang;
+
+	// Creation graphique
+	m_plot = new QCustomPlot(ui->tab);
+	ui->verticalLayout_plot->addWidget(m_plot);
+	m_caBar = new QCPBars(m_plot->xAxis, m_plot->yAxis);
+	setupBarChart();
 
 	//Liste le tableau de bord
 	listStockAlertToTable();
@@ -258,7 +267,7 @@ void board::listProposalAlertToTable()
 */
 void board::listRevenuesToTable()
 {
-/*	QSqlQueryModel *mod = new QSqlQueryModel();
+	/*QSqlQueryModel *mod = new QSqlQueryModel();
 	QSqlQuery query;
 
 	QString req = "SELECT DISTINCT TAB_INVOICES.CODE, TAB_INVOICES.ID, TAB_INVOICES.ID_REFERENCE, TAB_INVOICES.TYPE, TAB_INVOICES.PART_PAYMENT,"
@@ -286,6 +295,11 @@ void board::listRevenuesToTable()
 		mod -> setQuery(query);
 		ui -> tableView -> setModel( mod );
 	}*/
+
+	/*qDebug()<< "=======================================================";
+	qDebug()<< "Service: " << m_data->m_customer->m_invoice->calcul_partPaymentService(27);
+	qDebug()<< "Produit: " << m_data->m_customer->m_invoice->calcul_partPaymentProduct(27);
+	qDebug()<< "=======================================================";*/
 
 	qreal monthServiceRevenue=0, monthProductRevenue=0, total=0;
 	//Clear les items, attention tjs utiliser la fonction clear()
@@ -379,6 +393,7 @@ void board::calculYear(QString year){
 void board::on_comboBox_yearsList_currentIndexChanged(QString txt) {
 	calculYear( txt );
 	listRevenuesToTable();
+	setupBarChart();
 }
 
 /**
@@ -432,4 +447,82 @@ void board::on_tableWidget_ProposalAlert_itemDoubleClicked(QTableWidgetItem *ite
 	delete m_DialogInvoice;
 	//rafraichir la liste
 	listProposalAlertToTable();
+}
+
+
+/**
+ * @brief board::setupBarChart - affichage graphique du CA
+ */
+void board::setupBarChart() {
+	//si un graphique existe deja
+	if(m_plot->plottableCount()>1){
+		m_plot->removePlottable(m_plot->plottable(1));
+	}
+	m_plot->setObjectName(QString::fromUtf8("m_plot"));
+	m_plot->setBackground(Qt::white);
+	// create empty bar chart objects:
+	m_plot->addPlottable(m_caBar);
+	// set names and colors:
+	QPen pen;
+	pen.setWidthF(1.2);
+	m_caBar->setName("Chiffre d'affaire HT");
+	pen.setColor(QColor(255, 131, 0));
+	m_caBar->setPen(pen);
+	m_caBar->setBrush(QColor(255, 131, 0, 50));
+	m_caBar->removeFromLegend();
+
+	// prepare x axis with country labels:
+	QVector<double> ticks;
+	QVector<QString> labels;
+	ticks << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12;
+	labels << "Jan" << QLatin1String("Fév") << "Mar" << "Avr" << "Mai" << "Jui" << "jui" << QLatin1String("Aoû") << "Sep" << "Oct" << "Nov" << QLatin1String("Déc");
+	m_plot->xAxis->setAutoTicks(false);
+	m_plot->xAxis->setAutoTickLabels(false);
+	m_plot->xAxis->setTickVector(ticks);
+	m_plot->xAxis->setTickVectorLabels(labels);
+	m_plot->xAxis->setTickLabelRotation(60);
+	m_plot->xAxis->setSubTickCount(0);
+	m_plot->xAxis->setTickLength(0, 4);
+	m_plot->xAxis->grid()->setVisible(true);
+	m_plot->xAxis->setRange(0, 13);
+
+	// prepare y axis:
+	m_plot->yAxis->setRange(0, 1000);
+	m_plot->yAxis->setPadding(5); // a bit more space to the left border
+	m_plot->yAxis->setLabel(QLatin1String("Chiffre d'affaire HT"));
+	m_plot->yAxis->grid()->setSubGridVisible(true);
+	QPen gridPen;
+	gridPen.setStyle(Qt::SolidLine);
+	gridPen.setColor(QColor(0, 0, 0, 25));
+	m_plot->yAxis->grid()->setPen(gridPen);
+	gridPen.setStyle(Qt::DotLine);
+	m_plot->yAxis->grid()->setSubGridPen(gridPen);
+
+	// Add data:
+	QVector<qreal> CA;
+	for(int i=1,j=0; i<13;i++){
+		CA <<  m_data->m_customer->m_invoice->getMonthRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
+		// Ajustage de l'échelle Y
+		if(CA[j] > m_plot->yAxis->range().size())
+			m_plot->yAxis->setRange(0, CA[j] + CA[j]*0.025);
+		j++;
+	}
+	m_caBar->setData(ticks, CA);
+
+	// setup legend:
+	m_plot->legend->setVisible(true);
+	m_plot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
+	m_plot->legend->setBrush(QColor(255, 255, 255, 200));
+	QPen legendPen;
+	legendPen.setColor(QColor(130, 130, 130, 200));
+	m_plot->legend->setBorderPen(legendPen);
+	QFont legendFont = font();
+	legendFont.setPointSize(10);
+	m_plot->legend->setFont(legendFont);
+	m_plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+
+	//Refresh
+	m_plot->replot();
+	m_plot->repaint();
+	m_plot->rescaleAxes();
 }

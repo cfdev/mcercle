@@ -6,6 +6,7 @@
 #include <QTableWidgetItem>
 
 #include "dbase.h"
+#include "qcustomplot/qcustomplot.h"
 
 namespace Ui {
 	class board;
@@ -28,6 +29,9 @@ public:
 
 private:
 	Ui::board *ui;
+	QCustomPlot *m_plot;
+	QCPBars *m_caBar;
+	void setupBarChart();
 
 	database *m_data;
 	QLocale m_lang;
