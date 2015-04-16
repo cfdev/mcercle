@@ -1,4 +1,4 @@
-ï»¿/**
+/**
   This file is a part of mcercle
   Copyright (C) 2010-2014 Cyril FRAUSTI
 
@@ -180,7 +180,7 @@ void board::listInvoiceAlertToTable()
 		}
 		else{
 			item_STATE->setIcon( QIcon(":/app/quit") );
-			item_STATE->setText( QLatin1String("EchÃ©ance dÃ©passÃ©e") );
+			item_STATE->setText( QLatin1String("Echéance dépassée") );
 		}
 		
 		//definir le tableau
@@ -502,7 +502,7 @@ void board::setupBarChart() {
 	QVector<qreal> CA;
 	for(int i=1,j=0; i<13;i++){
 		CA <<  m_data->m_customer->m_invoice->getMonthRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
-		// Ajustage de l'Ã©chelle Y
+		// Ajustage de l'échelle Y
 		if(CA[j] > m_plot->yAxis->range().size())
 			m_plot->yAxis->setRange(0, CA[j] + CA[j]*0.025);
 		j++;
