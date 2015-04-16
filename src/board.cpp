@@ -1,4 +1,4 @@
-/**
+Ôªø/**
   This file is a part of mcercle
   Copyright (C) 2010-2014 Cyril FRAUSTI
 
@@ -180,7 +180,7 @@ void board::listInvoiceAlertToTable()
 		}
 		else{
 			item_STATE->setIcon( QIcon(":/app/quit") );
-			item_STATE->setText( QLatin1String("EchÈance dÈpassÈe") );
+			item_STATE->setText( QLatin1String("Ech√©ance d√©pass√©e") );
 		}
 		
 		//definir le tableau
@@ -297,8 +297,8 @@ void board::listRevenuesToTable()
 	}*/
 
 	/*qDebug()<< "=======================================================";
-	qDebug()<< "Service: " << m_data->m_customer->m_invoice->calcul_partPaymentService(27);
-	qDebug()<< "Produit: " << m_data->m_customer->m_invoice->calcul_partPaymentProduct(27);
+	qDebug()<< "Service: " << m_data->m_customer->m_invoice->calcul_partPaymentService(1);
+	qDebug()<< "Produit: " << m_data->m_customer->m_invoice->calcul_partPaymentProduct(1);
 	qDebug()<< "=======================================================";*/
 
 	qreal monthServiceRevenue=0, monthProductRevenue=0, total=0;
@@ -466,16 +466,16 @@ void board::setupBarChart() {
 	QPen pen;
 	pen.setWidthF(1.2);
 	m_caBar->setName("Chiffre d'affaire HT");
-	pen.setColor(QColor(255, 131, 0));
+	pen.setColor(QColor(45, 125, 69));
 	m_caBar->setPen(pen);
-	m_caBar->setBrush(QColor(255, 131, 0, 50));
+	m_caBar->setBrush(QColor(45, 125, 69, 50));
 	m_caBar->removeFromLegend();
 
 	// prepare x axis with country labels:
 	QVector<double> ticks;
 	QVector<QString> labels;
 	ticks << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12;
-	labels << "Jan" << QLatin1String("FÈv") << "Mar" << "Avr" << "Mai" << "Jui" << "jui" << QLatin1String("Ao˚") << "Sep" << "Oct" << "Nov" << QLatin1String("DÈc");
+	labels << "Jan" << "Fev" << "Mar" << "Avr" << "Mai" << "Jui" << "jui" << "Aou" << "Sep" << "Oct" << "Nov" << "Dec";
 	m_plot->xAxis->setAutoTicks(false);
 	m_plot->xAxis->setAutoTickLabels(false);
 	m_plot->xAxis->setTickVector(ticks);
@@ -502,7 +502,7 @@ void board::setupBarChart() {
 	QVector<qreal> CA;
 	for(int i=1,j=0; i<13;i++){
 		CA <<  m_data->m_customer->m_invoice->getMonthRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
-		// Ajustage de l'Èchelle Y
+		// Ajustage de l'√©chelle Y
 		if(CA[j] > m_plot->yAxis->range().size())
 			m_plot->yAxis->setRange(0, CA[j] + CA[j]*0.025);
 		j++;
@@ -510,8 +510,8 @@ void board::setupBarChart() {
 	m_caBar->setData(ticks, CA);
 
 	// setup legend:
-	m_plot->legend->setVisible(true);
-	m_plot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
+	m_plot->legend->setVisible(false);
+	/*m_plot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
 	m_plot->legend->setBrush(QColor(255, 255, 255, 200));
 	QPen legendPen;
 	legendPen.setColor(QColor(130, 130, 130, 200));
@@ -519,7 +519,7 @@ void board::setupBarChart() {
 	QFont legendFont = font();
 	legendFont.setPointSize(10);
 	m_plot->legend->setFont(legendFont);
-	m_plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
+	m_plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);*/
 
 	//Refresh
 	m_plot->replot();
