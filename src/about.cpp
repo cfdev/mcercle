@@ -1,4 +1,4 @@
-/**
+﻿/**
   This file is a part of mcercle
   Copyright (C) 2010-2015 Cyril FRAUSTI
 
