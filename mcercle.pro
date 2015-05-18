@@ -14,6 +14,9 @@ TEMPLATE = app
 CONFIG += ordered
 INCLUDEPATH += src
 
+#Fichier de translation
+TRANSLATIONS = lang/mcercle_en.ts
+
 # Liste des fichiers qui seront incorpores au binaire en tant que ressources
 RESOURCES += ressources.qrc
 
