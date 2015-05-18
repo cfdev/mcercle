@@ -54,13 +54,14 @@ Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	mfooterTextInfo = info.name;
 	if(!info.capital.isEmpty())	mfooterTextInfo += " - " + tr("Capital ") + info.capital;
 	if(!info.num.isEmpty())		mfooterTextInfo += " - " + tr("Siret ") + info.num;
-	if((m_data->getIsTax()) &&(!info.numTax.isEmpty()) )	mfooterTextInfo += " - " + tr("N° TVA ") + info.numTax;
+	if((m_data->getIsTax()) &&(!info.numTax.isEmpty()) )	mfooterTextInfo += " - " + tr("NÂ° TVA ") + info.numTax;
 
 	mfooterTextInfo += "\n" + info.address1 + " " + info.address2 + " " +  info.address3 + " - " + info.zipCode + " " + info.city;
 
 	if(!info.line1.isEmpty())	mfooterTextInfo += "\n" + info.line1;
 	if(!info.line2.isEmpty())	mfooterTextInfo += "\n" + info.line2;
 	if(!info.line3.isEmpty())	mfooterTextInfo += "\n" + info.line3;
+	if(!info.line4.isEmpty())	mfooterTextInfo += "\n" + info.line4;
 
 	///Coins carre ou rond
 	setRoundedRect(info.borderRadius);
@@ -98,7 +99,7 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 
 	///TODO:Definition des marges en dur pour le moment
 	printer -> setPageMargins(5.0,5.0,5.0,15.0, QPrinter::Millimeter);
-	// ATTENTION: l'impression physique et PDF n'on pas le même maximum DPI
+	// ATTENTION: l'impression physique et PDF n'on pas le mÃªme maximum DPI
 	// Mettre 300 en max est largement suffisant
 	// ATTENTION l'appel a cette fonction doit se faire avant le "painter.begin"
 	printer -> setResolution(DPI);
@@ -127,7 +128,7 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	database::Bank mb;
 	m_data -> getBank(mb);
 	mBankTextID = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
-	mBankTextID += tr("Compte: ")+mb.numCompte+"  "+QLatin1String("Clé RIB: ")+mb.keyRIB+'\n';
+	mBankTextID += tr("Compte: ")+mb.numCompte+"  "+tr("ClÃ© RIB: ")+mb.keyRIB+'\n';
 	mBankTextID += tr("Domiciliation: ");
 	mBankTextID += mb.address+"\n\n";
 	mBankTextID += tr("IBAN: ");
@@ -229,8 +230,8 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	if(type == T_PROPOSAL) title = tr("Devis");
 	else if(type == T_INVOICE){
 		title = tr("Facture");
-		if(m_inv ->getType() == MCERCLE::TYPE_PART) title = QLatin1String("Facture d'acompte");
-		if(m_inv ->getType() == MCERCLE::TYPE_CREDIT) title = QLatin1String("Facture d'avoir");
+		if(m_inv ->getType() == MCERCLE::TYPE_PART) title = tr("Facture d'acompte");
+		if(m_inv ->getType() == MCERCLE::TYPE_CREDIT) title = tr("Facture d'avoir");
 	}
 	else if(type == T_SERVICE) title = tr("Service");
 	mFont.setPointSize(24);
@@ -277,7 +278,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 						  m_pro -> getUserDate().toString(tr("dd-MM-yyyy")) );
 		rect.translate( 0, rect.height());
 		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
-						  QLatin1String("Date fin validité: ")+
+						  tr("Date fin validitÃ©: ")+
 						  m_pro -> getValidDate().toString(tr("dd-MM-yyyy")) );
 	}
 	else if(type == T_INVOICE) {
@@ -288,7 +289,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 						  m_inv -> getUserDate().toString(tr("dd-MM-yyyy")) );
 		rect.translate( 0, rect.height());
 		painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter,
-						  QLatin1String("Date Echéance: ")+
+						  tr("Date EchÃ©ance: ")+
 						  m_inv -> getLimitPayment().toString(tr("dd-MM-yyyy")) );
 	}
 
@@ -296,7 +297,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	mFont.setPointSize(10);
 	painter.setFont(mFont);
 
-	/// Identite du client si le type n'est pas un fichier à entête
+	/// Identite du client si le type n'est pas un fichier Ã  entÃªte
 	if(type != T_FILE) {
 		rect = painter.fontMetrics().boundingRect(mwUtil/2, rect.bottom()+15, 0, 0, Qt::AlignLeft, tr("Client: ") );
 		painter.drawText(rect, tr("Client: "));
@@ -325,8 +326,8 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	rect.translate( 0, SPACE_BORDER);
 	qreal pos = WIDTH_DES;
 	//DESIGNATION 50%
-	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER,rect.top(), mwUtil*pos,0, Qt::AlignLeft, QLatin1String("Désignation") );
-	painter.drawText( rect, QLatin1String("Désignation"));
+	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER,rect.top(), mwUtil*pos,0, Qt::AlignLeft, tr("DÃ©signation") );
+	painter.drawText( rect, tr("DÃ©signation"));
 
 	//REMISE 12%
 	bool discount=false;
@@ -357,19 +358,19 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	}
 	pos+=WIDTH_DIS;
 	//PRIX UNITAIRE 12%
-	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+(mwUtil*pos),rect.top(), mwUtil*WIDTH_PRI,0, Qt::AlignLeft, tr("Prix U. ")+ QChar(8364) );
+	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+(mwUtil*pos),rect.top(), mwUtil*WIDTH_PRI,0, Qt::AlignLeft, tr("Prix U. ")+  m_data->getCurrency() );
 	pos+=WIDTH_PRI;
-	painter.drawText( rect, tr("Prix U. ")+ QChar(8364));
+	painter.drawText( rect, tr("Prix U. ")+ m_data->getCurrency());
 	//QUANTITE 8%
-	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+mwUtil*pos,rect.top(), mwUtil*WIDTH_QTE,0, Qt::AlignLeft, QLatin1String("Quantité")  );
+	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+mwUtil*pos,rect.top(), mwUtil*WIDTH_QTE,0, Qt::AlignLeft, tr("QuantitÃ©")  );
 	pos+=WIDTH_QTE;
-	painter.drawText( rect, QLatin1String("Quantité") );
+	painter.drawText( rect, tr("QuantitÃ©") );
 	//TOTAL 12%
 	QString stt;
 	if(m_data->getIsTax())
-		stt = tr("TOTAL HT ")+ QChar(8364);
+		stt = tr("TOTAL HT ")+  m_data->getCurrency();
 	else
-		stt = tr("TOTAL ")+ QChar(8364);
+		stt = tr("TOTAL ")+  m_data->getCurrency();
 	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+(mwUtil*pos),rect.top(), mwUtil*WIDTH_TOT,0, Qt::AlignLeft, stt );
 	painter.drawText( rect, stt );
 	
@@ -731,27 +732,27 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 	if(typeP == MCERCLE::DEBIT)          typePayment = tr("Prelevement");
 	if(typeP == MCERCLE::OTHER)          typePayment = tr("Autre");
 	qDebug() <<"PAIEMENT: "<< typeP << " "<< MCERCLE::TRANSFER;
-	QString text = QLatin1String("Mode de règlement : ")+typePayment;
+	QString text = tr("Mode de rÃ¨glement : ")+typePayment;
 	rect = painter.fontMetrics().boundingRect(mLeft, topRect, mwUtil*0.50,0, Qt::AlignLeft, text );
 	painter.drawText( rect, text );
 
 	if((typeP == MCERCLE::INTERBANK)||(typeP == MCERCLE::DEBIT)){
-		text = QLatin1String("Merci de nous fournir un RIB pour ce mode de règlement.");
+		text = tr("Merci de nous fournir un RIB pour ce mode de rÃ¨glement.");
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text );
 		painter.drawText( rect, text );
 	}
 
 	//Condition de reglement
 	if(type == T_PROPOSAL){
-		text = QLatin1String("Conditions de règlement: 30% du montant total lors\nde la signature de cette proposition soit: ");
-		text += m_lang.toString(mtotalTaxPrice * 0.3, 'f', 2) +" "+ QChar(8364);
+		text = tr("Conditions de rÃ¨glement: 30% du montant total lors\nde la signature de cette proposition soit: ");
+		text += m_lang.toString(mtotalTaxPrice * 0.3, 'f', 2) +" "+  m_data->getCurrency();
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.50,0, Qt::AlignLeft, text);
 		painter.drawText( rect, text);
 	}
 	
 	/// TODO: RIB sur une autre page !!
 	/*if(typeP == MCERCLE::TRANSFER){
-		text = QLatin1String("Relevé d'Identité Bancaire");
+		text = tr("RelevÃ© d'IdentitÃ© Bancaire");
 		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 25, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
 		painter.drawText(rect, text);
 		
@@ -1157,8 +1158,8 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 	else blockHeight = 450;
 
 	QString serv = tr("Intervention: ") + m_serv->getName()+"\n";
-	serv += QLatin1String("Réalisé le : ") + m_serv->getDate().toString(tr("dd-MM-yyyy"))+ tr(" \xE0 ")+ m_serv->getDate().toString(tr("HH:mm")) + "\n\n";
-	serv += QLatin1String("Détails:\n");
+	serv += tr("RÃ©alisÃ© le : ") + m_serv->getDate().toString(tr("dd-MM-yyyy"))+ tr(" \xE0 ")+ m_serv->getDate().toString(tr("HH:mm")) + "\n\n";
+	serv += tr("DÃ©tails:\n");
 	serv += m_serv->getDescription();
 	serv += " \n";
 	// Attention ladaptation avec le Qt::TextWordWrap ne fonctionne qui si il y a des espaces dans la chaine !!
@@ -1194,7 +1195,7 @@ void Printc::on_paintPrinterService(QPrinter *printer) {
 
 
 /**
- * @brief print_fileEmpty: imprime un fiche à entête
+ * @brief print_fileEmpty: imprime un fiche Ã  entÃªte
  * @param id
  */
 void Printc::print_fileEmpty() {
