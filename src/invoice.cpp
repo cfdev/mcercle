@@ -56,10 +56,10 @@ QIcon invoice::getIconState(int state) {
 */
 QString invoice::getTextState(int state) {
 	switch(state){
-		case MCERCLE::INV_UNPAID:return QLatin1String("Non Réglée");break;
-		case MCERCLE::INV_PAID:return QLatin1String("Réglée");break;
-		case MCERCLE::INV_OVERDUE:return QLatin1String("Impayée");break;
-		case MCERCLE::INV_CANCEL:return QLatin1String("Annulée");break;
+		case MCERCLE::INV_UNPAID:return tr("Non RÃ©glÃ©e");break;
+		case MCERCLE::INV_PAID:return tr("RÃ©glÃ©e");break;
+		case MCERCLE::INV_OVERDUE:return tr("ImpayÃ©e");break;
+		case MCERCLE::INV_CANCEL:return tr("AnnulÃ©e");break;
 		default: break;
 	}
 	return "";
@@ -191,7 +191,7 @@ void invoice::check_PartPayment() {
 		if(acompte != calcul_partPayment(id_invRef)) {
 			//Charge la facture original
 			loadFromID( id_invRef );
-			//Calcul et met à jour le prix des acomptes
+			//Calcul et met Ã  jour le prix des acomptes
 			m_partPayment = calcul_partPayment(id_invRef);
 			m_partPaymentTax = calcul_partPaymentTax(id_invRef);
 			update();
@@ -685,6 +685,30 @@ bool invoice::updateInvoiceItem(InvoiceItem& item) {
 	else return true;
 }
 
+/**
+  Ajoute un article
+  @return true si ok
+  */
+bool invoice::addInvoiceItems(InvoiceListItems& items){
+	InvoiceItem item;
+
+	for(int i = 0; i<items.id.count(); i++) {
+		item.id         = items.id.at(i);
+		item.idProduct  = items.idProduct.at(i);
+		item.type       = items.type.at(i);
+		item.name       = items.name.at(i);
+		item.quantity   = items.quantity.at(i);
+		item.discount   = items.discount.at(i);
+		item.price      = items.price.at(i);
+		item.tax        = items.tax.at(i);
+		item.order      = items.order.at(i);
+
+		if( !addInvoiceItem( item ) ) {
+			return false;
+		}
+	}
+	return true;
+}
 
 /**
 	 Retour la liste des annees de facture
@@ -846,7 +870,7 @@ qreal invoice::getMonthServiceRevenue(QString year, QString month) {
 	qreal total=0; // important init pour le nonReturnValue
 	if(year.isEmpty() | month.isEmpty())return 0;
 
-	//recupère la liste des ID factures pour le mois
+	//recupÃ¨re la liste des ID factures pour le mois
 	QList <int> idList = listofID_Invoices( year, month);
 
 	// On parcours la liste des ID
@@ -865,7 +889,7 @@ qreal invoice::getMonthProductRevenue(QString year, QString month) {
 	qreal total=0; // important init pour le nonReturnValue
 	if(year.isEmpty() | month.isEmpty())return 0;
 
-	//recupère la liste des ID factures pour le mois
+	//recupÃ¨re la liste des ID factures pour le mois
 	QList <int> idList = listofID_Invoices( year, month);
 
 	// On parcours la liste des ID
@@ -921,7 +945,7 @@ int invoice::count(int id_customer) {
 }
 
 /**
- * @brief récupère la liste des factures réglés dun mois/annee desire
+ * @brief rÃ©cupÃ¨re la liste des factures rÃ©glÃ©s dun mois/annee desire
  * @param year
  * @param month
  * @return list des ID facture
@@ -935,7 +959,7 @@ QList<int> invoice::listofID_Invoices(QString year, QString month) {
 		effective_date = "DATE";
 
 	if(month.size()<2)month = '0'+month;
-	//récupère tous les ID des factures d'acompte
+	//rÃ©cupÃ¨re tous les ID des factures d'acompte
 	QString req =	"SELECT ID FROM TAB_INVOICES"
 					" WHERE TAB_INVOICES.STATE = '1' "
 					" AND strftime('%m',TAB_INVOICES."+effective_date+")='"+month+"' "
@@ -1027,7 +1051,7 @@ qreal invoice::calcul_priceTax(int id){
 qreal invoice::calcul_partPaymentService(int id) {
 	QList<int> idList;
 	qreal serv=0;
-	//récupère tous les ID des factures d'acompte
+	//rÃ©cupÃ¨re tous les ID des factures d'acompte
 	QString req =	"select ID from tab_invoices"
 					" where tab_invoices.id_reference="+QString::number(id);
 
@@ -1057,7 +1081,7 @@ qreal invoice::calcul_partPaymentService(int id) {
 qreal invoice::calcul_partPaymentProduct(int id){
 	QList<int> idList;
 	qreal prod=0;
-	//récupère tous les ID des factures d'acompte
+	//rÃ©cupÃ¨re tous les ID des factures d'acompte
 	QString req =	"select ID from tab_invoices"
 					" where tab_invoices.id_reference="+QString::number(id);
 
@@ -1240,7 +1264,7 @@ QString invoice::getCodeInvoice_Ref(){
 }
 
 /**
- * @brief genere un nouveau code de devis l'applique à la class et retourn la valeur
+ * @brief genere un nouveau code de devis l'applique Ã  la class et retourn la valeur
  * @return code
  */
 QString invoice::generateNewCode() {

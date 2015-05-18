@@ -14,7 +14,7 @@ DialogTax::DialogTax(tax *t, int typeUI, qreal *result, QWidget *parent) :
 		ui -> buttonBox -> setVisible(false);
 	}
 	if(typeUI == MCERCLE::Choice) {
-		setWindowTitle(QLatin1String("Sélection de la tax..."));
+		setWindowTitle(tr("SÃ©lection de la tax..."));
 		ui -> buttonBox -> setVisible(true);
 		ui ->label->setVisible(false);
 		ui ->label_2->setVisible(false);

@@ -187,6 +187,9 @@ public:
 	bool removeInvoiceItem(int Itemid);
 	bool updateInvoiceItem(InvoiceItem& item);
 
+	// Fonction sur plusieurs articles
+	bool addInvoiceItems(InvoiceListItems& items);
+
 	// Parametrage
 	int getCaType();
 

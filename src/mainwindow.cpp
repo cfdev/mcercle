@@ -28,10 +28,12 @@
 #include <QDebug>
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	#include <QPlastiqueStyle>
+	#include <QTextCodec>
 #else
 	#include <QStyleFactory>
 #endif
 
+#include <QApplication>
 #include "dialogsettings.h"
 #include "dialogproviders.h"
 #include "mainwindow.h"
@@ -63,9 +65,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 #if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
 	QApplication::setStyle(new QPlastiqueStyle);
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf-8"));
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf-8"));
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf-8"));
 #else
 	QApplication::setStyle(QStyleFactory::create("Fusion"));
 #endif
+	qDebug() << "======================= MCERCLE DEBUG =======================";
 	qDebug() << "ApplicationDirPath: " << qApp->applicationDirPath();
 }
 
@@ -118,7 +124,7 @@ void MainWindow::init(){
 		p.setColor(QPalette::ButtonText, QColor(255,255,255));
 		qApp->setPalette(p);
 	}
-	
+
 	//Base de donnees
 	m_database->setBdd( m_Settings->getDatabase_bdd() );
 	m_database->setHostName( m_Settings->getDatabase_hostName() );
@@ -158,18 +164,14 @@ void MainWindow::init(){
 	ui->verticalLayout->addWidget( m_customerView );
 	ui->verticalLayout->addWidget( m_productView );
 	ui->verticalLayout->update();
-	
-	//Menu visible uniquement en mode debug!
-#ifdef QT_NO_DEBUG
-	ui->actionDebug_Add->setVisible(false);
-	ui->actionDebug_prod->setVisible(false);
-#endif
 
-	/* Checkupdate */
+	// TODO : SEGFAULT!!! Checkupdate
+#ifdef QT_NO_DEBUG
 	if( m_Settings->getCheckVersion() ){
 		Update *up = new Update(this);
 		up -> checkVersion( m_Settings->getUrl() );
 	}
+#endif
 }
 
 
@@ -276,63 +278,6 @@ void MainWindow::RefreshLists() {
 	m_board->listRevenuesToTable();
 }
 
-
-
-/**
-	DEBUG AJOUT DE CLIENTS *****************************************************************************
-  */
-void MainWindow::on_actionDebug_Add_triggered() {
-	/* TEST NUMBER OF CUSTOMERS */
-	//Affichage de la fenetre d attente
-	DialogWaiting* m_DialogWaiting = new DialogWaiting();
-	m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE CLIENTS</b>"));
-	m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
-	int val = 50;
-	int loop = 100;
-	m_DialogWaiting->setProgressBarRange(0,val);
-	m_DialogWaiting->setModal(true);
-	m_DialogWaiting->show();
-
-	for(int i=0; i < loop; i++) {
-		m_DialogWaiting->setProgressBar(0);
-		m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
-		for(int j=0; j < val; j++){
-			m_DialogWaiting->setProgressBar(j);
-			m_database->m_customer->setName("TOTO"+ QString::number(i*val+j), "NAME"+ QString::number(i*val+j));
-			m_database->m_customer->create();
-		}
-	}
-	delete m_DialogWaiting;
-}
-
-void MainWindow::on_actionDebug_prod_triggered() {
-	/* TEST NUMBER OF PRODUCTS */
-	//Affichage de la fenetre d attente
-	DialogWaiting* m_DialogWaiting = new DialogWaiting();
-	m_DialogWaiting->setTitle(tr("<b>TEST AJOUT DE PRODUITS</b>"));
-	m_DialogWaiting->setDetail(tr("<i>En cours...</i>"));
-	int val = 50;
-	int loop = 100;
-	m_DialogWaiting->setProgressBarRange(0,val);
-	m_DialogWaiting->setModal(true);
-	m_DialogWaiting->show();
-
-	for(int i=0; i < loop; i++) {
-		m_DialogWaiting->setProgressBar(0);
-		m_DialogWaiting->setDetail("<i>En cours..." + QString::number(i*val) + " / " + QString::number(loop*val) +"</i>");
-		for(int j=0; j < val; j++){
-			m_DialogWaiting->setProgressBar(j);
-			m_database->m_product->setCode("X"+ QString::number(i*val+j));
-			m_database->m_product->setState(1);
-			m_database->m_product->setName("PROD"+ QString::number(i*val+j));
-			m_database->m_product->create();
-		}
-	}
-	delete m_DialogWaiting;
-}
-
-/// ******************************************************************************************************
-
 /**
 	Ouvre le dialog pour lister les factures
   */
@@ -380,7 +325,7 @@ void MainWindow::on_actionSauvegarder_la_base_de_donn_es_sous_triggered() {
 		}
 		if( QFile::copy(source, filename) ) {
 			QMessageBox::information(this, tr("Information"),
-									 tr("Sauvegarde Terminée!\n\n")+
+									 tr("Sauvegarde TerminÃ©e!\n\n")+
 									 "Source: "+source+"\n"+
 									 "Destination: "+filename+"\n");
 			m_Settings -> setDatebddSave( QDate::currentDate() );
@@ -473,7 +418,7 @@ void MainWindow::on_actionSignaler_un_bug_triggered() {
 }
 
 /**
- * @brief MainWindow:: imprimer un fichier à entête
+ * @brief MainWindow:: imprimer un fichier Ã  entÃªte
  */
 void MainWindow::on_actionImprimer_une_fiche_Ent_te_triggered() {
 	//Si on est pas connecte on sort

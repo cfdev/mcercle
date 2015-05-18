@@ -43,7 +43,6 @@ board::board(database *pdata, QLocale &lang, QWidget *parent) :
 	m_plot = new QCustomPlot(ui->tab);
 	ui->verticalLayout_plot->addWidget(m_plot);
 	m_caBar = new QCPBars(m_plot->xAxis, m_plot->yAxis);
-	setupBarChart();
 
 	//Liste le tableau de bord
 	listStockAlertToTable();
@@ -511,15 +510,6 @@ void board::setupBarChart() {
 
 	// setup legend:
 	m_plot->legend->setVisible(false);
-	/*m_plot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignTop|Qt::AlignHCenter);
-	m_plot->legend->setBrush(QColor(255, 255, 255, 200));
-	QPen legendPen;
-	legendPen.setColor(QColor(130, 130, 130, 200));
-	m_plot->legend->setBorderPen(legendPen);
-	QFont legendFont = font();
-	legendFont.setPointSize(10);
-	m_plot->legend->setFont(legendFont);
-	m_plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);*/
 
 	//Refresh
 	m_plot->replot();

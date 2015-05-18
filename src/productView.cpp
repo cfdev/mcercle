@@ -45,7 +45,7 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 	m_lang = lang;
 	ui->comboBoxFiltre->addItem(tr("Codes"));
 	ui->comboBoxFiltre->addItem(tr("Nom"));
-	ui->comboBoxFiltre->addItem(QLatin1String("Catégorie"));
+	ui->comboBoxFiltre->addItem(tr("CatÃ©gorie"));
 	//Ne pas afficher les produits hors vente
 	m_ShowObsoleteProduct = false;
 	//afficher la liste des produits
@@ -63,7 +63,7 @@ productView::productView(database *pdata, QLocale &lang, unsigned char type, QWi
 	}
 	//champ recherche
 	ui -> lineEdit_searchProduct -> setToolTip(
-	QLatin1String("Le caractère « % » est un caractère joker qui remplace tous les autres caractères.\nExemple: %Poêle% - cherche le mot <Poêle>") );
+	tr("Le caractÃ¨re Â« % Â» est un caractÃ¨re joker qui remplace tous les autres caractÃ¨res.\nExemple: %PoÃªle% - cherche le mot <PoÃªle>") );
 }
 
 productView::~productView() {
@@ -145,7 +145,7 @@ void productView::listProductsToTable(int page, QString filter, QString field) {
 	ui->tableWidget_products->setAlternatingRowColors(true);
 	QStringList titles;
 	titles.clear();
-	titles << tr("Id") << tr("Codes") << tr("Noms") << QLatin1String("Catégorie") << tr("Prix de vente") << tr("Tva") << tr("Stock") ;
+	titles << tr("Id") << tr("Codes") << tr("Noms") << tr("CatÃ©gorie") << tr("Prix de vente") << tr("Tva") << tr("Stock") ;
 	ui->tableWidget_products->setHorizontalHeaderLabels( titles );
 
 	if( !m_data->getIsTax() ){
@@ -521,7 +521,7 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 	QString pageText;
 
 	//defini la date de limpression
-	QString sDateTime = tr("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	QString sDateTime = tr("(ImprimÃ© le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
 		//Titre
@@ -563,8 +563,8 @@ void productView::on_paintPrinterListingStock(QPrinter *printer)
 		rect = fm.boundingRect(mLeft+5+wUtil/8.0,rect.top(), wUtil/3.0,0, Qt::AlignLeft, tr("Noms")  );
 		painter.drawText( rect, tr("Noms") );
 		//CATEGORY
-		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/3),rect.top(), wUtil/5.0,0, Qt::AlignLeft, tr("Catégories") );
-		painter.drawText( rect, tr("Catégories"));
+		rect = fm.boundingRect(mLeft+5+(wUtil/8)+(wUtil/3),rect.top(), wUtil/5.0,0, Qt::AlignLeft, tr("CatÃ©gories") );
+		painter.drawText( rect, tr("CatÃ©gories"));
 		//STOCK
 		rect = fm.boundingRect(mLeft+5+(wUtil/8.0)+(wUtil/3.0)*2,rect.top(), wUtil/10.0,0, Qt::AlignLeft, tr("Stock") );
 		painter.drawText( rect, tr("Stock") );

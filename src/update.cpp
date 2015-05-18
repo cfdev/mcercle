@@ -39,6 +39,7 @@ void Update::checkVersion(const QString& url){
 	connect(manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(replyFinished(QNetworkReply*)));
 
+	qDebug() << "Update::checkVersion -> url = " << url;
 	manager->get(QNetworkRequest(QUrl(url)));
 }
 
@@ -48,8 +49,8 @@ void Update::checkVersion(const QString& url){
  */
 void Update::replyFinished (QNetworkReply *reply) {
 	//Si erreur sur le telechargement
-	if(reply->error())	{
-		qDebug() << "ERROR!";
+	if(reply->error()) {
+		qDebug() << "Update::replyFinished -> ERROR!";
 		qDebug() << reply->errorString();
 	}
 	//Sinon on recupere le fichier en memoire
@@ -112,10 +113,10 @@ void Update::readFile(QString path) {
 		mess += tr("Nouvelle Version = <b>") + sOnlineVersion + tr("</b>");
 		mess += tr("<ul>");
 		mess += tr("<li><a href=") + sOnlineLinkChangeLog + tr(">Information sur les changements</a></li>");
-		mess += tr("<li><a href=") + sOnlineLink + tr(">Télécharger la nouvelle version!</li>");
+		mess += tr("<li><a href=") + sOnlineLink + tr(">TÃ©lÃ©charger la nouvelle version!</li>");
 		mess += tr("</ul><hr>");
 		mess += tr("Version actuelle = <b>") + MCERCLE::Version + tr("</b>");
 
-		QMessageBox::information(0, tr("Mise à jour disponible"), mess);
+		QMessageBox::information(0, tr("Mise Ã  jour disponible"), mess);
 	}
 }

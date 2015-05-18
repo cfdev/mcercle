@@ -30,11 +30,8 @@
 proposal::proposal(QSqlDatabase db, QWidget *parent): m_parent(parent) {
 	m_db = db;
 
-	m_id = 0;
-	m_idCustomer = 0;
-	m_state = 0;
-	m_delayDeliveryDate = 0;
-	m_price = 0;
+	m_id = m_idCustomer = m_state = m_delayDeliveryDate = m_price =0;
+
 }
 
 proposal::~proposal() {
@@ -644,7 +641,7 @@ qreal proposal::calcul_priceTax(int id){
 
 
 /**
- * @brief genere un nouveau code de devis l'applique à la class et retourn la valeur
+ * @brief genere un nouveau code de devis l'applique Ã  la class et retourn la valeur
  * @return code
  */
 QString proposal::generateNewCode() {

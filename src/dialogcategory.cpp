@@ -121,7 +121,7 @@ void DialogCategory::on_pushButton_del_clicked()
 	int ret = QMessageBox::warning(this, tr("Attention"),
 								   tr("Voulez-vous vraiment supprimer la categorie:<br><b>")
 								   + m_product -> m_category -> getName()
-								   +"</b><br>Ceci supprimera aussi la categorie dans la liste des produits",
+								   +tr("</b><br>Ceci supprimera aussi la categorie dans la liste des produits"),
 								   QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 
 	if(ret == QMessageBox::Yes){

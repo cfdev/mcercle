@@ -48,10 +48,10 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	m_data = pdata;
 	m_lang = lang;
 	ui->comboBoxFiltre->addItem(tr("Noms"));
-	ui->comboBoxFiltre->addItem(QLatin1String("Prénoms"));
-	ui->comboBoxFiltre->addItem(QLatin1String("Tel Fixe"));
-	ui->comboBoxFiltre->addItem(QLatin1String("Mobile"));
-	ui->comboBoxFiltre->addItem(QLatin1String("Ville"));
+	ui->comboBoxFiltre->addItem(tr("PrÃ©noms"));
+	ui->comboBoxFiltre->addItem(tr("Tel Fixe"));
+	ui->comboBoxFiltre->addItem(tr("Mobile"));
+	ui->comboBoxFiltre->addItem(tr("Ville"));
 	
 	m_custPage=1;
 	m_custfilter = "";
@@ -294,7 +294,7 @@ void customerView::listCustomersToTable(int page, QString filter, QString field)
 	ui->tableWidget->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Noms") << QLatin1String("Prénoms");
+	titles << tr("Id") << tr("Noms") << tr("PrÃ©noms");
 	ui->tableWidget->setHorizontalHeaderLabels( titles );
 
 	//Cacul en fonction de la page

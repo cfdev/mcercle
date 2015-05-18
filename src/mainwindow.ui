@@ -221,43 +221,6 @@
     <string>P</string>
    </property>
   </action>
-  <action name="actionSauvegarder">
-   <property name="text">
-    <string>Sauvegarder</string>
-   </property>
-  </action>
-  <action name="actionDevis">
-   <property name="text">
-    <string>Devis</string>
-   </property>
-  </action>
-  <action name="actionFactures">
-   <property name="text">
-    <string>Factures</string>
-   </property>
-  </action>
-  <action name="actionCaisse">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/app/venteComptoire</normaloff>:/app/venteComptoire</iconset>
-   </property>
-   <property name="text">
-    <string>Caisse</string>
-   </property>
-   <property name="toolTip">
-    <string>Caisse</string>
-   </property>
-  </action>
-  <action name="actionFaire_un_mailing">
-   <property name="text">
-    <string>Faire un mailing</string>
-   </property>
-  </action>
-  <action name="actionCr_er_un_bon_cadeau">
-   <property name="text">
-    <string>Créer un bon cadeau</string>
-   </property>
-  </action>
   <action name="actionConfiguration">
    <property name="icon">
     <iconset resource="../ressources.qrc">
@@ -280,26 +243,6 @@
    </property>
    <property name="shortcut">
     <string>F</string>
-   </property>
-  </action>
-  <action name="actionDebug_Add">
-   <property name="text">
-    <string>DEBUG: Ajoute des clients</string>
-   </property>
-  </action>
-  <action name="actionDebug_prod">
-   <property name="text">
-    <string>DEBUG: Ajoute des produits</string>
-   </property>
-  </action>
-  <action name="actionImporter_depuis_un_fichier_cvs">
-   <property name="text">
-    <string>Importer depuis un fichier cvs</string>
-   </property>
-  </action>
-  <action name="actionExporter_vers_un_fichier_cvs">
-   <property name="text">
-    <string>Exporter vers un fichier cvs</string>
    </property>
   </action>
   <action name="actionLivres_des_Recettes">
@@ -339,11 +282,6 @@
    </property>
    <property name="shortcut">
     <string>S</string>
-   </property>
-  </action>
-  <action name="actionOuvrir_BddDir">
-   <property name="text">
-    <string>Ouvrir le dossier où se trouve la base de données</string>
    </property>
   </action>
   <action name="action">

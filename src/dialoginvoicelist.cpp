@@ -58,7 +58,7 @@ void DialogInvoiceList::listInvoicesToTable(QDate mdate) {
 	ui->tableWidget_Invoices->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Invoices->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles  << tr("Id") << QLatin1String("sélection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("TTC") << QLatin1String("Règlement");
+	titles  << tr("Id") << QLatin1String("sÃ©lection") << tr("Date") << tr("Code Facture") << tr("Client") << tr("Description")  << tr("Montant") << tr("TTC") << QLatin1String("RÃ¨glement");
 	ui->tableWidget_Invoices->setHorizontalHeaderLabels( titles );
 	if(!m_data->getIsTax()) {
 		ui->tableWidget_Invoices->setColumnHidden(COL_PRICE_TAX , true);
@@ -231,7 +231,7 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 	QString pageText;
 
 	//defini la date de limpression
-	QString sDateTime = QLatin1String("(Imprimé le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
+	QString sDateTime = QLatin1String("(ImprimÃ© le ") + QDateTime::currentDateTime().toString(tr("dd-MM-yyyy HH:mm:ss")) + tr(")");
 	
 	// list all products
 	for(int pIndex=0, page=1, itemPrinted=0; itemPrinted<itemsToPrint ;page++){
@@ -294,8 +294,8 @@ void DialogInvoiceList::on_paintPrinter(QPrinter *printer) {
 			rect.setWidth(wUtil/8 -5); //fixe la largeur
 		}
 		//REGLEMENT
-		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, QLatin1String("Règlement") );
-		painter.drawText( rect, QLatin1String("Règlement") );
+		rect = fm.boundingRect(rect.right()+5,rect.top(), wUtil/10,0, Qt::AlignLeft, QLatin1String("RÃ¨glement") );
+		painter.drawText( rect, QLatin1String("RÃ¨glement") );
 		rect.setWidth(wUtil/10 -5); //fixe la largeur
 
 		for(int itemOnpage=0; itemOnpage<itemPerPage;){
