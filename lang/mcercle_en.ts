@@ -2060,61 +2060,61 @@ p, li { white-space: pre-wrap; }
         <translation>Print an empty file with logo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="113"/>
+        <location filename="../src/mainwindow.cpp" line="117"/>
         <source>Sombre</source>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>La base de donn&amp;eacute;es doit &amp;ecirc;tre sauvegard&amp;eacute;e! Derniere sauvegarde r&amp;eacute;alis&amp;eacute;e le: </source>
         <translation>The database must be save! The last backup was made the:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="149"/>
+        <location filename="../src/mainwindow.cpp" line="153"/>
         <source>dd-MM-yyyy</source>
         <translation>yyyy-MM-dd</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="208"/>
+        <location filename="../src/mainwindow.cpp" line="212"/>
         <source> Client</source>
         <translation> Customer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="220"/>
+        <location filename="../src/mainwindow.cpp" line="224"/>
         <source> Produit</source>
         <translation> Product</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="296"/>
-        <location filename="../src/mainwindow.cpp" line="323"/>
+        <location filename="../src/mainwindow.cpp" line="300"/>
+        <location filename="../src/mainwindow.cpp" line="327"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="297"/>
+        <location filename="../src/mainwindow.cpp" line="301"/>
         <source>Cette fonction est disponible uniquement pour SQLITE !</source>
         <translation>SQLITE only!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="306"/>
+        <location filename="../src/mainwindow.cpp" line="310"/>
         <source>dd-MM-yyyy_HHmmss</source>
         <translation>yyyy-MM-dd_HHmmss</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="314"/>
-        <location filename="../src/mainwindow.cpp" line="330"/>
+        <location filename="../src/mainwindow.cpp" line="318"/>
+        <location filename="../src/mainwindow.cpp" line="334"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="315"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
         <source>Impossible de remplacer le fichier!
 
 </source>
         <translation>Impossible to replace the file!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="324"/>
+        <location filename="../src/mainwindow.cpp" line="328"/>
         <source>Sauvegarde Terminée!
 
 </source>
@@ -2127,7 +2127,7 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Save done!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="331"/>
+        <location filename="../src/mainwindow.cpp" line="335"/>
         <source>Sauvegarde impossible!
 
 </source>
