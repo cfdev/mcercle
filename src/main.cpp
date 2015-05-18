@@ -32,15 +32,30 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	MainWindow m_win;
 
-	//Traduction des chaines de la lib Qt
+	//Load the translate lib file of Qt
 	QString locale = QLocale::system().name();
-	QTranslator translator;
+	QString languages_path = QCoreApplication::applicationDirPath() + "/lang/";
+
+	QTranslator translator, translatorApp;
 	if (!translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath))){
-		translator.load("qt_" + locale, QCoreApplication::applicationDirPath() + "/lang/");
+		translator.load("qt_" + locale, languages_path);
 	}
 	app.installTranslator(&translator);
-	
+
+	// Load the tranduction file
+	if (!translatorApp.load("mcercle_" + locale, languages_path)) {
+		// if error
+		if (locale != "fr_FR") {
+				// Use the english language for default
+				translatorApp.load("mcercle_en", languages_path);
+		}
+	}
+	app.installTranslator(&translatorApp);
+
+	//Initization of application
 	m_win.init();
+
+	//Show application
 	m_win.show();
 
 	return app.exec();
