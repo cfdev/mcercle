@@ -59,6 +59,7 @@ private:
 	bool upgradeToV5(QString *log);
 	bool upgradeToV6(QString *log);
 	bool upgradeToV7(QString *log);
+	bool upgradeToV8(QString *log);
 
 public:
 
@@ -72,10 +73,11 @@ public:
 		QString zipCode;
 		QString city;
 		QString address1, address2, address3;
-		QString line1, line2, line3;
+		QString line1, line2, line3, line4;
 		int tax; int ca_type;
 		int borderRadius, drawLine;
 		int manageStock;
+		QString currency;
 	}Informations;
 
 	typedef struct{
@@ -110,6 +112,7 @@ public:
 	int getDatabaseVersion(){return m_databaseVersion;}
 	QString getDriverName(){return db.driverName();}
 	QStringList getDrivers(){return db.drivers();}
+	QString getCurrency();
 
 	void setBdd(const QString& bdd){if(!bdd.isEmpty())m_bdd = bdd;}
 	void setHostName(const QString& hostName){if(!hostName.isEmpty())m_hostName = hostName;}

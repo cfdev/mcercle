@@ -106,8 +106,8 @@ char database::connect(){
 	if((!tList.contains("TAB_INFORMATIONS"))||(tList.count()< 14)){
 		 // Demande si on creer une nouvelle base de donnees
 		QString mess;
-		if(db.driverName() == "QSQLITE")mess = QLatin1String("Voulez-vous créer une nouvelle base de données ?\n\n")+ db.databaseName();
-		else mess = QLatin1String("Voulez-vous créer de nouvelles tables dans la base de données ?\n\n") + db.databaseName();
+		if(db.driverName() == "QSQLITE")mess = tr("Voulez-vous crÃ©er une nouvelle base de donnÃ©es ?\n\n")+ db.databaseName();
+		else mess = tr("Voulez-vous crÃ©er de nouvelles tables dans la base de donnÃ©es ?\n\n") + db.databaseName();
 		QMessageBox mBox(QMessageBox::Question, tr("Question"), mess ,QMessageBox::Yes | QMessageBox::No);
 		mBox.setDefaultButton(QMessageBox::No);
 		int ret = mBox.exec();
@@ -148,9 +148,9 @@ char database::connect(){
 	//Test de la version de la base de donnees... !!
 	if(m_databaseVersion > MCERCLE::Dbase_support){
 		QString mess = tr("Version de mcercle: ") + MCERCLE::Version;
-		mess += QLatin1String("\nVersion de la base de données: ") + QString::number(m_databaseVersion);
-		mess += QLatin1String("\n\nVersions des bases de données compatibles: <= ") + QString::number(MCERCLE::Dbase_support);
-		QMessageBox mBox(QMessageBox::Warning, tr("Attention"), QLatin1String("mcercle ne support pas cette version de base de données...\nMerci de faire évoluer mcercle."),QMessageBox::Ok);
+		mess += tr("\nVersion de la base de donnÃ©es: ") + QString::number(m_databaseVersion);
+		mess += tr("\n\nVersions des bases de donnÃ©es compatibles: <= ") + QString::number(MCERCLE::Dbase_support);
+		QMessageBox mBox(QMessageBox::Warning, tr("Attention"), tr("mcercle ne support pas cette version de base de donnÃ©es...\nMerci de faire Ã©voluer mcercle."),QMessageBox::Ok);
 		mBox.setDetailedText ( mess );
 		mBox.exec();
 		this->close();
@@ -163,7 +163,7 @@ char database::connect(){
 		int ret = QMessageBox::warning(
 								this->m_parent,
 								tr("Attention"),
-								QLatin1String("Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.\n\nVoulez-vous mettre à jour la base de donnée ?\n(Ceci peut prendre quelques minutes...)"),
+								tr("Cette version de mcercle doit mettre Ã  jour la base de donnÃ©e pour fonctionner.\n\nVoulez-vous mettre Ã  jour la base de donnÃ©e ?\n(Ceci peut prendre quelques minutes...)"),
 								QMessageBox::Yes, QMessageBox::No | QMessageBox::Default
 								);
 	
@@ -194,14 +194,18 @@ char database::connect(){
 				if(!upgradeToV7(&log)) upgradeOk = false;
 			}
 			logAll += log;
+			if(m_databaseVersion <= 7 ) {
+				if(!upgradeToV8(&log)) upgradeOk = false;
+			}
+			logAll += log;
 
 			QMessageBox mBox(QMessageBox::Information, tr("Information"), mess, QMessageBox::Ok);
 			if(upgradeOk){
-				mess += QLatin1String("La mise à jour de la base de données a réussi !\n");
+				mess += tr("La mise Ã  jour de la base de donnÃ©es a rÃ©ussi !\n");
 				mBox.setIcon( QMessageBox::Information );
 			}
 			else{
-				mess += QLatin1String("La mise à jour contient des erreurs :-(\nAfficher les détails pour voir ce qui ne va pas.");
+				mess += tr("La mise Ã  jour contient des erreurs :-(\nAfficher les dÃ©tails pour voir ce qui ne va pas.");
 				mBox.setIcon( QMessageBox::Critical );
 			}
 			mBox.setText( mess );
@@ -345,9 +349,11 @@ bool database::createTable_informations(){
 			"PRINT_LINE1    VARCHAR(256),"
 			"PRINT_LINE2    VARCHAR(256),"
 			"PRINT_LINE3    VARCHAR(256),"
+			"PRINT_LINE4    VARCHAR(256),"
 			"BORDER_RADIUS  INTEGER,"
 			"DRAW_LINE      INTEGER,"
 			"MANAGE_STOCK   INTEGER,"
+			"CURRENCY       VARCHAR(3),"
 			"PRIMARY KEY (ID)"
 			");";
 
@@ -908,9 +914,11 @@ bool database::updateInfo(Informations &info) {
 	req += "PRINT_LINE1='" + info.line1.replace("\'","''") + "', ";
 	req += "PRINT_LINE2='" + info.line2.replace("\'","''") + "', ";
 	req += "PRINT_LINE3='" + info.line3.replace("\'","''") + "', ";
+	req += "PRINT_LINE4='" + info.line4.replace("\'","''") + "', ";
 	req += "BORDER_RADIUS='" + QString::number(info.borderRadius) + "', ";
 	req += "DRAW_LINE='" + QString::number(info.drawLine) + "', ";
-	req += "MANAGE_STOCK='" + QString::number(info.manageStock) + "' ";
+	req += "MANAGE_STOCK='" + QString::number(info.manageStock) + "', ";
+	req += "CURRENCY='" + info.currency.replace("\'","''") + "' ";
 	req += "WHERE ID='1';";
 
 	query.prepare(req);
@@ -953,9 +961,11 @@ bool database::getInfo(Informations &info) {
 		info.line1 = query.value(query.record().indexOf("PRINT_LINE1")).toString();
 		info.line2 = query.value(query.record().indexOf("PRINT_LINE2")).toString();
 		info.line3 = query.value(query.record().indexOf("PRINT_LINE3")).toString();
+		info.line4 = query.value(query.record().indexOf("PRINT_LINE4")).toString();
 		info.borderRadius = query.value(query.record().indexOf("BORDER_RADIUS")).toInt();
 		info.drawLine = query.value(query.record().indexOf("DRAW_LINE")).toInt();
 		info.manageStock = query.value(query.record().indexOf("MANAGE_STOCK")).toInt();
+		info.currency = query.value(query.record().indexOf("CURRENCY")).toString();
 	}
 	else{
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
@@ -964,6 +974,29 @@ bool database::getInfo(Informations &info) {
 	/* update cache */
 	m_isTax = info.tax;
 	return true;
+}
+
+/**
+ * @brief database::getCurrency
+ * @return the symbole of currency
+ */
+QString database::getCurrency() {
+	if(!this->m_connected)return "";
+	QString currency="";
+	QSqlQuery query;
+	query.prepare("SELECT * from TAB_INFORMATIONS;");
+
+	if(query.exec()){
+		query.next();
+		currency = query.value(query.record().indexOf("CURRENCY")).toString();
+	}
+	else{
+		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
+		return "";
+	}
+	/* update cache */
+
+	return currency;
 }
 
 /**
@@ -1108,7 +1141,7 @@ bool database::upgradeToV2(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise a jour de la base de données en version 2:");
+	*log = tr("Mise a jour de la base de donnÃ©es en version 2:");
 
 	req =	"ALTER TABLE TAB_PROPOSALS_DETAILS ADD ITEM_ORDER INTEGER;";
 	*log += "\n\n"+ req;
@@ -1150,7 +1183,7 @@ bool database::upgradeToV3(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise a jour de la base de données en version 3:");
+	*log = tr("Mise a jour de la base de donnÃ©es en version 3:");
 	
 	req =	"ALTER TABLE TAB_INVOICES ADD PAYMENTDATE;";
 	*log += "\n\n"+ req;
@@ -1203,7 +1236,7 @@ bool database::upgradeToV4(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise a jour de la base de données en version 4:");
+	*log = tr("Mise a jour de la base de donnÃ©es en version 4:");
 	
 	// ajout dune colonne
 	req =	"ALTER TABLE TAB_INFORMATIONS ADD NUM_TAX VARCHAR(64);";
@@ -1415,7 +1448,7 @@ bool database::upgradeToV5(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise a jour de la base de données en version 5:");
+	*log = tr("Mise a jour de la base de donnÃ©es en version 5:");
 
 	// Modification du type d item
 	req =	"UPDATE TAB_INVOICES_DETAILS SET TYPE=1 WHERE ID_PRODUCT>0;";
@@ -1460,7 +1493,7 @@ bool database::upgradeToV6(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise a jour de la base de données en version 6:");
+	*log = tr("Mise a jour de la base de donnÃ©es en version 6:");
 
 	//Ajout champ pour impression dans bdd
 	req =	"ALTER TABLE TAB_INFORMATIONS ADD BORDER_RADIUS INTERGER";
@@ -1505,12 +1538,12 @@ bool database::upgradeToV7(QString *log) {
 	QString req;
 	bool done=true;
 	QSqlQuery query;
-	*log = QLatin1String("Mise à jour de la base de données en version 7:");
+	*log = tr("Mise Ã  jour de la base de donnÃ©es en version 7:");
 
 	//Affichage de la fenetre d attente
 	char bar=0;
 	DialogWaiting* m_DialogWaiting = new DialogWaiting();
-	m_DialogWaiting->setTitle( QLatin1String("Mise à jour de la base de données en version 7:") );
+	m_DialogWaiting->setTitle( tr("Mise Ã  jour de la base de donnÃ©es en version 7:") );
 	m_DialogWaiting->setProgressBarRange(0,2);
 	m_DialogWaiting->setModal(true);
 	m_DialogWaiting->show();
@@ -1605,7 +1638,7 @@ bool database::upgradeToV7(QString *log) {
 		*log += "\n-> FAIT";
 
 	//Mise a jour des prix de la table proposals
-	m_DialogWaiting->setDetail( QLatin1String("Mise à jour des prix de la table des devis") );
+	m_DialogWaiting->setDetail( tr("Mise Ã  jour des prix de la table des devis") );
 	m_DialogWaiting->setProgressBar(bar++);
 	int iLastId = m_customer -> m_proposal-> getLastId();
 	qreal price, priceTTc, partpayment;
@@ -1622,7 +1655,7 @@ bool database::upgradeToV7(QString *log) {
 	}
 
 	//Mise a jour des prix de la table invoice
-	m_DialogWaiting->setDetail( QLatin1String("Mise à jour des prix de la table des factures") );
+	m_DialogWaiting->setDetail( tr("Mise Ã  jour des prix de la table des factures") );
 	m_DialogWaiting->setProgressBar(bar++);
 	iLastId = m_customer -> m_invoice-> getLastId();
 	price = priceTTc = 0;
@@ -1656,5 +1689,48 @@ bool database::upgradeToV7(QString *log) {
 	return done;
 }
 
+/**
+   Met a jour la base de donnees en version 8
+  */
+bool database::upgradeToV8(QString *log) {
+	QString req;
+	bool done=true;
+	QSqlQuery query;
+	*log = tr("Mise Ã  jour de la base de donnÃ©es en version 8:");
+
+	//Ajoute une colonne pour limpression
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD PRINT_LINE4 VARCHAR(256)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Ajoute une colonne pour la devise
+	req =	"ALTER TABLE TAB_INFORMATIONS ADD CURRENCY VARCHAR(3)";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+
+	//Update numero version bdd
+	req =	"UPDATE TAB_INFORMATIONS SET DBASE_VERSION=8;";
+	*log += "\n\n"+ req;
+	query.prepare( req );
+	if(!query.exec()) {
+		*log += "\n->" + query.lastError().text();
+		done = false;
+	}
+	else
+		*log += "\n-> FAIT";
+	return done;
+}
 /// TODO -> creer une class update.cpp
 
