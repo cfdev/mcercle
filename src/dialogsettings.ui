@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>621</width>
-    <height>498</height>
+    <height>542</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -32,7 +32,7 @@
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>1</number>
        </property>
        <property name="iconSize">
         <size>
@@ -371,6 +371,23 @@ p, li { white-space: pre-wrap; }
                </property>
               </widget>
              </item>
+             <item row="2" column="2">
+              <widget class="QLabel" name="label_currency">
+               <property name="text">
+                <string>Devise :</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLineEdit" name="lineEdit_currency">
+               <property name="maxLength">
+                <number>3</number>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
            <item>
@@ -655,6 +672,9 @@ p, li { white-space: pre-wrap; }
         </layout>
        </widget>
        <widget class="QWidget" name="tab_tax">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <attribute name="title">
          <string>Tva</string>
         </attribute>
@@ -925,6 +945,9 @@ p, li { white-space: pre-wrap; }
               <number>256</number>
              </property>
             </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_print4"/>
            </item>
            <item>
             <spacer name="verticalSpacer_3">

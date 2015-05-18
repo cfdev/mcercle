@@ -91,9 +91,11 @@ void DialogSettings::on_buttonBox_accepted() {
 	inf.line1 = ui->lineEdit_print1->text();
 	inf.line2 = ui->lineEdit_print2->text();
 	inf.line3 = ui->lineEdit_print3->text();
+	inf.line4 = ui->lineEdit_print4->text();
 	inf.borderRadius = ui->checkBox_border_radius->checkState();
 	inf.drawLine = ui->checkBox_drawLine->checkState();
 	inf.manageStock = ui->checkBox_manageStock->checkState();
+	inf.currency = ui->lineEdit_currency->text();
 	m_data -> updateInfo(inf);
 
 	//sauvegarde les donnees de la banque dans la bdd
@@ -145,7 +147,7 @@ void DialogSettings::on_pushButton_Logo_clicked() {
 	QImage logo;
 	int ret = logo.load(fileName);
 	if(!ret){
-		QMessageBox::critical(this, tr("Erreur"), QLatin1String("Impossible de charger l'image...Désoler :("));
+		QMessageBox::critical(this, tr("Erreur"), tr("Impossible de charger l'image...DÃ©soler :("));
 		return;
 	}
 	if((logo.height()>1200) ||(logo.width()>1200)) {
@@ -203,7 +205,7 @@ void DialogSettings::on_pushButton_connect_clicked() {
 
 		if(m_data->connect() == database::DB_NOTEXIST_ERR){
 			// Demande si on creer une nouvelle base de donnees
-			QMessageBox mBox(QMessageBox::Question, tr("Question"), QLatin1String("Voulez-vous créer une nouvelle base de données ?"),QMessageBox::Yes | QMessageBox::No);
+			QMessageBox mBox(QMessageBox::Question, tr("Question"), tr("Voulez-vous crÃ©er une nouvelle base de donnÃ©es ?"),QMessageBox::Yes | QMessageBox::No);
 			mBox.setDefaultButton(QMessageBox::No);
 			int ret = mBox.exec();
 			if(ret == QMessageBox::Yes) m_data -> create();
@@ -268,7 +270,7 @@ void DialogSettings::loadInfoDatabase() {
 	//Etat de la connexion
 	 if(m_data->isConnected()){
 		 ui->label_state->setPixmap(QPixmap::fromImage(QImage(":/app/On").scaled(24,24)));
-		 ui->pushButton_connect->setText( QLatin1String("Se déconnecter") );
+		 ui->pushButton_connect->setText( tr("Se dÃ©connecter") );
 		 //TAX
 		 //Setting
 		 if(m_data->getIsTax()){
@@ -316,9 +318,11 @@ void DialogSettings::loadInfoDatabase() {
 	 ui->lineEdit_print1->setText(inf.line1);
 	 ui->lineEdit_print2->setText(inf.line2);
 	 ui->lineEdit_print3->setText(inf.line3);
+	 ui->lineEdit_print4->setText(inf.line4);
 	 ui->checkBox_drawLine->setCheckState( Qt::CheckState(inf.drawLine) );
 	 ui->checkBox_border_radius->setCheckState( Qt::CheckState(inf.borderRadius) );
 	 ui->checkBox_manageStock->setCheckState( Qt::CheckState(inf.manageStock) );
+	 ui->lineEdit_currency->setText(inf.currency);
 
 	 database::Bank b;
 	 m_data->getBank( b );
