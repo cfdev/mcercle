@@ -2,7 +2,9 @@
 #define INOUT_H
 
 #include <QObject>
+#include <QFile>
 #include "dbase.h"
+#include "customer.h"
 
 class inout : public QObject
 {
@@ -10,12 +12,14 @@ class inout : public QObject
 	private:
 		QWidget *m_parent;
 		database *m_data;
-		//Exporter les donnees
+		customer *m_customer;
 		void exportData(QString query, QString typeOfExport);
 
 	public:
 		explicit inout(database *pdata, QWidget *parent = 0);
 		~inout();
+
+		void importCustomers();
 
 		void exportAllCustomers();
 		void exportAllProducts();

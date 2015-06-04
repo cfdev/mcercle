@@ -48,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>27</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFichier">
@@ -102,6 +102,7 @@
       <iconset resource="../ressources.qrc">
        <normaloff>:/app/import</normaloff>:/app/import</iconset>
      </property>
+     <addaction name="actionClients_import"/>
     </widget>
     <addaction name="actionLivres_des_Recettes"/>
     <addaction name="actionImprimer_une_fiche_Ent_te"/>
@@ -331,6 +332,15 @@
   <action name="actionImprimer_une_fiche_Ent_te">
    <property name="text">
     <string>Imprimer une fiche à Entête</string>
+   </property>
+  </action>
+  <action name="actionClients_import">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/customers</normaloff>:/app/customers</iconset>
+   </property>
+   <property name="text">
+    <string>Clients</string>
    </property>
   </action>
  </widget>

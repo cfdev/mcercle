@@ -62,6 +62,8 @@ private slots:
 	void on_actionSignaler_un_bug_triggered();
 	void on_actionImprimer_une_fiche_Ent_te_triggered();
 
+	void on_actionClients_import_triggered();
+
 	public slots:
 	void RefreshLists();
 };

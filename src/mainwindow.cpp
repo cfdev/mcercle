@@ -34,6 +34,7 @@
 #endif
 
 #include <QApplication>
+
 #include "dialogsettings.h"
 #include "dialogproviders.h"
 #include "mainwindow.h"
@@ -426,4 +427,16 @@ void MainWindow::on_actionImprimer_une_fiche_Ent_te_triggered() {
 
 	Printc mprint(m_database, m_lang, this);
 	mprint.print_fileEmpty();
+}
+
+
+/**
+ * @brief Import some clients
+ */
+void MainWindow::on_actionClients_import_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
+	inout import(m_database);
+	import.importCustomers();
 }
