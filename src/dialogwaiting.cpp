@@ -44,6 +44,16 @@ void DialogWaiting::setProgressBar(int val){
 	qApp->processEvents();
 }
 
+void DialogWaiting::upProgressBar(){
+	int val = ui->progressBar->value();
+	ui->progressBar->setValue( ++val );
+	if(val >= ui->progressBar->maximum()) {
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+	}
+	// Rafraichit l'affichage
+	qApp->processEvents();
+}
+
 void DialogWaiting::setProgressBarRange(int min, int max){
 	ui->progressBar->setRange(min,max);
 }
@@ -55,4 +65,9 @@ void DialogWaiting::setTitle(const QString& val){
 
 void DialogWaiting::setDetail(const QString& val){
 	ui->label_detail->setText(val);
+}
+
+void DialogWaiting::refresh() {
+	// Rafraichit l'affichage
+	qApp->processEvents();
 }

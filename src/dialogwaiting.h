@@ -17,8 +17,10 @@ public:
 
 	void setProgressBar(int val);
 	void setProgressBarRange(int min, int max);
+	void upProgressBar();
 	void setTitle(const QString& val);
 	void setDetail(const QString& val);
+	void refresh();
 
 private:
 	Ui::DialogWaiting *ui;
