@@ -103,6 +103,7 @@
        <normaloff>:/app/import</normaloff>:/app/import</iconset>
      </property>
      <addaction name="actionClients_import"/>
+     <addaction name="actionProduits_import"/>
     </widget>
     <addaction name="actionLivres_des_Recettes"/>
     <addaction name="actionImprimer_une_fiche_Ent_te"/>
@@ -341,6 +342,15 @@
    </property>
    <property name="text">
     <string>Clients</string>
+   </property>
+  </action>
+  <action name="actionProduits_import">
+   <property name="icon">
+    <iconset resource="../ressources.qrc">
+     <normaloff>:/app/products</normaloff>:/app/products</iconset>
+   </property>
+   <property name="text">
+    <string>Produits</string>
    </property>
   </action>
  </widget>

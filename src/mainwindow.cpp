@@ -431,12 +431,25 @@ void MainWindow::on_actionImprimer_une_fiche_Ent_te_triggered() {
 
 
 /**
- * @brief Import some clients
+ * @brief Import some customers
  */
 void MainWindow::on_actionClients_import_triggered() {
 	//Si on est pas connecte on sort
 	if(!m_database->isConnected())return;
 
 	inout import(m_database);
-	import.importCustomers();
+	import.importAllCustomers();
+	m_customerView->refreshCustomersList();
+}
+
+/**
+ * @brief Import some products
+ */
+void MainWindow::on_actionProduits_import_triggered() {
+	//Si on est pas connecte on sort
+	if(!m_database->isConnected())return;
+
+	inout import(m_database);
+	import.importAllProducts();
+	m_productView->refreshProductsList();
 }

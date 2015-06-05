@@ -5,6 +5,7 @@
 #include <QFile>
 #include "dbase.h"
 #include "customer.h"
+#include "product.h"
 
 class inout : public QObject
 {
@@ -13,13 +14,19 @@ class inout : public QObject
 		QWidget *m_parent;
 		database *m_data;
 		customer *m_customer;
+		product *m_product;
 		void exportData(QString query, QString typeOfExport);
+
+		void importData(int typeOfExport, QString Name);
+		QString importCustomer(const QString &line, const QStringList &vals);
+		QString importProduct(const QString &line, const QStringList &vals);
 
 	public:
 		explicit inout(database *pdata, QWidget *parent = 0);
 		~inout();
 
-		void importCustomers();
+		void importAllCustomers();
+		void importAllProducts();
 
 		void exportAllCustomers();
 		void exportAllProducts();

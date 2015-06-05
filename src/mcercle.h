@@ -21,7 +21,7 @@
 
 namespace MCERCLE {
 // Version et version de bdd supporte
-	const QString Version = "15.04";
+	const QString Version = "15.06";
 	const QString CodeName = "";
 	const int Dbase_support = 8;
 
@@ -39,6 +39,7 @@ namespace MCERCLE {
 	//FACTURE
 	enum{INV_UNPAID , INV_PAID, INV_OVERDUE, INV_CANCEL};
 	enum{TYPE_INV=0 , TYPE_PART, TYPE_CREDIT};
+	enum{TYPE_CUSTOMER=0 , TYPE_PRODUCT};
 	//TYPE PRODUIT SERVICE
 	const int SERVICE = 0;
 	const int PRODUCT = 1;

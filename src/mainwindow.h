@@ -64,6 +64,8 @@ private slots:
 
 	void on_actionClients_import_triggered();
 
+	void on_actionProduits_import_triggered();
+
 	public slots:
 	void RefreshLists();
 };
