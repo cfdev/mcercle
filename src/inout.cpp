@@ -60,28 +60,39 @@ void inout::importCustomers() {
 			if(vals.count()<=1) vals = line.split(",");
 			if(vals.count()>1) {
 				qDebug() << vals;
-				// to fill the class
-				m_customer->setType( vals.value(2).toInt() );
-				m_customer->setDesCompagny( vals.value(3) );
-				m_customer->setName( vals.value(5), vals.value(4) );
-				m_customer->setGender( vals.value(6) );
-				m_customer->setBirthday( QDate::fromString(vals.value(7)) );
-				m_customer->setAddress(vals.value(8),
-									   vals.value(9),
-									   vals.value(10));
+				//Test if empty
+				if(  ((vals.value(2).toInt() == 1) && !vals.value(4).isEmpty()) ||
+					 ((vals.value(2).toInt() == 0) && !vals.value(4).isEmpty() && !vals.value(5).isEmpty())
+				){
 
-				m_customer->setZipCode( vals.value(11) );
-				m_customer->setCity( vals.value(12) );
-				m_customer->setCountry( vals.value(13) );
+					// to fill the class
+					m_customer->setType( vals.value(2).toInt() );
+					m_customer->setDesCompagny( vals.value(3) );
+					m_customer->setName( vals.value(5), vals.value(4) );
+					m_customer->setGender( vals.value(6) );
+					m_customer->setBirthday( QDate::fromString(vals.value(7)) );
+					m_customer->setAddress(vals.value(8),
+										   vals.value(9),
+										   vals.value(10));
 
-				m_customer->setPhone(vals.value(14), vals.value(15));
-				m_customer->setEmail( vals.value(16) );
-				m_customer->setProfession( vals.value(17) );
-				m_customer->setComments( vals.value(18) );
-				m_customer->setSendingPubEmail( vals.value(19).toInt() );
+					m_customer->setZipCode( vals.value(11) );
+					m_customer->setCity( vals.value(12) );
+					m_customer->setCountry( vals.value(13) );
 
-				// Add default line to the log
-				if(!m_customer->create()) {
+					m_customer->setPhone(vals.value(14), vals.value(15));
+					m_customer->setEmail( vals.value(16) );
+					m_customer->setProfession( vals.value(17) );
+					m_customer->setComments( vals.value(18) );
+					m_customer->setSendingPubEmail( vals.value(19).toInt() );
+
+					// Add default line to the log
+					if(!m_customer->create()) {
+						log += line;
+						log += "\n\n";
+					}
+				}
+				else{
+					// Add default line to the log
 					log += line;
 					log += "\n\n";
 				}
