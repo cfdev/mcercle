@@ -1,29 +1,31 @@
-mcercle est un logiciel de gestion libre sous licence GPLv3 pour autoentrepreneur, artisans ou PME. Il se veut léger,
-ergonomique tout en gardant les performances d’un logiciel de gestion professionnel.
-Il est multiplateforme s’exécutant sous MS windows, GNU Linux et Mac OSx.
+mcercle is an free invoice/estimate software under license GPLv3 for small/home office.
+It is light, ergonomic with the performance of a professional management software.
+It is cross platform running on MS Windows , GNU Linux and Mac OSX.
 
 -------------------------------------------------------
 
-Caractéristiques principales:
--Gestion clients: Carnet d’adresse, interventions/services, devis, factures
--Gestion produits: Références fournisseurs, gestion du stock avec seuil d’alerte ainsi qu’un classement par catégorie.
--Gestion des fournisseurs: Nom du contact fournisseur, adresse, téléphone…
--Base de données: Sauvegarde dans une base SQLite qui assure rapidité et intégrité des données.
+Principales features
+- Customers management: Address book, services, estimates/quotations, invoices
+- Products management: References supplier, stock management with threshold alerte and ranking by categories.
+- Supplier management: Nom of contact, adress, phone..etc
+- Data base: Save all data in SQLite database, fast and data organization.
 
 -------------------------------------------------------
 
-Caractéristiques techniques:
--Qt4 C++ – http://qt-project.org
--Base de données SQLITE – http://www.sqlite.org
--Icons Oxygen – http://www.oxygen-icons.org
+Technics features
+- Qt4 C++ – http://qt-project.org/
+- Database SQLITE – http://www.sqlite.org/
+- Icons Oxygen – http://www.oxygen-icons.org
+- Source on GitHub.
 
 -------------------------------------------------------
 
 License: GPL V3
 Author:  Cyril Frausti
-website: https://github.com/cfdev/mcercle
-build: http://download.frausti.fr/mcercle
+Git: https://github.com/cfdev/mcercle
+WebSite: http://cfdev.fr/mcercle/
+build: http://cfdev.fr/mcercle/en/download
 
 -------------------------------------------------------
 
-Pour l'installation sous GNU/Linux voir le fichier INSTALL.txt.
+How to compile mcercle from source see INSTALL.txt.
