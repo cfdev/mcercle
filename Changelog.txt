@@ -1,16 +1,33 @@
-# Historique de mcercle
-# Syntaxe:[+ Ajout] [- Suppression] [* Modification/Correction]
+# ChangeLog of mcercle
+# Syntaxe:[+ Add] [- Delete] [* Modification/Fix]
+# See more on github : https://github.com/cfdev/mcercle/commits/master
+
+version 15.06 : xx/06/2014
+-------------------------------------------------------
++ Add multilingage support
++ Add QCustomPlot Class for some graphics.
++ Import cvs of customers products
+
+* Change query req in export service and product
+* Invoice::fix initialisation of var
+
+See github for more details
+
+
+version 15.02 : 04/02/2014
+-------------------------------------------------------
+github
 
 
 version 14.10 : 31/10/2014
 -------------------------------------------------------
 + Theme sombre (bon pour les oeils)
 + Client: Ajouts de champs de recherche (mobile,phone,ville)
-+ Setting: VÈrification si une nouvelle version est disponible
++ Setting: V√©rification si une nouvelle version est disponible
 + Setting: Bords arrondis ou carres pour l'impression
-+ Setting: PossibilitÈ de gÈrer le dÈcompte du stock ou pas
-+ DialogInvoice: Icon diffÈrent pour un produit liÈ ‡ la base de donnÈes
-+ Print: Ajout des numÈros de contact client
++ Setting: Possibilit√© de g√©rer le d√©compte du stock ou pas
++ DialogInvoice: Icon diff√©rent pour un produit li√© √† la base de donn√©es
++ Print: Ajout des num√©ros de contact client
 
 * Dbase en version 6
 * PrintPreview: AutoAustement de la largeur
@@ -20,9 +37,7 @@ version 14.10 : 31/10/2014
 * Correction sur l'impression multiple du livre des recettes
 * Correction pour le chemin des settings 
 
-- Cacher la fonction supprimer client/devis/facture (trop d'inconscients)
-
-Voir plus sur github : https://github.com/cfdev/mcercle/commits/master
+- Cacher la fonction supprimer client/devis/facture
 
 
 version 14.04 : 08/04/2014
@@ -44,68 +59,68 @@ version 14.02 : 27/02/2014
 version 13.10 : 03/11/2013
 -------------------------------------------------------
 + Ajout de l'impression multiple pour les factures
-+ crÈation d'une class d'impression client
-+ Demande ‡ l'utilisateur s'il veut mettre ‡ jour sa base de donnÈes
++ cr√©ation d'une class d'impression client
++ Demande √† l'utilisateur s'il veut mettre √† jour sa base de donn√©es
 + Ajout du choix des font/police pour l'impression
-+ Ajout de la date Ècheance sur l'impression facture
-+ DialogInvoic: il est maintenant possible d'imprimer aprËs avoir crÈÈe ou modifÈ la facture (pas de fermeture de dialog brutal) ajout d'un bouton "FERMER".
++ Ajout de la date √©cheance sur l'impression facture
++ DialogInvoic: il est maintenant possible d'imprimer apr√®s avoir cr√©√©e ou modif√© la facture (pas de fermeture de dialog brutal) ajout d'un bouton "FERMER".
 + Ajout d'un bouton "Fermer" pour la liste des services communs
 + Ajout d'un bouton impression sur la dialoginvoice
-+ Pouvoir accÈder aux services communs directement depuis la mainwindows !
++ Pouvoir acc√©der aux services communs directement depuis la mainwindows !
 + Ouverture des factures/devis depuis les tableaux des alertes.
 + Ajout multilignes dans les items facture/devis
 
 * Correction de l'ordre des items avec CAST AS int
-* Correction de l'Èdition d'un service commun (bug sur le test du nom)
+* Correction de l'√©dition d'un service commun (bug sur le test du nom)
 ...(see github)
 
 
 version 2.2 : 25/01/2013
 -------------------------------------------------------
 * Bug de modification d'un service commun
-* Changement du titre de la fenÍtre d'Èdition des fournisseurs
+* Changement du titre de la fen√™tre d'√©dition des fournisseurs
 * DialogInvoice hauteur minimum pour voir les tableaux
 
 
 version 2.1 : 25/12/2012
 -------------------------------------------------------
 + Sauvegarde de la bdd
-+ DÈtailler le CA Service et produit sur le Tableau de bord
++ D√©tailler le CA Service et produit sur le Tableau de bord
 + Livre des recettes
 + Produits: autocompletion dans le champ recherche
-+ Ajout de la mention obligatoire sur les factures/devis ìDispensÈ d'immatriculation au registre du commerce et des sociÈtÈ (RCS) et au rÈpertoire des mÈtiers (RM)î
++ Ajout de la mention obligatoire sur les factures/devis ‚ÄúDispens√© d'immatriculation au registre du commerce et des soci√©t√© (RCS) et au r√©pertoire des m√©tiers (RM)‚Äù
 + Lien email sur la fiche client
 
 * Facure/devis: Position des articles modifiable
-* AmÈlioration du code (QList et qreal)
-* Passage ‡ Qt 4.8.2
-* Bug sur l'impression avec les entiers passage ‡ QRectF et QReal wUtil
-* Produit: PossibilitÈ de ne pas lier de fournisseur
-* Produit: fix le bug de SQLITE qui ne retourne pas d'erreur lorsque l'ID n'existe pas. l'absence de fournisseur est maintenant signalÈe.
-* Bloquage de la crÈation d'une nouvelle bdd si l'utilisateur saute directement de la version 1.0 ‡ la > v2.
-* Masquer les informations sociÈtÈ non renseignÈes (ex: Capital)
-* Changement de style avec Qtcreator Tabulation par dÈfaut plutot que les espaces.
+* Am√©lioration du code (QList et qreal)
+* Passage √† Qt 4.8.2
+* Bug sur l'impression avec les entiers passage √† QRectF et QReal wUtil
+* Produit: Possibilit√© de ne pas lier de fournisseur
+* Produit: fix le bug de SQLITE qui ne retourne pas d'erreur lorsque l'ID n'existe pas. l'absence de fournisseur est maintenant signal√©e.
+* Bloquage de la cr√©ation d'une nouvelle bdd si l'utilisateur saute directement de la version 1.0 √† la > v2.
+* Masquer les informations soci√©t√© non renseign√©es (ex: Capital)
+* Changement de style avec Qtcreator Tabulation par d√©faut plutot que les espaces.
 
 
 version 2.0 (MACOS ready): 27/05/2012
 -------------------------------------------------------
-* Produits: gÈnÈrer un code automatiquement avec l'ID du produit lors de sa modification
+* Produits: g√©n√©rer un code automatiquement avec l'ID du produit lors de sa modification
 * Changement de l'appellation "Proposition commerciale" par "Devis"
-* Configuration : bug dans l'Èdition des info sociÈtÈ et info bancaire
+* Configuration : bug dans l'√©dition des info soci√©t√© et info bancaire
 
-- la class IPBB et autre dÈpendance de la version 1.0
+- la class IPBB et autre d√©pendance de la version 1.0
 
 
 version 1.9 : 21/05/2012
 -------------------------------------------------------
-+ Class de migration des donnÈes depuis firebird vers SQLITE.
-+ RIB dans la base de donnÈes et impression sur les factures
-+ Produits: bouton pour gÈnÈrer un code automatiquement
-+ Ouverture de la fenetre d'Èdition sur le double clique des tableswidgets
-+ DialogSetting: DÈsactive les edits lorsque la connexion est Ètablie.
++ Class de migration des donn√©es depuis firebird vers SQLITE.
++ RIB dans la base de donn√©es et impression sur les factures
++ Produits: bouton pour g√©n√©rer un code automatiquement
++ Ouverture de la fenetre d'√©dition sur le double clique des tableswidgets
++ DialogSetting: D√©sactive les edits lorsque la connexion est √©tablie.
 
-* 0000009: Jeu de caractËre tables des fournisseurs
-* 0000008: Dans la configuration de la sociÈtÈ, les champs autres que l'adresse ne sont pas trËs lisibles.MACOSX
+* 0000009: Jeu de caract√®re tables des fournisseurs
+* 0000008: Dans la configuration de la soci√©t√©, les champs autres que l'adresse ne sont pas tr√®s lisibles.MACOSX
 * 0000007: L'application n'a pas d'icone sous MACOSX
 
 - Base FIREBIRD trop de soucis d'installation/configuration (win7 64 et MACOSX)
@@ -114,67 +129,67 @@ version 1.9 : 21/05/2012
 version 1.0 : 03/04/2012
 -------------------------------------------------------
 * Sur la modification d'une facture le message text dit "proposition commerciale" - [bug:0000005]
-* Agrandissement de la plage d'impression pour la description des articles (jusqu'‡ la colonne remise)
+* Agrandissement de la plage d'impression pour la description des articles (jusqu'√† la colonne remise)
 * Borne la longueur de la description des articles pour la bdd. (sinon erreur IBPP et fermeture du dialogInv)
 
 - String toUtf8 dans les class de visu (App en ASCII et BDD UTF8)
 - QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-  Dangereux car les chemins avec Char spÈciaux ne fonctionnent pas -[bug:0000004]
+  Dangereux car les chemins avec Char sp√©ciaux ne fonctionnent pas -[bug:0000004]
 
 
 version 0.9 test  : 28/03/2012
 -------------------------------------------------------
-+ Tableau de bord: lister les propositions commerciales en cours de rÈdaction
++ Tableau de bord: lister les propositions commerciales en cours de r√©daction
 + Fenetre pour le choix du type d'impression
 + Suppression client
 + Ajout d'une table service_common
-+ Calcul du CA sur toute une annÈe mois par mois
++ Calcul du CA sur toute une ann√©e mois par mois
 + Ajout dun champ CGV dans la table info en prevision
 + Impression: Proposition commerciale/Facture
-+ Client: Type SociÈtÈ ou Particulier et Pays
++ Client: Type Soci√©t√© ou Particulier et Pays
 + Lien sur google map pour l'adresse client
-+ Test de la version de FireBird et de la base de donnÈes.
++ Test de la version de FireBird et de la base de donn√©es.
 + Choix des produits dans les propositions commerciales/factures
-+ Calcul du stock automatique sur la crÈation d'une facture
++ Calcul du stock automatique sur la cr√©ation d'une facture
 
 * Rafraichissement de la fiche client
-* Passe du drv ‡ IBPP::lrWait pour une meilleures gestion multiclient
+* Passe du drv √† IBPP::lrWait pour une meilleures gestion multiclient
 * Modification des etats des propositions
 * Changement des champs tax dans les tables, service, product
 * Utilisation de foreign key !! trop puissant :)
-* AmÈlioration de la gestion des interventions
+* Am√©lioration de la gestion des interventions
 * Faille d'injection sql dans la class provider
-* DÈplacement de l'init pour avoir la traduction lors de la crÈation de la bdd
-* DÈsactive les boutons d'impressions si rien de sÈlectionnÈ (seg fault)
-* Bug avec les caractËres ' sur les champs de recherche et catÈgories.
+* D√©placement de l'init pour avoir la traduction lors de la cr√©ation de la bdd
+* D√©sactive les boutons d'impressions si rien de s√©lectionn√© (seg fault)
+* Bug avec les caract√®res ' sur les champs de recherche et cat√©gories.
 
-- CivilitÈ Mademoiselle
+- Civilit√© Mademoiselle
 
 
 version 0.8 : 17/02/2012
 -------------------------------------------------------
 + Gestion des devis
 + Table de correspondance entre proposition commercial/devis et facture
-+ CrÈer une facture ‡ partir d'une proposition commerciale
++ Cr√©er une facture √† partir d'une proposition commerciale
 + Date limite de paiement pour la facture
 + Calcul du chiffre d'affaire annuel et affichage sur le tableau de bord
 
-* Modification de la BDD pour SÈparer les factures et les devis
-* GÈnÈration automatique des codes Facture et Devis
+* Modification de la BDD pour S√©parer les factures et les devis
+* G√©n√©ration automatique des codes Facture et Devis
 
 - Supression des commandes, le devis est suffisant dans la pluspart des cas
 
 
 version 0.7 : 08/02/2012
 -------------------------------------------------------
-+ fenetre d'attente lors de l'impression de l'Ètat du stock
++ fenetre d'attente lors de l'impression de l'√©tat du stock
 + Test le code facture pour informer l'utilisateur d'un doublon
 
 * Cache les fonctions de debug dans le menu outils en mode release
-* RecupËre le produit sur ID
+* Recup√®re le produit sur ID
 * Imprime le bon nombre de produit, pb avec les produits obsoletes
-* Impression du dateTime fixe pour l'Ètat du stock
-* Rafraichit la liste des produits aprËs un edition ou un ajout.
+* Impression du dateTime fixe pour l'√©tat du stock
+* Rafraichit la liste des produits apr√®s un edition ou un ajout.
 
 
 version 0.6 : 31/01/2012
@@ -184,30 +199,30 @@ version 0.6 : 31/01/2012
 + customerview et productview: Ajout d'un bouton pour copier les informations directement dans le presse papier
 
 * Deplacer le filtre des produit obsoletes dans le sql directement
-* Changement dÈfinitif du nom de l'application "mcercle"
+* Changement d√©finitif du nom de l'application "mcercle"
 
 
 version 0.5 : 08/10/2011
 -------------------------------------------------------
 + Faire apparaitre les ID des tables en mode DEBUG
-+ Ajout de commentaire de champ dans certaines tables, pense-bete pour le dÈveloppeur
-+ customers: modification de laffichage, en page pour une bonne tenue ‡ la charge.
++ Ajout de commentaire de champ dans certaines tables, pense-bete pour le d√©veloppeur
++ customers: modification de laffichage, en page pour une bonne tenue √† la charge.
 + Creation des tables invoice et invoice_details pour les factures et devis
-+ Dialog pour L'Èdition des factures et devis
-+ Champ description dans la table service, ideal pour sauvegarder des donnÈes liÈes ‡ l'intervention.
++ Dialog pour L'√©dition des factures et devis
++ Champ description dans la table service, ideal pour sauvegarder des donn√©es li√©es √† l'intervention.
 
 * Chamgement d'appelation Intervention par Service uniquement dans le code.
 * Changement de l'affichage du dialog de l'ajout, modification des services.
 * Changement de l'affichage de la gestion fournisseur, plus ergonomique.
 * Customerview: activer l'affichage des factures
-* ProductCategory: correction de l'ajout de la couleur d'une catÈgorie
+* ProductCategory: correction de l'ajout de la couleur d'une cat√©gorie
 
 
 version 0.4 : 24/08/2011
 -------------------------------------------------------
-+ Ajout d'un champ dans la table informations pour etre ou pas assujetti ‡ la TVA. (pas utilisable pour le moment)
-+ CrÈation d'une table Tax
-* Correction de l'affichage de la progressbar lors de la crÈation de la BDD.
++ Ajout d'un champ dans la table informations pour etre ou pas assujetti √† la TVA. (pas utilisable pour le moment)
++ Cr√©ation d'une table Tax
+* Correction de l'affichage de la progressbar lors de la cr√©ation de la BDD.
 * Petites corrections de code ici et la
 
 
@@ -216,26 +231,26 @@ version 0.3 : 22/07/2011
 * Changement de nom de l'application: mcercle
 * Nouveau menu plus ergonomique
 * poduct.cpp :  vider les variables temporaire std::string (sVal="";)
-		aprÈs avoir renseignÈ les variables de la class
+		apr√©s avoir renseign√© les variables de la class
 
 
 version 0.2.7 : 13/05/2011
 -------------------------------------------------------
-* Correction sur l'Èdition des interventions
+* Correction sur l'√©dition des interventions
 * Correction du bouton raz du dialog fournisseur
 
 
 version 0.2.6 : 12/05/2011
 -------------------------------------------------------
-+ Ajout de la date et de l'heure sur l'Ètat du stock
++ Ajout de la date et de l'heure sur l'√©tat du stock
 + Ajout de la gestion des interventions clients
-+ Implementation de la class pour gÈrer les factures
++ Implementation de la class pour g√©rer les factures
 
-* Grosse correction dans les dÈclarations de header pas besoin de dbase.h dans les sous class, seulement ibpp.h
+* Grosse correction dans les d√©clarations de header pas besoin de dbase.h dans les sous class, seulement ibpp.h
 * QdoubleSpinBox pour la selection du prix dans la partie produit
 * Nom dans le type ProviderList plus explicite
 
-- SÈcuritÈ: Champs CODE pour les clients, on travail uniquement sur son ID.
+- S√©curit√©: Champs CODE pour les clients, on travail uniquement sur son ID.
 
 
 version 0.2.5 : 25/01/2011
@@ -245,12 +260,12 @@ version 0.2.5 : 25/01/2011
 
 version 0.2.4 : 04/01/2011
 -------------------------------------------------------
-+ Gestion de catÈgories produits
-+ Information de la sociÈtÈ + logo propre ‡ la base de donnÈes
++ Gestion de cat√©gories produits
++ Information de la soci√©t√© + logo propre √† la base de donn√©es
 + Impression fiche produit et listing stock
 + Logo de l'application
 + Information de version bdd et drv dans la form about.
-+ Gestion fournisseurs opÈrationnelle
++ Gestion fournisseurs op√©rationnelle
 + Trie par ordre dans les tablesWidgets
 + Alerte stock produit dans le tableau de bord
 
@@ -266,10 +281,10 @@ version 0.2.2 : 05/12/2010
 
 version 0.1.1 : 18/11/2010
 -------------------------------------------------------
-+ Gestion produits et fournisseurs ‡ tester...
++ Gestion produits et fournisseurs √† tester...
 + Bdd mysql en test
 
 
 version 0.0.1 : 10/07/2010
 -------------------------------------------------------
-+ CrÈation de l'application...
++ Cr√©ation de l'application...
