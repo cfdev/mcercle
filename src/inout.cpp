@@ -196,8 +196,7 @@ void inout::exportAllProducts() {
  * @brief export tous les services
  */
 void inout::exportAllServices() {
-	QString req = "SELECT *"
-	" FROM TAB_SERVICES";
+	QString req = "SELECT * FROM TAB_SERVICES_COMMONS";
 	exportData(req,"Services");
 }
 
