@@ -370,7 +370,7 @@ bool database::createTable_informations(){
 
 	//INSERT
 	query.prepare("INSERT INTO TAB_INFORMATIONS(DBASE_VERSION, TAX, NAME, CA_TYPE)"
-					"VALUES('7', '0', '','1');");
+					"VALUES('8', '0', '','1');");
 	if(!query.exec()) {
 		QMessageBox::critical(this->m_parent, tr("Erreur"), query.lastError().text());
 		return false;
