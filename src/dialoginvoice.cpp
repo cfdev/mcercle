@@ -1534,6 +1534,11 @@ void DialogInvoice::on_pushButton_creditInvoice_clicked() {
 		//recharge l objet et son nouvel ID pour lajout des items par la suite
 		m_invoice -> loadFromID(m_invoice->getLastId());
 
+		//Change price
+		for(int i=0; i<items.id.count(); i++){
+			items.price[i] = -items.price.at(i);
+		}
+
 		//copy d'items !
 		m_invoice -> addInvoiceItems(items);
 
