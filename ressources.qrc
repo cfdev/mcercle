@@ -47,5 +47,4 @@
         <file alias="export">art/file_export.png</file>
         <file alias="import">art/fileimport.png</file>
     </qresource>
-    <qresource prefix="/"/>
 </RCC>
