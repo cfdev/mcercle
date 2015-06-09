@@ -160,7 +160,10 @@ void Printc::load_customerInfos() {
 	if(!m_cus ->getGender().isEmpty())mtextidentity +=  m_cus -> getGender() +" ";
 	mtextidentity += m_cus -> getFirstName()+" "+ m_cus -> getLastName()+'\n';
 	if((!m_cus ->getMobileNumber().isEmpty())||(!m_cus ->getPhoneNumber().isEmpty())){
-		mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ "  " + m_cus ->getPhoneNumber()+'\n';
+		if((!m_cus ->getMobileNumber().isEmpty())&&(!m_cus ->getPhoneNumber().isEmpty()))
+			mtextidentity += "Tel: " +m_cus ->getMobileNumber()+ " - " + m_cus ->getPhoneNumber()+'\n';
+		else
+			mtextidentity += "Tel: " + m_cus ->getMobileNumber()+ m_cus ->getPhoneNumber()+'\n';
 	}
 	if(!m_cus -> getAddress1().isEmpty()) mtextidentity += m_cus -> getAddress1()+'\n';
 	if(!m_cus -> getAddress2().isEmpty()) mtextidentity += m_cus -> getAddress2()+'\n';
