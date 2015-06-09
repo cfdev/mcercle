@@ -154,7 +154,9 @@ QString inout::importProduct(const QString &line, const QStringList &vals) {
  */
 void inout::importData(int typeOfExport, QString Name) {
 	//Warning
-	QMessageBox::warning(m_parent,tr("Attention"),tr("Faire une sauvegarde de la base de données avant l'import!"));
+	QString st = tr("Faite une sauvegarde de la base de données avant l'import!");
+	st += "\n\n" + tr("INFO: Pour voir la structure du fichier cvs, réaliser un export avant.");
+	QMessageBox::warning(m_parent,tr("Attention"), st);
 
 	QString fileName = QFileDialog::getOpenFileName(0, tr("Importer des ")+Name,
 													QDir::homePath(),
