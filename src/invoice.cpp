@@ -1053,7 +1053,8 @@ qreal invoice::calcul_partPaymentService(int id) {
 	qreal serv=0;
 	//récupère tous les ID des factures d'acompte
 	QString req =	"select ID from tab_invoices"
-					" where tab_invoices.id_reference="+QString::number(id);
+					" where tab_invoices.type = 1"
+					" and tab_invoices.id_reference="+QString::number(id);
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -1083,7 +1084,8 @@ qreal invoice::calcul_partPaymentProduct(int id){
 	qreal prod=0;
 	//récupère tous les ID des factures d'acompte
 	QString req =	"select ID from tab_invoices"
-					" where tab_invoices.id_reference="+QString::number(id);
+					" where tab_invoices.type = 1"
+					" and tab_invoices.id_reference="+QString::number(id);
 
 	QSqlQuery query;
 	query.prepare(req);
@@ -1177,7 +1179,7 @@ qreal invoice::calcul_services(int id){
 
 	if(query.exec()){
 		query.next();
-		return query.value(query.record().indexOf("SERVICE")).toDouble();;
+		return query.value(query.record().indexOf("SERVICE")).toDouble();
 	}
 	else{
 		return 0;
