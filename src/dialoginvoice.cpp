@@ -190,6 +190,8 @@ void DialogInvoice::setUI() {
 		ui->pushButton_ok->setIcon(QIcon(":/app/insert"));
 		ui->lineEdit_code->setText(tr("Automatique"));
 		ui->pushButton_createInv->setVisible(false);
+		ui->pushButton_partInvoice->setEnabled(false);
+		ui->pushButton_creditInvoice->setEnabled(false);
 	}
 	//lister les services
 	listServiceToTable();
