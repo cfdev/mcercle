@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en_US">
+<TS version="2.0" language="en_US">
 <context>
     <name>DialogCategory</name>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcategory.ui" line="14"/>
         <source>Catégories</source>
         <translation>Categories</translation>
@@ -87,17 +87,17 @@
         <source>Particulier</source>
         <translation>Private</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="93"/>
         <source>Société</source>
-        <translation type="unfinished">Company</translation>
+        <translation>Company</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="126"/>
         <source>Tél Fixe :</source>
-        <translation type="unfinished">Phone :</translation>
+        <translation>Phone :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="133"/>
         <source>Civilité :</source>
         <translation type="unfinished"></translation>
@@ -117,7 +117,7 @@
         <source>Ville :</source>
         <translation>City :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="195"/>
         <source>Prénom :</source>
         <translation>FirstName :</translation>
@@ -147,7 +147,7 @@ Naissance :</source>
         <source>Mobile :</source>
         <translation>Mobile :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="264"/>
         <source>Activité :</source>
         <translation>Activity :</translation>
@@ -182,7 +182,7 @@ Naissance :</source>
         <source>Commentaires :</source>
         <translation>Comments :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogcustomer.ui" line="404"/>
         <source>Accepte de reçevoir des emails promotionnels</source>
         <translation>Agree to receive emails</translation>
@@ -248,7 +248,7 @@ p, li { white-space: pre-wrap; }
         <source>dd/MM/yyyy</source>
         <translation>yyyy/MM/dd</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="93"/>
         <source>Fin de validité :</source>
         <translation>End of validity :</translation>
@@ -258,13 +258,12 @@ p, li { white-space: pre-wrap; }
         <source>Date de Echeance :</source>
         <translation>Maturity Date :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="117"/>
-        <location filename="../src/dialoginvoice.cpp" line="123"/>
         <source>Facture associée : </source>
         <translation>Associated invoice :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="131"/>
         <source>Date de création :</source>
         <translation>Date of creation :</translation>
@@ -279,7 +278,7 @@ p, li { white-space: pre-wrap; }
         <source>Etat :</source>
         <translation>State :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="194"/>
         <source>Réglement :</source>
         <translation>Regulation :</translation>
@@ -309,7 +308,7 @@ p, li { white-space: pre-wrap; }
         <source>Ajouter un service ou un produit</source>
         <translation>Add an service or an product</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="339"/>
         <source>Ajouter une ligne d&apos;édition libre</source>
         <translation>Add an free edition line</translation>
@@ -341,7 +340,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/dialoginvoice.ui" line="489"/>
-        <location filename="../src/dialoginvoice.cpp" line="217"/>
+        <location filename="../src/dialoginvoice.cpp" line="219"/>
         <source>Acompte</source>
         <translation>Deposit</translation>
     </message>
@@ -350,7 +349,7 @@ p, li { white-space: pre-wrap; }
         <source>Avoir</source>
         <translation>Credit</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialoginvoice.ui" line="514"/>
         <source>Créer une facture</source>
         <translation>Make an invoice</translation>
@@ -411,24 +410,94 @@ p, li { white-space: pre-wrap; }
         <translation>Delivery Date :</translation>
     </message>
     <message>
+        <location filename="../src/dialoginvoice.cpp" line="123"/>
+        <source>Facture associÃ©e : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dialoginvoice.cpp" line="130"/>
         <source>Facture</source>
         <translation>Invoice</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="143"/>
-        <source>Date Echéance :</source>
+        <source>Date EchÃ©ance :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="144"/>
-        <source>Devis associée : </source>
+        <source>Devis associÃ©e : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="145"/>
-        <source>Date Réglement :</source>
+        <source>Date RÃ©glement :</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>QuantitÃ©</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="536"/>
+        <source>DÃ©tail</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="771"/>
+        <location filename="../src/dialoginvoice.cpp" line="1277"/>
+        <source>Stock nÃ©gatif pour le produit:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="892"/>
+        <source>CrÃ©ation rÃ©alisÃ©e</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1217"/>
+        <source>Voulez-vous vraiment crÃ©er une facture depuis le devis ?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1433"/>
+        <source>Voulez-vous crÃ©er une facture d&apos;acompte? </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1440"/>
+        <source>Un acompte existe dÃ©ja sur cette facture
+
+Voulez-vous en crÃ©er un nouveau? </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1500"/>
+        <source>Voulez-vous crÃ©er une facture d&apos;avoir? </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1507"/>
+        <source>Un avoir existe dÃ©ja sur cette facture
+
+Voulez-vous en crÃ©er un nouveau? </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date Echéance :</source>
+        <translation type="obsolete">Maturity date :</translation>
+    </message>
+    <message>
+        <source>Devis associée : </source>
+        <translation type="obsolete">Estimate link : </translation>
+    </message>
+    <message>
+        <source>Date Réglement :</source>
+        <translation type="obsolete">Payment date :</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="152"/>
@@ -438,7 +507,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialoginvoice.cpp" line="162"/>
         <source>Sur Facture :</source>
-        <translation type="unfinished"></translation>
+        <translation>On Invoice :</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="189"/>
@@ -451,246 +520,238 @@ p, li { white-space: pre-wrap; }
         <translation>Automatic</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="209"/>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
+        <location filename="../src/dialoginvoice.cpp" line="211"/>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="210"/>
-        <location filename="../src/dialoginvoice.cpp" line="218"/>
+        <location filename="../src/dialoginvoice.cpp" line="212"/>
+        <location filename="../src/dialoginvoice.cpp" line="220"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="211"/>
-        <location filename="../src/dialoginvoice.cpp" line="219"/>
+        <location filename="../src/dialoginvoice.cpp" line="213"/>
+        <location filename="../src/dialoginvoice.cpp" line="221"/>
         <source>Produit</source>
         <translation>Product</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="266"/>
-        <location filename="../src/dialoginvoice.cpp" line="272"/>
+        <location filename="../src/dialoginvoice.cpp" line="268"/>
+        <location filename="../src/dialoginvoice.cpp" line="274"/>
         <source>Total acompte(s): </source>
-        <translation type="unfinished"></translation>
+        <translation>Total deposit :</translation>
     </message>
     <message>
         <source>Total accompte(s):</source>
-        <translation type="vanished">Total deposit :</translation>
+        <translation type="obsolete">Total deposit :</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="267"/>
+        <location filename="../src/dialoginvoice.cpp" line="269"/>
         <source>
 HT : </source>
         <translation>Excl. taxes:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="268"/>
+        <location filename="../src/dialoginvoice.cpp" line="270"/>
         <source>
 TTC: </source>
         <translation>incl. taxes:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="534"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="536"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
         <source>Id</source>
         <translation>Id</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Id Produit</source>
-        <translation>Id Product</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Ordre</source>
-        <translation>Order</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="534"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Nom</source>
-        <translation>Name</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="534"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Tva</source>
-        <translation>Tax</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Remise(%)</source>
-        <translation>Discount(%)</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="534"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Prix</source>
-        <translation>Price</translation>
-    </message>
-    <message>
-        <location filename="../src/dialoginvoice.cpp" line="319"/>
-        <location filename="../src/dialoginvoice.cpp" line="431"/>
-        <location filename="../src/dialoginvoice.cpp" line="1077"/>
-        <source>Quantité</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dialoginvoice.cpp" line="321"/>
         <location filename="../src/dialoginvoice.cpp" line="433"/>
         <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Id Produit</source>
+        <translation>Id Product</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Ordre</source>
+        <translation>Order</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="536"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Nom</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="536"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Tva</source>
+        <translation>Tax</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Remise(%)</source>
+        <translation>Discount(%)</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="321"/>
+        <location filename="../src/dialoginvoice.cpp" line="433"/>
+        <location filename="../src/dialoginvoice.cpp" line="536"/>
+        <location filename="../src/dialoginvoice.cpp" line="1079"/>
+        <source>Prix</source>
+        <translation>Price</translation>
+    </message>
+    <message>
+        <source>Quantité</source>
+        <translation type="obsolete">Quantity</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="323"/>
+        <location filename="../src/dialoginvoice.cpp" line="435"/>
+        <location filename="../src/dialoginvoice.cpp" line="1081"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="325"/>
-        <location filename="../src/dialoginvoice.cpp" line="436"/>
-        <location filename="../src/dialoginvoice.cpp" line="1082"/>
+        <location filename="../src/dialoginvoice.cpp" line="327"/>
+        <location filename="../src/dialoginvoice.cpp" line="438"/>
+        <location filename="../src/dialoginvoice.cpp" line="1084"/>
         <source>Total HT</source>
         <translation>Total excl. VAT</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="534"/>
         <source>Détail</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Detail</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="652"/>
+        <location filename="../src/dialoginvoice.cpp" line="654"/>
         <source>Voulez-vous vraiment supprimer cet article&lt;br&gt;&lt;b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Would you like remove this article&lt;br&gt;&lt;b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="657"/>
-        <location filename="../src/dialoginvoice.cpp" line="768"/>
-        <location filename="../src/dialoginvoice.cpp" line="905"/>
-        <location filename="../src/dialoginvoice.cpp" line="1215"/>
-        <location filename="../src/dialoginvoice.cpp" line="1274"/>
-        <location filename="../src/dialoginvoice.cpp" line="1430"/>
-        <location filename="../src/dialoginvoice.cpp" line="1437"/>
-        <location filename="../src/dialoginvoice.cpp" line="1497"/>
-        <location filename="../src/dialoginvoice.cpp" line="1504"/>
+        <location filename="../src/dialoginvoice.cpp" line="659"/>
+        <location filename="../src/dialoginvoice.cpp" line="770"/>
+        <location filename="../src/dialoginvoice.cpp" line="907"/>
+        <location filename="../src/dialoginvoice.cpp" line="1217"/>
+        <location filename="../src/dialoginvoice.cpp" line="1276"/>
+        <location filename="../src/dialoginvoice.cpp" line="1432"/>
+        <location filename="../src/dialoginvoice.cpp" line="1439"/>
+        <location filename="../src/dialoginvoice.cpp" line="1499"/>
+        <location filename="../src/dialoginvoice.cpp" line="1506"/>
         <source>Attention</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="769"/>
-        <location filename="../src/dialoginvoice.cpp" line="1275"/>
         <source>Stock négatif pour le produit:
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Negative Stock for this product:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="890"/>
+        <location filename="../src/dialoginvoice.cpp" line="892"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="890"/>
         <source>Création réalisée</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Create with success</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="903"/>
+        <location filename="../src/dialoginvoice.cpp" line="905"/>
         <source>Voulez-vous vraiment modifier le devis ?</source>
         <translation>Would you like modify the estimate ?</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="904"/>
+        <location filename="../src/dialoginvoice.cpp" line="906"/>
         <source>Voulez-vous vraiment modifier la facture ?</source>
         <translation>Would you like modify the invoice ?</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1031"/>
+        <location filename="../src/dialoginvoice.cpp" line="1033"/>
         <source>TOTAL: </source>
         <translation>TOTAL:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1034"/>
+        <location filename="../src/dialoginvoice.cpp" line="1036"/>
         <source>TOTAL HT: </source>
         <translation>TOTAL excl. VAT:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1035"/>
+        <location filename="../src/dialoginvoice.cpp" line="1037"/>
         <source>TOTAL TVA: </source>
         <translation>TOTAL TAX:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1036"/>
+        <location filename="../src/dialoginvoice.cpp" line="1038"/>
         <source>TOTAL TTC: </source>
         <translation>TOTAL VAT:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1044"/>
-        <location filename="../src/dialoginvoice.cpp" line="1048"/>
-        <source>ACOMPTE: </source>
-        <translation type="unfinished">Deposit</translation>
-    </message>
-    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1046"/>
         <location filename="../src/dialoginvoice.cpp" line="1050"/>
+        <source>ACOMPTE: </source>
+        <translation>DEPOSIT :</translation>
+    </message>
+    <message>
+        <location filename="../src/dialoginvoice.cpp" line="1052"/>
         <source>RESTE A PAYER: </source>
-        <translation type="unfinished"></translation>
+        <translation>REMAINS TO PAY: </translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1053"/>
+        <location filename="../src/dialoginvoice.cpp" line="1055"/>
         <source>ACOMPTE DE 30%: </source>
-        <translation type="unfinished"></translation>
+        <translation>DEPOSITOF 30%:</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1215"/>
         <source>Voulez-vous vraiment créer une facture depuis le devis ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Would you like create an invoice from this estimate ?</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1431"/>
         <source>Voulez-vous créer une facture d&apos;acompte? </source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Would you like create an deposit invoice ?</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1438"/>
         <source>Un acompte existe déja sur cette facture
 
 Voulez-vous en créer un nouveau? </source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">An deposit already exist on this invoice
+
+Would you like to create an new? </translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1456"/>
-        <location filename="../src/dialoginvoice.cpp" line="1475"/>
+        <location filename="../src/dialoginvoice.cpp" line="1458"/>
+        <location filename="../src/dialoginvoice.cpp" line="1477"/>
         <source>Acompte sur </source>
-        <translation type="unfinished"></translation>
+        <translation>Deposit on </translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1498"/>
         <source>Voulez-vous créer une facture d&apos;avoir? </source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Would you like to create an credit invoice? </translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1505"/>
         <source>Un avoir existe déja sur cette facture
 
 Voulez-vous en créer un nouveau? </source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">An credit already exist on this invoice
+
+Would you like to create an new?</translation>
     </message>
     <message>
-        <location filename="../src/dialoginvoice.cpp" line="1520"/>
+        <location filename="../src/dialoginvoice.cpp" line="1522"/>
         <source>Avoir sur </source>
-        <translation type="unfinished"></translation>
+        <translation>Credit on </translation>
     </message>
 </context>
 <context>
@@ -698,7 +759,7 @@ Voulez-vous en créer un nouveau? </source>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="14"/>
         <source>Livre des recettes</source>
-        <translation type="unfinished"></translation>
+        <translation>Book of invoices</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="26"/>
@@ -707,38 +768,43 @@ Voulez-vous en créer un nouveau? </source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Livre des recettes&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Invoices Book&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="49"/>
         <source>Selectionner tout</source>
-        <translation type="unfinished"></translation>
+        <translation>Select all</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="52"/>
         <location filename="../src/dialoginvoicelist.ui" line="66"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translatorcomment>...</translatorcomment>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="63"/>
         <source>Deselectionner tout</source>
-        <translation type="unfinished"></translation>
+        <translation>Unselect all</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="77"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choix du mois pour la liste des factures :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Month selection for the list of invoices&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="93"/>
         <source>MM/yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="103"/>
         <source>Imprimer la selection</source>
-        <translation type="unfinished"></translation>
+        <translation>Print the selection</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="134"/>
@@ -747,151 +813,155 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/app/help&quot; width=&quot;24&quot; height=&quot;24&quot; /&gt; &lt;span style=&quot; font-size:9pt;&quot;&gt;Seulement les factures qui ont le status &amp;quot;Reglee&amp;quot; sont listees ici !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/app/help&quot; width=&quot;24&quot; height=&quot;24&quot; /&gt; &lt;span style=&quot; font-size:9pt;&quot;&gt;Only the invoice with &amp;quot;settled&amp;quot; status appear here !&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="160"/>
         <source>Imprimer la liste</source>
-        <translation type="unfinished"></translation>
+        <translation>Print the list</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.ui" line="171"/>
         <source>Fermer</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <source>Id</source>
-        <translation type="unfinished">Id</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <location filename="../src/dialoginvoicelist.cpp" line="271"/>
         <location filename="../src/dialoginvoicelist.cpp" line="272"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Date</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <source>Code Facture</source>
-        <translation type="unfinished"></translation>
+        <translation>Invoice code</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <location filename="../src/dialoginvoicelist.cpp" line="279"/>
         <location filename="../src/dialoginvoicelist.cpp" line="280"/>
         <source>Client</source>
-        <translation type="unfinished">Customer</translation>
+        <translation>Customer</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <location filename="../src/dialoginvoicelist.cpp" line="283"/>
         <location filename="../src/dialoginvoicelist.cpp" line="284"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Description</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <location filename="../src/dialoginvoicelist.cpp" line="287"/>
         <location filename="../src/dialoginvoicelist.cpp" line="292"/>
         <source>Montant</source>
-        <translation type="unfinished"></translation>
+        <translation>Amount</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="61"/>
         <location filename="../src/dialoginvoicelist.cpp" line="293"/>
         <source>TTC</source>
-        <translation type="unfinished"></translation>
+        <translation>VAT</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="97"/>
         <source>Espece</source>
-        <translation type="unfinished">Cash</translation>
+        <translation>Cash</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="98"/>
         <source>Cheque</source>
-        <translation type="unfinished">Bank check</translation>
+        <translation>Bank check</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="99"/>
         <source>CB</source>
-        <translation type="unfinished">Bank card</translation>
+        <translation>Bank card</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="100"/>
         <source>TIP</source>
-        <translation type="unfinished">TIP</translation>
+        <translation>TIP</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="101"/>
         <source>Virement</source>
-        <translation type="unfinished">Transfer</translation>
+        <translation>Transfer</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="102"/>
         <source>Prelevement</source>
-        <translation type="unfinished">Debit</translation>
+        <translation>Debit</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="103"/>
         <source>Autre</source>
-        <translation type="unfinished">Other</translation>
+        <translation>Other</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="149"/>
         <source>LIVRERECETTES-</source>
-        <translation type="unfinished"></translation>
+        <translation>INVOICESBOOK-</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="149"/>
         <source>yyyyMM</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyyMM</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="193"/>
         <source>&lt;b&gt;GESTION D IMPRESSION&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;PRINT MANAGER&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="194"/>
         <source>&lt;i&gt;Preparation En cours...&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;Preparation in progress...&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="216"/>
         <source>Tel: </source>
-        <translation type="unfinished"></translation>
+        <translation>Phone: </translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="217"/>
         <source>Fax: </source>
-        <translation type="unfinished"></translation>
+        <translation>Fax: </translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="218"/>
         <source>Email: </source>
-        <translation type="unfinished"></translation>
+        <translation>Email: </translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="219"/>
         <source>Web: </source>
-        <translation type="unfinished"></translation>
+        <translation>Web: </translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="229"/>
         <source>Capital </source>
-        <translation type="unfinished"></translation>
+        <translation>Capital</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="230"/>
         <source>Siret </source>
-        <translation type="unfinished"></translation>
+        <translation>Company registration number</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="234"/>
         <source>dd-MM-yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy-MM-dd HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="234"/>
@@ -902,29 +972,29 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/dialoginvoicelist.cpp" line="243"/>
         <location filename="../src/dialoginvoicelist.cpp" line="244"/>
         <source>Livre des recettes </source>
-        <translation type="unfinished"></translation>
+        <translation>Invoices book </translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="243"/>
         <location filename="../src/dialoginvoicelist.cpp" line="244"/>
         <source>MM-yyyy</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy-MM</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="275"/>
         <location filename="../src/dialoginvoicelist.cpp" line="276"/>
         <source>Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="288"/>
         <source>HT</source>
-        <translation type="unfinished"></translation>
+        <translation>Excl. taxes</translation>
     </message>
     <message>
         <location filename="../src/dialoginvoicelist.cpp" line="364"/>
         <source>Page </source>
-        <translation type="unfinished"></translation>
+        <translation>Page </translation>
     </message>
 </context>
 <context>
@@ -932,32 +1002,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogprintchoice.ui" line="14"/>
         <source>Type d&apos;impression</source>
-        <translation type="unfinished"></translation>
+        <translation>Type of printing</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogprintchoice.ui" line="26"/>
         <source>Quel type d&apos;impression voulez-vous réaliser ?</source>
-        <translation type="unfinished"></translation>
+        <translation>What type of printing would you like ?</translation>
     </message>
     <message>
         <location filename="../src/dialogprintchoice.ui" line="46"/>
         <source>Imprimante Physique</source>
-        <translation type="unfinished"></translation>
+        <translation>Physic printer</translation>
     </message>
     <message>
         <location filename="../src/dialogprintchoice.ui" line="80"/>
         <source>Dans un fichier au format PDF</source>
-        <translation type="unfinished"></translation>
+        <translation>PDF File</translation>
     </message>
     <message>
         <location filename="../src/dialogprintchoice.ui" line="131"/>
         <source>Chemin du fichier :</source>
-        <translation type="unfinished"></translation>
+        <translation>Path of file :</translation>
     </message>
     <message>
         <location filename="../src/dialogprintchoice.ui" line="145"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -965,7 +1035,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproduct.ui" line="20"/>
         <source>Produit</source>
-        <translation type="unfinished">Product</translation>
+        <translation>Product</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="39"/>
@@ -974,9 +1044,9 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/dialogproduct.ui" line="407"/>
         <location filename="../src/dialogproduct.ui" line="427"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="86"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:600; text-decoration: underline;&quot;&gt;Image produit&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:7pt;&quot;&gt;Taille recommandée :128 X 128px&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
@@ -984,66 +1054,66 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproduct.ui" line="93"/>
         <source>Parcourir</source>
-        <translation type="unfinished"></translation>
+        <translation>Browse</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="100"/>
         <source>Effacer l&apos;image</source>
-        <translation type="unfinished"></translation>
+        <translation>Delete image</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="123"/>
         <source>Editer les catégories</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit categories</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="137"/>
         <source>Prix de vente:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sale Price:</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="150"/>
         <source>Editer les fournisseurs</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit suppliers</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="164"/>
         <source>Stock Alerte :</source>
-        <translation type="unfinished"></translation>
+        <translation>Alert stock :</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="171"/>
         <source>Founisseur: </source>
-        <translation type="unfinished"></translation>
+        <translation>Supplier: </translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="178"/>
         <source>Tva (%) :</source>
-        <translation type="unfinished"></translation>
+        <translation>Tax (%) :</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="201"/>
         <source>Prix d&apos;achat:  </source>
-        <translation type="unfinished"></translation>
+        <translation>Buying price: </translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="227"/>
         <location filename="../src/dialogproduct.cpp" line="64"/>
         <source>HT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Excl. taxes</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="281"/>
         <source>Nom: </source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="291"/>
         <location filename="../src/dialogproduct.ui" line="304"/>
         <source> €</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="377"/>
         <source>Catégorie: </source>
         <translation type="unfinished"></translation>
@@ -1056,12 +1126,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproduct.ui" line="391"/>
         <source>Code :</source>
-        <translation type="unfinished">Code:</translation>
+        <translation>Code:</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="404"/>
         <source>Générer un code</source>
-        <translation type="unfinished"></translation>
+        <translation>Generate an code</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="424"/>
@@ -1071,14 +1141,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproduct.ui" line="440"/>
         <source>Etat / Status</source>
-        <translation type="unfinished"></translation>
+        <translation>State</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="448"/>
         <source>En vente</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogproduct.ui" line="475"/>
         <source>Abandonné</source>
         <translation type="unfinished"></translation>
@@ -1087,28 +1157,28 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/dialogproduct.ui" line="521"/>
         <location filename="../src/dialogproduct.cpp" line="51"/>
         <source>Ajouter</source>
-        <translation type="unfinished">Add</translation>
+        <translation>Add</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.ui" line="528"/>
         <source>Fermer</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.cpp" line="54"/>
         <source>Modifier</source>
-        <translation type="unfinished">modify</translation>
+        <translation>modify</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.cpp" line="65"/>
         <source>TTC</source>
-        <translation type="unfinished"></translation>
+        <translation>VAT</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.cpp" line="271"/>
         <location filename="../src/dialogproduct.cpp" line="283"/>
         <source>Attention</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.cpp" line="271"/>
@@ -1133,7 +1203,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproduct.cpp" line="407"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/dialogproduct.cpp" line="407"/>
@@ -1146,52 +1216,52 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogproviders.ui" line="14"/>
         <source>Fournisseurs</source>
-        <translation type="unfinished">Providers</translation>
+        <translation>Suppliers</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.ui" line="45"/>
         <source>Ajouter</source>
-        <translation type="unfinished">Add</translation>
+        <translation>Add</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.ui" line="56"/>
         <source>Modifier</source>
-        <translation type="unfinished">modify</translation>
+        <translation>modify</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.ui" line="67"/>
         <source>Supprimer</source>
-        <translation type="unfinished">delete</translation>
+        <translation>delete</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="67"/>
         <source>Nom</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="67"/>
         <source>Tel</source>
-        <translation type="unfinished"></translation>
+        <translation>Phone</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="67"/>
         <source>Fax</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="67"/>
         <source>Email</source>
-        <translation type="unfinished"></translation>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="162"/>
         <source>Attention</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/dialogproviders.cpp" line="163"/>
         <source>Voulez-vous vraiment supprimer le fournisseur:&lt;br&gt;&lt;b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Would you like really remove this supplier:&lt;br&gt;&lt;b&gt;</translation>
     </message>
 </context>
 <context>
@@ -1200,32 +1270,32 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/dialogprovidersedit.ui" line="14"/>
         <location filename="../src/dialogprovidersedit.ui" line="24"/>
         <source>Fournisseur</source>
-        <translation type="unfinished">Provider</translation>
+        <translation>Supplier</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogprovidersedit.ui" line="32"/>
         <source>Tél :</source>
-        <translation type="unfinished"></translation>
+        <translation>Phone :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="53"/>
         <source>Nom :</source>
-        <translation type="unfinished">Name :</translation>
+        <translation>Name :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="60"/>
         <source>Fax :</source>
-        <translation type="unfinished"></translation>
+        <translation>Fax :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="74"/>
         <source>Ville :</source>
-        <translation type="unfinished">City :</translation>
+        <translation>City :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="81"/>
         <source>Code Postal :</source>
-        <translation type="unfinished">Zip Code :</translation>
+        <translation>Zip Code :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="102"/>
@@ -1234,7 +1304,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; color:#aa0000;&quot;&gt;*&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1243,22 +1313,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="113"/>
         <source>Contact : </source>
-        <translation type="unfinished"></translation>
+        <translation>contact :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="123"/>
         <source>Email :</source>
-        <translation type="unfinished">Email :</translation>
+        <translation>Email :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="137"/>
         <source>Pays :</source>
-        <translation type="unfinished">Country :</translation>
+        <translation>Country :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="153"/>
         <source>Adresse :</source>
-        <translation type="unfinished">Address :</translation>
+        <translation>Address :</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.ui" line="183"/>
@@ -1267,7 +1337,7 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; color:#aa0000;&quot;&gt;* Champs obligatoires&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -1276,24 +1346,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogprovidersedit.cpp" line="17"/>
         <source>Ajouter un fournisseur</source>
-        <translation type="unfinished"></translation>
+        <translation>Add an supplier</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.cpp" line="21"/>
         <source>Modifier le frounisseur</source>
-        <translation type="unfinished"></translation>
+        <translation>Modify the supplier</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.cpp" line="77"/>
         <location filename="../src/dialogprovidersedit.cpp" line="87"/>
         <source>Attention</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/dialogprovidersedit.cpp" line="77"/>
         <location filename="../src/dialogprovidersedit.cpp" line="87"/>
         <source>Fournisseur d&amp;eacute;ja pr&amp;eacute;sent...&lt;br&gt;Merci de changer de nom</source>
-        <translation type="unfinished"></translation>
+        <translation>Supplier already exist...&lt;br&gt;thanks to change the name</translation>
     </message>
 </context>
 <context>
@@ -1301,21 +1371,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogservices.ui" line="14"/>
         <source>Services</source>
-        <translation type="unfinished">Services</translation>
+        <translation>Services</translation>
     </message>
     <message>
         <location filename="../src/dialogservices.ui" line="33"/>
         <location filename="../src/dialogservices.ui" line="63"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogservices.ui" line="52"/>
         <source>Charger un service
 général :</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogservices.ui" line="76"/>
         <source>Service personnalisé</source>
         <translation type="unfinished"></translation>
@@ -1340,7 +1410,7 @@ général :</source>
         <source>Prix: </source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogservices.ui" line="131"/>
         <source> €</source>
         <translation type="unfinished"></translation>
@@ -1349,17 +1419,17 @@ général :</source>
         <location filename="../src/dialogservices.ui" line="141"/>
         <location filename="../src/dialogservices.cpp" line="43"/>
         <source>HT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Excl. taxes</translation>
     </message>
     <message>
         <location filename="../src/dialogservices.ui" line="148"/>
         <source>Tva (%) :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tax (%) :</translation>
     </message>
     <message>
         <location filename="../src/dialogservices.cpp" line="45"/>
         <source>TTC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">VAT</translation>
     </message>
 </context>
 <context>
@@ -1369,7 +1439,7 @@ général :</source>
         <source>Edition des services</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogservicesedit.ui" line="24"/>
         <source>Interventions Générales</source>
         <translation type="unfinished"></translation>
@@ -1399,7 +1469,7 @@ général :</source>
         <source>Prix: </source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogservicesedit.ui" line="101"/>
         <source> €</source>
         <translation type="unfinished"></translation>
@@ -1408,7 +1478,7 @@ général :</source>
         <location filename="../src/dialogservicesedit.ui" line="111"/>
         <location filename="../src/dialogservicesedit.cpp" line="26"/>
         <source>HT</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Excl. taxes</translation>
     </message>
     <message>
         <location filename="../src/dialogservicesedit.ui" line="163"/>
@@ -1433,7 +1503,7 @@ général :</source>
     <message>
         <location filename="../src/dialogservicesedit.cpp" line="28"/>
         <source>TTC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">VAT</translation>
     </message>
     <message>
         <location filename="../src/dialogservicesedit.cpp" line="156"/>
@@ -1484,59 +1554,59 @@ général :</source>
     <message>
         <location filename="../src/dialogsettings.ui" line="20"/>
         <source>Configuration</source>
-        <translation type="unfinished">Settings</translation>
+        <translation>Settings</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="55"/>
         <source>Application</source>
-        <translation type="unfinished"></translation>
+        <translation>Application</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="65"/>
         <source>Vérifie si une nouvelle version est disponible.</source>
-        <translation type="unfinished"></translation>
+        <translation>Check if the last version is available.</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="80"/>
         <source>Normale</source>
-        <translation type="unfinished"></translation>
+        <translation>Normal</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="85"/>
         <source>Sombre</source>
-        <translation type="unfinished">Dark</translation>
+        <translation>Dark</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="93"/>
         <source>Apparence : (Après redémarrage de mcercle)</source>
-        <translation type="unfinished"></translation>
+        <translation>Appearance : (restart needed)</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="100"/>
         <source>Gère le décompte automatique du stock</source>
-        <translation type="unfinished"></translation>
+        <translation>Manage the stock automatically</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="111"/>
         <source>Adresse du dépôt</source>
-        <translation type="unfinished"></translation>
+        <translation>Deposit Address</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="114"/>
         <source>http://cfdev.fr/download/mcercle/</source>
-        <translation type="unfinished"></translation>
+        <translation>http://cfdev.fr/download/mcercle/</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="143"/>
         <source>Informations</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="153"/>
         <source>Logo</source>
-        <translation type="unfinished"></translation>
+        <translation>Logo</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="175"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1544,122 +1614,127 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:600; text-decoration: underline;&quot;&gt;Logo&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:7pt;&quot;&gt;Taille recommandée :1000 X 1000px&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:600; text-decoration: underline;&quot;&gt;Logo&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:7pt;&quot;&gt;Recommended size :1000 X 1000px&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="187"/>
         <source>Parcourir</source>
-        <translation type="unfinished"></translation>
+        <translation>Browse</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="194"/>
         <source>Effacer</source>
-        <translation type="unfinished"></translation>
+        <translation>Remove</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="207"/>
         <source>Assujetti à la TVA: </source>
-        <translation type="unfinished"></translation>
+        <translation>Subject to VAT :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="214"/>
         <source>Nom: </source>
-        <translation type="unfinished"></translation>
+        <translation>Name: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="238"/>
         <source>Siret: </source>
-        <translation type="unfinished"></translation>
+        <translation>Company number: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="252"/>
         <source>Site internet: </source>
-        <translation type="unfinished"></translation>
+        <translation>WebSite: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="259"/>
         <source>Capital: </source>
-        <translation type="unfinished"></translation>
+        <translation>Capital: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="276"/>
         <source>Tel: </source>
-        <translation type="unfinished"></translation>
+        <translation>Phone: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="283"/>
         <source>Fax: </source>
-        <translation type="unfinished"></translation>
+        <translation>Fax: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="290"/>
         <source>Email: </source>
-        <translation type="unfinished"></translation>
+        <translation>Email: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="304"/>
         <source>Ville: </source>
-        <translation type="unfinished"></translation>
+        <translation>City: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="332"/>
         <source>Calcul du CA: </source>
-        <translation type="unfinished"></translation>
+        <translation>Calcul of turnover: </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="340"/>
         <source>Date de facturation</source>
-        <translation type="unfinished"></translation>
+        <translation>Invoice date</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="345"/>
         <source>Date du règlement</source>
-        <translation type="unfinished"></translation>
+        <translation>Payment date</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="353"/>
         <source>Code Postal: </source>
-        <translation type="unfinished"></translation>
+        <translation>Zip code: </translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="370"/>
         <source>Numéro TVA:</source>
-        <translation type="unfinished"></translation>
+        <translation>VAT number:</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="377"/>
         <source>Devise :</source>
-        <translation type="unfinished"></translation>
+        <translation>Currency :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="396"/>
         <source>Adresse :</source>
-        <translation type="unfinished">Address :</translation>
+        <translation>Address :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="431"/>
         <source>Relevé d&apos;identité bancaire</source>
-        <translation type="unfinished"></translation>
+        <translation>Bank account identification</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="441"/>
         <source>Code Banque :</source>
-        <translation type="unfinished"></translation>
+        <translation>Bank code :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="448"/>
         <source>Code Guichet :</source>
-        <translation type="unfinished"></translation>
+        <translation>Sort code :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="465"/>
         <source>Numéro de compte :</source>
-        <translation type="unfinished"></translation>
+        <translation>Account number :</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="492"/>
         <source>Clé RIB :</source>
-        <translation type="unfinished"></translation>
+        <translation>Key :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="509"/>
@@ -1669,144 +1744,145 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogsettings.ui" line="527"/>
         <source>IBAN :</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Same international</translatorcomment>
+        <translation>IBAN :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="628"/>
         <source>BIC :</source>
-        <translation type="unfinished"></translation>
+        <translation>BIC :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="679"/>
         <source>Tva</source>
-        <translation type="unfinished">Tax</translation>
+        <translation>Tax</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/dialogsettings.ui" line="693"/>
         <source>Base de données</source>
-        <translation type="unfinished"></translation>
+        <translation>Data base</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="703"/>
         <source>Adresse : </source>
-        <translation type="unfinished"></translation>
+        <translation>Address : </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="713"/>
         <source>Port : </source>
-        <translation type="unfinished"></translation>
+        <translation>Port : </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="726"/>
         <source>Nom de la base : </source>
-        <translation type="unfinished"></translation>
+        <translation>Name of database : </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="733"/>
         <source>Identifiant : </source>
-        <translation type="unfinished"></translation>
+        <translation>Ident : </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="743"/>
         <source>Mot de pass : </source>
-        <translation type="unfinished"></translation>
+        <translation>Password : </translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="757"/>
         <location filename="../src/dialogsettings.ui" line="814"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="764"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Base de donnees :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Data base :&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="782"/>
         <source>Informations :</source>
-        <translation type="unfinished"></translation>
+        <translation>Informations :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="791"/>
         <source>Etat:</source>
-        <translation type="unfinished"></translation>
+        <translation>State:</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="834"/>
         <location filename="../src/dialogsettings.cpp" line="288"/>
         <source>Se connecter</source>
-        <translation type="unfinished"></translation>
+        <translation>Connect</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="863"/>
         <source>Impression/Factures</source>
-        <translation type="unfinished"></translation>
+        <translation>Printing/Invoices</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="879"/>
         <source>Police d&apos;impression :</source>
-        <translation type="unfinished"></translation>
+        <translation>Font of printing :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="889"/>
         <source>Cadres :</source>
-        <translation type="unfinished"></translation>
+        <translation>Frames :</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="896"/>
         <source>Dessiner les cadres</source>
-        <translation type="unfinished"></translation>
+        <translation>Draw the frames</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="903"/>
         <source>Bords arrondis</source>
-        <translation type="unfinished"></translation>
+        <translation>Rounded border</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.ui" line="924"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lignes Libres du pied de page:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Free lines of footer:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="143"/>
         <source>Selectionner une image...</source>
-        <translation type="unfinished"></translation>
+        <translation>Select an image...</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="143"/>
         <source>Image Files (*.png *.jpg *.bmp)</source>
-        <translation type="unfinished"></translation>
+        <translation>Image Files (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="150"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="150"/>
-        <source>Impossible de charger l&apos;image...Désoler :(</source>
-        <translation type="unfinished"></translation>
+        <source>Impossible de charger l&apos;image...DÃ©soler :(</source>
+        <translation>Unable to load this image...Sorry :(</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogsettings.cpp" line="208"/>
+        <source>Voulez-vous crÃ©er une nouvelle base de donnÃ©es ?</source>
+        <translation>Would you create an new database ?</translation>
+    </message>
+    <message>
+        <location filename="../src/dialogsettings.cpp" line="273"/>
+        <source>Se dÃ©connecter</source>
+        <translation>Disconnect</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="208"/>
         <source>Question</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dialogsettings.cpp" line="208"/>
-        <source>Voulez-vous créer une nouvelle base de données ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dialogsettings.cpp" line="273"/>
-        <source>Se déconnecter</source>
-        <translation type="unfinished"></translation>
+        <translation>Question</translation>
     </message>
     <message>
         <location filename="../src/dialogsettings.cpp" line="291"/>
         <source>Version: v</source>
-        <translation type="unfinished"></translation>
+        <translation>Version: v</translation>
     </message>
 </context>
 <context>
@@ -1848,7 +1924,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/dialogtax.cpp" line="17"/>
-        <source>Sélection de la tax...</source>
+        <source>SÃ©lection de la tax...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1864,7 +1940,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/dialogtax.cpp" line="66"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Description</translation>
     </message>
     <message>
         <location filename="../src/dialogtax.cpp" line="98"/>
@@ -1935,187 +2011,189 @@ p, li { white-space: pre-wrap; }
         <translation>Import</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="161"/>
+        <location filename="../src/mainwindow.ui" line="163"/>
         <source>Quitter</source>
         <translation>Quit</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="173"/>
+        <location filename="../src/mainwindow.ui" line="175"/>
         <source>A propos</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="182"/>
+        <location filename="../src/mainwindow.ui" line="184"/>
         <source>A propos de Qt</source>
         <translation>About Qt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="191"/>
+        <location filename="../src/mainwindow.ui" line="193"/>
         <source>Tableau de bord</source>
         <translation>Board</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="194"/>
+        <location filename="../src/mainwindow.ui" line="196"/>
         <source>T</source>
         <translation>T</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="206"/>
-        <location filename="../src/mainwindow.ui" line="304"/>
+        <location filename="../src/mainwindow.ui" line="208"/>
+        <location filename="../src/mainwindow.ui" line="306"/>
+        <location filename="../src/mainwindow.ui" line="344"/>
         <source>Clients</source>
         <translation>Customers</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="209"/>
+        <location filename="../src/mainwindow.ui" line="211"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="218"/>
-        <location filename="../src/mainwindow.ui" line="309"/>
+        <location filename="../src/mainwindow.ui" line="220"/>
+        <location filename="../src/mainwindow.ui" line="311"/>
+        <location filename="../src/mainwindow.ui" line="353"/>
         <source>Produits</source>
         <translation>Poducts</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="221"/>
+        <location filename="../src/mainwindow.ui" line="223"/>
         <source>P</source>
         <translation>P</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="230"/>
+        <location filename="../src/mainwindow.ui" line="232"/>
         <source>Configuration</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="239"/>
-        <location filename="../src/mainwindow.ui" line="242"/>
+        <location filename="../src/mainwindow.ui" line="241"/>
+        <location filename="../src/mainwindow.ui" line="244"/>
         <source>Fournisseurs</source>
-        <translation>Providers</translation>
+        <translation>Suppliers</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="245"/>
+        <location filename="../src/mainwindow.ui" line="247"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="254"/>
+        <location filename="../src/mainwindow.ui" line="256"/>
         <source>Livres des Recettes</source>
         <translation>Book of recipes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="257"/>
+        <location filename="../src/mainwindow.ui" line="259"/>
         <source>L</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="266"/>
+        <location filename="../src/mainwindow.ui" line="268"/>
         <source>Sauvegarder</source>
         <translation>Save</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="269"/>
+        <location filename="../src/mainwindow.ui" line="271"/>
         <source>Sauvegarder la base de donnees sous</source>
         <translation>Save as</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="272"/>
+        <location filename="../src/mainwindow.ui" line="274"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="281"/>
-        <location filename="../src/mainwindow.ui" line="314"/>
+        <location filename="../src/mainwindow.ui" line="283"/>
+        <location filename="../src/mainwindow.ui" line="316"/>
         <source>Services</source>
         <translation>Services</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="284"/>
+        <location filename="../src/mainwindow.ui" line="286"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="293"/>
-        <location filename="../src/mainwindow.ui" line="296"/>
+        <location filename="../src/mainwindow.ui" line="295"/>
+        <location filename="../src/mainwindow.ui" line="298"/>
         <source>Faire un don</source>
         <translation>Donate</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="299"/>
+        <location filename="../src/mainwindow.ui" line="301"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;mcercle vous aide dans votre activit&amp;eacute;.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#815a0c;&quot;&gt;Aidez moi &amp;agrave; continuer en faisant un don.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#815a0c;&quot;&gt;MERCI&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt;&quot;&gt;mcercle help you in your activity.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:9pt; font-weight:600; color:#815a0c;&quot;&gt;Help me to continue by making a donation.&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; color:#815a0c;&quot;&gt;THANK YOU&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="319"/>
+        <location filename="../src/mainwindow.ui" line="321"/>
         <source>Fournisseur</source>
-        <translation>Provider</translation>
+        <translation>Supplier</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="328"/>
+        <location filename="../src/mainwindow.ui" line="330"/>
         <source>Signaler un bug</source>
         <translation>Report a bug</translation>
     </message>
-    <message>
-        <location filename="../src/mainwindow.ui" line="333"/>
+    <message utf8="true">
+        <location filename="../src/mainwindow.ui" line="335"/>
         <source>Imprimer une fiche à Entête</source>
         <translation>Print an empty file with logo</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="117"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
         <source>Sombre</source>
         <translation>Dark</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>La base de donn&amp;eacute;es doit &amp;ecirc;tre sauvegard&amp;eacute;e! Derniere sauvegarde r&amp;eacute;alis&amp;eacute;e le: </source>
         <translation>The database must be save! The last backup was made the:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="153"/>
+        <location filename="../src/mainwindow.cpp" line="154"/>
         <source>dd-MM-yyyy</source>
         <translation>yyyy-MM-dd</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="212"/>
+        <location filename="../src/mainwindow.cpp" line="213"/>
         <source> Client</source>
         <translation> Customer</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="224"/>
+        <location filename="../src/mainwindow.cpp" line="225"/>
         <source> Produit</source>
         <translation> Product</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="300"/>
-        <location filename="../src/mainwindow.cpp" line="327"/>
+        <location filename="../src/mainwindow.cpp" line="301"/>
+        <location filename="../src/mainwindow.cpp" line="328"/>
         <source>Information</source>
         <translation>Information</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="301"/>
+        <location filename="../src/mainwindow.cpp" line="302"/>
         <source>Cette fonction est disponible uniquement pour SQLITE !</source>
         <translation>SQLITE only!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="310"/>
+        <location filename="../src/mainwindow.cpp" line="311"/>
         <source>dd-MM-yyyy_HHmmss</source>
         <translation>yyyy-MM-dd_HHmmss</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="318"/>
-        <location filename="../src/mainwindow.cpp" line="334"/>
+        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="335"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="319"/>
+        <location filename="../src/mainwindow.cpp" line="320"/>
         <source>Impossible de remplacer le fichier!
 
 </source>
         <translation>Impossible to replace the file!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="328"/>
-        <source>Sauvegarde Terminée!
+        <location filename="../src/mainwindow.cpp" line="329"/>
+        <source>Sauvegarde TerminÃ©e!
 
 </source>
         <translation type="unfinished"></translation>
@@ -2124,10 +2202,10 @@ p, li { white-space: pre-wrap; }
         <source>Sauvegarde Termin�e!
 
 </source>
-        <translation type="vanished">Save done!</translation>
+        <translation type="obsolete">Save done!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="335"/>
+        <location filename="../src/mainwindow.cpp" line="336"/>
         <source>Sauvegarde impossible!
 
 </source>
@@ -2139,37 +2217,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/printc.cpp" line="48"/>
         <source>Tel: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Phone: </translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="49"/>
         <source>Fax: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fax: </translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="50"/>
         <source>Email: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Email: </translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="51"/>
         <source>Web: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Web: </translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="55"/>
         <source>Capital </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Capital</translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="56"/>
         <source>Siret </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="57"/>
-        <source>N° TVA </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company registration number</translation>
     </message>
     <message>
         <location filename="../src/printc.cpp" line="130"/>
@@ -2184,11 +2257,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/printc.cpp" line="131"/>
         <source>Compte: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="131"/>
-        <source>Clé RIB: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2207,301 +2275,311 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="230"/>
+        <location filename="../src/printc.cpp" line="233"/>
         <source>Devis</source>
         <translation type="unfinished">Estimate</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="232"/>
+        <location filename="../src/printc.cpp" line="235"/>
         <source>Facture</source>
         <translation type="unfinished">Invoice</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="233"/>
+        <location filename="../src/printc.cpp" line="236"/>
         <source>Facture d&apos;acompte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="234"/>
+        <location filename="../src/printc.cpp" line="237"/>
         <source>Facture d&apos;avoir</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="236"/>
+        <location filename="../src/printc.cpp" line="239"/>
         <source>Service</source>
         <translation type="unfinished">Service</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="249"/>
-        <location filename="../src/printc.cpp" line="250"/>
-        <location filename="../src/printc.cpp" line="254"/>
-        <location filename="../src/printc.cpp" line="255"/>
+        <location filename="../src/printc.cpp" line="252"/>
+        <location filename="../src/printc.cpp" line="253"/>
+        <location filename="../src/printc.cpp" line="257"/>
+        <location filename="../src/printc.cpp" line="258"/>
         <source>Code: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="258"/>
-        <location filename="../src/printc.cpp" line="259"/>
-        <location filename="../src/printc.cpp" line="263"/>
-        <location filename="../src/printc.cpp" line="264"/>
+        <location filename="../src/printc.cpp" line="261"/>
+        <location filename="../src/printc.cpp" line="262"/>
+        <location filename="../src/printc.cpp" line="266"/>
+        <location filename="../src/printc.cpp" line="267"/>
         <source>Ref: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="275"/>
-        <location filename="../src/printc.cpp" line="277"/>
-        <location filename="../src/printc.cpp" line="286"/>
-        <location filename="../src/printc.cpp" line="288"/>
+        <location filename="../src/printc.cpp" line="278"/>
+        <location filename="../src/printc.cpp" line="280"/>
+        <location filename="../src/printc.cpp" line="289"/>
+        <location filename="../src/printc.cpp" line="291"/>
         <source>Date: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="275"/>
         <location filename="../src/printc.cpp" line="278"/>
-        <location filename="../src/printc.cpp" line="282"/>
-        <location filename="../src/printc.cpp" line="286"/>
+        <location filename="../src/printc.cpp" line="281"/>
+        <location filename="../src/printc.cpp" line="285"/>
         <location filename="../src/printc.cpp" line="289"/>
-        <location filename="../src/printc.cpp" line="293"/>
-        <location filename="../src/printc.cpp" line="1161"/>
+        <location filename="../src/printc.cpp" line="292"/>
+        <location filename="../src/printc.cpp" line="296"/>
+        <location filename="../src/printc.cpp" line="1164"/>
         <source>dd-MM-yyyy</source>
         <translation type="unfinished">yyyy-MM-dd</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="281"/>
-        <source>Date fin validité: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="292"/>
-        <source>Date Echéance: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="302"/>
-        <location filename="../src/printc.cpp" line="303"/>
+        <location filename="../src/printc.cpp" line="305"/>
+        <location filename="../src/printc.cpp" line="306"/>
         <source>Client: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="329"/>
-        <location filename="../src/printc.cpp" line="330"/>
-        <source>Désignation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="343"/>
-        <location filename="../src/printc.cpp" line="344"/>
-        <location filename="../src/printc.cpp" line="355"/>
-        <location filename="../src/printc.cpp" line="356"/>
+        <location filename="../src/printc.cpp" line="346"/>
+        <location filename="../src/printc.cpp" line="347"/>
+        <location filename="../src/printc.cpp" line="358"/>
+        <location filename="../src/printc.cpp" line="359"/>
         <source>TVA %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="347"/>
-        <location filename="../src/printc.cpp" line="348"/>
+        <location filename="../src/printc.cpp" line="350"/>
+        <location filename="../src/printc.cpp" line="351"/>
         <source>Remise%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="361"/>
-        <location filename="../src/printc.cpp" line="363"/>
+        <location filename="../src/printc.cpp" line="364"/>
+        <location filename="../src/printc.cpp" line="366"/>
         <source>Prix U. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="365"/>
-        <location filename="../src/printc.cpp" line="367"/>
-        <source>Quantité</source>
+        <location filename="../src/printc.cpp" line="57"/>
+        <source>NÂ° TVA </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="371"/>
+        <location filename="../src/printc.cpp" line="131"/>
+        <source>ClÃ© RIB: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="284"/>
+        <source>Date fin validitÃ©: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="295"/>
+        <source>Date EchÃ©ance: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="332"/>
+        <location filename="../src/printc.cpp" line="333"/>
+        <source>DÃ©signation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="368"/>
+        <location filename="../src/printc.cpp" line="370"/>
+        <source>QuantitÃ©</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="374"/>
         <source>TOTAL HT </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="373"/>
+        <location filename="../src/printc.cpp" line="376"/>
         <source>TOTAL </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="583"/>
+        <location filename="../src/printc.cpp" line="586"/>
         <source>Page </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page </translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="621"/>
+        <location filename="../src/printc.cpp" line="624"/>
         <source>TOTAL HT: </source>
         <translation type="unfinished">TOTAL excl. VAT:</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="626"/>
+        <location filename="../src/printc.cpp" line="629"/>
         <source>TOTAL HT : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="628"/>
+        <location filename="../src/printc.cpp" line="631"/>
         <source>TOTAL : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="640"/>
-        <location filename="../src/printc.cpp" line="641"/>
+        <location filename="../src/printc.cpp" line="643"/>
+        <location filename="../src/printc.cpp" line="644"/>
         <source>TOTAL TVA : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="647"/>
-        <location filename="../src/printc.cpp" line="648"/>
+        <location filename="../src/printc.cpp" line="650"/>
+        <location filename="../src/printc.cpp" line="651"/>
         <source>TOTAL TTC : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="657"/>
-        <location filename="../src/printc.cpp" line="658"/>
-        <location filename="../src/printc.cpp" line="674"/>
-        <location filename="../src/printc.cpp" line="675"/>
+        <location filename="../src/printc.cpp" line="660"/>
+        <location filename="../src/printc.cpp" line="661"/>
+        <location filename="../src/printc.cpp" line="677"/>
+        <location filename="../src/printc.cpp" line="678"/>
         <source>ACOMPTE : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="690"/>
-        <location filename="../src/printc.cpp" line="696"/>
+        <location filename="../src/printc.cpp" line="693"/>
+        <location filename="../src/printc.cpp" line="699"/>
         <source>NET A PAYER : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="711"/>
+        <location filename="../src/printc.cpp" line="714"/>
         <source>TVA non applicable - Article 293 B du CGI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="727"/>
+        <location filename="../src/printc.cpp" line="730"/>
         <source>Espece</source>
         <translation type="unfinished">Cash</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="728"/>
+        <location filename="../src/printc.cpp" line="731"/>
         <source>Cheque</source>
         <translation type="unfinished">Bank check</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="729"/>
+        <location filename="../src/printc.cpp" line="732"/>
         <source>Carte Bancaire</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="730"/>
+        <location filename="../src/printc.cpp" line="733"/>
         <source>TIP</source>
         <translation type="unfinished">TIP</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="731"/>
+        <location filename="../src/printc.cpp" line="734"/>
         <source>Virement</source>
         <translation type="unfinished">Transfer</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="732"/>
+        <location filename="../src/printc.cpp" line="735"/>
         <source>Prelevement</source>
         <translation type="unfinished">Debit</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="733"/>
+        <location filename="../src/printc.cpp" line="736"/>
         <source>Autre</source>
         <translation type="unfinished">Other</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="735"/>
-        <source>Mode de règlement : </source>
+        <location filename="../src/printc.cpp" line="738"/>
+        <source>Mode de rÃ¨glement : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="740"/>
-        <source>Merci de nous fournir un RIB pour ce mode de règlement.</source>
+        <location filename="../src/printc.cpp" line="743"/>
+        <source>Merci de nous fournir un RIB pour ce mode de rÃ¨glement.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="747"/>
-        <source>Conditions de règlement: 30% du montant total lors
+        <location filename="../src/printc.cpp" line="750"/>
+        <source>Conditions de rÃ¨glement: 30% du montant total lors
 de la signature de cette proposition soit: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="783"/>
+        <location filename="../src/printc.cpp" line="1164"/>
+        <source>RÃ©alisÃ© le : </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="1164"/>
+        <source> à </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="1165"/>
+        <source>DÃ©tails:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/printc.cpp" line="786"/>
         <source>TOTAL des acomptes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="785"/>
+        <location filename="../src/printc.cpp" line="788"/>
         <source>
 HT: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="786"/>
+        <location filename="../src/printc.cpp" line="789"/>
         <source>
 TTC: </source>
         <translation type="unfinished">incl. taxes:</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="789"/>
+        <location filename="../src/printc.cpp" line="792"/>
         <source> : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="815"/>
-        <location filename="../src/printc.cpp" line="1006"/>
+        <location filename="../src/printc.cpp" line="818"/>
+        <location filename="../src/printc.cpp" line="1009"/>
         <source>&lt;b&gt;GESTION D IMPRESSION&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;b&gt;PRINT MANAGER&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="816"/>
-        <location filename="../src/printc.cpp" line="1007"/>
+        <location filename="../src/printc.cpp" line="819"/>
+        <location filename="../src/printc.cpp" line="1010"/>
         <source>&lt;i&gt;Preparation En cours...&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;Preparation in progress...&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="1066"/>
-        <location filename="../src/printc.cpp" line="1068"/>
+        <location filename="../src/printc.cpp" line="1069"/>
+        <location filename="../src/printc.cpp" line="1071"/>
         <source>ANNULEE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="1079"/>
-        <location filename="../src/printc.cpp" line="1081"/>
+        <location filename="../src/printc.cpp" line="1082"/>
+        <location filename="../src/printc.cpp" line="1084"/>
         <source>IMPAYEE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="1160"/>
+        <location filename="../src/printc.cpp" line="1163"/>
         <source>Intervention: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="1161"/>
-        <source> � </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="1161"/>
+        <location filename="../src/printc.cpp" line="1164"/>
         <source>HH:mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/printc.cpp" line="1161"/>
-        <source>Réalisé le : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="1162"/>
-        <source>Détails:
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/printc.cpp" line="1204"/>
+        <location filename="../src/printc.cpp" line="1207"/>
         <source>Fiche</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sheet</translation>
     </message>
 </context>
 <context>
@@ -2569,12 +2647,12 @@ TTC: </source>
     </message>
     <message>
         <location filename="../src/update.cpp" line="116"/>
-        <source>&gt;Télécharger la nouvelle version!&lt;/li&gt;</source>
+        <source>&gt;TÃ©lÃ©charger la nouvelle version!&lt;/li&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/update.cpp" line="120"/>
-        <source>Mise à jour disponible</source>
+        <source>Mise Ã  jour disponible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2639,7 +2717,7 @@ p, li { white-space: pre-wrap; }
         <source>Licence</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/about.ui" line="188"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -2746,7 +2824,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/app/revenue&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; color:#0000ff;&quot;&gt;Chiffre d&apos;affaires :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/board.ui" line="49"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -2755,7 +2833,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/app/process&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;span style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-size:10pt; color:#0000ff;&quot;&gt;Devis/Proposition en écriture :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/board.ui" line="74"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -2764,7 +2842,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/app/warning&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:10pt; color:#0000ff;&quot;&gt;Factures non réglées:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/board.ui" line="89"/>
         <source>Année :</source>
         <translation type="unfinished"></translation>
@@ -2779,7 +2857,7 @@ p, li { white-space: pre-wrap; }
         <source>Graphique</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/board.ui" line="135"/>
         <source>Détails</source>
         <translation type="unfinished"></translation>
@@ -2817,13 +2895,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/board.cpp" line="155"/>
         <location filename="../src/board.cpp" line="230"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Date</translation>
     </message>
     <message>
         <location filename="../src/board.cpp" line="155"/>
         <location filename="../src/board.cpp" line="230"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Description</translation>
     </message>
     <message>
         <location filename="../src/board.cpp" line="155"/>
@@ -2891,13 +2969,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customer.cpp" line="60"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/customer.cpp" line="65"/>
         <location filename="../src/customer.cpp" line="102"/>
         <source>yyyy/MM/dd</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yyyy/MM/dd</translation>
     </message>
     <message>
         <location filename="../src/customer.cpp" line="82"/>
@@ -2915,7 +2993,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <location filename="../src/customerView.ui" line="54"/>
@@ -2974,7 +3052,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.ui" line="232"/>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page</translation>
     </message>
     <message>
         <location filename="../src/customerView.ui" line="252"/>
@@ -2984,12 +3062,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.ui" line="327"/>
         <source>Fiche</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sheet</translation>
     </message>
     <message>
         <location filename="../src/customerView.ui" line="366"/>
         <source>Copier dans le presse papier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copy to clipboard</translation>
     </message>
     <message>
         <location filename="../src/customerView.ui" line="437"/>
@@ -3022,17 +3100,17 @@ p, li { white-space: pre-wrap; }
         <source>Devis / Propositions</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="616"/>
         <source>Créer un devis</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="642"/>
         <source>Modifier le devis sélectionné</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="668"/>
         <source>Supprimer le devis sélectionné</source>
         <translation type="unfinished"></translation>
@@ -3047,17 +3125,17 @@ p, li { white-space: pre-wrap; }
         <source>Factures</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="767"/>
         <source>Créer une facture</source>
         <translation type="unfinished">Make an invoice</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="793"/>
         <source>Modifier la facture sélectionnée</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/customerView.ui" line="819"/>
         <source>Supprimer la facture sélectionnée</source>
         <translation type="unfinished"></translation>
@@ -3081,7 +3159,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.cpp" line="51"/>
         <location filename="../src/customerView.cpp" line="297"/>
-        <source>Prénoms</source>
+        <source>PrÃ©noms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3133,7 +3211,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.cpp" line="398"/>
         <source>dd-MM-yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yyyy-MM-dd HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/customerView.cpp" line="401"/>
@@ -3183,7 +3261,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/customerView.cpp" line="420"/>
         <source>Email: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Email: </translation>
     </message>
     <message>
         <location filename="../src/customerView.cpp" line="423"/>
@@ -3211,7 +3289,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/customerView.cpp" line="600"/>
         <location filename="../src/customerView.cpp" line="682"/>
         <source>Date</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Date</translation>
     </message>
     <message>
         <location filename="../src/customerView.cpp" line="504"/>
@@ -3229,7 +3307,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/customerView.cpp" line="504"/>
         <location filename="../src/customerView.cpp" line="682"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Description</translation>
     </message>
     <message>
         <location filename="../src/customerView.cpp" line="504"/>
@@ -3353,20 +3431,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dbase.cpp" line="109"/>
-        <source>Voulez-vous créer une nouvelle base de données ?
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/dbase.cpp" line="110"/>
-        <source>Voulez-vous créer de nouvelles tables dans la base de données ?
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/dbase.cpp" line="111"/>
         <source>Question</source>
         <translation type="unfinished"></translation>
@@ -3377,47 +3441,61 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/dbase.cpp" line="202"/>
+        <source>Information</source>
+        <translation type="unfinished">Information</translation>
+    </message>
+    <message>
+        <location filename="../src/dbase.cpp" line="109"/>
+        <source>Voulez-vous crÃ©er une nouvelle base de donnÃ©es ?
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/dbase.cpp" line="110"/>
+        <source>Voulez-vous crÃ©er de nouvelles tables dans la base de donnÃ©es ?
+
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/dbase.cpp" line="151"/>
         <source>
-Version de la base de données: </source>
+Version de la base de donnÃ©es: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="152"/>
         <source>
 
-Versions des bases de données compatibles: &lt;= </source>
+Versions des bases de donnÃ©es compatibles: &lt;= </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="153"/>
-        <source>mcercle ne support pas cette version de base de données...
-Merci de faire évoluer mcercle.</source>
+        <source>mcercle ne support pas cette version de base de donnÃ©es...
+Merci de faire Ã©voluer mcercle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="166"/>
-        <source>Cette version de mcercle doit mettre à jour la base de donnée pour fonctionner.
+        <source>Cette version de mcercle doit mettre Ã  jour la base de donnÃ©e pour fonctionner.
 
-Voulez-vous mettre à jour la base de donnée ?
+Voulez-vous mettre Ã  jour la base de donnÃ©e ?
 (Ceci peut prendre quelques minutes...)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/dbase.cpp" line="202"/>
-        <source>Information</source>
-        <translation type="unfinished">Information</translation>
-    </message>
-    <message>
         <location filename="../src/dbase.cpp" line="204"/>
-        <source>La mise à jour de la base de données a réussi !
+        <source>La mise Ã  jour de la base de donnÃ©es a rÃ©ussi !
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="208"/>
-        <source>La mise à jour contient des erreurs :-(
-Afficher les détails pour voir ce qui ne va pas.</source>
+        <source>La mise Ã  jour contient des erreurs :-(
+Afficher les dÃ©tails pour voir ce qui ne va pas.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3454,65 +3532,132 @@ Afficher les détails pour voir ce qui ne va pas.</source>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1144"/>
-        <source>Mise a jour de la base de données en version 2:</source>
+        <source>Mise a jour de la base de donnÃ©es en version 2:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1186"/>
-        <source>Mise a jour de la base de données en version 3:</source>
+        <source>Mise a jour de la base de donnÃ©es en version 3:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1239"/>
-        <source>Mise a jour de la base de données en version 4:</source>
+        <source>Mise a jour de la base de donnÃ©es en version 4:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1451"/>
-        <source>Mise a jour de la base de données en version 5:</source>
+        <source>Mise a jour de la base de donnÃ©es en version 5:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1496"/>
-        <source>Mise a jour de la base de données en version 6:</source>
+        <source>Mise a jour de la base de donnÃ©es en version 6:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1541"/>
         <location filename="../src/dbase.cpp" line="1546"/>
-        <source>Mise à jour de la base de données en version 7:</source>
+        <source>Mise Ã  jour de la base de donnÃ©es en version 7:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1641"/>
-        <source>Mise à jour des prix de la table des devis</source>
+        <source>Mise Ã  jour des prix de la table des devis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1658"/>
-        <source>Mise à jour des prix de la table des factures</source>
+        <source>Mise Ã  jour des prix de la table des factures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/dbase.cpp" line="1699"/>
-        <source>Mise à jour de la base de données en version 8:</source>
+        <source>Mise Ã  jour de la base de donnÃ©es en version 8:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>inout</name>
     <message>
-        <location filename="../src/inout.cpp" line="29"/>
+        <location filename="../src/inout.cpp" line="31"/>
+        <source>Clients</source>
+        <translation type="unfinished">Customers</translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="37"/>
+        <source>Produits</source>
+        <translation type="unfinished">Poducts</translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="135"/>
+        <source>Produit déja présent...: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="157"/>
+        <source>Faite une sauvegarde de la base de données avant l&apos;import!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="158"/>
+        <source>INFO: Pour voir la structure du fichier cvs, réaliser un export avant.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="159"/>
+        <source>Attention</source>
+        <translation type="unfinished">Warning</translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="161"/>
+        <source>Importer des </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="173"/>
+        <source>Importation des </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="174"/>
+        <source>En cours... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="206"/>
+        <source>Information</source>
+        <translation type="unfinished">Information</translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="206"/>
+        <source>Rapport d&apos;importation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="208"/>
+        <source>L&apos;import contient des erreurs :-(
+Afficher les détails pour voir ce qui ne va pas.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="213"/>
+        <source>L&apos;import a réussi !</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/inout.cpp" line="230"/>
         <source>Exporter &apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/inout.cpp" line="29"/>
+        <location filename="../src/inout.cpp" line="230"/>
         <source>&apos; vers ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/inout.cpp" line="31"/>
+        <location filename="../src/inout.cpp" line="163"/>
+        <location filename="../src/inout.cpp" line="232"/>
         <source>CSV File (*.csv)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3521,22 +3666,22 @@ Afficher les détails pour voir ce qui ne va pas.</source>
     <name>invoice</name>
     <message>
         <location filename="../src/invoice.cpp" line="59"/>
-        <source>Non Réglée</source>
+        <source>Non RÃ©glÃ©e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/invoice.cpp" line="60"/>
-        <source>Réglée</source>
+        <source>RÃ©glÃ©e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/invoice.cpp" line="61"/>
-        <source>Impayée</source>
+        <source>ImpayÃ©e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/invoice.cpp" line="62"/>
-        <source>Annulée</source>
+        <source>AnnulÃ©e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3578,14 +3723,14 @@ Afficher les détails pour voir ce qui ne va pas.</source>
         <location filename="../src/invoice.cpp" line="917"/>
         <location filename="../src/invoice.cpp" line="942"/>
         <location filename="../src/invoice.cpp" line="976"/>
-        <location filename="../src/invoice.cpp" line="1070"/>
-        <location filename="../src/invoice.cpp" line="1100"/>
-        <location filename="../src/invoice.cpp" line="1241"/>
+        <location filename="../src/invoice.cpp" line="1071"/>
+        <location filename="../src/invoice.cpp" line="1102"/>
+        <location filename="../src/invoice.cpp" line="1243"/>
         <source>Erreur</source>
         <translation type="unfinished">Error</translation>
     </message>
     <message>
-        <location filename="../src/invoice.cpp" line="1274"/>
+        <location filename="../src/invoice.cpp" line="1276"/>
         <source>FA</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3595,17 +3740,17 @@ Afficher les détails pour voir ce qui ne va pas.</source>
     <message>
         <location filename="../src/product.cpp" line="66"/>
         <source>Stock faible</source>
-        <translation type="unfinished"></translation>
+        <translation>Low stock</translation>
     </message>
     <message>
         <location filename="../src/product.cpp" line="67"/>
         <source>Stock Alerte</source>
-        <translation type="unfinished"></translation>
+        <translation>Alert stock</translation>
     </message>
     <message>
         <location filename="../src/product.cpp" line="88"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/product.cpp" line="105"/>
@@ -3621,7 +3766,7 @@ Afficher les détails pour voir ce qui ne va pas.</source>
         <location filename="../src/product.cpp" line="450"/>
         <location filename="../src/product.cpp" line="490"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -3629,7 +3774,7 @@ Afficher les détails pour voir ce qui ne va pas.</source>
     <message>
         <location filename="../src/productView.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="52"/>
@@ -3638,7 +3783,11 @@ Afficher les détails pour voir ce qui ne va pas.</source>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Ajouter un produit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Add an product&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="59"/>
@@ -3652,44 +3801,56 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/productView.ui" line="452"/>
         <location filename="../src/productView.ui" line="491"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/productView.ui" line="82"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Modifier le produit sélectionné&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Modify the product selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/productView.ui" line="118"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Supprimer le produit sélectionné&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Remove the product selected&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/productView.ui" line="148"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Imprimer l&apos;état du stock produit&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Ubuntu&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Print the product stock state&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message>
+    <message utf8="true">
         <location filename="../src/productView.ui" line="246"/>
         <source>Afficher aussi les produits abandonnés</source>
-        <translation type="unfinished"></translation>
+        <translation>Display the obsoleted products</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="279"/>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="305"/>
@@ -3699,12 +3860,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/productView.ui" line="361"/>
         <source>Fiche</source>
-        <translation type="unfinished"></translation>
+        <translation>Sheet</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="389"/>
         <source>Copier dans le presse papier</source>
-        <translation type="unfinished"></translation>
+        <translation>Copy to clipboard</translation>
     </message>
     <message>
         <location filename="../src/productView.ui" line="409"/>
@@ -3731,24 +3892,24 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/productView.cpp" line="47"/>
         <source>Nom</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="48"/>
         <location filename="../src/productView.cpp" line="148"/>
-        <source>Catégorie</source>
+        <source>CatÃ©gorie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="66"/>
-        <source>Le caractère « % » est un caractère joker qui remplace tous les autres caractères.
-Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
+        <source>Le caractÃ¨re Â« % Â» est un caractÃ¨re joker qui remplace tous les autres caractÃ¨res.
+Exemple: %PoÃªle% - cherche le mot &lt;PoÃªle&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="148"/>
         <source>Id</source>
-        <translation type="unfinished">Id</translation>
+        <translation>Id</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="148"/>
@@ -3765,7 +3926,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/productView.cpp" line="148"/>
         <source>Tva</source>
-        <translation type="unfinished">Tax</translation>
+        <translation>Tax</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="148"/>
@@ -3792,7 +3953,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/productView.cpp" line="282"/>
         <source>Attention</source>
-        <translation type="unfinished">Warning</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="283"/>
@@ -3802,7 +3963,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/productView.cpp" line="296"/>
         <source>Information</source>
-        <translation type="unfinished">Information</translation>
+        <translation>Information</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="297"/>
@@ -3865,14 +4026,14 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/productView.cpp" line="361"/>
         <location filename="../src/productView.cpp" line="524"/>
         <source>dd-MM-yyyy HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">yyyy-MM-dd HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="349"/>
         <location filename="../src/productView.cpp" line="506"/>
         <location filename="../src/productView.cpp" line="719"/>
         <source>Tel: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Phone: </translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="350"/>
@@ -3892,7 +4053,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/productView.cpp" line="399"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="399"/>
@@ -3907,57 +4068,55 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/productView.cpp" line="483"/>
         <source>&lt;b&gt;GESTION D IMPRESSION&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;b&gt;PRINT MANAGER&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="484"/>
         <source>&lt;i&gt;Preparation En cours...&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;i&gt;Preparation in progress...&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="507"/>
         <location filename="../src/productView.cpp" line="720"/>
         <source>Fax: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fax: </translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="508"/>
         <location filename="../src/productView.cpp" line="721"/>
         <source>Email: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Email: </translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="509"/>
         <location filename="../src/productView.cpp" line="722"/>
         <source>Web: </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Web: </translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="519"/>
         <location filename="../src/productView.cpp" line="742"/>
         <source>Capital </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Capital</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="520"/>
         <location filename="../src/productView.cpp" line="742"/>
         <source>Siret </source>
+        <translation type="unfinished">Company registration number</translation>
+    </message>
+    <message>
+        <location filename="../src/productView.cpp" line="524"/>
+        <source>(ImprimÃ© le </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/productView.cpp" line="566"/>
-        <location filename="../src/productView.cpp" line="567"/>
         <source>Catégories</source>
-        <translation type="unfinished">Categories</translation>
+        <translation type="obsolete">Categories</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="524"/>
         <source>)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/productView.cpp" line="524"/>
-        <source>(Imprimé le </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3967,15 +4126,21 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../src/productView.cpp" line="566"/>
+        <location filename="../src/productView.cpp" line="567"/>
+        <source>CatÃ©gories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../src/productView.cpp" line="572"/>
         <location filename="../src/productView.cpp" line="573"/>
         <source>Stock Alerte</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alert stock</translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="628"/>
         <source>Page </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Page </translation>
     </message>
     <message>
         <location filename="../src/productView.cpp" line="695"/>
@@ -3989,22 +4154,22 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/proposal.cpp" line="58"/>
         <source>En ecriture</source>
-        <translation type="unfinished"></translation>
+        <translation>In writing</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="59"/>
         <source>Propose</source>
-        <translation type="unfinished"></translation>
+        <translation>Proposed</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="60"/>
         <source>Signe</source>
-        <translation type="unfinished"></translation>
+        <translation>Signed</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="77"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="80"/>
@@ -4014,7 +4179,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/proposal.cpp" line="112"/>
         <location filename="../src/proposal.cpp" line="113"/>
         <source>yyyy/MM/dd</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="93"/>
@@ -4034,12 +4199,12 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/proposal.cpp" line="552"/>
         <location filename="../src/proposal.cpp" line="573"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
         <location filename="../src/proposal.cpp" line="651"/>
         <source>DE</source>
-        <translation type="unfinished"></translation>
+        <translation>ES</translation>
     </message>
 </context>
 <context>
@@ -4047,7 +4212,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/provider.cpp" line="44"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/provider.cpp" line="60"/>
@@ -4058,7 +4223,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/provider.cpp" line="216"/>
         <location filename="../src/provider.cpp" line="242"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -4066,13 +4231,13 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/services.cpp" line="49"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/services.cpp" line="50"/>
         <location filename="../src/services.cpp" line="77"/>
         <source>yyyy/MM/dd hh:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd hh:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/services.cpp" line="60"/>
@@ -4081,7 +4246,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/services.cpp" line="141"/>
         <location filename="../src/services.cpp" line="180"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -4089,13 +4254,13 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
     <message>
         <location filename="../src/services_commons.cpp" line="50"/>
         <source>yyyy/MM/dd-HH:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd-HH:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/services_commons.cpp" line="51"/>
         <location filename="../src/services_commons.cpp" line="77"/>
         <source>yyyy/MM/dd hh:mm:ss</source>
-        <translation type="unfinished"></translation>
+        <translation>yyyy/MM/dd hh:mm:ss</translation>
     </message>
     <message>
         <location filename="../src/services_commons.cpp" line="60"/>
@@ -4105,7 +4270,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/services_commons.cpp" line="169"/>
         <location filename="../src/services_commons.cpp" line="206"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -4118,7 +4283,7 @@ Exemple: %Poêle% - cherche le mot &lt;Poêle&gt;</source>
         <location filename="../src/tax.cpp" line="124"/>
         <location filename="../src/tax.cpp" line="150"/>
         <source>Erreur</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
 </context>
 </TS>
