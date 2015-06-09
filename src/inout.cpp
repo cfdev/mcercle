@@ -102,7 +102,7 @@ QString inout::importProduct(const QString &line, const QStringList &vals) {
 		m_product->setTax( vals.value(5).toDouble() );
 
 		//Check if category exist
-		if(!m_product->m_category->isHere(vals.value(6))){
+		if(!m_product->m_category->isHere(vals.value(6)) && !vals.value(6).isEmpty()){
 			m_product->m_category->setName(vals.value(6));
 			m_product->m_category->setColor(QColor(vals.value(7)));
 			m_product->m_category->create();
@@ -111,7 +111,7 @@ QString inout::importProduct(const QString &line, const QStringList &vals) {
 		m_product->setCategoryId(m_product->m_category->getId());
 
 		//Check if supplier exist
-		if(!m_product->m_provider->isHere(vals.value(8))){
+		if(!m_product->m_provider->isHere(vals.value(8)) && !vals.value(8).isEmpty()){
 			m_product->m_provider->setName(vals.value(8));
 			m_product->m_provider->create();
 		}
