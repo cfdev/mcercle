@@ -173,28 +173,53 @@ void inout::importData(int typeOfExport, QString Name) {
 		m_DialogWaiting->setTitle("<b>"+tr("Importation des ")+Name+"</b>");
 		m_DialogWaiting->setDetail("<i>"+tr("En cours... ")+fileName+"</i>");
 		m_DialogWaiting->setProgressBarRange(0, 0);
-		m_DialogWaiting->setProgressBar(0);
 		m_DialogWaiting->setModal(true);
 		m_DialogWaiting->show();
 
 		QString line;
 		QStringList vals;
-		//Read line by line
-		line = cvsFile.readLine();
-		//first line into trash read second line
-		while (!cvsFile.atEnd()) {
-			line = cvsFile.readLine();
-			// Process line
-			vals = line.split(";");
-			if(vals.count()<=1) vals = line.split(",");
-			if(vals.count()>1) {
-				qDebug() << vals;
-				//Test of type
-				switch(typeOfExport){
-					case MCERCLE::TYPE_CUSTOMER:	log += importCustomer(line, vals);
-					case MCERCLE::TYPE_PRODUCT:		log += importProduct(line, vals);
+
+		// Control hearder first line, 3 values are checked
+		line = cvsFile.readLine();		
+		vals = line.split(";");
+		if(vals.count()<=1) vals = line.split(",");
+		if(vals.count()>1) {
+			switch(typeOfExport){
+				case MCERCLE::TYPE_CUSTOMER:{
+					if((vals.value(0) != "ID")&&(log.isEmpty()))				log += tr("Erreur de format !");
+					if((vals.value(5) != "FIRSTNAME")&&(log.isEmpty()))			log += tr("Erreur de format !");
+					if((vals.value(18) != "COMMENTS")&&(log.isEmpty()))log += tr("Erreur de format !");
+					break;
 				}
-				m_DialogWaiting->refresh();
+				case MCERCLE::TYPE_PRODUCT:{
+					if((vals.value(0) != "ID")&&(log.isEmpty()))	log += tr("Erreur de format !");
+					if((vals.value(5) != "TAX")&&(log.isEmpty()))	log += tr("Erreur de format !");
+					if((vals.value(10) != "STOCK_WARNING")&&(log.isEmpty()))log += tr("Erreur de format !");
+					break;
+				}
+			}
+		}
+		// if format is correct
+		if(log.isEmpty()) {
+			// Read line by line
+			while (!cvsFile.atEnd()) {
+				line = cvsFile.readLine();
+				// Process line
+				vals = line.split(";");
+				if(vals.count()<=1) vals = line.split(",");
+				if(vals.count()>1) {
+					qDebug() << vals;
+					//Test of type
+					switch(typeOfExport){
+						case MCERCLE::TYPE_CUSTOMER:
+							log += importCustomer(line, vals);
+							break;
+						case MCERCLE::TYPE_PRODUCT:
+							log += importProduct(line, vals);
+							break;
+					}
+					m_DialogWaiting->refresh();
+				}
 			}
 		}
 		delete m_DialogWaiting;
