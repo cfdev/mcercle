@@ -84,7 +84,7 @@ about::about(database *pdata, QWidget *parent) :
 	
 	msg += "<br><br>Ce programme est fourni &laquo; EN L'ETAT &raquo;, SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
 	
-	msg += "<p align=\"center\" style=\"font-size:12px;font-weight:bold;color:white;background:#555; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don. MERCI") + "</p>";
+	msg += "<p align=\"center\" style=\"font-size:12px;font-weight:bold;color:#000;background:#B2D42A; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don. MERCI") + "</p>";
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );
@@ -127,7 +127,7 @@ void about::on_pushBut_Close_clicked() {
 }
 
 //don libre https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=72NQ9YWVE8U2W
-//don 19.99 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=75YN3QWER2V9S
+//don fixe https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=75YN3QWER2V9S
 //don mensuel 5? min https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AEA5HJ6JSBEHS
 /**
  * @brief about::on_pushButton_don_clicked
