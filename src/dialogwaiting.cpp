@@ -56,6 +56,10 @@ void DialogWaiting::upProgressBar(){
 
 void DialogWaiting::setProgressBarRange(int min, int max){
 	ui->progressBar->setRange(min,max);
+	//if infinity display disable the ok button
+	if((min == 0) && (max == 0)){
+		ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+	}
 }
 
 void DialogWaiting::setTitle(const QString& val){
