@@ -33,16 +33,18 @@
 #endif
 #include <QFileDialog>
 
-DialogProduct::DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsigned char type, QWidget *parent) :
+DialogProduct::DialogProduct(QLocale &lang, database *pdata, unsigned char type, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::DialogProduct)
 {
 	ui->setupUi(this);
 	setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	m_type = type;
-	m_product = p;
-	m_tax = t;
+	m_data = pdata;
+	m_product = m_data->m_product;
+	m_tax = m_data->m_tax;
 	m_lang = lang;
+	bool tax = m_data->getIsTax();
 
 	ui->pushButton_add_edit->setEnabled(false);
 	//
@@ -54,6 +56,10 @@ DialogProduct::DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsign
 		ui->pushButton_add_edit->setText(tr("Modifier"));
 		ui->pushButton_add_edit->setIcon(QIcon(":/app/Edit"));
 	}
+
+	//Add currency
+	ui->doubleSpinBox_buyingPrice->setSuffix( m_data->getCurrency() );
+	ui->doubleSpinBox_price->setSuffix( m_data->getCurrency() );
 
 	//Contraintes sur les champs de saisie
 	QIntValidator* m_valid_int = new QIntValidator(-99999,99999,this);

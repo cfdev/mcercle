@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QLocale>
+#include "dbase.h"
 #include "product.h"
 #include "tax.h"
 
@@ -13,7 +14,7 @@ namespace Ui {
 class DialogProduct : public QDialog {
 	Q_OBJECT
 public:
-	DialogProduct(QLocale &lang, product *p, tax *t, bool tax, unsigned char type, QWidget *parent = 0);
+	DialogProduct(QLocale &lang, database *pdata, unsigned char type, QWidget *parent = 0);
 	~DialogProduct();
 	void setTitle(QString val);
 	void loadValuesFormProduct();
@@ -23,6 +24,7 @@ protected:
 
 private:
 	Ui::DialogProduct *ui;
+	database *m_data;
 	product *m_product;
 	tax *m_tax;
 	QLocale m_lang;
