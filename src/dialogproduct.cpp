@@ -58,8 +58,8 @@ DialogProduct::DialogProduct(QLocale &lang, database *pdata, unsigned char type,
 	}
 
 	//Add currency
-	ui->doubleSpinBox_buyingPrice->setSuffix( m_data->getCurrency() );
-	ui->doubleSpinBox_price->setSuffix( m_data->getCurrency() );
+	ui->doubleSpinBox_buyingPrice->setSuffix( " " + m_data->getCurrency() );
+	ui->doubleSpinBox_price->setSuffix( " " + m_data->getCurrency() );
 
 	//Contraintes sur les champs de saisie
 	QIntValidator* m_valid_int = new QIntValidator(-99999,99999,this);
