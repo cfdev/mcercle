@@ -30,6 +30,9 @@ DialogServicesEdit::DialogServicesEdit(database *pdata, QWidget *parent) :
 	// Charge la liste des taxes dans la combo box
 	loadTaxList();
 
+	//Add currency
+	ui->doubleSpinBox->setSuffix( " " + pdata->getCurrency() );
+
 	ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime());
 	listInterCommToTable();
 	//Event

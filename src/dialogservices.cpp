@@ -46,8 +46,10 @@ DialogServices::DialogServices(database *pdata, QWidget *parent) :
 	// Charge la liste des taxes dans la combo box
 	loadTaxList();
 	
+	//Add currency
+	ui->doubleSpinBox->setSuffix( " " + m_data->getCurrency() );
+
 	ui->dateTimeEdit->setDateTime( QDateTime::currentDateTime());
-  //  ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
 	loadServiceCommList();
 	//Event

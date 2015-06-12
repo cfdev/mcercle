@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>337</height>
+    <width>439</width>
+    <height>359</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,7 +128,7 @@ général :</string>
             <item row="1" column="3">
              <widget class="QDoubleSpinBox" name="doubleSpinBox">
               <property name="suffix">
-               <string> €</string>
+               <string/>
               </property>
               <property name="maximum">
                <double>999999.000000000000000</double>
