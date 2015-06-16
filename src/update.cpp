@@ -101,21 +101,21 @@ void Update::readFile(QString path) {
 	//Mise en forme des versions
 	QString ActualVers = MCERCLE::Version;
 	ActualVers.truncate(5);
-	qDebug() << tr("ActualVers") << ActualVers;
+	qDebug() << "ActualVers" << ActualVers;
 
 	QString OnlineVersion = sOnlineVersion;
 	OnlineVersion.truncate(5);
-	qDebug() << tr("OnlineVersion") << OnlineVersion;
+	qDebug() << "OnlineVersion" << OnlineVersion;
 
 	//Test de la version
 	if(ActualVers.toDouble() < OnlineVersion.toDouble()){
 		QString mess =tr("<b>Nouvelle version de mcercle disponible!</b><br><br>");
-		mess += tr("Nouvelle Version = <b>") + sOnlineVersion + tr("</b>");
-		mess += tr("<ul>");
-		mess += tr("<li><a href=") + sOnlineLinkChangeLog + tr(">Information sur les changements</a></li>");
-		mess += tr("<li><a href=") + sOnlineLink + tr(">Télécharger la nouvelle version!</li>");
-		mess += tr("</ul><hr>");
-		mess += tr("Version actuelle = <b>") + MCERCLE::Version + tr("</b>");
+		mess += tr("Nouvelle Version = <b>") + sOnlineVersion + "</b>";
+		mess +="<ul>";
+		mess += "<li><a href=" + sOnlineLinkChangeLog + tr(">Information sur les changements</a></li>");
+		mess += "<li><a href=" + sOnlineLink + tr(">Télécharger la nouvelle version!</li>");
+		mess += "</ul><hr>";
+		mess += tr("Version actuelle = <b>") + MCERCLE::Version + "</b>";
 
 		QMessageBox::information(0, tr("Mise à jour disponible"), mess);
 	}
