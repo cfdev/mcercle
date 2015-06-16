@@ -789,7 +789,7 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 				text += tr("\nTTC: ") + m_lang.toString(m_inv->getPartPaymentTax(),'f',2);
 			}
 			else {
-				text += tr(" : ") + m_lang.toString(m_inv->getPartPayment(),'f',2);
+				text += " : " + m_lang.toString(m_inv->getPartPayment(),'f',2);
 			}
 			rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom()+5, mwUtil*0.36 +15,0, Qt::AlignLeft, text);
 			painter.drawText(rect, text);
