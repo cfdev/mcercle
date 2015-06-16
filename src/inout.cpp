@@ -160,7 +160,7 @@ void inout::importData(int typeOfExport, QString Name) {
 
 	QString fileName = QFileDialog::getOpenFileName(0, tr("Importer des ")+Name,
 													QDir::homePath(),
-													tr("CSV File (*.csv)"));
+													"CSV File (*.csv)");
 	if(fileName.isEmpty())
 		return;
 	// Open file
@@ -254,7 +254,7 @@ void inout::importData(int typeOfExport, QString Name) {
 void inout::exportData(QString query, QString typeOfExport){
 	QString fileName = QFileDialog::getSaveFileName(0, tr("Exporter '")+typeOfExport+tr("' vers ..."),
 													QDir::homePath(),
-													tr("CSV File (*.csv)"));
+													"CSV File (*.csv)");
 	if(fileName.isEmpty())
 		return;
 	QFile::remove(fileName);
