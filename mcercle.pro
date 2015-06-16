@@ -136,3 +136,6 @@ FORMS += \
     src/customerView.ui \
     src/board.ui \
     src/about.ui
+
+DISTFILES += \
+    version.txt
