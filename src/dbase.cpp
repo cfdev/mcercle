@@ -20,6 +20,7 @@
 #include "dbase.h"
 #include "mcercle.h"
 #include "dialogwaiting.h"
+#include "settings.h"
 
 #include <QMessageBox>
 #include <QWidget>
@@ -1730,6 +1731,12 @@ bool database::upgradeToV8(QString *log) {
 	}
 	else
 		*log += "\n-> FAIT";
+
+	// update repository
+	// https://raw.githubusercontent.com/cfdev/mcercle/master/version.txt
+	Settings mset;
+	mset.setUrl("https://raw.githubusercontent.com/cfdev/mcercle/master/version.txt");
+
 	return done;
 }
 /// TODO -> creer une class update.cpp

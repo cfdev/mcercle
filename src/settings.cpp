@@ -133,7 +133,7 @@ QString Settings::getTheme(){
  */
 QString Settings::getUrl(){
 	m_settings->beginGroup("main");
-	QString val = m_settings->value("url","http://cfdev.fr/download/mcercle/version.txt").toString();
+	QString val = m_settings->value("url","https://raw.githubusercontent.com/cfdev/mcercle/master/version.txt").toString();
 	m_settings->endGroup();
 	return val;
 }
@@ -241,7 +241,7 @@ void Settings::setCheckVersion(int state) {
 
 /**
  * @brief setUrl
- * @param url (http://cfdev.fr/download/
+ * @param url
  */
 void Settings::setUrl(const QString &url) {
 	m_settings -> beginGroup("main");
