@@ -2,10 +2,11 @@
 # Syntaxe:[+ Add] [- Delete] [* Modification/Fix]
 # See more on github : https://github.com/cfdev/mcercle/commits/master
 
-version 15.06 : xx/06/2014
+version 16.06 : 10/06/2014
 -------------------------------------------------------
 + Add multilingage support
-+ Add QCustomPlot Class for some graphics.
++ Add QCustomPlot Class for some graphics
++ Add OpenSSL for windows installer
 + Import cvs of customers products
 
 * Change query req in export service and product
