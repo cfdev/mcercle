@@ -378,7 +378,7 @@ void board::calculYear(QString year){
 
 	qreal price = m_data->m_customer->m_invoice->getYearRevenue( year );
 	qreal ttc = m_data->m_customer->m_invoice->getYearRevenueTAX( year );
-	QString txt = tr("<b>Total : ") + m_lang.toString(price,'f',2) + tr(" &euro;</b>");
+	QString txt = tr("<b>Total : ") + m_lang.toString(price,'f',2) + m_data->getCurrency();
 	if( m_data->getIsTax() ){
 		txt += " HT";
 		txt += " ( "+m_lang.toString(ttc,'f',2)+" TTC) ";
