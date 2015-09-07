@@ -115,10 +115,8 @@ void DialogInvoice::setUI() {
 		ui->comboBox_State->addItem(m_proposal->getIconState( MCERCLE::PROPOSAL_VALIDATED ),
 								m_proposal->getTextState( MCERCLE::PROPOSAL_VALIDATED ));
 
-		///TODO: asupprimer la date de livraison
-		ui->label_delivery->setText(tr("Date de livraison :"));
-		ui->label_delivery->setVisible(false);
-		ui->dateEdit_delivery->setVisible(false);
+		ui->label_payment->setVisible(false);
+		ui->dateEdit_payment->setVisible(false);
 
 		ui->label_link->setText(tr("Facture associée : "));
 		ui->label_partpayment->setVisible(false);
@@ -140,9 +138,9 @@ void DialogInvoice::setUI() {
 		ui->comboBox_State->addItem(m_invoice->getIconState( MCERCLE::INV_CANCEL ),
 								m_invoice->getTextState( MCERCLE::INV_CANCEL ));
 		
-		ui->label_delivery->setText(tr("Date Echéance :"));
+		ui->label_payment->setText(tr("Date Réglement :"));
 		ui->label_link->setText(tr("Devis associée : "));
-		ui->label_datevalid->setText(tr("Date Réglement :"));
+		ui->label_datevalid->setText(tr("Date Echéance :"));
 		ui->pushButton_createInv->setVisible(false);
 	}
 	ui->pushButton_ok->setEnabled(false);
@@ -179,7 +177,7 @@ void DialogInvoice::setUI() {
 		}
 		
 		ui->dateEdit_DATE->setDateTime( QDateTime::currentDateTime());
-		ui->dateEdit_delivery->setDateTime( QDateTime::currentDateTime());
+		ui->dateEdit_payment->setDateTime( QDateTime::currentDateTime());
 
 		if(m_DialogType == PROPOSAL_TYPE)
 			ui->dateEdit_valid->setDateTime( QDateTime::currentDateTime().addMonths(1)); /* 1mois pour la duree du devis*/
@@ -237,7 +235,6 @@ void DialogInvoice::loadValues(){
 		ui->lineEdit_description->setText( m_proposal->getDescription() );
 		ui->dateTimeEdit->setDateTime( m_proposal->getCreationDate() );
 		ui->dateEdit_DATE->setDate( m_proposal->getUserDate() );
-		ui->dateEdit_delivery->setDate( m_proposal->getDeliveryDate() );
 		ui->dateEdit_valid->setDate(m_proposal->getValidDate());
 
 		ui->comboBox_State->setCurrentIndex( m_proposal->getState());
@@ -262,7 +259,8 @@ void DialogInvoice::loadValues(){
 		ui->lineEdit_description->setText( m_invoice->getDescription() );
 		ui->dateTimeEdit->setDateTime( m_invoice->getCreationDate() );
 		ui->dateEdit_DATE->setDate( m_invoice->getUserDate() );
-		ui->dateEdit_delivery->setDate( m_invoice->getLimitPayment() ); /* Limit de paiement*/
+		ui->dateEdit_valid->setDate( m_invoice->getLimitPayment() ); /* Echeance */
+		ui->dateEdit_payment->setDate( m_invoice->getPaymentDate() );  /* Date de paiement */
 		if(m_isTax) {
 		ui->label_partpayment->setText(
 					tr("Total acompte(s): ")+
@@ -273,7 +271,6 @@ void DialogInvoice::loadValues(){
 			ui->label_partpayment->setText(
 					tr("Total acompte(s): ")+m_lang.toString(m_invoice->calcul_partPayment(m_invoice->getId()),'f',2) );
 		}
-		ui->dateEdit_valid->setDate( m_invoice->getPaymentDate() ); /* Date de paiement*/
 
 		ui->comboBox_State->setCurrentIndex( m_invoice->getState());
 		QString typeP = m_invoice->getTypePayment();
@@ -814,10 +811,9 @@ int DialogInvoice::getDiffQuantityOfItem(const int& id, int qteNew){
   */
 void DialogInvoice::setProposal(unsigned char proc){
 	m_proposal->setDescription( ui->lineEdit_description->text() );
-	m_proposal->setUserDate( ui->dateEdit_DATE->date() );
 	m_proposal->setState(ui->comboBox_State->currentIndex());
-	m_proposal->setDeliveryDate(ui->dateEdit_delivery->date());
-	m_proposal->setValidDate(ui->dateEdit_valid->date());
+	m_proposal->setUserDate( ui->dateEdit_DATE->date() );		// Date
+	m_proposal->setValidDate(ui->dateEdit_valid->date());		// Date fin validite (devis)
 
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){
@@ -851,10 +847,11 @@ void DialogInvoice::setProposal(unsigned char proc){
   */
 void DialogInvoice::setInvoice(unsigned char proc){
 	m_invoice->setDescription( ui->lineEdit_description->text() );
-	m_invoice->setUserDate( ui->dateEdit_DATE->date() );
-	m_invoice->setLimitPayment( ui->dateEdit_valid->date() );
-	m_invoice->setPaymentDate( ui->dateEdit_delivery->date() );
 	m_invoice->setState( ui->comboBox_State->currentIndex() );
+	m_invoice->setUserDate( ui->dateEdit_DATE->date() );		// Date
+	m_invoice->setLimitPayment( ui->dateEdit_valid->date() );	// Echeance
+	m_invoice->setPaymentDate( ui->dateEdit_payment->date() );	// Date payment
+
 
 	QString typeP;
 	switch(ui->comboBox_TYPE_PAYMENT->currentIndex()){

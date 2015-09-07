@@ -90,19 +90,19 @@
        <item row="2" column="4">
         <widget class="QLabel" name="label_datevalid">
          <property name="text">
-          <string>Fin de validité :</string>
+          <string>Validité :</string>
          </property>
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QLabel" name="label_delivery">
+        <widget class="QLabel" name="label_payment">
          <property name="text">
-          <string>Date de Echeance :</string>
+          <string>Date de règlement :</string>
          </property>
         </widget>
        </item>
        <item row="2" column="3">
-        <widget class="QDateEdit" name="dateEdit_delivery">
+        <widget class="QDateEdit" name="dateEdit_payment">
          <property name="displayFormat">
           <string>dd/MM/yyyy</string>
          </property>
@@ -189,7 +189,7 @@
         <widget class="QComboBox" name="comboBox_State"/>
        </item>
        <item row="1" column="4">
-        <widget class="QLabel" name="label_payment">
+        <widget class="QLabel" name="label_typePayment">
          <property name="text">
           <string>Réglement :</string>
          </property>
