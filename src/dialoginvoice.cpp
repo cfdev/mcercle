@@ -770,10 +770,10 @@ void DialogInvoice::updateInvoiceItems(){
 				}
 			}
 		}
-
+		// de la description
 		if(ui->tableWidget->cellWidget(j, COL_NAME)){
 			QTextEdit *get_name = qobject_cast<QTextEdit*>(ui->tableWidget->cellWidget(j, COL_NAME));
-			itemInv.name = get_name->toPlainText();
+			itemInv.name = trunkString( get_name->toPlainText() );
 		}
 		itemInv.tax = ui->tableWidget->item(j, COL_TAX)->text().toFloat();
 		itemInv.discount = ui->tableWidget->item(j, COL_DISCOUNT)->text().toInt();
@@ -1548,3 +1548,38 @@ void DialogInvoice::on_pushButton_creditInvoice_clicked() {
 	}
 }
 
+
+/**
+ * @brief invoice::trunkString
+ * @param s
+ * @return string formatting
+ */
+QString DialogInvoice::trunkString(QString s) {
+
+	int cptChar=0, posLastSpace=0;
+
+	// Scan the string
+	for(int i=0; i<s.length(); i++) {
+		// Save the last position of space
+		if(s.at(i) == ' '){
+			posLastSpace = i;
+		}
+
+		//Check if news line char
+		if(s.at(i) == '\n'){
+			cptChar = 0;
+		}
+		else{
+			cptChar++;
+		}
+
+		// Add une news line if required
+		if(cptChar >= 62){
+			s.remove(posLastSpace,1),
+			s.insert(posLastSpace,'\n');
+			i = posLastSpace;
+			cptChar = 0;
+		}
+	}
+	return s;
+}

@@ -98,8 +98,8 @@ enum{SERV_COL_ID=0, SERV_COL_NAME,SERV_COL_PRICE, SERV_COL_TAX, SERV_COL_DETAIL,
 	void listProposalDetailsToTable(QString filter, QString field);
 	void listInvoiceDetailsToTable(QString filter, QString field);
 	void listServiceToTable();
-
 	void createInvoiceFromProposal();
+	QString trunkString(QString s);
 
 signals:
 	void askRefreshProposalList();
