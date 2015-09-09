@@ -79,13 +79,6 @@ database::~database(){
 	connexion a la base de donnees
   */
 char database::connect(){
-	//test de la version 1.0
-	if( m_name.contains(".fdb")){
-		QMessageBox mBox(QMessageBox::Warning, tr("Attention"), tr("<b>mcercle ne supporte plus firebird!</b><br>Veuillez installer mcercle v1.9 pour la migration."),QMessageBox::Ok);
-		mBox.exec();
-		return DB_CON_ERR;
-	}
-
 	db = QSqlDatabase::addDatabase("Q"+m_bdd);
 	db.setHostName( m_hostName );
 	db.setPort( m_port );
@@ -231,8 +224,8 @@ bool database::create(){
 	bool ret = true;
 	//Affichage de la fenetre d attente
 	DialogWaiting* m_DialogWaiting = new DialogWaiting();
-	m_DialogWaiting->setTitle(tr("<b>Cr&#233;ation de la base de donn&#233;es</b>"));
-	m_DialogWaiting->setDetail(tr("<i>Cr&#233;ation de la base de donn&#233;es...</i>"));
+	m_DialogWaiting->setTitle(tr("<b>Création de la base de données</b>"));
+	m_DialogWaiting->setDetail(tr("<i>Création de la base de données...</i>"));
 	m_DialogWaiting->setProgressBarRange(0,13);
 	m_DialogWaiting->setModal(true);
 	m_DialogWaiting->show();
@@ -240,7 +233,7 @@ bool database::create(){
 	//Connexion et creation des tables
 	if( m_connected ) {
 		m_DialogWaiting->setProgressBar(bar++);
-		m_DialogWaiting->setDetail(tr("<i>Cr&#233;ation des tables...</i>"));
+		m_DialogWaiting->setDetail(tr("<i>Création des tables...</i>"));
 		 //Creation des tables
 		if(!db.tables().contains("TAB_INFORMATIONS")) ret = createTable_informations();
 		if((!db.tables().contains("TAB_BANK"))&&(ret)){
@@ -298,7 +291,7 @@ bool database::create(){
 
 		if(ret) {
 			//creation OK
-			m_DialogWaiting->setDetail(tr("<i>Cr&#233;ation termin&#233;e avec succ&#232;s !</i>"));
+			m_DialogWaiting->setDetail(tr("<i>Création terminée avec succès !</i>"));
 			m_connected = true;
 			return true;
 		}else {
@@ -308,7 +301,7 @@ bool database::create(){
 					QMessageBox::critical(this->m_parent, tr("Erreur"), tr("Impossible de supprimer le fichier:\n")+m_name);
 				}
 			}
-			m_DialogWaiting->setDetail(tr("<i>Erreur... veuillez contacter votre administrateur r&#233;seau.</i>"));
+			m_DialogWaiting->setDetail(tr("<i>Erreur... veuillez contacter votre administrateur réseau.</i>"));
 			m_connected = false;
 			return false;
 
@@ -316,7 +309,7 @@ bool database::create(){
 	}
 	else{
 		//Erreur de connexion
-		m_DialogWaiting->setDetail(tr("<i>Erreur... veuillez contacter votre administrateur r&#233;seau.</i>"));
+		m_DialogWaiting->setDetail(tr("<i>Erreur... veuillez contacter votre administrateur réseau.</i>"));
 		return false;
 	}
 	return false;

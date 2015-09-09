@@ -1,4 +1,4 @@
-/**
+ï»¿/**
   This file is a part of mcercle
   Copyright (C) 2010-2014 Cyril FRAUSTI
 
@@ -179,7 +179,7 @@ void board::listInvoiceAlertToTable()
 		}
 		else{
 			item_STATE->setIcon( QIcon(":/app/quit") );
-			item_STATE->setText( QLatin1String("Echéance dépassée") );
+			item_STATE->setText( tr("EchÃ©ance dÃ©passÃ©e") );
 		}
 		
 		//definir le tableau
@@ -488,7 +488,7 @@ void board::setupBarChart() {
 	// prepare y axis:
 	m_plot->yAxis->setRange(0, 1000);
 	m_plot->yAxis->setPadding(5); // a bit more space to the left border
-	m_plot->yAxis->setLabel(QLatin1String("Chiffre d'affaire HT"));
+	m_plot->yAxis->setLabel(tr("Chiffre d'affaire HT"));
 	m_plot->yAxis->grid()->setSubGridVisible(true);
 	QPen gridPen;
 	gridPen.setStyle(Qt::SolidLine);
@@ -501,7 +501,7 @@ void board::setupBarChart() {
 	QVector<qreal> CA;
 	for(int i=1,j=0; i<13;i++){
 		CA <<  m_data->m_customer->m_invoice->getMonthRevenue(ui->comboBox_yearsList->currentText(), QString::number(i));
-		// Ajustage de l'échelle Y
+		// Ajustage de l'Ã©chelle Y
 		if(CA[j] > m_plot->yAxis->range().size())
 			m_plot->yAxis->setRange(0, CA[j] + CA[j]*0.025);
 		j++;

@@ -274,7 +274,7 @@ void DialogProduct::on_pushButton_add_edit_clicked()
 	//Test si un produit existe
 	if(m_type == PRODUCT_ADD) {
 		if( m_product->isHere(ui->lineEdit_code->text()) ){
-		QMessageBox::warning(this, tr("Attention"), tr("Code Produit d&#233;ja pr&#233;sent...<br>Merci de changer") );
+		QMessageBox::warning(this, tr("Attention"), tr("Code Produit déja présent...<br>Merci de changer") );
 		return;
 		}
 	}
@@ -286,7 +286,7 @@ void DialogProduct::on_pushButton_add_edit_clicked()
 	SellingPrice = ui->doubleSpinBox_price->value();
 
 	if((buyingPrice > 999999) || (SellingPrice > 999999) ){
-		QMessageBox::warning(this, tr("Attention"), tr("Valeur num&#233;rique d&#233;pass&#233;e:<br><b>999 999,00</b> MAX...<br><br>Merci de changer") );
+		QMessageBox::warning(this, tr("Attention"), tr("Valeur numérique dépassée:<br><b>999 999,00</b> MAX...<br><br>Merci de changer") );
 		return;
 	}
 
