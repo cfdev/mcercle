@@ -43,6 +43,7 @@ INSTALLS += target desktop copyright
 OTHER_FILES += \
     Changelog.txt
 
+# Sources
 HEADERS += \
     src/tax.h \
     src/table.h \
@@ -79,6 +80,12 @@ HEADERS += \
     src/update.h \
     src/inout.h \
     src/qcustomplot/qcustomplot.h
+
+win32 {
+HEADERS += \
+    src/trymcercle.h \
+    src/activationView.h
+}
 
 SOURCES += \
     src/tax.cpp \
@@ -117,6 +124,13 @@ SOURCES += \
     src/inout.cpp \
     src/qcustomplot/qcustomplot.cpp
 
+win32 {
+SOURCES += \
+    src/trymcercle.cpp \
+    src/activationView.cpp\
+}
+
+
 FORMS += \
     src/productView.ui \
     src/mainwindow.ui \
@@ -136,6 +150,11 @@ FORMS += \
     src/customerView.ui \
     src/board.ui \
     src/about.ui
+
+win32 {
+FORMS += \
+    src/activationview.ui\
+}
 
 DISTFILES += \
     version.txt

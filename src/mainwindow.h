@@ -5,6 +5,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QLabel>
 
 #include "about.h"
 #include "board.h"
@@ -38,6 +39,7 @@ private:
 	Settings *m_Settings;
 	database *m_database;
 	QLocale m_lang;
+	QLabel *mlabel_warningBdd;
 
 private slots:
 	void on_actionConfiguration_triggered();
@@ -67,7 +69,8 @@ private slots:
 	void on_actionProduits_import_triggered();
 
 	public slots:
-	void RefreshLists();
+		void RefreshLists();
+		void RefreshActivation();
 };
 
 #endif // MAINWINDOW_H

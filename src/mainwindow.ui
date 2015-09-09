@@ -151,7 +151,7 @@
    <addaction name="separator"/>
    <addaction name="actionConfiguration"/>
    <addaction name="actionA_propos"/>
-   <addaction name="action"/>
+   <addaction name="action_don"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuitter">
@@ -286,7 +286,7 @@
     <string>S</string>
    </property>
   </action>
-  <action name="action">
+  <action name="action_don">
    <property name="icon">
     <iconset resource="../ressources.qrc">
      <normaloff>:/app/don1</normaloff>:/app/don1</iconset>

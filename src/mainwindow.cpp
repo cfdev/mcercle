@@ -46,6 +46,10 @@
 #include "inout.h"
 #include "printc.h"
 
+#ifdef __WIN32
+	#include "trymcercle.h"
+#endif
+
 /**
 	Constructeur de la class MainWindow
 */
@@ -147,24 +151,40 @@ void MainWindow::init(){
 	m_board = new board( m_database, m_lang );
 
 	//Attention au sauvegardes
-	QLabel *label_warningBdd = new QLabel();
-	label_warningBdd -> setAlignment( Qt::AlignCenter );
+	mlabel_warningBdd = new QLabel();
+	mlabel_warningBdd -> setAlignment( Qt::AlignCenter );
 	if( m_Settings -> getDatebddSave().addMonths(3) < QDate::currentDate()){
 		QString txt = "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#D65600; \">";
 		txt += tr("La base de donn&eacute;es doit &ecirc;tre sauvegard&eacute;e! Derniere sauvegarde r&eacute;alis&eacute;e le: ") + m_Settings -> getDatebddSave().toString(tr("dd-MM-yyyy")) + "</p>";
-		label_warningBdd -> setText(txt);
-		label_warningBdd -> setVisible(true);
+		mlabel_warningBdd -> setText(txt);
+		mlabel_warningBdd -> setVisible(true);
 	}
 	else{
-		label_warningBdd -> setVisible(false);
+		mlabel_warningBdd -> setVisible(false);
 	}
 	
 	//Mis en layout
-	ui->verticalLayout->addWidget( label_warningBdd );
+	ui->verticalLayout->addWidget( mlabel_warningBdd );
 	ui->verticalLayout->addWidget( m_board );
 	ui->verticalLayout->addWidget( m_customerView );
 	ui->verticalLayout->addWidget( m_productView );
 	ui->verticalLayout->update();
+
+	// test os version
+#ifdef __WIN32
+	ui->action_don->setVisible(false);
+	trymcercle mtry;
+	if(mtry.isLock()) {
+		QString messageTry = "<p align=\"center\" style=\"font-size:13px;font-weight:bold;color:white;background:#2D7D45; \">";
+		messageTry += tr("mcercle - VERSION LIMITEE (EVALUATION)") + tr("<br/><a href=\"http://cfdev.fr/mcercle\"><span style=\"color:#fff;\">Commander une clef d'activation</span></a></p>");
+		messageTry += mlabel_warningBdd -> text();
+		mlabel_warningBdd -> setText(messageTry);
+		mlabel_warningBdd -> setVisible(true);
+		mlabel_warningBdd -> setOpenExternalLinks ( true );
+
+		ui->menuImporter->setEnabled(false);
+	}
+#endif
 
 	// TODO : SEGFAULT!!! Checkupdate
 #ifdef QT_NO_DEBUG
@@ -194,7 +214,6 @@ void MainWindow::on_actionQuitter_triggered() {
 	Affiche le tableau de bord
 */
 void MainWindow::on_actionTableau_de_bord_triggered() {
-	setWindowTitle("mcercle");
 	m_board->show();
 	m_board->listStockAlertToTable();
 	m_board->listInvoiceAlertToTable();
@@ -210,7 +229,6 @@ void MainWindow::on_actionTableau_de_bord_triggered() {
 	Affiche la gestion clients
 */
 void MainWindow::on_actionClients_triggered() {
-	setWindowTitle("mcercle -" + tr(" Client"));
 	m_board->hide();
 	m_customerView->refreshCustomersList();
 	m_customerView->show();
@@ -222,7 +240,6 @@ void MainWindow::on_actionClients_triggered() {
 	Affiche la gestion produits
 */
 void MainWindow::on_actionProduits_triggered() {
-	setWindowTitle("mcercle -" + tr(" Produit"));
 	m_board->hide();
 	m_customerView->hide();
 	m_productView->refreshProductsList();
@@ -277,6 +294,13 @@ void MainWindow::RefreshLists() {
 	m_board->listProposalAlertToTable();
 	m_board->listYear();
 	m_board->listRevenuesToTable();
+}
+
+/**
+	Rafraichir les listes clients et produits
+  */
+void MainWindow::RefreshActivation() {
+//
 }
 
 /**

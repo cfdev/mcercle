@@ -25,6 +25,10 @@
 #include "dialogprintchoice.h"
 #include "table.h"
 
+#ifdef __WIN32
+	#include "trymcercle.h"
+#endif
+
 #include <QMessageBox>
 #include <QTableWidgetItem>
 #include <QPrintPreviewDialog>
@@ -245,6 +249,21 @@ void productView::on_lineEdit_searchProduct_returnPressed()
 void productView::on_toolButton_addProduct_clicked()
 {
 	if(!m_data->isConnected())return;
+
+	//MSwindows version test tray version
+#ifdef __WIN32
+
+	if(m_data->m_product->count("","", true)>10){
+		trymcercle mtry;
+		if(mtry.isLock()) {
+			QMessageBox::warning(this,  tr("Attention"),
+										tr("Vous avez atteint la <b>limite de 10 produits</b> !<br>"
+										"<br>Merci de <a href=\"http://cfdev.fr/mcercle\"><span style=\"color:#2D7D45;\">commander une clef d'activation</span></a> de la version complète<br><b>"),
+										QMessageBox::Ok);
+			return;
+		}
+	}
+#endif
 
 	DialogProduct *m_DialogProduct = new DialogProduct(m_lang, m_data, PRODUCT_ADD);
 	m_DialogProduct->setModal(true);

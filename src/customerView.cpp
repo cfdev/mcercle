@@ -27,6 +27,10 @@
 #include "printc.h"
 #include "table.h"
 
+#ifdef __WIN32
+	#include "trymcercle.h"
+#endif
+
 #include <QMessageBox>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
@@ -37,6 +41,8 @@
 #include <QClipboard>
 #include <QChar>
 #include <QCompleter>
+
+
 
 /**
 	Constructeur de la class customerView
@@ -97,6 +103,21 @@ void customerView::changeEvent(QEvent *e)
 void customerView::on_toolBut_Add_clicked()
 {
 	if(!m_data->isConnected())return;
+
+	//MSwindows version test tray version
+#ifdef __WIN32
+
+	if(m_data->m_customer->count("","")>5){
+		trymcercle mtry;
+		if(mtry.isLock()) {
+			QMessageBox::warning(this,  tr("Attention"),
+										tr("Vous avez atteint la <b>limite de 5 clients</b> !<br>"
+										"<br>Merci de <a href=\"http://cfdev.fr/mcercle\"><span style=\"color:#2D7D45;\">commander une clef d'activation</span></a> de la version complète<br><b>"),
+										QMessageBox::Ok);
+			return;
+		}
+	}
+#endif
 
 	DialogCustomer *m_DialogCustomer = new DialogCustomer(m_data->m_customer);
 	m_DialogCustomer->setModal(true);
@@ -394,7 +415,7 @@ QString customerView::InfoCustomer(int id)
 	if(ret) {
 		Informations = "<html><p style=\"font-size:18px;\" align=\"center\"><b>" + m_data->m_customer->getGender() + " " +
 					   m_data->m_customer->getFirstName()+" "+m_data->m_customer->getLastName()+"</b></p>";
-		Informations += "<p style=\"font-size:9px;\">"+tr("Date de cr&#233;ation: ")+"<font color = blue>";
+		Informations += "<p style=\"font-size:9px;\">"+tr("Date de création: ")+"<font color = blue>";
 		Informations += m_data->m_customer->getCreationDate().toString(tr("dd-MM-yyyy HH:mm:ss")) + " </font></p>";
 
 		//info
@@ -405,14 +426,14 @@ QString customerView::InfoCustomer(int id)
 			Informations += m_data->m_customer->getBirthday().toString(tr("dd-MM-yyyy")) + " </font></p>";
 		}
 		else{
-			Informations += "<p><img src=\":/app/compagny\" height=\"48\" width=\"48\" /> <br>" +tr("Type : Soci&#233;t&#233;");
+			Informations += "<p><img src=\":/app/compagny\" height=\"48\" width=\"48\" /> <br>" +tr("Type : Société");
 			Informations += "<br>" + tr("Forme Juridique: ")+"<font color = blue>";
 			Informations += m_data->m_customer->getDesCompagny() + "</font></p>";
 		}
 
 		//contact
 		Informations += "<p style=\"font-size:14px;font-weight:bold;color:white;background:#7594ab; \">" + tr("&nbsp;Contact :")+"</p>";
-		Informations += tr("T&#233;l fixe: ")+"<font color = blue>";
+		Informations += tr("Tél fixe: ")+"<font color = blue>";
 		Informations += m_data->m_customer->getPhoneNumber() + "</font>";
 		Informations += "&nbsp;&nbsp;" + tr("Mobile: ") + "<font color = blue>";
 		Informations += m_data->m_customer->getMobileNumber() + "</font>";

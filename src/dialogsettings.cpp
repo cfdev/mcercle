@@ -20,9 +20,9 @@
 #include "dialogsettings.h"
 #include "ui_dialogsettings.h"
 #include "mcercle.h"
-//#ifdef __WIN32
+#ifdef __WIN32
 	#include "activationView.h"
-//#endif
+#endif
 #include <QFileDialog>
 #include <QImage>
 #include <QMessageBox>
