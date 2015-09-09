@@ -30,13 +30,11 @@ public:
 	void setCheckVersion(int state);
 	void setTheme(const QString& theme);
 	void setUrl(const QString& url);
-	void setCode(const QString& code);
-	void setKey(const QString& key);
 
 	//Save date
 	void setDatebddSave(const QDate &date);
 	//Impression
-	void setPrintFont(const QString& printFont, const int& size);
+	void setPrintFont(const QString& printFont);
 
 
 	QString getDatabase_bdd();
@@ -51,8 +49,6 @@ public:
 	int getCheckVersion();
 	QString getTheme();
 	QString getUrl();
-	QString getCode();
-	QString getKey();
 
 	//Impression
 	QFont getPrintFont();
