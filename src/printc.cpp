@@ -142,11 +142,11 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 	/// TODO :Print Attention certaines FONTs provoquent des seugfault A voir comment tester ca!
 	Settings m_settings;
 	painter.setFont( m_settings.getPrintFont() );
+	mFontSize = m_settings.getPrintFont().pointSize();
 	QPen pen;// cree un pinceau
 	pen.setWidthF(PEN_WIDTH);
 	painter.setPen(pen);
 	painter.setBrush( Qt::NoBrush );
-
 	mFont = painter.font();
 	mwUtil = mpageRect.width() - (mLeft+mRight); // Largeur utile. pour la repartition des cases
 }
@@ -222,7 +222,8 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	painter.drawImage(rect, mlogo);
 
 	///Info societe
-	mFont.setPointSize(10);
+	//mFont.setPointSize(10);
+	mFont.setPointSizeF(mFontSize);
 	painter.setFont(mFont);
 	rect.translate( 0, rect.height()+5);
 	rect = painter.fontMetrics().boundingRect(mLeft+5, rect.top(), 0,0, Qt::AlignLeft, mtextInfo );
@@ -237,14 +238,15 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 		if(m_inv ->getType() == MCERCLE::TYPE_CREDIT) title = tr("Facture d'avoir");
 	}
 	else if(type == T_SERVICE) title = tr("Service");
-	mFont.setPointSize(24);
+	//mFont.setPointSize(24);
+	mFont.setPointSizeF(mFontSize*2.4);
 	painter.setFont(mFont);
 	rect = QRect(mLeft, mTop, mpageRect.width() - (mLeft+mRight),
 				 painter.fontMetrics().boundingRect( title ).height());
 	painter.drawText( rect, Qt::AlignRight|Qt::AlignVCenter, title );
 
 	///Code en fonction du type
-	mFont.setPointSize(14);
+	mFont.setPointSizeF(mFontSize*1.4);
 	painter.setFont(mFont);
 	rect.translate( 0, rect.height());
 	if(type == T_PROPOSAL) {
@@ -270,7 +272,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 	}
 	
 	///Date en fonction du type
-	mFont.setPointSize(12);
+	mFont.setPointSizeF(mFontSize*1.2);
 	painter.setFont(mFont);
 	rect.translate( 0, rect.height());
 	if(type == T_PROPOSAL) {
@@ -296,8 +298,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 						  m_inv -> getLimitPayment().toString(tr("dd-MM-yyyy")) );
 	}
 
-	// Font 10px
-	mFont.setPointSize(10);
+	mFont.setPointSizeF(mFontSize);
 	painter.setFont(mFont);
 
 	/// Identite du client si le type n'est pas un fichier à entête
@@ -347,8 +348,8 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 			painter.drawText( rect, tr("TVA %") );
 		}
 		pos+=WIDTH_TAX;
-		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+(mwUtil*pos),rect.top(), mwUtil*WIDTH_DIS,0, Qt::AlignLeft, tr("Remise%"));
-		painter.drawText( rect, tr("Remise%"));
+		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+(mwUtil*pos),rect.top(), mwUtil*WIDTH_DIS,0, Qt::AlignLeft, tr("Rem.%"));
+		painter.drawText( rect, tr("Rem.%"));
 	}
 	else {
 		//Sinon on decale de la largeur colonne TVA pour remplacer la colonne remise
@@ -365,9 +366,9 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	pos+=WIDTH_PRI;
 	painter.drawText( rect, tr("Prix U. ")+ m_data->getCurrency());
 	//QUANTITE 8%
-	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+mwUtil*pos,rect.top(), mwUtil*WIDTH_QTE,0, Qt::AlignLeft, tr("Quantité")  );
+	rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER+mwUtil*pos,rect.top(), mwUtil*WIDTH_QTE,0, Qt::AlignLeft, tr("Qte")  );
 	pos+=WIDTH_QTE;
-	painter.drawText( rect, tr("Quantité") );
+	painter.drawText( rect, tr("Qte") );
 	//TOTAL 12%
 	QString stt;
 	if(m_data->getIsTax())
@@ -421,9 +422,10 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 			rect.setWidth(sizeImage.width());
 		}*/
 		//TEXTE
-		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER,rect.top(), mwUtil*WIDTH_DES,0, Qt::AlignLeft, Ilist.designation.at(itemPrinted) );
+
+		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER,rect.top(), mwUtil*WIDTH_DES,0, Qt::AlignLeft/*Qt::TextWordWrap*/, Ilist.designation.at(itemPrinted) );
 		rect.setWidth(mwUtil*WIDTH_DES); //fixe la largeur
-		painter.drawText( rect,  Qt::AlignLeft , Ilist.designation.at(itemPrinted));
+		painter.drawText( rect,  Qt::AlignLeft/*Qt::TextWordWrap*/ , Ilist.designation.at(itemPrinted));
 		
 		//REMISE 8%
 		if(discount){

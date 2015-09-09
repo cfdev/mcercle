@@ -27,11 +27,11 @@ class Printc : public QObject
 	enum{T_PROPOSAL, T_INVOICE, T_SERVICE, T_FILE};
 
 //Largeur en %
-#define WIDTH_DES 0.52
+#define WIDTH_DES 0.54
 #define WIDTH_TAX 0.08
-#define WIDTH_DIS 0.08
+#define WIDTH_DIS 0.07
 #define WIDTH_PRI 0.12
-#define WIDTH_QTE 0.08
+#define WIDTH_QTE 0.07
 #define WIDTH_TOT 0.12
 	
 #define WIDTH_TOTAUX 0.375
@@ -42,7 +42,7 @@ class Printc : public QObject
 	//1.2 low resolution
 	//5 High resolution
 #define PEN_WIDTH DPI/150
-		
+
 	QLocale m_lang;
 	database *m_data;
 	customer *m_cus;
@@ -65,6 +65,7 @@ class Printc : public QObject
 	// print
 	qreal mLeft, mTop, mRight, mBottom;
 	QFont mFont;
+	qreal mFontSize;
 	qreal mwUtil;
 	QRectF mpageRect, mRectContent;
 	int mBlockHeight;
