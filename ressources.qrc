@@ -47,5 +47,7 @@
         <file alias="export">art/file_export.png</file>
         <file alias="import">art/fileimport.png</file>
         <file alias="heart">art/heart.png</file>
+        <file alias="unlock">art/document_decrypt.png</file>
+        <file alias="lock">art/document_encrypt.png</file>
     </qresource>
 </RCC>
