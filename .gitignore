@@ -1,3 +1,11 @@
 *.user
 *.nsi
 *.exe
+mcercle.pro.user
+src/trymcercle.h
+src/trymcercle.cpp
+src/dialogunlock.ui
+src/dialogunlock.cpp
+src/activationView.cpp
+src/activationView.h
+src/activationView.ui
