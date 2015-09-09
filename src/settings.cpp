@@ -99,7 +99,8 @@ QString Settings::getDatabase_userPassword(){
  */
 QFont Settings::getPrintFont(){
 	m_settings->beginGroup("print");
-	QFont val( m_settings->value("font").toString() );
+	QFont val( m_settings->value("font","DejaVu Serif").toString() );
+	val.setPointSize( m_settings->value("fontSize","9").toInt() );
 	m_settings->endGroup();
 	return val;
 }
@@ -134,6 +135,28 @@ QString Settings::getTheme(){
 QString Settings::getUrl(){
 	m_settings->beginGroup("main");
 	QString val = m_settings->value("url","https://raw.githubusercontent.com/cfdev/mcercle/master/version.txt").toString();
+	m_settings->endGroup();
+	return val;
+}
+
+/**
+ * @brief Settings::getCode
+ * @return
+ */
+QString Settings::getCode(){
+	m_settings->beginGroup("main");
+	QString val = m_settings->value("code","").toString();
+	m_settings->endGroup();
+	return val;
+}
+
+/**
+ * @brief Settings::getKey
+ * @return key
+ */
+QString Settings::getKey(){
+	m_settings->beginGroup("main");
+	QString val = m_settings->value("key","").toString();
 	m_settings->endGroup();
 	return val;
 }
@@ -250,6 +273,26 @@ void Settings::setUrl(const QString &url) {
 }
 
 /**
+ * @brief setCode
+ * @param code
+ */
+void Settings::setCode(const QString &code) {
+	m_settings -> beginGroup("main");
+	m_settings -> setValue("code", code );
+	m_settings -> endGroup();
+}
+
+/**
+ * @brief setKey
+ * @param key
+ */
+void Settings::setKey(const QString &key) {
+	m_settings -> beginGroup("main");
+	m_settings -> setValue("key", key );
+	m_settings -> endGroup();
+}
+
+/**
 	Position des listebox pour les recherches
   */
 void Settings::setPositionListSearchProduct(int pos) {
@@ -271,14 +314,14 @@ int Settings::getPositionListSearchProduct(){
 
 /**
  * @brief setPrintFont
- * @param printFont
+ * @param printFont and size
  */
-void Settings::setPrintFont(const QString& printFont){
+void Settings::setPrintFont(const QString& printFont, const int& size){
 	m_settings->beginGroup("print");
 	m_settings->setValue("font", printFont);
+	m_settings->setValue("fontSize", size);
 	m_settings->endGroup();
 }
-
 
 /**
  * @brief setDatebddSave

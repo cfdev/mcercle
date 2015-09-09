@@ -20,6 +20,7 @@
 #include "dialogsettings.h"
 #include "ui_dialogsettings.h"
 #include "mcercle.h"
+#include "activationView.h"
 
 #include <QFileDialog>
 #include <QImage>
@@ -50,6 +51,13 @@ DialogSettings::DialogSettings(Settings *s, database *pdata, QLocale &lang, QWid
 	loadInfoDatabase();
 	//Selectionne la tab 0
 	ui->tabWidget->setCurrentIndex(0);
+
+	// test os version
+#ifdef __WIN32
+	activationView *m_activationView = new activationView(s);
+	ui->verticalLayout_App->addWidget( m_activationView );
+#endif
+
 }
 
 void DialogSettings::setDbaseEditState( bool state) {
@@ -124,7 +132,8 @@ void DialogSettings::on_buttonBox_accepted() {
 	m_Settings -> setDatabase_databaseName( ui->lineEdit_databaseName->text() );
 	m_Settings -> setDatabase_userName( ui->lineEdit_login->text());
 	m_Settings -> setDatabase_userPassword( ui->lineEdit_password->text() );
-	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText() );
+	m_Settings -> setPrintFont( ui->comboBox_printFont->currentText(),
+								ui->comboBox_fontSize->currentText().toInt());
 	m_Settings -> setCheckVersion( ui->checkBox_checkVersion->checkState() );
 	m_Settings -> setTheme ( ui->comboBox_theme->currentText() );
 	m_Settings -> setUrl( ui->lineEdit_url->text() );
@@ -251,6 +260,11 @@ void DialogSettings::loadInfoSettings() {
 	ui->comboBox_dbase->setCurrentIndex(select);
 	//Impression
 	ui->comboBox_printFont->setCurrentFont( m_Settings->getPrintFont() );
+	for(int i=0; i<ui->comboBox_fontSize->count(); i++){
+		if(m_Settings->getPrintFont().pointSize() == ui->comboBox_fontSize->itemText(i).toInt()){
+			ui->comboBox_fontSize->setCurrentIndex(i);
+		}
+	}
 	//checkversion
 	ui->checkBox_checkVersion->setCheckState( Qt::CheckState(m_Settings->getCheckVersion()) );
 	//theme	
@@ -350,3 +364,5 @@ void DialogSettings::loadInfoDatabase() {
 void DialogSettings::on_checkBox_TAX_toggled(bool checked) {
 	ui->lineEdit_numTVA->setEnabled( checked );
 }
+
+
