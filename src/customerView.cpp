@@ -41,6 +41,8 @@
 #include <QClipboard>
 #include <QChar>
 #include <QCompleter>
+#include <QMimeData>
+#include <QDebug>
 
 
 
@@ -71,10 +73,13 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	//Selectionne la tab fiche
 	ui->tabWidget_Customer->setCurrentIndex(0);
 
-	//Cache la suppression pour le moment trop de user supprime sans savoir
-	/*ui->toolButton_Del->setVisible(false);
-	ui->toolButton_delProposal->setVisible(false);
-	ui->toolButton_delInvoice->setVisible(false);*/
+	// Intercept shortcut key presses
+	// Estimates
+	QObject::connect(new QShortcut(QKeySequence::Delete, this), SIGNAL(activated()), this, SLOT(on_toolButton_delProposal_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::InsertParagraphSeparator, this), SIGNAL(activated()), this, SLOT(on_toolButton_editProposal_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::Copy, this), SIGNAL(activated()), this, SLOT(copyEstimate()));
+	QObject::connect(new QShortcut(QKeySequence::Paste, this), SIGNAL(activated()), this, SLOT(pasteEstimate()));
+	// Invoices
 }
 
 /**
@@ -1046,5 +1051,55 @@ void customerView::on_tableWidget_Invoices_itemDoubleClicked(){
 }
 
 
+/**
+ * @brief customerView::copyEstimate
+ */
+void customerView::copyEstimate(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
 
+	int m_index = ui->tableWidget_Proposals->currentRow();
+	QString code = ui->tableWidget_Proposals->item(m_index, CODE_ROW)->text();
 
+	QByteArray mData("P:");
+	mData.append(code.toUtf8());
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("mcercle", mData);
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	m_clipboard->setMimeData(mimeData);
+}
+
+/**
+ * @brief customerView::pasteEstimate
+ */
+void customerView::pasteEstimate(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	const QMimeData * mime = m_clipboard->mimeData();
+
+	if (mime) 	{
+		QByteArray mData = mime->data("mcercle");
+		qDebug() << "customerView::pastEstimate " << mData;
+		if(mData.size()<2)return;
+		// if Paste
+		if(QString(mData.at(0)) == "P"){
+			int ret = QMessageBox::information(this, tr("Question"),
+											tr("voulez-vous vraiment coller le devis ") + mData.mid(2) + tr(" ?"),
+											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+
+			if(ret == QMessageBox::Yes){
+				// on finish clear clipboard
+				m_clipboard->clear();
+
+			}
+		}
+		// if Move
+		if(QString(mData.at(0)) == "M"){
+
+		}
+	}
+
+}

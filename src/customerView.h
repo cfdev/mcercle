@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLocale>
 #include <QTableWidgetItem>
+#include <QShortcut>
 
 #include "dbase.h"
 
@@ -32,6 +33,7 @@ private:
 	int m_custPage, m_custNbPage;
 	int m_custId;
 	QString m_custfilter, m_custfield;
+	QShortcut* shortcutEstimate;
 
 #define ID_ROW 0
 #define LASTNAME_ROW 1
@@ -49,8 +51,7 @@ private:
 	void listServicesToTable(QString filter, QString field);
 	//Factures
 	void listInvoicesToTable(QString filter, QString field);
-
-	#define CUSTOMERSMAX_PAGE 1000
+#define CUSTOMERSMAX_PAGE 1000
 
 private slots:
 	void on_toolButton_addService_clicked();
@@ -88,11 +89,13 @@ private slots:
 	void on_tableWidget_Proposals_itemDoubleClicked();
 	void on_tableWidget_Invoices_itemDoubleClicked();
 
-	void on_lineEdit_Search_textChanged(const QString &arg1);
-	
+	void on_lineEdit_Search_textChanged(const QString &arg1);	
 	void on_comboBoxFiltre_currentIndexChanged(int index);
-	
-	public slots:
+	// Keypress
+	void copyEstimate();
+	void pasteEstimate();
+
+public slots:
 	void refreshCustomersList();
 	void listCustomers(int page);
 	void listServices();
