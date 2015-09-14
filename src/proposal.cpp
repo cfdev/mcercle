@@ -107,6 +107,7 @@ bool proposal::update() {
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
 	QString req = "UPDATE TAB_PROPOSALS SET ";
+	req += "ID_CUSTOMER='" + QString::number(m_idCustomer)  + "',";
 	req += "CODE='" + m_code.replace("\'","''") + "',";
 	req += "DATE='" + m_userDate.toString(tr("yyyy/MM/dd")) + "',";
 	req += "VALIDDATE='" + m_validDate.toString(tr("yyyy/MM/dd")) + "',";
