@@ -43,6 +43,7 @@
 #include <QCompleter>
 #include <QMimeData>
 #include <QDebug>
+#include <QDateTime>
 
 
 
@@ -78,7 +79,12 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 	QObject::connect(new QShortcut(QKeySequence::Delete, this), SIGNAL(activated()), this, SLOT(on_toolButton_delProposal_clicked()));
 	QObject::connect(new QShortcut(QKeySequence::InsertParagraphSeparator, this), SIGNAL(activated()), this, SLOT(on_toolButton_editProposal_clicked()));
 	QObject::connect(new QShortcut(QKeySequence::Copy, this), SIGNAL(activated()), this, SLOT(copyEstimate()));
+	QObject::connect(new QShortcut(QKeySequence::Cut, this), SIGNAL(activated()), this, SLOT(cutEstimate()));
 	QObject::connect(new QShortcut(QKeySequence::Paste, this), SIGNAL(activated()), this, SLOT(pasteEstimate()));
+
+	QObject::connect(ui->toolButton_copyEstimate, SIGNAL(clicked()), this, SLOT(copyEstimate()));
+	QObject::connect(ui->toolButton_cutEstimate, SIGNAL(clicked()), this, SLOT(cutEstimate()));
+	QObject::connect(ui->toolButton_pastEstimate, SIGNAL(clicked()), this, SLOT(pasteEstimate()));
 	// Invoices
 }
 
@@ -572,15 +578,19 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 	ui->tableWidget_Proposals->setSortingEnabled(true);
 	ui->tableWidget_Proposals->selectRow(0);
 
-	//Si pas de facture on desactive les boutons
+	//Si pas de devis on desactive les boutons
 	if( ui->tableWidget_Proposals->rowCount() <=0 ) {
 		ui->toolButton_editProposal->setEnabled(false);
 		ui->toolButton_delProposal->setEnabled(false);
+		ui->toolButton_copyEstimate->setEnabled(false);
+		ui->toolButton_cutEstimate->setEnabled(false);
 		ui->toolButton_printPro->setEnabled(false);
 	}
 	else{
 		ui->toolButton_editProposal->setEnabled(true);
 		ui->toolButton_delProposal->setEnabled(true);
+		ui->toolButton_copyEstimate->setEnabled(true);
+		ui->toolButton_cutEstimate->setEnabled(true);
 		ui->toolButton_printPro->setEnabled(true);
 	}
 }
@@ -1059,16 +1069,37 @@ void customerView::copyEstimate(){
 	if(!m_data->isConnected())return;
 
 	int m_index = ui->tableWidget_Proposals->currentRow();
-	QString code = ui->tableWidget_Proposals->item(m_index, CODE_ROW)->text();
+	QString id = ui->tableWidget_Proposals->item(m_index, ID_ROW)->text();
 
 	QByteArray mData("P:");
-	mData.append(code.toUtf8());
+	mData.append(id.toUtf8());
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData("mcercle", mData);
 
 	QClipboard *m_clipboard = QApplication::clipboard();
 	m_clipboard->setMimeData(mimeData);
 }
+
+
+/**
+ * @brief customerView::cutEstimate
+ */
+void customerView::cutEstimate(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	int m_index = ui->tableWidget_Proposals->currentRow();
+	QString id = ui->tableWidget_Proposals->item(m_index, ID_ROW)->text();
+
+	QByteArray mData("M:");
+	mData.append(id.toUtf8());
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("mcercle", mData);
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	m_clipboard->setMimeData(mimeData);
+}
+
 
 /**
  * @brief customerView::pasteEstimate
@@ -1084,13 +1115,49 @@ void customerView::pasteEstimate(){
 		QByteArray mData = mime->data("mcercle");
 		qDebug() << "customerView::pastEstimate " << mData;
 		if(mData.size()<2)return;
+		// Get ID of estimate
+		int id = mData.mid(2).toInt();
 		// if Paste
 		if(QString(mData.at(0)) == "P"){
-			int ret = QMessageBox::information(this, tr("Question"),
-											tr("voulez-vous vraiment coller le devis ") + mData.mid(2) + tr(" ?"),
-											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+			// Load the estimate from ID
+			m_data->m_customer->m_proposal->loadFromID(id);
+			QString mess =	"\n"+m_data->m_customer->m_proposal->getCode()+
+							"\nà "+m_data->m_customer->getFirstName()+" "+m_data->m_customer->getLastName();
 
+			int ret = QMessageBox::information(this, tr("Question"),
+											tr("Voulez-vous vraiment créer un devis depuis le") + mess + tr(" ?"),
+											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
 			if(ret == QMessageBox::Yes){
+				// Load class for the new estimate
+				m_data->m_customer->m_proposal->setIdCustomer( m_data->m_customer->getId() );
+				m_data->m_customer->m_proposal->setCode( m_data->m_customer->m_proposal->generateNewCode() );
+				m_data->m_customer->m_proposal->setDescription( m_data->m_customer->m_proposal->getDescription()+tr(" (copie)") );
+				m_data->m_customer->m_proposal->setUserDate(QDate::currentDate());
+				m_data->m_customer->m_proposal->setValidDate(QDate::currentDate().addMonths(1));
+				m_data->m_customer->m_proposal->setState(MCERCLE::PROPOSAL_WRITING);
+				// Then create !
+				if(!m_data->m_customer->m_proposal->create()) {
+					return; // Error of creation
+				}
+				// Create items !
+				proposal::ProposalListItems itemPro;
+				proposal::ProposalItem item;
+				// Get Items of orginal estimate
+				m_data->m_customer->m_proposal->getProposalItemsList(itemPro, "ITEM_ORDER", "", "");
+				// Then Load new estimate created
+				m_data->m_customer->m_proposal->loadFromID( m_data->m_customer->m_proposal->getLastId() );
+				for(int i=0; i<itemPro.name.count(); i++){
+					item.name = itemPro.name.at(i);
+					item.idProduct = itemPro.idProduct.at(i);
+					item.price = itemPro.price.at(i);
+					item.discount = itemPro.discount.at(i);
+					item.tax = itemPro.tax.at(i);
+					item.quantity = itemPro.quantity.at(i);
+					item.order = itemPro.order.at(i);
+					item.type = itemPro.type.at(i);
+
+					m_data->m_customer->m_proposal->addProposalItem(item);
+				}
 				// on finish clear clipboard
 				m_clipboard->clear();
 
@@ -1098,8 +1165,23 @@ void customerView::pasteEstimate(){
 		}
 		// if Move
 		if(QString(mData.at(0)) == "M"){
+			m_data->m_customer->m_proposal->loadFromID(id);
+			QString mess =	"\n"+m_data->m_customer->m_proposal->getCode()+
+							"\nà "+m_data->m_customer->getFirstName()+" "+m_data->m_customer->getLastName();
 
+			int ret = QMessageBox::information(this, tr("Question"),
+											tr("Voulez-vous vraiment déplacer le devis") + mess + tr(" ?"),
+											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+
+			if(ret == QMessageBox::Yes){
+				m_data->m_customer->m_proposal->setIdCustomer( m_data->m_customer->getId() );
+				m_data->m_customer->m_proposal->update();
+				// on finish clear clipboard
+				m_clipboard->clear();
+			}
 		}
+		listProposals();
 	}
 
 }
+

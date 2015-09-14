@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
+    <width>643</width>
     <height>509</height>
    </rect>
   </property>
@@ -310,7 +310,7 @@ p, li { white-space: pre-wrap; }
           <enum>QTabWidget::Rounded</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <property name="iconSize">
           <size>
@@ -351,8 +351,8 @@ p, li { white-space: pre-wrap; }
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>256</width>
-                  <height>347</height>
+                  <width>273</width>
+                  <height>344</height>
                  </rect>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_9">
@@ -679,6 +679,92 @@ p, li { white-space: pre-wrap; }
                    <width>16</width>
                    <height>16</height>
                   </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="Line" name="line">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="toolButton_copyEstimate">
+                 <property name="minimumSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Copier le devis</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../ressources.qrc">
+                   <normaloff>:/app/copy</normaloff>:/app/copy</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="toolButton_cutEstimate">
+                 <property name="minimumSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="statusTip">
+                  <string>Couper le devis</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../ressources.qrc">
+                   <normaloff>:/app/cut</normaloff>:/app/cut</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="toolButton_pastEstimate">
+                 <property name="minimumSize">
+                  <size>
+                   <width>32</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Coller le devis</string>
+                 </property>
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="../ressources.qrc">
+                   <normaloff>:/app/paste</normaloff>:/app/paste</iconset>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="Line" name="line_2">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
                  </property>
                 </widget>
                </item>

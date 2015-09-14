@@ -93,9 +93,10 @@ private slots:
 	void on_comboBoxFiltre_currentIndexChanged(int index);
 	// Keypress
 	void copyEstimate();
+	void cutEstimate();
 	void pasteEstimate();
 
-public slots:
+	public slots:
 	void refreshCustomersList();
 	void listCustomers(int page);
 	void listServices();
