@@ -49,5 +49,8 @@
         <file alias="heart">art/heart.png</file>
         <file alias="unlock">art/document_decrypt.png</file>
         <file alias="lock">art/document_encrypt.png</file>
+        <file alias="copy">art/editcopy.png</file>
+        <file alias="cut">art/editcut.png</file>
+        <file alias="paste">art/editpaste.png</file>
     </qresource>
 </RCC>
