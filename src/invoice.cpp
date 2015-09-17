@@ -136,6 +136,7 @@ bool invoice::update() {
 	// Si le charactere speciaux "\'" existe on l'adapte pour la requette
 	QString f;
 	QString req = "UPDATE TAB_INVOICES SET ";
+	req += "ID_CUSTOMER='" + QString::number(m_idCustomer)  + "',";
 	req += "CODE='" + m_code.replace("\'","''") + "',";
 	req += "DATE='" + m_userDate.toString(tr("yyyy-MM-dd")) + "',";
 	req += "LIMIT_PAYMENTDATE='" + m_limitPayment.toString(tr("yyyy-MM-dd")) + "',";
