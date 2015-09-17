@@ -76,16 +76,26 @@ customerView::customerView(database *pdata, QLocale &lang, QWidget *parent) :
 
 	// Intercept shortcut key presses
 	// Estimates
-	QObject::connect(new QShortcut(QKeySequence::Delete, this), SIGNAL(activated()), this, SLOT(on_toolButton_delProposal_clicked()));
-	QObject::connect(new QShortcut(QKeySequence::InsertParagraphSeparator, this), SIGNAL(activated()), this, SLOT(on_toolButton_editProposal_clicked()));
-	QObject::connect(new QShortcut(QKeySequence::Copy, this), SIGNAL(activated()), this, SLOT(copyEstimate()));
-	QObject::connect(new QShortcut(QKeySequence::Cut, this), SIGNAL(activated()), this, SLOT(cutEstimate()));
-	QObject::connect(new QShortcut(QKeySequence::Paste, this), SIGNAL(activated()), this, SLOT(pasteEstimate()));
+	QObject::connect(new QShortcut(QKeySequence::Delete, ui->tableWidget_Proposals), SIGNAL(activated()), this, SLOT(on_toolButton_delProposal_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::InsertParagraphSeparator, ui->tableWidget_Proposals), SIGNAL(activated()), this, SLOT(on_toolButton_editProposal_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::Copy, ui->tableWidget_Proposals), SIGNAL(activated()), this, SLOT(copyEstimate()));
+	QObject::connect(new QShortcut(QKeySequence::Cut, ui->tableWidget_Proposals), SIGNAL(activated()), this, SLOT(cutEstimate()));
+	QObject::connect(new QShortcut(QKeySequence::Paste, ui->tableWidget_Proposals), SIGNAL(activated()), this, SLOT(pasteEstimate()));
 
 	QObject::connect(ui->toolButton_copyEstimate, SIGNAL(clicked()), this, SLOT(copyEstimate()));
 	QObject::connect(ui->toolButton_cutEstimate, SIGNAL(clicked()), this, SLOT(cutEstimate()));
 	QObject::connect(ui->toolButton_pastEstimate, SIGNAL(clicked()), this, SLOT(pasteEstimate()));
+
 	// Invoices
+	QObject::connect(new QShortcut(QKeySequence::Delete, ui->tableWidget_Invoices), SIGNAL(activated()), this, SLOT(on_toolButton_delInvoice_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::InsertParagraphSeparator, ui->tableWidget_Invoices), SIGNAL(activated()), this, SLOT(on_toolButton_editInvoice_clicked()));
+	QObject::connect(new QShortcut(QKeySequence::Copy, ui->tableWidget_Invoices), SIGNAL(activated()), this, SLOT(copyInvoice()));
+	QObject::connect(new QShortcut(QKeySequence::Cut, ui->tableWidget_Invoices), SIGNAL(activated()), this, SLOT(cutInvoice()));
+	QObject::connect(new QShortcut(QKeySequence::Paste, ui->tableWidget_Invoices), SIGNAL(activated()), this, SLOT(pasteInvoice()));
+
+	QObject::connect(ui->toolButton_copyInvoice, SIGNAL(clicked()), this, SLOT(copyInvoice()));
+	QObject::connect(ui->toolButton_cutInvoice, SIGNAL(clicked()), this, SLOT(cutInvoice()));
+	QObject::connect(ui->toolButton_pasteInvoice, SIGNAL(clicked()), this, SLOT(pasteInvoice()));
 }
 
 /**
@@ -808,6 +818,7 @@ void customerView::on_toolButton_editProposal_clicked()
 {
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Proposals->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Proposals->currentRow();
 	int m_InvId = ui->tableWidget_Proposals->item(m_index, 0)->text().toInt();
@@ -831,6 +842,7 @@ void customerView::on_toolButton_delProposal_clicked()
 {
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Proposals->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Proposals->currentRow();
 	int m_InvId = ui->tableWidget_Proposals->item(m_index, 0)->text().toInt();
@@ -956,6 +968,7 @@ void customerView::on_toolButton_editInvoice_clicked()
 {
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Invoices->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Invoices->currentRow();
 	int m_InvId = ui->tableWidget_Invoices->item(m_index, 0)->text().toInt();
@@ -979,6 +992,7 @@ void customerView::on_toolButton_delInvoice_clicked()
 {
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Invoices->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Invoices->currentRow();
 	int m_InvId = ui->tableWidget_Invoices->item(m_index, 0)->text().toInt();
@@ -1067,6 +1081,7 @@ void customerView::on_tableWidget_Invoices_itemDoubleClicked(){
 void customerView::copyEstimate(){
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Proposals->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Proposals->currentRow();
 	QString id = ui->tableWidget_Proposals->item(m_index, ID_ROW)->text();
@@ -1087,6 +1102,7 @@ void customerView::copyEstimate(){
 void customerView::cutEstimate(){
 	//Si on est pas connecte on sort
 	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Proposals->rowCount()<1)return;
 
 	int m_index = ui->tableWidget_Proposals->currentRow();
 	QString id = ui->tableWidget_Proposals->item(m_index, ID_ROW)->text();
@@ -1185,3 +1201,143 @@ void customerView::pasteEstimate(){
 
 }
 
+
+
+/**
+ * @brief customerView::copyInvoice
+ */
+void customerView::copyInvoice(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Invoices->rowCount()<1)return;
+
+	int m_index = ui->tableWidget_Invoices->currentRow();
+	QString id = ui->tableWidget_Invoices->item(m_index, ID_ROW)->text();
+
+	QByteArray mData("P:");
+	mData.append(id.toUtf8());
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("mcercle", mData);
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	m_clipboard->setMimeData(mimeData);
+}
+
+
+/**
+ * @brief customerView::cutInvoice
+ */
+void customerView::cutInvoice(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+	if(ui->tableWidget_Invoices->rowCount()<1)return;
+
+	int m_index = ui->tableWidget_Invoices->currentRow();
+	QString id = ui->tableWidget_Invoices->item(m_index, ID_ROW)->text();
+
+	QByteArray mData("M:");
+	mData.append(id.toUtf8());
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setData("mcercle", mData);
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	m_clipboard->setMimeData(mimeData);
+}
+
+
+
+/**
+ * @brief customerView::pasteInvoice
+ */
+void customerView::pasteInvoice(){
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	QClipboard *m_clipboard = QApplication::clipboard();
+	const QMimeData * mime = m_clipboard->mimeData();
+
+	if (mime) 	{
+		QByteArray mData = mime->data("mcercle");
+		qDebug() << "customerView::pastInvoice " << mData;
+		if(mData.size()<2)return;
+		// Get ID of estimate
+		int id = mData.mid(2).toInt();
+		// if Paste
+		if(QString(mData.at(0)) == "P"){
+			// Load the invoice from ID
+			m_data->m_customer->m_invoice->loadFromID(id);
+			//Test if it is account invoice or credit
+			if( m_data->m_customer->m_invoice->getType() != MCERCLE::TYPE_INV) {
+				QMessageBox::critical(this, tr("Impossible"),
+											tr("Impossible créer une facture depuis un avoir ou un acompte...")
+											);
+				// on finish clear clipboard
+
+				m_clipboard->clear();
+				return;
+			}
+
+			QString mess =	"\n"+m_data->m_customer->m_invoice->getCode()+
+							"\nà "+m_data->m_customer->getFirstName()+" "+m_data->m_customer->getLastName();
+
+			int ret = QMessageBox::information(this, tr("Question"),
+											tr("Voulez-vous vraiment créer une facture depuis la") + mess + tr(" ?"),
+											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+			if(ret == QMessageBox::Yes){
+				// Load class for the new invoice
+				m_data->m_customer->m_invoice->setIdCustomer( m_data->m_customer->getId() );
+				m_data->m_customer->m_invoice->setCode( m_data->m_customer->m_invoice->generateNewCode() );
+				m_data->m_customer->m_invoice->setDescription( m_data->m_customer->m_invoice->getDescription()+tr(" (copie)") );
+				m_data->m_customer->m_invoice->setUserDate(QDate::currentDate());
+				m_data->m_customer->m_invoice->setPaymentDate(QDate::currentDate());
+				m_data->m_customer->m_invoice->setLimitPayment(QDate::currentDate());
+				m_data->m_customer->m_invoice->setState(MCERCLE::INV_UNPAID);
+				// Then create !
+				if(!m_data->m_customer->m_invoice->create()) {
+					return; // Error of creation
+				}
+				// Create items !
+				invoice::InvoiceListItems item_s;
+				invoice::InvoiceItem item;
+				// Get Items of orginal estimate
+				m_data->m_customer->m_invoice->getInvoiceItemsList(item_s, "ITEM_ORDER", "", "");
+				// Then Load new estimate created
+				m_data->m_customer->m_invoice->loadFromID( m_data->m_customer->m_invoice->getLastId() );
+				for(int i=0; i<item_s.name.count(); i++){
+					item.name = item_s.name.at(i);
+					item.idProduct = item_s.idProduct.at(i);
+					item.price = item_s.price.at(i);
+					item.discount = item_s.discount.at(i);
+					item.tax = item_s.tax.at(i);
+					item.quantity = item_s.quantity.at(i);
+					item.order = item_s.order.at(i);
+					item.type = item_s.type.at(i);
+
+					m_data->m_customer->m_invoice->addInvoiceItem(item);
+				}
+				// on finish clear clipboard
+				m_clipboard->clear();
+
+			}
+		}
+		// if Move
+		if(QString(mData.at(0)) == "M"){
+			m_data->m_customer->m_invoice->loadFromID(id);
+			QString mess =	"\n"+m_data->m_customer->m_invoice->getCode()+
+							"\nà "+m_data->m_customer->getFirstName()+" "+m_data->m_customer->getLastName();
+
+			int ret = QMessageBox::information(this, tr("Question"),
+											tr("Voulez-vous vraiment déplacer le devis") + mess + tr(" ?"),
+											QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+
+			if(ret == QMessageBox::Yes){
+				m_data->m_customer->m_invoice->setIdCustomer( m_data->m_customer->getId() );
+				m_data->m_customer->m_invoice->update();
+				// on finish clear clipboard
+				m_clipboard->clear();
+			}
+		}
+		listInvoices();
+	}
+
+}

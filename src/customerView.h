@@ -91,10 +91,15 @@ private slots:
 
 	void on_lineEdit_Search_textChanged(const QString &arg1);	
 	void on_comboBoxFiltre_currentIndexChanged(int index);
+
 	// Keypress
 	void copyEstimate();
 	void cutEstimate();
 	void pasteEstimate();
+
+	void copyInvoice();
+	void cutInvoice();
+	void pasteInvoice();
 
 	public slots:
 	void refreshCustomersList();
