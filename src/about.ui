@@ -131,17 +131,17 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <widget class="QLabel" name="label_don">
-               <property name="toolTip">
-                <string>Merci beaucoup !</string>
+              <spacer name="horizontalSpacer_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="text">
-                <string/>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
                </property>
-               <property name="pixmap">
-                <pixmap resource="../ressources.qrc">:/app/heart</pixmap>
-               </property>
-              </widget>
+              </spacer>
              </item>
              <item>
               <widget class="QLabel" name="label_paypaloptions">
@@ -160,17 +160,17 @@ p, li { white-space: pre-wrap; }
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+              <widget class="QLabel" name="label_don">
+               <property name="toolTip">
+                <string>Merci beaucoup !</string>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
+               <property name="text">
+                <string/>
                </property>
-              </spacer>
+               <property name="pixmap">
+                <pixmap resource="../ressources.qrc">:/app/heart</pixmap>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>

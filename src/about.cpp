@@ -84,16 +84,8 @@ about::about(database *pdata, QWidget *parent) :
 	
 	msg += "<br><br>Ce programme est fourni &laquo; EN L'ETAT &raquo;, SANS GARANTIE D'AUCUNE SORTE,<br> INCLUANT, SANS S'Y LIMITER, LES GARANTIES D'ABSENCE DE DEFAUT.";
 
-	// test os version
-#ifdef __WIN32
-	ui->pushButton_don->setVisible(false);
-	ui->pushButton_donFree->setVisible(false);
-	ui->pushButton_donmonthly->setVisible(false);
-	ui->label_don->setVisible(false);
-	ui->label_paypaloptions->setVisible(false);
-#else
 	msg += "<p align=\"center\" style=\"font-size:12px;font-weight:bold;color:#000;background:#B2D42A; \">" + tr(" MCERCLE vous aide dans votre activit&#233;.<br>Aidez moi &agrave; continuer en faisant un don. MERCI") + "</p>";
-#endif
+
 
 	ui->label_apropos->setText( msg );
 	ui->label_apropos->setOpenExternalLinks ( true );
