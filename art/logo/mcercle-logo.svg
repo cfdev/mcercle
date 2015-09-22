@@ -13,8 +13,11 @@
    height="498.00546"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
-   sodipodi:docname="logo.svg">
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="mcercle-logo.svg"
+   inkscape:export-filename="D:\code\mcercle-trunk\art\logo\mcercle-logo-32.png"
+   inkscape:export-xdpi="5.6119175"
+   inkscape:export-ydpi="5.6119175">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -38,32 +41,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <filter
-       inkscape:collect="always"
-       id="filter3810"
-       x="-0.34285715"
-       width="1.6857142"
-       y="-1.0285714"
-       height="3.057143"
-       color-interpolation-filters="sRGB">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="21.428571"
-         id="feGaussianBlur3812" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       inkscape:collect="always"
-       id="filter3810-4"
-       x="-0.34285715"
-       width="1.6857142"
-       y="-1.0285714"
-       height="3.057143">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="21.428571"
-         id="feGaussianBlur3812-6" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -73,15 +50,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.88624048"
-     inkscape:cx="394.50955"
-     inkscape:cy="248.6981"
+     inkscape:cx="166.63922"
+     inkscape:cy="216.59905"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="905"
-     inkscape:window-x="-2"
-     inkscape:window-y="-3"
+     inkscape:window-width="1440"
+     inkscape:window-height="873"
+     inkscape:window-x="1431"
+     inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:snap-grids="true"
      fit-margin-top="0"
@@ -115,45 +92,24 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-98.500001,-138.85454)">
-    <path
-       style="fill:#235e1a;fill-opacity:1;stroke:#000000;stroke-width:2.86653233;stroke-miterlimit:4;stroke-opacity:0.45098039;stroke-dasharray:none"
-       d="m 354.5,141.16376 c -80.18639,0 -151.68837,36.01221 -198.34986,92.26234 l 45.12488,6.9138 13.72851,34.71625 c 33.35511,-38.6864 83.46411,-63.28354 139.49647,-63.28354 100.42393,0 181.83361,79.03191 181.83361,176.52257 0,23.67191 -4.81032,46.24446 -13.51632,66.87272 l 13.51632,46.57252 43.03369,2.47131 c 18.94893,-34.57135 29.69943,-74.02355 29.69943,-115.91655 0,-136.48697 -113.97337,-247.13142 -254.56673,-247.13142 z"
-       id="path3017"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/whitebird/Bidouilles/software/circle/art/logo/path3806-3.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       style="fill:#2b2b2b;fill-opacity:1;stroke:#000000;stroke-width:2.86653233;stroke-miterlimit:4;stroke-opacity:0.45098039;stroke-dasharray:none"
-       d="m 129.63271,272.40818 c -18.94111,34.56598 -29.699443,74.00348 -29.699443,115.887 0,136.48712 113.973383,247.13157 254.566733,247.13157 80.14718,0 151.62628,-35.97112 198.28939,-92.17416 l -45.54925,-7.00213 -13.57699,-34.33354 c -33.35526,38.46519 -83.31639,62.90084 -139.16315,62.90084 -100.42376,0 -181.83345,-79.03191 -181.83345,-176.52258 0,-23.40091 4.69527,-45.73026 13.21326,-66.16652 l -13.72834,-47.27857 -42.51876,-2.44191 z"
-       id="path3009"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/whitebird/Bidouilles/software/circle/art/logo/path3806-3.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter3810)"
-       id="path3806"
-       sodipodi:cx="175"
-       sodipodi:cy="450"
-       sodipodi:rx="75"
-       sodipodi:ry="25"
-       d="m 250,450 c 0,13.80712 -33.57864,25 -75,25 -41.42136,0 -75,-11.19288 -75,-25 0,-13.80712 33.57864,-25 75,-25 41.42136,0 75,11.19288 75,25 z"
-       transform="matrix(0.75609636,0.34911545,-0.38179369,0.6913811,256.3065,170.94214)"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#ffffff;fill-opacity:1;stroke:none;filter:url(#filter3810-4)"
-       id="path3806-3"
-       sodipodi:cx="175"
-       sodipodi:cy="450"
-       sodipodi:rx="75"
-       sodipodi:ry="25"
-       d="m 250,450 c 0,13.80712 -33.57864,25 -75,25 -41.42136,0 -75,-11.19288 -75,-25 0,-13.80712 33.57864,-25 75,-25 41.42136,0 75,11.19288 75,25 z"
-       transform="matrix(0.86567385,0.42435812,-0.43712537,0.84038976,519.43156,-226.72616)"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+    <g
+       id="g3021">
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/whitebird/Bidouilles/software/circle/art/logo/path3806-3.png"
+         inkscape:connector-curvature="0"
+         id="path3017"
+         d="m 354.5,141.16376 c -80.18639,0 -151.68837,36.01221 -198.34986,92.26234 l 45.12488,6.9138 13.72851,34.71625 c 33.35511,-38.6864 83.46411,-63.28354 139.49647,-63.28354 100.42393,0 181.83361,79.03191 181.83361,176.52257 0,23.67191 -4.81032,46.24446 -13.51632,66.87272 l 13.51632,46.57252 43.03369,2.47131 c 18.94893,-34.57135 29.69943,-74.02355 29.69943,-115.91655 0,-136.48697 -113.97337,-247.13142 -254.56673,-247.13142 z"
+         style="fill:#235e1a;fill-opacity:1;stroke:#000000;stroke-width:2.86653233;stroke-miterlimit:4;stroke-opacity:0.45098039;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/whitebird/Bidouilles/software/circle/art/logo/path3806-3.png"
+         inkscape:connector-curvature="0"
+         id="path3009"
+         d="m 129.63271,272.40818 c -18.94111,34.56598 -29.699443,74.00348 -29.699443,115.887 0,136.48712 113.973383,247.13157 254.566733,247.13157 80.14718,0 151.62628,-35.97112 198.28939,-92.17416 l -45.54925,-7.00213 -13.57699,-34.33354 c -33.35526,38.46519 -83.31639,62.90084 -139.16315,62.90084 -100.42376,0 -181.83345,-79.03191 -181.83345,-176.52258 0,-23.40091 4.69527,-45.73026 13.21326,-66.16652 l -13.72834,-47.27857 -42.51876,-2.44191 z"
+         style="fill:#2b2b2b;fill-opacity:1;stroke:#000000;stroke-width:2.86653233;stroke-miterlimit:4;stroke-opacity:0.45098039;stroke-dasharray:none" />
+    </g>
   </g>
 </svg>
