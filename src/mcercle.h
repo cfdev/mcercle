@@ -22,7 +22,7 @@
 namespace MCERCLE {
 // Version et version de bdd supporte
 	const QString Version = "15.06";
-	const QString CodeName = "Thunderstorm";
+	const QString CodeName = "dev";
 	const int Dbase_support = 8;
 
 // Type paiement: espece, cheque, CB, TIP, virement, prelevement, autre
