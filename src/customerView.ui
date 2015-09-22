@@ -762,6 +762,12 @@ p, li { white-space: pre-wrap; }
                   <iconset resource="../ressources.qrc">
                    <normaloff>:/app/paste</normaloff>:/app/paste</iconset>
                  </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>22</width>
+                   <height>22</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
                <item>

@@ -782,11 +782,15 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 	if( ui->tableWidget_Invoices->rowCount() <=0 ) {
 		ui->toolButton_editInvoice->setEnabled(false);
 		ui->toolButton_delInvoice->setEnabled(false);
+		ui->toolButton_copyInvoice->setEnabled(false);
+		ui->toolButton_cutInvoice->setEnabled(false);
 		ui->toolButton_printInv->setEnabled(false);
 	}
 	else{
 		ui->toolButton_editInvoice->setEnabled(true);
 		ui->toolButton_delInvoice->setEnabled(true);
+		ui->toolButton_copyInvoice->setEnabled(true);
+		ui->toolButton_cutInvoice->setEnabled(true);
 		ui->toolButton_printInv->setEnabled(true);
 	}
 }
