@@ -101,6 +101,10 @@ private slots:
 	void cutInvoice();
 	void pasteInvoice();
 
+	void on_toolButton_printPDFInv_clicked();
+
+	void on_toolButton_printPDFPro_clicked();
+
 	public slots:
 	void refreshCustomersList();
 	void listCustomers(int page);

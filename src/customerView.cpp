@@ -595,6 +595,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 		ui->toolButton_copyEstimate->setEnabled(false);
 		ui->toolButton_cutEstimate->setEnabled(false);
 		ui->toolButton_printPro->setEnabled(false);
+		ui->toolButton_printPDFPro->setEnabled(false);
 	}
 	else{
 		ui->toolButton_editProposal->setEnabled(true);
@@ -602,6 +603,7 @@ void customerView::listProposalsToTable(QString filter, QString field) {
 		ui->toolButton_copyEstimate->setEnabled(true);
 		ui->toolButton_cutEstimate->setEnabled(true);
 		ui->toolButton_printPro->setEnabled(true);
+		ui->toolButton_printPDFPro->setEnabled(true);
 	}
 }
 
@@ -785,6 +787,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ui->toolButton_copyInvoice->setEnabled(false);
 		ui->toolButton_cutInvoice->setEnabled(false);
 		ui->toolButton_printInv->setEnabled(false);
+		ui->toolButton_printPDFInv->setEnabled(false);
 	}
 	else{
 		ui->toolButton_editInvoice->setEnabled(true);
@@ -792,6 +795,7 @@ void customerView::listInvoicesToTable(QString filter, QString field)
 		ui->toolButton_copyInvoice->setEnabled(true);
 		ui->toolButton_cutInvoice->setEnabled(true);
 		ui->toolButton_printInv->setEnabled(true);
+		ui->toolButton_printPDFInv->setEnabled(true);
 	}
 }
 
@@ -1043,7 +1047,21 @@ void customerView::on_toolButton_printPro_clicked() {
 	int Id = ui->tableWidget_Proposals->item(index, 0)->text().toInt();
 		
 	Printc print(m_data, m_lang);
-	print.print_Proposal( Id );
+	print.quickPrint_Proposal( Id );
+}
+
+/**
+ * @brief customerView::on_toolButton_printPDFPro_clicked
+ */
+void customerView::on_toolButton_printPDFPro_clicked() {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	int index = ui->tableWidget_Proposals->currentRow();
+	int Id = ui->tableWidget_Proposals->item(index, 0)->text().toInt();
+
+	Printc print(m_data, m_lang);
+	print.quickPrintPDF_Proposal( Id );
 }
 
 /**
@@ -1056,7 +1074,20 @@ void customerView::on_toolButton_printInv_clicked() {
 	int index = ui->tableWidget_Invoices->currentRow();
 	int Id = ui->tableWidget_Invoices->item(index, 0)->text().toInt();
 	Printc print(m_data, m_lang);
-	print.print_Invoice( Id );
+	print.quickPrint_Invoice( Id );
+}
+
+/**
+ * @brief customerView::on_toolButton_printPDFInv_clicked
+ */
+void customerView::on_toolButton_printPDFInv_clicked() {
+	//Si on est pas connecte on sort
+	if(!m_data->isConnected())return;
+
+	int index = ui->tableWidget_Invoices->currentRow();
+	int Id = ui->tableWidget_Invoices->item(index, 0)->text().toInt();
+	Printc print(m_data, m_lang);
+	print.quickPrintPDF_Invoice( Id );
 }
 
 /**
@@ -1345,3 +1376,5 @@ void customerView::pasteInvoice(){
 	}
 
 }
+
+
