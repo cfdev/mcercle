@@ -28,7 +28,15 @@
 #include <QPrintPreviewWidget>
 #include <QToolBar>
 #include <QDebug>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QtCore/qmath.h>
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	#include <QDesktopServices>
+#else
+	#include <QStandardPaths>
+#endif
 
 Printc::Printc(database *pdata, QLocale &lang, QObject *parent) :
 	QObject(parent)
@@ -117,7 +125,7 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 		mBlockHeight = mpageRect.height() / 4.4;
 	}
 	else{
-		mlinePerLastPage = 25;
+		mlinePerLastPage = 30;//25
 		mlinePerPage =  mlinePerLastPage +10;
 		// Ajuster la hauteur
 		mBlockHeight = mpageRect.height() / 1.4;
@@ -208,6 +216,79 @@ void Printc::print_Proposal(const int &id) {
 		}
 		m_PreviewDialog.exec();
 	}
+}
+
+/**
+ * @brief Printc::quickPrint_Proposal
+ * @param id
+ */
+void Printc::quickPrint_Proposal(const int &id) {
+	//On charge l objet en fonction de la selection
+	m_pro -> loadFromID(id);
+
+	QPrinter printer;
+	QString name = m_pro->getCode() ;
+	QWidget fenetre;
+	QPrintDialog pDialog(&printer, &fenetre);
+	if(pDialog.exec() == QDialog::Rejected) {
+		return;
+	}
+
+	printer.setPageSize(QPrinter::A4);
+	printer.setOutputFormat(QPrinter::NativeFormat);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+	printer.setResolution(DPI);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+
+	// Impression avec le painter
+	on_paintPrinterProposal(&printer);
+}
+
+/**
+ * @brief Printc::quickPrintPDF_Proposal
+ * @param id
+ */
+void Printc::quickPrintPDF_Proposal(const int &id) {
+	//On charge l objet en fonction de la selection
+	m_pro -> loadFromID(id);
+	QPrinter printer;
+	QString name = m_pro->getCode() ;
+
+	printer.setPageSize(QPrinter::A4);
+	printer.setOutputFormat(QPrinter::PdfFormat);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+	printer.setResolution(DPI);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+
+	QString path_DataLocation;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+
+#else
+	// Qt5 gere un dosssier du nom de lapplication
+	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::HomeLocation );
+#endif
+
+	QString filename = QFileDialog::getSaveFileName(0, "Enregister sous... ", path_DataLocation+"/"+name, "*.pdf");
+	if( !filename.isEmpty() ) {
+		if(QFile::exists ( filename )){
+			// Si le fichier existe deja on supprime
+			if(!QFile::remove ( filename ) ){
+				QMessageBox::critical(0, tr("Erreur"),
+									 tr("Impossible de remplacer le fichier!\n\n")+
+									 "Destination: "+name+"\n");
+				return;
+			}
+		}
+		printer.setOutputFileName( filename );
+		// Impression avec le painter
+		on_paintPrinterProposal(&printer);
+	}
+
 }
 
 /**
@@ -327,6 +408,8 @@ void Printc::print_content(QPainter &painter, QRectF &rect, itemList Ilist, int 
 	int rectTop_LineTitre;
 	
 	/// Content title
+	// color of header
+	//painter.setBrush( Qt::lightGray );
 	rect.translate( 0, SPACE_BORDER);
 	qreal pos = WIDTH_DES;
 	//DESIGNATION 50%
@@ -945,6 +1028,79 @@ void Printc::print_Invoice(const int &id) {
 		}
 		m_PreviewDialog.exec();
 	}
+}
+
+/**
+ * @brief Printc::quickPrint_Invoice
+ * @param id
+ */
+void Printc::quickPrint_Invoice(const int &id) {
+	//On charge l objet en fonction de la selection
+	m_inv -> loadFromID(id);
+
+	QPrinter printer;
+	QString name = m_inv->getCode() ;
+	QWidget fenetre;
+	QPrintDialog pDialog(&printer, &fenetre);
+	if(pDialog.exec() == QDialog::Rejected) {
+		return;
+	}
+
+	printer.setPageSize(QPrinter::A4);
+	printer.setOutputFormat(QPrinter::NativeFormat);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+	printer.setResolution(DPI);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+
+	// Impression avec le painter
+	on_paintPrinterInvoice(&printer);
+}
+
+/**
+ * @brief Printc::quickPrintPDF_Invoice
+ * @param id
+ */
+void Printc::quickPrintPDF_Invoice(const int &id) {
+	//On charge l objet en fonction de la selection
+	m_inv -> loadFromID(id);
+	QPrinter printer;
+	QString name = m_inv->getCode() ;
+
+	printer.setPageSize(QPrinter::A4);
+	printer.setOutputFormat(QPrinter::PdfFormat);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+	printer.setResolution(DPI);
+	printer.setDocName( name );
+	printer.setCreator("mcercle");
+
+	QString path_DataLocation;
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+	path_DataLocation = QDesktopServices::storageLocation ( QDesktopServices::HomeLocation );
+
+#else
+	// Qt5 gere un dosssier du nom de lapplication
+	path_DataLocation = QStandardPaths::writableLocation ( QStandardPaths::HomeLocation );
+#endif
+
+	QString filename = QFileDialog::getSaveFileName(0, "Enregister sous... ",  path_DataLocation+"/"+name, "*.pdf");
+	if( !filename.isEmpty() ) {
+		if(QFile::exists ( filename )){
+			// Si le fichier existe deja on supprime
+			if(!QFile::remove ( filename ) ){
+				QMessageBox::critical(0, tr("Erreur"),
+									 tr("Impossible de remplacer le fichier!\n\n")+
+									 "Destination: "+name+"\n");
+				return;
+			}
+		}
+		printer.setOutputFileName( filename );
+		// Impression avec le painter
+		on_paintPrinterInvoice(&printer);
+	}
+
 }
 
 /**

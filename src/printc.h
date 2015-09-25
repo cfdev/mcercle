@@ -18,7 +18,12 @@ class Printc : public QObject
 	~Printc();
 	
 	void print_Proposal(const int &);
+	void quickPrint_Proposal(const int &id);
+	void quickPrintPDF_Proposal(const int &id);
+
 	void print_Invoice(const int &);
+	void quickPrint_Invoice(const int &id);
+	void quickPrintPDF_Invoice(const int &id);
 	void print_InvoicesList(QList<int> listofId);
 	void print_Service(const int &);
 	void print_fileEmpty();
