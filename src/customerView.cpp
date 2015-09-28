@@ -635,9 +635,10 @@ void customerView::listServicesToTable(QString filter, QString field)
 
 	ui->tableWidget_Services->setSortingEnabled(false);
 	//Style de la table de l intervention
-	ui->tableWidget_Services->setColumnCount(4);
+	ui->tableWidget_Services->setColumnCount(5);
 	ui->tableWidget_Services->setColumnWidth(1,150);
 	ui->tableWidget_Services->setColumnWidth(3,250);
+	ui->tableWidget_Services->setColumnWidth(4,300);
 #ifdef QT_NO_DEBUG
 	ui->tableWidget_Services->setColumnHidden(0 , true); //cache la colonne ID ou DEBUG
 #endif
@@ -645,7 +646,7 @@ void customerView::listServicesToTable(QString filter, QString field)
 	ui->tableWidget_Services->setSelectionMode(QAbstractItemView::SingleSelection);
 	ui->tableWidget_Services->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	QStringList titles;
-	titles << tr("Id") << tr("Date") << tr("Prix") << tr("Nom");
+	titles << tr("Id") << tr("Date") << tr("Prix") << tr("Nom") << tr("Description");;
 	ui->tableWidget_Services->setHorizontalHeaderLabels( titles );
 
 	//Recuperation des donnees presentent dans la bdd
@@ -657,12 +658,13 @@ void customerView::listServicesToTable(QString filter, QString field)
 		ItemOfTable *item_DATE		= new ItemOfTable();
 		ItemOfTable *item_PRICE		= new ItemOfTable();
 		ItemOfTable *item_NAME		= new ItemOfTable();
+		ItemOfTable *item_DES		= new ItemOfTable();
 
 		item_ID->setData(Qt::DisplayRole, QString::number(ilist.id.at(i)));
 		item_DATE->setData(Qt::DisplayRole, ilist.date.at(i).toString("dd/MM/yyyy hh:mm:ss"));
 		item_PRICE->setData(Qt::DisplayRole, ilist.price.at(i));
 		item_NAME->setData(Qt::DisplayRole, ilist.name.at(i));
-
+		item_DES->setData(Qt::DisplayRole, ilist.description.at(i));
 		//definir le tableau
 		ui->tableWidget_Services->setRowCount(i+1);
 
@@ -671,6 +673,7 @@ void customerView::listServicesToTable(QString filter, QString field)
 		ui->tableWidget_Services->setItem(i, 1, item_DATE);
 		ui->tableWidget_Services->setItem(i, 2, item_PRICE);
 		ui->tableWidget_Services->setItem(i, 3, item_NAME);
+		ui->tableWidget_Services->setItem(i, 4, item_DES);
 	}
 	ui->tableWidget_Services->setSortingEnabled(true);
 	ui->tableWidget_Services->selectRow(0);
