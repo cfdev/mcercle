@@ -51,15 +51,6 @@ private:
 	bool m_isTax;
 	int databaseVersion();
 	bool isTax();
-	
-	/* fonctions de mise a jour */
-	bool upgradeToV2(QString *log);
-	bool upgradeToV3(QString *log);
-	bool upgradeToV4(QString *log);
-	bool upgradeToV5(QString *log);
-	bool upgradeToV6(QString *log);
-	bool upgradeToV7(QString *log);
-	bool upgradeToV8(QString *log);
 
 public:
 
@@ -82,6 +73,7 @@ public:
 
 	typedef struct{
 		//Valeur pour le placement dans un tableau
+		QString name;
 		QString codeBanque;
 		QString codeGuichet;
 		QString numCompte;
