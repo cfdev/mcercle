@@ -79,7 +79,8 @@ HEADERS += \
     src/mcercle.h \
     src/update.h \
     src/inout.h \
-    src/qcustomplot/qcustomplot.h
+    src/qcustomplot/qcustomplot.h \
+    src/update_db.h
 
 win32 {
 HEADERS += \
@@ -122,7 +123,8 @@ SOURCES += \
     src/about.cpp \
     src/update.cpp \
     src/inout.cpp \
-    src/qcustomplot/qcustomplot.cpp
+    src/qcustomplot/qcustomplot.cpp \
+    src/update_db.cpp
 
 win32 {
 SOURCES += \
