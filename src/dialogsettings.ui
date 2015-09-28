@@ -32,7 +32,7 @@
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>5</number>
+        <number>0</number>
        </property>
        <property name="iconSize">
         <size>
@@ -435,7 +435,7 @@ p, li { white-space: pre-wrap; }
           <normaloff>:/app/revenue</normaloff>:/app/revenue</iconset>
         </attribute>
         <attribute name="title">
-         <string>Relevé d'identité bancaire</string>
+         <string>Informations bancaire</string>
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_7">
          <item>
@@ -445,82 +445,17 @@ p, li { white-space: pre-wrap; }
              <item row="0" column="0">
               <widget class="QLabel" name="label_19">
                <property name="text">
-                <string>Code Banque :</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_20">
-               <property name="text">
-                <string>Code Guichet :</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="lineEdit_codeGuichet">
-               <property name="maxLength">
-                <number>5</number>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_21">
-               <property name="text">
-                <string>Numéro de compte :</string>
+                <string>Nom du Titulaire :</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
-              <widget class="QLineEdit" name="lineEdit_codeBanque">
+              <widget class="QLineEdit" name="lineEdit_nameBanque">
                <property name="maxLength">
-                <number>5</number>
+                <number>24</number>
                </property>
                <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="lineEdit_numCompte">
-               <property name="maxLength">
-                <number>11</number>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_22">
-               <property name="text">
-                <string>Clé RIB :</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="lineEdit_keyRIB">
-               <property name="maxLength">
-                <number>2</number>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="label_23">
-               <property name="text">
-                <string>Domiciliation :</string>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="lineEdit_Address">
-               <property name="maxLength">
-                <number>128</number>
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                </property>
               </widget>
              </item>
@@ -1050,11 +985,7 @@ p, li { white-space: pre-wrap; }
   <tabstop>lineEdit_sAdd1</tabstop>
   <tabstop>lineEdit_sAdd2</tabstop>
   <tabstop>lineEdit_sAdd3</tabstop>
-  <tabstop>lineEdit_codeBanque</tabstop>
-  <tabstop>lineEdit_numCompte</tabstop>
-  <tabstop>lineEdit_codeGuichet</tabstop>
-  <tabstop>lineEdit_keyRIB</tabstop>
-  <tabstop>lineEdit_Address</tabstop>
+  <tabstop>lineEdit_nameBanque</tabstop>
   <tabstop>lineEdit_IBAN1</tabstop>
   <tabstop>lineEdit_IBAN2</tabstop>
   <tabstop>lineEdit_IBAN3</tabstop>

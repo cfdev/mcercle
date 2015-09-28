@@ -109,11 +109,12 @@ void DialogSettings::on_buttonBox_accepted() {
 
 	//sauvegarde les donnees de la banque dans la bdd
 	database::Bank b;
-	b.codeBanque = ui->lineEdit_codeBanque->text();
+	b.name = ui->lineEdit_nameBanque->text();
+/*	b.codeBanque = ui->lineEdit_codeBanque->text();
 	b.codeGuichet = ui->lineEdit_codeGuichet->text();
 	b.numCompte = ui->lineEdit_numCompte->text();
 	b.keyRIB = ui->lineEdit_keyRIB->text();
-	b.address = ui->lineEdit_Address->text();
+	b.address = ui->lineEdit_Address->text();*/
 	b.IBAN1 = ui->lineEdit_IBAN1->text();
 	b.IBAN2 = ui->lineEdit_IBAN2->text();
 	b.IBAN3 = ui->lineEdit_IBAN3->text();
@@ -341,11 +342,12 @@ void DialogSettings::loadInfoDatabase() {
 
 	 database::Bank b;
 	 m_data->getBank( b );
-	 ui->lineEdit_codeBanque->setText( b.codeBanque );
-	 ui->lineEdit_codeGuichet->setText( b.codeGuichet );
-	 ui->lineEdit_numCompte->setText( b.numCompte );
-	 ui->lineEdit_keyRIB->setText( b.keyRIB );
-	 ui->lineEdit_Address->setText( b.address );
+	 ui->lineEdit_nameBanque->setText( b.name );
+	 /*	 ui->lineEdit_codeBanque->setText( b.codeBanque );
+		  ui->lineEdit_codeGuichet->setText( b.codeGuichet );
+		  ui->lineEdit_numCompte->setText( b.numCompte );
+		  ui->lineEdit_keyRIB->setText( b.keyRIB );
+		  ui->lineEdit_Address->setText( b.address );*/
 	 ui->lineEdit_IBAN1->setText( b.IBAN1 );
 	 ui->lineEdit_IBAN2->setText( b.IBAN2 );
 	 ui->lineEdit_IBAN3->setText( b.IBAN3 );
