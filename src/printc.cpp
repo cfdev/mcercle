@@ -118,27 +118,18 @@ void Printc::load_parameters(QPrinter *printer, QPainter &painter) {
 
 	qDebug() << "marges px: left(" << mLeft << ") top(" << mTop << ") right(" << mRight << ") bot(" << mBottom << ")";
 	qDebug() << "mpageRect.height: " << mpageRect.height();
-	if(printer -> orientation() == QPrinter::Landscape){
-		mlinePerLastPage = 8;
-		mlinePerPage = mlinePerLastPage +2;
-		// Ajuster la hauteur
-		mBlockHeight = mpageRect.height() / 4.4;
-	}
-	else{
+	if(printer -> orientation() == QPrinter::Portrait){
 		mlinePerLastPage = 30;//25
 		mlinePerPage =  mlinePerLastPage +10;
 		// Ajuster la hauteur
-		mBlockHeight = mpageRect.height() / 1.4;
+		mBlockHeight = mpageRect.height() / 1.35;
 	}
 	mRectContent = QRect(mLeft, 0, mwUtil, mBlockHeight);
 	qDebug() << "LinePerPage:" << mlinePerPage << " LinePerLastPage:" << mlinePerLastPage;
 	
 	database::Bank mb;
 	m_data -> getBank(mb);
-	mBankTextID = tr("Code banque: ")+mb.codeBanque+"  "+tr("Code guichet: ")+mb.codeGuichet+'\n';
-	mBankTextID += tr("Compte: ")+mb.numCompte+"  "+tr("Clé RIB: ")+mb.keyRIB+'\n';
-	mBankTextID += tr("Domiciliation: ");
-	mBankTextID += mb.address+"\n\n";
+	mBankTextID += tr("Titulaire: ") + mb.name+'\n';
 	mBankTextID += tr("IBAN: ");
 	mBankTextID += mb.IBAN1+' '+mb.IBAN2+' '+mb.IBAN3+' '+mb.IBAN4+' '+mb.IBAN5+' '+mb.IBAN6+' '+mb.IBAN7+' '+mb.IBAN8+' '+mb.IBAN9+'\n';
 	mBankTextID += tr("BIC: ") + mb.codeBIC+'\n';
@@ -394,7 +385,7 @@ void Printc::print_header(QPainter &painter, QRectF &rect, int type) {
 		rect.setWidth(6 + mLeft + mwUtil/2);
 		if(mDrawLine) painter.drawRoundedRect(rect, mRoundedRect, mRoundedRect); // dessine le rectangle
 		// Creation dun espace
-		rect.translate( 0, rect.height()+SPACE_BORDER*10);
+		rect.translate( 0, rect.height()+SPACE_BORDER*5);
 	}
 
 }
@@ -688,7 +679,7 @@ void Printc::print_footer(QPainter &painter, QRectF &rect, QString page, QString
  * @param totalPrice
  */
 void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int type) {
-	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.22);
+	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.18);
 	qreal ptSize = mFont.pointSizeF();
 	qreal reste;
 	mFont.setPointSizeF(ptSize-2);
@@ -808,7 +799,7 @@ void Printc::print_total(QPainter &painter, QRectF &rect, itemList Ilist, int ty
  * @param rect
  */
 void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typeP, const int &type) {
-	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.20);
+	qreal topRect = mpageRect.height() - mBottom - (mpageRect.height()*0.18);
 	//Mode de reglement
 	QString typePayment;
 	if(typeP.isEmpty() || typeP.isNull()) typePayment="";
@@ -838,31 +829,16 @@ void Printc::print_reglement(QPainter &painter, QRectF &rect, const QString &typ
 		painter.drawText( rect, text);
 	}
 	
-	/// TODO: RIB sur une autre page !!
-	/*if(typeP == MCERCLE::TRANSFER){
-		text = tr("Relevé d'Identité Bancaire");
-		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + 25, mwUtil*0.36 +15,0, Qt::AlignHCenter, text);
-		painter.drawText(rect, text);
-		
 
-		qreal ptSize = mFont.pointSizeF();
-		mFont.setPointSizeF(ptSize-2);
-		painter.setFont(mFont);
-		rect = painter.fontMetrics().boundingRect(mLeft+SPACE_BORDER, rect.bottom() + 15, mwUtil*0.36 +15,0, Qt::AlignLeft, mBankTextID );
-		rect.setWidth(mwUtil*0.36); //fixe la largeur
+	if(typeP == MCERCLE::TRANSFER){
+		rect = painter.fontMetrics().boundingRect(mLeft, rect.bottom() + SPACE_BORDER, mwUtil*0.5 +15,0, Qt::AlignLeft, mBankTextID );
+		rect.setWidth(mwUtil*0.5); //fixe la largeur
 		painter.drawText(rect, mBankTextID);
-		
-		painter.setPen( Qt::DashLine );
-		rect = QRect(mLeft,rect.top()-SPACE_BORDER, mwUtil*0.36 +15, rect.height());
-		painter.drawRoundedRect( rect, mRoundedRect, mRoundedRect);
-		painter.setPen( Qt::SolidLine );
-		//restaure la taille du pen
-		mFont.setPointSizeF(ptSize);
-		painter.setFont(mFont);
-	}*/
+	}
+
 	//Liste des accomptes
 	qreal ptSize = mFont.pointSizeF();
-	mFont.setPointSizeF(ptSize-2);
+	mFont.setPointSizeF(ptSize-1);
 	painter.setFont(mFont);
 
 	if(type == T_INVOICE) {
@@ -975,12 +951,13 @@ void Printc::on_paintPrinterProposal(QPrinter *printer) {
 	}
 	// Imprime le total
 	print_total(painter, rect, printList, T_PROPOSAL);
+	int bot = rect.bottom();
 	// Imprime le mode de reglement
 	print_reglement(painter, rect, m_pro -> getTypePayment(), T_PROPOSAL);
 
 	/// Signature Client
 	QString text = "Signature client:\n(Suivi de la mention \"bon pour accord\")\n\n\n\n";
-	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, rect.bottom() /*mpageRect.height() - mBottom - mpageRect.height()*0.19 + SPACE_BORDER*16*/, 0, 0, Qt::AlignLeft, text );
+	rect = painter.fontMetrics().boundingRect(mLeft+(mwUtil*0.62)+SPACE_BORDER, bot+SPACE_BORDER*2 /*mpageRect.height() - mBottom - mpageRect.height()*0.19 + SPACE_BORDER*16*/, 0, 0, Qt::AlignLeft, text );
 	painter.drawText(rect, text);
 	if(mDrawLine) painter.drawRoundedRect( QRect(mLeft+(mwUtil*0.62),rect.top(), mwUtil*WIDTH_TOTAUX +15, rect.height()), mRoundedRect, mRoundedRect);
 	
