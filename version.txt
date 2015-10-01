@@ -1,5 +1,5 @@
 [version]
-num=15.06
-link=https://github.com/cfdev/mcercle/wiki
-linkChangeLog=http://github.com/cfdev/mcercle/blob/master/Changelog.txt
+num=15.10
+link=http://cfdev.fr/mcercle
+linkChangeLog=http://cfdev.fr/download/files/mcercle/changelog.txt
 
